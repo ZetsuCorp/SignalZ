@@ -2,6 +2,11 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
+// App.tsx
+import React from "react";
+import PostForm from "./PostForm";
+import WorldFeed from "./WorldFeed";
+import { useState } from "react";
 
 // ✅ Define props for wallType
 interface Props {
