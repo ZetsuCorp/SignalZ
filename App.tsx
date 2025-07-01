@@ -1,14 +1,17 @@
-// App.tsx
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const [wallType, setWallType] = useState("main");
 
+  useEffect(() => {
+    console.log("SignalZ App mounted");
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">🌐 SIGNALZ</h1>
+      <h1 className="text-3xl font-bold text-center mb-6 text-black">🌐 SIGNALZ</h1>
       <p className="text-center mb-4 text-sm text-gray-500">
         What the internet is talking about.
       </p>
@@ -18,11 +21,7 @@ export default function App() {
         </div>
         <div className="flex-1">
           <div className="flex gap-2 justify-center mb-6">
-            {[
-              { id: "main", label: "Signal" },
-              { id: "alt", label: "Surge" },
-              { id: "zetsu", label: "Lens" },
-            ].map(({ id, label }) => (
+            {["main", "alt", "zetsu"].map((id) => (
               <button
                 key={id}
                 onClick={() => setWallType(id)}
@@ -30,7 +29,7 @@ export default function App() {
                   wallType === id ? "bg-black text-white" : "bg-white text-gray-700"
                 }`}
               >
-                {label}
+                {id}
               </button>
             ))}
           </div>
