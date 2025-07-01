@@ -1,57 +1,54 @@
-// WorldFeed.tsx
-import React from "react";
-// App.tsx
-import React from "react";
-import PostForm from "./PostForm";
-import WorldFeed from "./WorldFeed";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+export default function WorldFeed({ wallType }) {
+  const [posts, setPosts] = useState([]);
 
-interface Post {
-  id: number;
-  headline: string;
-  caption: string;
-  cta_url?: string;
-  tags?: string[];
-}
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const res = await fetch(`/api/get-posts?wall_type=${wallType}`);
+      const data = await res.json();
+      setPosts(data || []);
+    };
+    fetchPosts();
+  }, [wallType]);
 
-const dummyPosts: Post[] = [
-  {
-    id: 1,
-    headline: "WaffleHammer X12",
-    caption: "This tool changed everything for me. Lightweight, sharp, iconic.",
-    cta_url: "https://wafflehammer.page",
-    tags: ["tools", "design", "drop"],
-  },
-  {
-    id: 2,
-    headline: "VoidBeats: Synth Pack 8",
-    caption: "If you're making darkwave, this pack is your new best friend.",
-    tags: ["music", "gear", "soundkit"],
-  },
-];
+  if (posts.length === 0) {
+    return (
+      <div className="text-center text-gray-500">No posts yet for this wall.</div>
+    );
+  }
 
-export default function WorldFeed({ wallType }: { wallType: string }) {
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      {dummyPosts.map((post) => (
-        <div key={post.id} className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-xl font-bold">{post.headline}</h2>
-          <p className="mt-2 text-gray-700">{post.caption}</p>
+    <div className="space-y-4">
+      {posts.map((post) => (
+        <div
+          key={post.id}
+          className="bg-white p-4 rounded-xl shadow space-y-2 max-w-3xl mx-auto"
+        >
+          {post.image_url && (
+            <img
+              src={post.image_url}
+              alt=""
+              className="w-full h-auto rounded"
+            />
+          )}
+          <h3 className="text-lg font-bold">{post.headline}</h3>
+          <p className="text-sm text-gray-700">{post.caption}</p>
           {post.cta_url && (
             <a
               href={post.cta_url}
-              className="text-blue-500 underline mt-2 block"
+              className="text-blue-500 text-sm"
               target="_blank"
+              rel="noopener noreferrer"
             >
               {post.cta_url}
             </a>
           )}
-          {post.tags && (
-            <div className="mt-2 text-sm text-gray-500">
-              {post.tags.map((tag) => `#${tag}`).join(" ")}
-            </div>
-          )}
+          <div className="text-xs text-gray-400">
+            {post.tags.map((tag) => (
+              <span key={tag} className="mr-2">#{tag}</span>
+            ))}
+          </div>
         </div>
       ))}
     </div>
