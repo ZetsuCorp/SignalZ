@@ -1,5 +1,11 @@
 // WorldFeed.tsx
 import React from "react";
+// App.tsx
+import React from "react";
+import PostForm from "./PostForm";
+import WorldFeed from "./WorldFeed";
+import { useState } from "react";
+
 
 interface Post {
   id: number;
