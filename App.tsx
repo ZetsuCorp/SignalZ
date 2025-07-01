@@ -1,6 +1,12 @@
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
 import { useState, useEffect } from "react";
+// App.tsx
+import React from "react";
+import PostForm from "./PostForm";
+import WorldFeed from "./WorldFeed";
+import { useState } from "react";
+
 
 export default function App() {
   const [wallType, setWallType] = useState("main");
