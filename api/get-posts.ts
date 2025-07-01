@@ -1,4 +1,5 @@
 // api/get-posts.ts
+import { NextApiRequest, NextApiResponse } from "next";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { createClient } from "@supabase/supabase-js";
 
