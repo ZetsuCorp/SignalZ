@@ -1,11 +1,10 @@
-
 // App.tsx
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
 import { useState } from "react";
 
 export default function App() {
-  const [wallType, setWallType] = useState<"main" | "alt" | "zetsu">("main");
+  const [wallType, setWallType] = useState("main");
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -26,6 +25,18 @@ export default function App() {
             ].map(({ id, label }) => (
               <button
                 key={id}
-                onClick={() => setWallType(id as any)}
+                onClick={() => setWallType(id)}
                 className={`px-4 py-2 rounded-full text-sm font-semibold shadow ${
-                  wallType === id ? "bg-black text-white" : "bg-white text-gray-700
+                  wallType === id ? "bg-black text-white" : "bg-white text-gray-700"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <WorldFeed wallType={wallType} />
+        </div>
+      </div>
+    </div>
+  );
+}
