@@ -3,13 +3,18 @@ import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
 
-export default function PostForm({ wallType }) {
+// ✅ Define props for wallType
+interface Props {
+  wallType: string;
+}
+
+export default function PostForm({ wallType }: Props) {
   const [headline, setHeadline] = useState("");
   const [caption, setCaption] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
   const [tags, setTags] = useState("");
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState("");
 
   useEffect(() => {
@@ -21,7 +26,7 @@ export default function PostForm({ wallType }) {
     setSessionId(existing);
   }, []);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
@@ -29,7 +34,7 @@ export default function PostForm({ wallType }) {
     }
   };
 
-  const uploadImage = async () => {
+  const uploadImage = async (): Promise<string> => {
     if (!image) return "";
     const filePath = `${sessionId}/${Date.now()}_${image.name}`;
     const { error } = await supabase.storage
