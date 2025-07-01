@@ -1,1 +1,7 @@
 "node_modules\n.env\n.next\ndist\n.vscode\n.DS_Store" 
+node_modules
+.env
+.next
+dist
+.vscode
+.DS_Store
