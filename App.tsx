@@ -11,20 +11,23 @@ export default function App() {
 
   return (
     <div>
-      <header style={{ textAlign: "center", padding: "1rem" }}>
+      {/* Header */}
+      <header style={{ textAlign: "center", padding: "1rem 0" }}>
         <h1 style={{ fontSize: "2rem", margin: 0 }}>🌐 SIGNALZ</h1>
         <p style={{ fontSize: "0.9rem", color: "#666" }}>
           What the internet is talking about.
         </p>
       </header>
 
+      {/* Layout Container */}
       <div className="container">
-        {/* Left Panel */}
+        {/* Left: Navy Blue Panel with PostForm */}
         <div className="left-panel">
+          <h2>Start a Post</h2>
           <PostForm wallType={wallType} />
         </div>
 
-        {/* Right Panel */}
+        {/* Right: Feed + Tabs */}
         <div className="right-panel">
           <div className="tabs" style={{ marginBottom: "1rem" }}>
             {["main", "alt", "zetsu"].map((id) => (
@@ -44,4 +47,3 @@ export default function App() {
     </div>
   );
 }
-
