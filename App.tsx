@@ -12,14 +12,14 @@ export default function App() {
 
   return (
     <div style={{ display: "flex", height: "100vh", width: "100vw", overflow: "hidden" }}>
-      {/* Left: Navy Blue Full-Height Post Panel */}
+      {/* Left Panel */}
       <div className="left-panel">
         <h2>Start a Post</h2>
         <PostForm wallType={wallType} />
 
-        {/* Bottom Controls */}
-        <div className="left-panel-footer">
-          {/* 🔵 Signal Source Block */}
+        {/* Footer Area: Signal Source, Monetize, Settings */}
+        <div className="left-panel-footer" style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {/* 🔵 Signal Source */}
           <div className="signal-source">
             <h3>Signal Source</h3>
             <div className="source-pill">{wallType.toUpperCase()}</div>
@@ -29,12 +29,25 @@ export default function App() {
             </p>
           </div>
 
+          {/* 💸 Monetize Link */}
+          <div className="monetize-panel">
+            <h3>Monetize</h3>
+            <a
+              className="monetize-link"
+              href="https://zetsurouter.com/brandimage"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open BrandImage Creator
+            </a>
+          </div>
+
           {/* ⚙️ Settings Button */}
           <button onClick={() => setShowSettings(true)}>⚙️ Settings</button>
         </div>
       </div>
 
-      {/* Right: Feed Area */}
+      {/* Right Panel */}
       <div className="right-panel">
         <header style={{ textAlign: "center", paddingBottom: "1rem" }}>
           <h1 style={{ fontSize: "2rem", margin: 0 }}>🌐 SIGNALZ</h1>
@@ -58,7 +71,7 @@ export default function App() {
         <WorldFeed wallType={wallType} />
       </div>
 
-      {/* ⚙️ Settings Drawer */}
+      {/* Settings Panel */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
