@@ -11,32 +11,49 @@ body {
 /* Layout split: left = full-height panel, right = scroll feed */
 .left-panel {
   width: 320px;
-  background-color: #001f3f;
-  color: white;
+  background: linear-gradient(to bottom, #001f3f, #003366); /* Gradient navy */
+  color: silver;
   padding: 1.5rem;
-  border-right: 1px solid silver;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   position: sticky;
   top: 0;
   height: 100vh;
-}
 
-.left-panel input,
-.left-panel textarea,
-.left-panel button {
-  width: 100%;
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: 1px solid silver;
-  background-color: white;
-  color: #111;
+  border-right: 3px double silver; /* Embossed look */
+  box-shadow: inset -2px 0 4px rgba(255, 255, 255, 0.1); /* subtle light */
 }
 
 .left-panel h2 {
   margin-top: 0;
   color: silver;
+}
+
+.left-panel input,
+.left-panel textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  background-color: #fefefe;
+  color: #111;
+}
+
+.left-panel button {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid silver;
+  background-color: rgba(0, 0, 0, 0.6); /* translucent black */
+  color: silver;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.left-panel button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* Right side feed */
