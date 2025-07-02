@@ -4,15 +4,11 @@ import WorldFeed from "./WorldFeed";
 
 export default function App() {
   const [wallType, setWallType] = useState("main");
-  const [darkMode, setDarkMode] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     console.log("SignalZ App mounted");
   }, []);
-
-  useEffect(() => {
-    document.body.classList.toggle("dark-mode", darkMode);
-  }, [darkMode]);
 
   return (
     <div style={{ display: "flex", height: "100vh", width: "100vw", overflow: "hidden" }}>
@@ -27,28 +23,14 @@ export default function App() {
           <div className="source-pill">{wallType.toUpperCase()}</div>
           <p className="source-desc">
             This tag determines which feed the post appears in. Choose between
-            <strong> MAIN</strong>, <strong> ALT</strong>, or <strong> ZETSU</strong>.
+            <strong> MAIN</strong>, <strong> ALT</strong>, or <strong>ZETSU</strong>.
           </p>
         </div>
 
-        {/* ⚙️ Settings */}
-        <div className="settings-panel">
-          <h3>⚙️ Settings</h3>
-          <label className="toggle-row">
-            <input
-              type="checkbox"
-              checked={darkMode}
-              onChange={() => setDarkMode(!darkMode)}
-            />
-            <span>Dark Mode</span>
-          </label>
-        </div>
-
-        {/* 💰 Monetize (coming next) */}
-        {/* <div className="monetize-panel">
-          <h3>💰 Monetize</h3>
-          <a href="/zetsu-router" className="monetize-link">Go to BrandImage Creator</a>
-        </div> */}
+        {/* ⚙️ Settings Button */}
+        <button onClick={() => setShowSettings(!showSettings)}>
+          ⚙️ Settings
+        </button>
       </div>
 
       {/* Right: Feed Area */}
@@ -74,6 +56,17 @@ export default function App() {
 
         <WorldFeed wallType={wallType} />
       </div>
+
+      {/* ⚙️ Settings Panel (Slide Over) */}
+      {showSettings && (
+        <div className="settings-drawer">
+          <div className="settings-content">
+            <h3>Settings</h3>
+            <p>Light / Dark toggle coming soon.</p>
+            <button onClick={() => setShowSettings(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
