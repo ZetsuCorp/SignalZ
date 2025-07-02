@@ -14,45 +14,72 @@ export default function WorldFeed({ wallType }) {
 
   if (posts.length === 0) {
     return (
-      <div className="text-center text-gray-500">No posts yet for this wall.</div>
+      <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>
+        No posts yet for this wall.
+      </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       {posts.map((post) => (
-        <div
-          key={post.id}
-          className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xl max-w-3xl mx-auto space-y-3"
-        >
+        <div key={post.id} className="post">
           {post.image_url && (
             <img
               src={post.image_url}
               alt=""
-              className="w-full h-auto rounded-lg border"
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "8px",
+                border: "1px solid #ccc",
+                marginBottom: "0.5rem",
+              }}
             />
           )}
 
-          <h3 className="text-xl font-bold text-blue-900">{post.headline}</h3>
-          <p className="text-gray-700 text-sm">{post.caption}</p>
+          <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#003366" }}>
+            {post.headline}
+          </h3>
+
+          <p style={{ fontSize: "0.9rem", color: "#333", marginBottom: "0.5rem" }}>
+            {post.caption}
+          </p>
 
           {post.cta_url && (
             <a
               href={post.cta_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block text-sm font-semibold text-white bg-gradient-to-r from-red-500 to-yellow-400 px-3 py-1 rounded hover:opacity-90 transition"
+              style={{
+                display: "inline-block",
+                background: "linear-gradient(to right, #ff4136, #ffdc00)",
+                color: "white",
+                padding: "0.4rem 0.75rem",
+                borderRadius: "999px",
+                fontSize: "0.8rem",
+                fontWeight: "bold",
+                textDecoration: "none",
+                marginBottom: "0.5rem",
+              }}
             >
               Visit Link
             </a>
           )}
 
           {post.tags && post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 text-xs text-gray-500 mt-2">
+            <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#777" }}>
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="bg-gray-100 border border-gray-200 px-2 py-1 rounded-full"
+                  style={{
+                    display: "inline-block",
+                    background: "#f0f0f0",
+                    border: "1px solid #ccc",
+                    padding: "0.2rem 0.5rem",
+                    borderRadius: "999px",
+                    marginRight: "0.5rem",
+                  }}
                 >
                   #{tag}
                 </span>
