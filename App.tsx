@@ -10,39 +10,35 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-100 to-yellow-50 p-6">
-      <h1 className="text-3xl font-bold text-center mb-6 text-black">🌐 SIGNALZ</h1>
-      <p className="text-center mb-4 text-sm text-gray-500">
-        What the internet is talking about.
-      </p>
+    <div>
+      <header style={{ textAlign: "center", padding: "1rem" }}>
+        <h1 style={{ fontSize: "2rem", margin: 0 }}>🌐 SIGNALZ</h1>
+        <p style={{ fontSize: "0.9rem", color: "#666" }}>
+          What the internet is talking about.
+        </p>
+      </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Sticky PostForm on Left */}
-        <div className="lg:col-span-1 sticky top-6 self-start bg-blue-50 rounded-xl shadow-xl p-4 border border-blue-200">
+      <div className="container">
+        {/* Left Panel */}
+        <div className="left-panel">
           <PostForm wallType={wallType} />
         </div>
 
-        {/* WorldFeed on Right */}
-        <div className="lg:col-span-2">
-          <div className="flex gap-2 justify-center mb-6">
+        {/* Right Panel */}
+        <div className="right-panel">
+          <div className="tabs" style={{ marginBottom: "1rem" }}>
             {["main", "alt", "zetsu"].map((id) => (
               <button
                 key={id}
                 onClick={() => setWallType(id)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold shadow transition ${
-                  wallType === id
-                    ? "bg-gradient-to-r from-red-500 to-yellow-400 text-white"
-                    : "bg-white text-gray-700 border"
-                }`}
+                className={`tab ${wallType === id ? "active" : ""}`}
               >
                 {id.toUpperCase()}
               </button>
             ))}
           </div>
 
-          <div className="rounded-lg border border-slate-300 bg-white p-4 shadow-md">
-            <WorldFeed wallType={wallType} />
-          </div>
+          <WorldFeed wallType={wallType} />
         </div>
       </div>
     </div>
