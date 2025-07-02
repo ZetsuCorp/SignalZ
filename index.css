@@ -94,6 +94,14 @@ body {
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
 }
 
+/* Footer group inside left-panel */
+.left-panel-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 /* Right Panel */
 .right-panel {
   flex: 1;
@@ -131,7 +139,6 @@ body {
 .signal-source {
   border-top: 1px solid silver;
   padding-top: 1rem;
-  margin-top: auto;
   font-size: 0.85rem;
   color: silver;
 }
@@ -227,34 +234,4 @@ body.dark-mode .tab {
 body.dark-mode .tab.active {
   background: linear-gradient(to right, #ff4136, #ffdc00);
   color: black;
-}
-
-/* Monetize Panel */
-.monetize-panel {
-  border-top: 1px solid silver;
-  padding-top: 1rem;
-  margin-top: 1.5rem;
-}
-
-.monetize-panel h3 {
-  color: #c0c0c0;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.monetize-link {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: rgba(0, 0, 0, 0.4);
-  border: 1px solid silver;
-  border-radius: 8px;
-  color: silver;
-  font-weight: bold;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-
-.monetize-link:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
 }
