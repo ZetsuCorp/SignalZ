@@ -159,3 +159,86 @@ body {
   line-height: 1.3;
   color: #aaa;
 }
+
+/* Settings panel */
+.settings-panel {
+  border-top: 1px solid silver;
+  padding-top: 1rem;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: silver;
+}
+
+.settings-panel h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #c0c0c0;
+}
+
+/* Toggle row styling */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: silver;
+  cursor: pointer;
+}
+
+.toggle-row input[type="checkbox"] {
+  accent-color: silver;
+  transform: scale(1.1);
+}
+
+/* Optional: dark mode override */
+body.dark-mode {
+  background-color: #0a0a0a;
+  color: #ddd;
+}
+
+body.dark-mode .right-panel {
+  background-color: #111;
+}
+
+body.dark-mode .tab {
+  background-color: #222;
+  color: silver;
+  border: 1px solid #666;
+}
+
+body.dark-mode .tab.active {
+  background: linear-gradient(to right, #ff4136, #ffdc00);
+  color: black;
+}
+
+/* Monetize section (prep) */
+.monetize-panel {
+  border-top: 1px solid silver;
+  padding-top: 1rem;
+  margin-top: 1.5rem;
+}
+
+.monetize-panel h3 {
+  color: #c0c0c0;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.monetize-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid silver;
+  border-radius: 8px;
+  color: silver;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.monetize-link:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
