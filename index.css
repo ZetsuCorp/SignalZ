@@ -22,38 +22,77 @@ body {
   height: 100vh;
 
   border-right: 3px double silver; /* Embossed look */
-  box-shadow: inset -2px 0 4px rgba(255, 255, 255, 0.1); /* subtle light */
+  box-shadow: inset -2px 0 4px rgba(255, 255, 255, 0.1);
 }
 
 .left-panel h2 {
   margin-top: 0;
   color: silver;
+  letter-spacing: 0.5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
+/* Transparent inputs and smooth placeholder */
 .left-panel input,
 .left-panel textarea {
   width: 100%;
   padding: 0.6rem;
   border-radius: 8px;
-  border: 1px solid #aaa;
-  background-color: #fefefe;
-  color: #111;
+  border: 1px solid silver;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: silver;
+  font-weight: 500;
+  font-family: inherit;
+  transition: all 0.2s ease;
 }
 
+.left-panel input::placeholder,
+.left-panel textarea::placeholder {
+  color: rgba(192, 192, 192, 0.6);
+  font-style: italic;
+}
+
+.left-panel input:hover,
+.left-panel textarea:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-color: #ccc;
+}
+
+.left-panel input:focus,
+.left-panel textarea:focus {
+  outline: none;
+  border-color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 4px rgba(192, 192, 192, 0.4);
+}
+
+/* File input */
+.left-panel input[type="file"] {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: silver;
+  border: 1px dashed silver;
+  padding: 0.4rem;
+  cursor: pointer;
+}
+
+/* Button styles */
 .left-panel button {
   width: 100%;
   padding: 0.6rem;
   border-radius: 8px;
   border: 1px solid silver;
-  background-color: rgba(0, 0, 0, 0.6); /* translucent black */
+  background-color: rgba(0, 0, 0, 0.6);
   color: silver;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .left-panel button:hover {
   background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
 }
 
 /* Right side feed */
