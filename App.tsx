@@ -28,9 +28,7 @@ export default function App() {
         </div>
 
         {/* ⚙️ Settings Button */}
-        <button onClick={() => setShowSettings(!showSettings)}>
-          ⚙️ Settings
-        </button>
+        <button onClick={() => setShowSettings(true)}>⚙️ Settings</button>
       </div>
 
       {/* Right: Feed Area */}
@@ -57,14 +55,15 @@ export default function App() {
         <WorldFeed wallType={wallType} />
       </div>
 
-      {/* ⚙️ Settings Panel (Slide Over) */}
+      {/* ⚙️ Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
-          <div className="settings-content">
-            <h3>Settings</h3>
-            <p>Light / Dark toggle coming soon.</p>
-            <button onClick={() => setShowSettings(false)}>Close</button>
+          <h3>Settings</h3>
+          <div className="toggle-row">
+            <input type="checkbox" id="darkmode" />
+            <label htmlFor="darkmode">Dark Mode (coming soon)</label>
           </div>
+          <button onClick={() => setShowSettings(false)}>Close</button>
         </div>
       )}
     </div>
