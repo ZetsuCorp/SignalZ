@@ -17,18 +17,21 @@ export default function App() {
         <h2>Start a Post</h2>
         <PostForm wallType={wallType} />
 
-        {/* 🔵 Signal Source Block */}
-        <div className="signal-source">
-          <h3>Signal Source</h3>
-          <div className="source-pill">{wallType.toUpperCase()}</div>
-          <p className="source-desc">
-            This tag determines which feed the post appears in. Choose between
-            <strong> MAIN</strong>, <strong> ALT</strong>, or <strong>ZETSU</strong>.
-          </p>
-        </div>
+        {/* Bottom Controls */}
+        <div className="left-panel-footer">
+          {/* 🔵 Signal Source Block */}
+          <div className="signal-source">
+            <h3>Signal Source</h3>
+            <div className="source-pill">{wallType.toUpperCase()}</div>
+            <p className="source-desc">
+              This tag determines which feed the post appears in. Choose between
+              <strong> MAIN</strong>, <strong> ALT</strong>, or <strong>ZETSU</strong>.
+            </p>
+          </div>
 
-        {/* ⚙️ Settings Button */}
-        <button onClick={() => setShowSettings(true)}>⚙️ Settings</button>
+          {/* ⚙️ Settings Button */}
+          <button onClick={() => setShowSettings(true)}>⚙️ Settings</button>
+        </div>
       </div>
 
       {/* Right: Feed Area */}
