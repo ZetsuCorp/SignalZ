@@ -159,7 +159,7 @@ body {
   color: #aaa;
 }
 
-/* Settings Panel (Slide-Out) */
+/* Settings Drawer */
 .settings-drawer {
   position: fixed;
   top: 0;
@@ -229,7 +229,7 @@ body.dark-mode .tab.active {
   color: black;
 }
 
-/* Monetize Section (prep) */
+/* Monetize Panel */
 .monetize-panel {
   border-top: 1px solid silver;
   padding-top: 1rem;
