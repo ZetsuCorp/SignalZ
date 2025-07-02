@@ -15,11 +15,20 @@ export default function App() {
       <div className="left-panel">
         <h2>Start a Post</h2>
         <PostForm wallType={wallType} />
+
+        {/* 🔵 Signal Source Block */}
+        <div className="signal-source">
+          <h3>Signal Source</h3>
+          <div className="source-pill">{wallType.toUpperCase()}</div>
+          <p className="source-desc">
+            This tag determines which feed the post appears in. Choose between
+            <strong> MAIN</strong>, <strong> ALT</strong>, or <strong>ZETSU</strong>.
+          </p>
+        </div>
       </div>
 
       {/* Right: Feed Area */}
       <div className="right-panel">
-        {/* Header (now inside right panel to match split layout) */}
         <header style={{ textAlign: "center", paddingBottom: "1rem" }}>
           <h1 style={{ fontSize: "2rem", margin: 0 }}>🌐 SIGNALZ</h1>
           <p style={{ fontSize: "0.9rem", color: "#666" }}>
