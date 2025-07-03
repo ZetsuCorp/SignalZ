@@ -12,7 +12,7 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{ display: "flex", height: "100vh", width: "100vw", overflow: "hidden" }}>
+   <div className="app-wrapper">
       {/* Left Panel */}
       <div className="left-panel">
         <h2>Start a Post</h2>
