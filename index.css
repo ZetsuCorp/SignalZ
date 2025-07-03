@@ -1,4 +1,4 @@
-
+/* Global Styles */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -9,33 +9,42 @@ body {
   overflow-x: hidden;
 }
 
-/* Left Panel */
+.app-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Left Panel - Outer Container */
 .left-panel {
   width: 320px;
   background: linear-gradient(to bottom, #001f3f, #003366);
   color: silver;
+  display: flex;
+  flex-direction: column;
+  border-right: 3px double silver;
+  box-shadow: inset -2px 0 4px rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+/* Left Panel - Scrollable Content */
+.left-panel-scroll {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
-  position: relative;            /* CHANGED from sticky to relative */
-  height: 100vh;
-  overflow-y: auto;              /* ✅ Enables vertical scroll */
+  overflow-y: auto;
   overflow-x: hidden;
-
-  border-right: 3px double silver;
-  box-shadow: inset -2px 0 4px rgba(255, 255, 255, 0.1);
+  flex-grow: 1;
 }
 
-
+/* Left Panel Elements */
 .left-panel h2 {
-  margin-top: 0;
+  margin: 0 0 0.5rem;
   color: silver;
-  letter-spacing: 0.5px;
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
 }
 
 /* Form Fields */
@@ -47,8 +56,8 @@ body {
   border: 1px solid silver;
   background-color: rgba(0, 0, 0, 0.4);
   color: silver;
-  font-weight: 500;
   font-family: inherit;
+  font-weight: 500;
   transition: all 0.2s ease;
 }
 
@@ -123,7 +132,7 @@ body {
   border: none;
 }
 
-/* Post Styles */
+/* Post Card */
 .post {
   background: white;
   border: 1px solid silver;
@@ -132,17 +141,16 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Signal Source */
+/* Signal Source Block */
 .signal-source {
   border-top: 1px solid silver;
   padding-top: 1rem;
-  margin-top: auto;
   font-size: 0.85rem;
   color: silver;
 }
 
 .signal-source h3 {
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 0.25rem;
   font-size: 1rem;
   color: #c0c0c0;
 }
@@ -152,9 +160,8 @@ body {
   border: 1px solid silver;
   border-radius: 999px;
   padding: 0.3rem 0.8rem;
-  display: inline-block;
   font-weight: bold;
-  color: silver;
+  display: inline-block;
   margin-bottom: 0.5rem;
 }
 
@@ -213,32 +220,11 @@ body {
   transform: scale(1.1);
 }
 
-/* Dark Mode */
-body.dark-mode {
-  background-color: #0a0a0a;
-  color: #ddd;
-}
-
-body.dark-mode .right-panel {
-  background-color: #111;
-}
-
-body.dark-mode .tab {
-  background-color: #222;
-  color: silver;
-  border: 1px solid #666;
-}
-
-body.dark-mode .tab.active {
-  background: linear-gradient(to right, #ff4136, #ffdc00);
-  color: black;
-}
-
 /* Monetize Panel */
 .monetize-panel {
   border-top: 1px solid silver;
   padding-top: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 .monetize-panel h3 {
@@ -264,9 +250,23 @@ body.dark-mode .tab.active {
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
 }
 
-.app-wrapper {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+/* Dark Mode Overrides */
+body.dark-mode {
+  background-color: #0a0a0a;
+  color: #ddd;
+}
+
+body.dark-mode .right-panel {
+  background-color: #111;
+}
+
+body.dark-mode .tab {
+  background-color: #222;
+  color: silver;
+  border: 1px solid #666;
+}
+
+body.dark-mode .tab.active {
+  background: linear-gradient(to right, #ff4136, #ffdc00);
+  color: black;
 }
