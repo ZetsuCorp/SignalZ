@@ -16,7 +16,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const { data, error } = await supabase
     .from("posts")
-    .select("*")
+    .select(
+      `id, headline, caption, cta_url, tags, session_id, wall_type, image_url, video_url, created_at`
+    )
     .eq("wall_type", wall_type)
     .order("created_at", { ascending: false });
 
