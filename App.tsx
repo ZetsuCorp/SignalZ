@@ -19,27 +19,29 @@ export default function App() {
     <div className="app-wrapper">
       {/* Left Panel */}
       <div className="left-panel">
-        <h2>Start a Post</h2>
-        <PostForm wallType={wallType} />
+        <div className="left-panel-scroll">
+          <h2>Start a Post</h2>
+          <PostForm wallType={wallType} />
 
-        <div className="signal-source">
-          <h3>Signal Source</h3>
-          <div className="source-pill">{wallType.toUpperCase()}</div>
-          <p className="source-desc">
-            This tag determines which feed the post appears in. Choose between
-            <strong> MAIN</strong>, <strong> ALT</strong>, or <strong> ZETSU</strong>.
-          </p>
-        </div>
+          <div className="signal-source">
+            <h3>Signal Source</h3>
+            <div className="source-pill">{wallType.toUpperCase()}</div>
+            <p className="source-desc">
+              This tag determines which feed the post appears in. Choose between
+              <strong> MAIN</strong>, <strong> ALT</strong>, or <strong> ZETSU</strong>.
+            </p>
+          </div>
 
-        {/* Settings Button */}
-        <button onClick={() => setShowSettings(true)}>⚙️ Settings</button>
+          {/* Settings Button */}
+          <button onClick={() => setShowSettings(true)}>⚙️ Settings</button>
 
-        {/* Monetize Button */}
-        <div className="monetize-panel">
-          <h3>Monetize</h3>
-          <a className="monetize-link" href="/monetize">
-            Open Monetization
-          </a>
+          {/* Monetize Button */}
+          <div className="monetize-panel">
+            <h3>Monetize</h3>
+            <a className="monetize-link" href="/monetize">
+              Open Monetization
+            </a>
+          </div>
         </div>
       </div>
 
