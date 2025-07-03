@@ -5,10 +5,15 @@ import WorldFeed from "./WorldFeed";
 export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     console.log("SignalZ App mounted");
   }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle("dark-mode", isDarkMode);
+  }, [isDarkMode]);
 
   return (
     <div className="app-wrapper">
@@ -69,8 +74,13 @@ export default function App() {
         <div className="settings-drawer">
           <h3>Settings</h3>
           <div className="toggle-row">
-            <input type="checkbox" id="darkmode" />
-            <label htmlFor="darkmode">Dark Mode (coming soon)</label>
+            <input
+              type="checkbox"
+              id="darkmode"
+              checked={isDarkMode}
+              onChange={(e) => setIsDarkMode(e.target.checked)}
+            />
+            <label htmlFor="darkmode">Dark Mode</label>
           </div>
           <button onClick={() => setShowSettings(false)}>Close</button>
         </div>
