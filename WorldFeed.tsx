@@ -47,7 +47,19 @@ export default function WorldFeed({ wallType }) {
 
         return (
           <div key={post.id || post.headline + post.caption} className="post">
-            {post.image_url && (
+            {post.video_url ? (
+              <video
+                controls
+                src={post.video_url}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                  marginBottom: "0.5rem",
+                }}
+              />
+            ) : post.image_url ? (
               <img
                 src={post.image_url}
                 alt="preview"
@@ -59,7 +71,7 @@ export default function WorldFeed({ wallType }) {
                   marginBottom: "0.5rem",
                 }}
               />
-            )}
+            ) : null}
 
             <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#003366" }}>
               {post.headline}
