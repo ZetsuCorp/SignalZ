@@ -48,7 +48,10 @@ function PostForm({ wallType }) {
   };
 
   const handlePost = async () => {
-    if (!headline || !caption) return alert("Headline and caption required");
+    if (!headline || !caption) {
+      alert("Headline and caption required");
+      return;
+    }
 
     const imageUrl = await uploadImage();
 
@@ -66,6 +69,7 @@ function PostForm({ wallType }) {
       }),
     });
 
+    // Reset form
     setHeadline("");
     setCaption("");
     setCtaUrl("");
