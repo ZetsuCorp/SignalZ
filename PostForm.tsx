@@ -55,7 +55,7 @@ function PostForm({ wallType }) {
 
     const imageUrl = await uploadImage();
 
-    await fetch("/api/create-post", {
+    await fetch("/.netlify/functions/create-post", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
