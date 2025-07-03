@@ -1,4 +1,3 @@
-
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -17,7 +16,7 @@ body {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -132,7 +131,6 @@ body {
 .signal-source {
   border-top: 1px solid silver;
   padding-top: 1rem;
-  margin-top: auto;
   font-size: 0.85rem;
   color: silver;
 }
@@ -234,7 +232,6 @@ body.dark-mode .tab.active {
 .monetize-panel {
   border-top: 1px solid silver;
   padding-top: 1rem;
-  margin-top: 1.5rem;
 }
 
 .monetize-panel h3 {
