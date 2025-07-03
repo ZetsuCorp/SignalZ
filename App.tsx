@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
@@ -12,7 +11,7 @@ export default function App() {
   }, []);
 
   return (
-   <div className="app-wrapper">
+    <div className="app-wrapper">
       {/* Left Panel */}
       <div className="left-panel">
         <h2>Start a Post</h2>
@@ -33,7 +32,9 @@ export default function App() {
         {/* Monetize Button */}
         <div className="monetize-panel">
           <h3>Monetize</h3>
-          <a className="monetize-link" href="/monetize">Open Monetization</a>
+          <a className="monetize-link" href="/monetize">
+            Open Monetization
+          </a>
         </div>
       </div>
 
@@ -41,7 +42,9 @@ export default function App() {
       <div className="right-panel">
         <header style={{ textAlign: "center", paddingBottom: "1rem" }}>
           <h1 style={{ fontSize: "2rem", margin: 0 }}>🌐 SIGNALZ</h1>
-          <p style={{ fontSize: "0.9rem", color: "#666" }}>What the internet is talking about.</p>
+          <p style={{ fontSize: "0.9rem", color: "#666" }}>
+            What the internet is talking about.
+          </p>
         </header>
 
         {/* Tabs */}
@@ -61,7 +64,7 @@ export default function App() {
         <WorldFeed wallType={wallType} />
       </div>
 
-      {/* Settings Panel */}
+      {/* Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
