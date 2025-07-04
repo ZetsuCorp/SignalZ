@@ -10,6 +10,8 @@ function PostForm() {
   const [wallType, setWallType] = useState("main");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [video, setVideo] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(null);
   const [sessionId, setSessionId] = useState("");
 
   useEffect(() => {
@@ -29,24 +31,40 @@ function PostForm() {
     }
   };
 
+  const handleVideoChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setVideo(file);
+      setVideoPreview(URL.createObjectURL(file));
+    }
+  };
+
   const uploadImage = async () => {
     if (!image) return "";
-
     const filePath = `${sessionId}/${Date.now()}_${image.name}`;
-    const { error: uploadError } = await supabase.storage
+    const { error } = await supabase.storage
       .from("images")
       .upload(filePath, image);
-
-    if (uploadError) {
+    if (error) {
       alert("Image upload failed");
       return "";
     }
-
-    // ✅ Manually construct the public URL
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const publicUrl = `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
+    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
+  };
 
-    return publicUrl;
+  const uploadVideo = async () => {
+    if (!video) return "";
+    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
+    const { error } = await supabase.storage
+      .from("videos")
+      .upload(filePath, video);
+    if (error) {
+      alert("Video upload failed");
+      return "";
+    }
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -56,6 +74,7 @@ function PostForm() {
     }
 
     const imageUrl = await uploadImage();
+    const videoUrl = await uploadVideo();
 
     await fetch("/.netlify/functions/create-posts", {
       method: "POST",
@@ -65,6 +84,7 @@ function PostForm() {
         caption,
         cta_url: ctaUrl,
         image_url: imageUrl,
+        video_url: videoUrl,
         tags: tags.split(",").map((t) => t.trim()),
         session_id: sessionId,
         wall_type: wallType,
@@ -78,6 +98,8 @@ function PostForm() {
     setTags("");
     setImage(null);
     setImagePreview(null);
+    setVideo(null);
+    setVideoPreview(null);
     alert("Posted!");
   };
 
@@ -132,11 +154,24 @@ function PostForm() {
         onChange={handleImageChange}
         className="w-full border p-2 rounded bg-gray-50"
       />
-
       {imagePreview && (
         <img
           src={imagePreview}
           alt="preview"
+          className="w-full h-auto mt-2 rounded border"
+        />
+      )}
+
+      <input
+        type="file"
+        accept="video/*"
+        onChange={handleVideoChange}
+        className="w-full border p-2 rounded bg-gray-50"
+      />
+      {videoPreview && (
+        <video
+          src={videoPreview}
+          controls
           className="w-full h-auto mt-2 rounded border"
         />
       )}
