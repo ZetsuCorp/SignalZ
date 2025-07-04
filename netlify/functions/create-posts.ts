@@ -1,4 +1,4 @@
-// netlify/functions/create-post.ts
+// netlify/functions/create-posts.ts
 import { Handler } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 
@@ -10,15 +10,24 @@ const supabase = createClient(
 const handler: Handler = async (event) => {
   const body = JSON.parse(event.body || "{}");
 
-  const { headline, caption, cta_url, image_url, video_url, tags, session_id, wall_type } = body;
+  const {
+    headline,
+    caption,
+    cta_url,
+    image_url,
+    video_url,
+    tags,
+    session_id,
+    wall_type,
+  } = body;
 
-  const { data, error } = await supabase.from("posts").insert([
+  const { error } = await supabase.from("posts").insert([
     {
       headline,
       caption,
       cta_url,
       image_url,
-      video_url, // ✅ New field added
+      video_url,
       tags,
       session_id,
       wall_type,
