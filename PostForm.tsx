@@ -31,21 +31,23 @@ function PostForm() {
 
   const uploadImage = async () => {
     if (!image) return "";
+
     const filePath = `${sessionId}/${Date.now()}_${image.name}`;
-    const { error } = await supabase.storage
+
+    const { error: uploadError } = await supabase.storage
       .from("images")
       .upload(filePath, image);
 
-    if (error) {
+    if (uploadError) {
       alert("Image upload failed");
       return "";
     }
 
-    const { data: publicUrl } = supabase.storage
+    const { data: urlData } = supabase.storage
       .from("images")
       .getPublicUrl(filePath);
 
-    return publicUrl?.publicUrl || "";
+    return urlData?.publicUrl || "";
   };
 
   const handlePost = async () => {
