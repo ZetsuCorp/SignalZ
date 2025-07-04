@@ -33,7 +33,6 @@ function PostForm() {
     if (!image) return "";
 
     const filePath = `${sessionId}/${Date.now()}_${image.name}`;
-
     const { error: uploadError } = await supabase.storage
       .from("images")
       .upload(filePath, image);
@@ -43,11 +42,11 @@ function PostForm() {
       return "";
     }
 
-    const { data: urlData } = supabase.storage
-      .from("images")
-      .getPublicUrl(filePath);
+    // ✅ Manually construct the public URL
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const publicUrl = `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
 
-    return urlData?.publicUrl || "";
+    return publicUrl;
   };
 
   const handlePost = async () => {
