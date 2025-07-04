@@ -7,7 +7,7 @@ export default function WorldFeed({ wallType }) {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/get-posts?wall_type=${wallType}`);
+        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${wallType}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         console.log("Fetched posts:", data);
