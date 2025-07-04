@@ -45,7 +45,9 @@ function PostForm() {
   const uploadImage = async () => {
     if (!image) return "";
     const filePath = `${sessionId}/${Date.now()}_${image.name}`;
-    const { error } = await supabase.storage.from("images").upload(filePath, image);
+    const { error } = await supabase.storage
+      .from("images")
+      .upload(filePath, image);
     if (error) {
       alert("Image upload failed");
       return "";
@@ -57,7 +59,9 @@ function PostForm() {
   const uploadVideo = async () => {
     if (!video) return "";
     const filePath = `${sessionId}/${Date.now()}_${video.name}`;
-    const { error } = await supabase.storage.from("videos").upload(filePath, video);
+    const { error } = await supabase.storage
+      .from("videos")
+      .upload(filePath, video);
     if (error) {
       alert("Video upload failed");
       return "";
@@ -90,7 +94,7 @@ function PostForm() {
       }),
     });
 
-    // Reset form
+    // Reset
     setHeadline("");
     setCaption("");
     setCtaUrl("");
@@ -150,19 +154,18 @@ function PostForm() {
       {/* Add Image Button */}
       <button
         type="button"
-        onClick={() => imageInputRef.current?.click()}
-        className="w-full bg-gray-100 text-blue-700 font-medium py-2 px-4 rounded hover:bg-blue-50 border border-blue-200 transition"
+        onClick={() => imageInputRef.current.click()}
+        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded w-full"
       >
-        🖼️ Add Image
+        🖼 Add Image
       </button>
       <input
         type="file"
         accept="image/*"
         ref={imageInputRef}
         onChange={handleImageChange}
-        className="hidden"
+        style={{ display: "none" }}
       />
-
       {imagePreview && (
         <img
           src={imagePreview}
@@ -174,8 +177,8 @@ function PostForm() {
       {/* Add Video Button */}
       <button
         type="button"
-        onClick={() => videoInputRef.current?.click()}
-        className="w-full bg-gray-100 text-blue-700 font-medium py-2 px-4 rounded hover:bg-blue-50 border border-blue-200 transition"
+        onClick={() => videoInputRef.current.click()}
+        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded w-full"
       >
         🎬 Add Video
       </button>
@@ -184,9 +187,8 @@ function PostForm() {
         accept="video/*"
         ref={videoInputRef}
         onChange={handleVideoChange}
-        className="hidden"
+        style={{ display: "none" }}
       />
-
       {videoPreview && (
         <video
           src={videoPreview}
