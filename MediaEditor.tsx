@@ -1,5 +1,5 @@
-// MediaEditor.tsx
 import React, { useState, useRef, useEffect } from "react";
+import "./MediaEditor.css";
 
 interface MediaEditorProps {
   type: "image";
@@ -10,7 +10,6 @@ interface MediaEditorProps {
 
 const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm }) => {
   const [zoom, setZoom] = useState(1);
-  const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
@@ -22,71 +21,33 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex flex-col items-center justify-center p-4">
-      <div
-        ref={containerRef}
-        className="relative rounded-lg shadow-2xl overflow-hidden"
-        style={{
-          width: 640,
-          height: 640,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#001f3f", // Navy blue background
-          border: "4px solid silver",  // Silver embossed border
-        }}
-      >
+    <div className="media-overlay">
+      <div className="media-overlay-inner">
         {type === "image" && (
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              overflow: "hidden",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <div className="media-frame">
             <img
               ref={imageRef}
               src={src}
               alt="Preview"
-              style={{
-                transform: `scale(${zoom})`,
-                transition: "transform 0.2s",
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-                pointerEvents: "none",
-              }}
+              style={{ transform: `scale(${zoom})` }}
             />
           </div>
         )}
-      </div>
 
-      <input
-        type="range"
-        min="1"
-        max="3"
-        step="0.01"
-        value={zoom}
-        onChange={(e) => setZoom(parseFloat(e.target.value))}
-        className="w-64 mt-4"
-      />
+        <input
+          type="range"
+          min="1"
+          max="3"
+          step="0.01"
+          value={zoom}
+          onChange={(e) => setZoom(parseFloat(e.target.value))}
+          className="zoom-slider"
+        />
 
-      <div className="flex space-x-4 mt-4">
-        <button
-          onClick={() => onConfirm(src)}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          ✅ Confirm
-        </button>
-        <button
-          onClick={onClose}
-          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-        >
-          ❌ Cancel
-        </button>
+        <div className="editor-controls">
+          <button onClick={() => onConfirm(src)} className="confirm-btn">✅ Confirm</button>
+          <button onClick={onClose} className="cancel-btn">❌ Cancel</button>
+        </div>
       </div>
     </div>
   );
