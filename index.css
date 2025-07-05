@@ -1,4 +1,4 @@
-/* GLOBAL OVERRIDES */
+/* GLOBAL RESETS */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,7 +13,7 @@ body {
   overflow: hidden;
 }
 
-/* APP WRAPPER */
+/* === APP CONTAINER === */
 .app-wrapper {
   display: flex;
   height: 100vh;
@@ -22,44 +22,47 @@ body {
   overflow: hidden;
 }
 
-/* LEFT PANEL (Slim + Vertical) */
+/* === LEFT PANEL === */
 .left-panel {
-  width: 80px;
+  width: 280px;
+  min-width: 260px;
+  max-width: 320px;
   background: linear-gradient(145deg, #0a0a0a, #111);
-  border-right: 1px solid #00f0ff33;
-  box-shadow: inset -2px 0 10px rgba(0, 255, 255, 0.05);
+  color: #00f0ff;
+  border-right: 2px solid #00f0ff33;
+  box-shadow: inset -2px 0 10px rgba(0, 255, 255, 0.1);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 10px 5px;
-  gap: 10px;
+  gap: 16px;
+  overflow-y: auto;
 }
 
 /* LEFT PANEL BUTTONS */
 .left-panel button {
-  width: 100%;
-  padding: 10px;
-  font-size: 12px;
-  background: rgba(0, 255, 255, 0.08);
+  background-color: rgba(0, 255, 255, 0.08);
   border: 1px solid #00f0ff44;
   color: #00f0ff;
-  border-radius: 6px;
-  transition: 0.2s;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+  width: 100%;
 }
 
 .left-panel button:hover {
-  background: rgba(0, 255, 255, 0.15);
-  box-shadow: 0 0 6px #00f0ff99;
+  background-color: rgba(0, 255, 255, 0.15);
+  box-shadow: 0 0 8px #00f0ff99;
 }
 
-/* MAIN CONTENT AREA */
+/* === MAIN CONTENT === */
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding: 24px;
   overflow-y: auto;
 }
 
-/* FORM INPUTS */
+/* === FORM INPUTS === */
 input,
 textarea,
 select {
@@ -68,8 +71,9 @@ select {
   background-color: rgba(0, 255, 255, 0.05);
   border: 1px solid #00f0ff44;
   color: #e0fefe;
-  border-radius: 6px;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 14px;
 }
 
 input:focus,
@@ -81,7 +85,7 @@ select:focus {
   box-shadow: 0 0 6px #00f0ff88;
 }
 
-/* ACTION BUTTONS */
+/* === SUBMIT / ACTION BUTTON === */
 button.submit {
   background: linear-gradient(to right, #00ff99, #00f0ff);
   color: black;
@@ -90,21 +94,22 @@ button.submit {
   padding: 12px;
   border-radius: 8px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
 button.submit:hover {
   filter: brightness(1.1);
-  box-shadow: 0 0 10px #00f0ff88;
+  box-shadow: 0 0 12px #00f0ff88;
 }
 
-/* TABS */
+/* === TABS === */
 .tab {
   background: #111;
   border: 1px solid #00f0ff33;
   color: #00f0ff;
-  padding: 8px;
+  padding: 8px 12px;
   border-radius: 6px;
+  font-size: 14px;
 }
 
 .tab.active {
@@ -112,30 +117,30 @@ button.submit:hover {
   color: black;
 }
 
-/* POST CARD */
+/* === POST CARD === */
 .post {
   background: #111;
   border: 1px solid #00f0ff22;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
   color: #e0fefe;
-  padding: 15px;
+  padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
 }
 
-/* PILL UI */
+/* === SOURCE PILL === */
 .source-pill {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-size: 12px;
   border-radius: 9999px;
   background: rgba(0, 255, 255, 0.08);
   border: 1px solid #00f0ff55;
   color: #00f0ff;
-  margin-right: 6px;
+  margin-right: 8px;
 }
 
-/* SETTINGS DRAWER */
+/* === SETTINGS DRAWER === */
 .settings-drawer {
   background-color: #111;
   color: #00f0ff;
@@ -147,23 +152,25 @@ button.submit:hover {
   background: rgba(0, 255, 255, 0.1);
   color: #00f0ff;
   border: 1px solid #00f0ff44;
-  padding: 8px;
+  padding: 10px;
   border-radius: 6px;
+  width: 100%;
 }
 
-/* TOGGLE */
+/* === TOGGLE === */
 .toggle-row {
   display: flex;
   align-items: center;
   gap: 8px;
   color: #00f0ff;
+  margin-bottom: 10px;
 }
 
 .toggle-row input[type="checkbox"] {
   accent-color: #00f0ff;
 }
 
-/* MONETIZE LINK */
+/* === MONETIZE LINK === */
 .monetize-link {
   display: inline-block;
   padding: 8px 12px;
@@ -172,6 +179,7 @@ button.submit:hover {
   color: #00f0ff;
   border-radius: 6px;
   text-decoration: none;
+  transition: 0.2s;
 }
 
 .monetize-link:hover {
