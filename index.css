@@ -307,3 +307,38 @@ video.auto-pause {
   background: rgba(0, 255, 255, 0.2);
   box-shadow: 0 0 6px #00f0ff88;
 }
+
+
+/* === COMMENT SCROLL WHEEL === */
+.comment-scroll-wrapper {
+  max-height: 120px;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to bottom, transparent, white 10%, white 90%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, white 10%, white 90%, transparent);
+}
+
+.comment-scroll-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: scrollComments 10s linear infinite;
+}
+
+@keyframes scrollComments {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.comment-line {
+  font-size: 14px;
+  color: var(--text-dark);
+  padding: 4px 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
