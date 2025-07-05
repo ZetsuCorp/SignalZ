@@ -49,7 +49,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* === LEFT PANEL BUTTONS === */
 .left-panel button {
   background-color: rgba(0, 255, 255, 0.08);
   border: 1px solid #00f0ff44;
@@ -140,7 +139,7 @@ select:focus {
   box-shadow: 0 0 6px #00f0ff88;
 }
 
-/* === ACTION / SUBMIT BUTTONS === */
+/* === ACTION BUTTON === */
 button.submit {
   background: linear-gradient(to right, #00ff99, #00f0ff);
   color: black;
@@ -162,10 +161,53 @@ button.submit:hover {
   background: #111;
   border: 1px solid #00f0ff22;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
-  color: #e0fefe;
+  color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* === POST MEDIA WRAPPER === */
+.post-media {
+  position: relative;
+  width: 100%;
+  max-height: 500px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* === FLOATING BRAND NAME === */
+.brand {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00f0ff55;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #00f0ff;
+  border-radius: 9999px;
+  z-index: 2;
+}
+
+/* === VIDEO STYLING === */
+video.auto-pause {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+/* === CAPTION === */
+.caption {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 10px;
 }
 
 /* === SOURCE PILL === */
