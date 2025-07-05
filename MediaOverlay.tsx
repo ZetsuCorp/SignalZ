@@ -1,45 +1,47 @@
-import React, { useEffect } from "react";
-import "./media-overlay.css";
+/* MediaOverlay.css */
 
-interface MediaOverlayProps {
-  type: "image" | "video";
-  src: string;
-  onClose: () => void;
+.media-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow: auto;
 }
 
-const MediaOverlay: React.FC<MediaOverlayProps> = ({ type, src, onClose }) => {
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    document.body.classList.add("modal-open");
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.classList.remove("modal-open");
-    };
-  }, [onClose]);
+.media-overlay-inner {
+  max-width: 90vw;
+  max-height: 90vh;
+  background: #000;
+  border-radius: 1rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  return (
-    <div className="media-overlay" onClick={onClose}>
-      <div
-        className="media-overlay-inner max-w-[640px] max-h-[480px] w-full h-auto p-4"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {type === "image" ? (
-          <img src={src} alt="Preview" className="w-full h-auto rounded-xl" />
-        ) : (
-          <video
-            src={src}
-            controls
-            autoPlay
-            loop
-            className="w-full h-auto rounded-xl"
-          />
-        )}
-      </div>
-    </div>
-  );
-};
+.media-overlay img,
+.media-overlay video {
+  display: block;
+  height: auto;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 1rem;
+  margin: auto;
+}
 
-export default MediaOverlay;
+.media-overlay video {
+  outline: none;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
