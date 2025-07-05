@@ -44,26 +44,26 @@ function PostForm({ wallType, onMediaPreview }) {
 
   const uploadImage = async () => {
     if (!image) return "";
-    const filePath = ${sessionId}/${Date.now()}_${image.name};
+    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
     const { error } = await supabase.storage.from("images").upload(filePath, image);
     if (error) {
       alert("Image upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return ${supabaseUrl}/storage/v1/object/public/images/${filePath};
+    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
     if (!video) return "";
-    const filePath = ${sessionId}/${Date.now()}_${video.name};
+    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
     const { error } = await supabase.storage.from("videos").upload(filePath, video);
     if (error) {
       alert("Video upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return ${supabaseUrl}/storage/v1/object/public/videos/${filePath};
+    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -72,7 +72,7 @@ function PostForm({ wallType, onMediaPreview }) {
       return;
     }
     if (caption.length > MAX_CHARACTERS) {
-      alert(Caption is too long (limit is ${MAX_CHARACTERS} characters));
+      alert(`Caption is too long (limit is ${MAX_CHARACTERS} characters)`);
       return;
     }
 
@@ -132,7 +132,7 @@ function PostForm({ wallType, onMediaPreview }) {
         onChange={(e) => setCaption(e.target.value)}
         className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-300"
       />
-      <p className={text-sm mt-1 ${caption.length > MAX_CHARACTERS ? "text-red-500" : "text-gray-400"}}>
+      <p className={`text-sm mt-1 ${caption.length > MAX_CHARACTERS ? "text-red-500" : "text-gray-400"}`}>
         {caption.length} / {MAX_CHARACTERS}
       </p>
 
@@ -185,9 +185,9 @@ function PostForm({ wallType, onMediaPreview }) {
       <button
         onClick={handlePost}
         disabled={caption.length > MAX_CHARACTERS}
-        className={bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition ${
+        className={`bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition ${
           caption.length > MAX_CHARACTERS ? "opacity-50 cursor-not-allowed" : ""
-        }}
+        }`}
       >
         🚀 Post to {wallType.toUpperCase()} Wall
       </button>
