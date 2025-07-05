@@ -99,89 +99,86 @@ function PostForm({ wallType, onMediaPreview }) {
   };
 
   return (
-    <div className="bg-white p-5 rounded-2xl shadow-xl border border-blue-200 space-y-4">
-      <h2 className="text-lg font-bold text-blue-800">📢 Create a New Drop</h2>
+  <div className="bg-[#0c0c0c] p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4 text-white">
+    <h2 className="text-lg font-bold text-cyan-300">📢 Create a New Drop</h2>
 
-      <select
-        value={wallType}
-        onChange={(e) => {}}
-        disabled
-        className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-100 cursor-not-allowed"
-      >
-        <option value="main">Main Wall</option>
-        <option value="alt">Alt Wall</option>
-        <option value="zetsu">Z-Wall</option>
-      </select>
+    <select
+      value={wallType}
+      onChange={() => {}}
+      disabled
+      className="w-full bg-[#111] text-cyan-200 border border-cyan-500 p-2 rounded focus:outline-none"
+    >
+      <option value="main">Main Wall</option>
+      <option value="alt">Alt Wall</option>
+      <option value="zetsu">Z-Wall</option>
+    </select>
 
-      <input
-        type="text"
-        placeholder="Brand Name / Headline"
-        value={headline}
-        onChange={(e) => setHeadline(e.target.value)}
-        className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-      />
+    <input
+      type="text"
+      placeholder="Brand Name / Headline"
+      value={headline}
+      onChange={(e) => setHeadline(e.target.value)}
+      className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+    />
 
-      <textarea
-        placeholder="What's meaningful about it?"
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        className="w-full border border-gray-300 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
-      />
+    <textarea
+      placeholder="What's meaningful about it?"
+      value={caption}
+      onChange={(e) => setCaption(e.target.value)}
+      className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-300"
+    />
 
-      <input
-        type="text"
-        placeholder="Link (optional)"
-        value={ctaUrl}
-        onChange={(e) => setCtaUrl(e.target.value)}
-        className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-      />
+    <input
+      type="text"
+      placeholder="Link (optional)"
+      value={ctaUrl}
+      onChange={(e) => setCtaUrl(e.target.value)}
+      className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+    />
 
-      <input
-        type="text"
-        placeholder="Tags (comma separated)"
-        value={tags}
-        onChange={(e) => setTags(e.target.value)}
-        className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-      />
+    <input
+      type="text"
+      placeholder="Tags (comma separated)"
+      value={tags}
+      onChange={(e) => setTags(e.target.value)}
+      className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+    />
 
-      <button
-        type="button"
-        onClick={() => imageInputRef.current.click()}
-        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded w-full"
-      >
-        🖼 Add Image
-      </button>
-      <input
-        type="file"
-        accept="image/*"
-        ref={imageInputRef}
-        onChange={handleImageChange}
-        style={{ display: "none" }}
-      />
+    <button
+      type="button"
+      onClick={() => imageInputRef.current.click()}
+      className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
+    >
+      🖼 Add Image
+    </button>
+    <input
+      type="file"
+      accept="image/*"
+      ref={imageInputRef}
+      onChange={handleImageChange}
+      style={{ display: "none" }}
+    />
 
-      <button
-        type="button"
-        onClick={() => videoInputRef.current.click()}
-        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded w-full"
-      >
-        🎬 Add Video
-      </button>
-      <input
-        type="file"
-        accept="video/*"
-        ref={videoInputRef}
-        onChange={handleVideoChange}
-        style={{ display: "none" }}
-      />
+    <button
+      type="button"
+      onClick={() => videoInputRef.current.click()}
+      className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
+    >
+      🎬 Add Video
+    </button>
+    <input
+      type="file"
+      accept="video/*"
+      ref={videoInputRef}
+      onChange={handleVideoChange}
+      style={{ display: "none" }}
+    />
 
-      <button
-        onClick={handlePost}
-        className="bg-blue-700 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded w-full transition"
-      >
-        Post to {wallType.toUpperCase()} Wall
-      </button>
-    </div>
-  );
-}
-
-export default PostForm;
+    <button
+      onClick={handlePost}
+      className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition"
+    >
+      🚀 Post to {wallType.toUpperCase()} Wall
+    </button>
+  </div>
+);
