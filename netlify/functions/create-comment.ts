@@ -19,9 +19,12 @@ export async function handler(event) {
 
     const { data, error } = await supabase
       .from('comments')
-      .insert([{ post_id, content, wall_type }]);
+      .insert(
+        [{ post_id, content, wall_type }],
+        { returning: 'representation' }
+      );
 
-    if (error || !data || !data[0]) {
+    if (error) {
       console.error('Comment insert error:', error);
       return {
         statusCode: 500,
@@ -29,9 +32,17 @@ export async function handler(event) {
       };
     }
 
+    const inserted = data?.[0];
+
     return {
       statusCode: 200,
-      body: JSON.stringify(data[0]),
+      body: JSON.stringify({
+        id: inserted.id,
+        post_id: inserted.post_id,
+        content: inserted.content,
+        wall_type: inserted.wall_type,
+        created_at: inserted.created_at,
+      }),
     };
   } catch (err) {
     console.error('Unexpected error in create-comment:', err);
