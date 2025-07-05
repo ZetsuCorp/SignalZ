@@ -32,17 +32,9 @@ export async function handler(event) {
       };
     }
 
-    const inserted = data?.[0];
-
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        id: inserted.id,
-        post_id: inserted.post_id,
-        content: inserted.content,
-        wall_type: inserted.wall_type,
-        created_at: inserted.created_at,
-      }),
+      body: JSON.stringify(data?.[0]),
     };
   } catch (err) {
     console.error('Unexpected error in create-comment:', err);
