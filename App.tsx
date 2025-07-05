@@ -1,29 +1,37 @@
 import React, { useState, useEffect } from "react";
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
-import MediaOverlay from "./MediaOverlay";
+import MediaEditor from "./MediaEditor"; // 🆕 use MediaEditor
 
 export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const [overlayVisible, setOverlayVisible] = useState(false);
-  const [overlayType, setOverlayType] = useState(null);
-  const [overlaySrc, setOverlaySrc] = useState(null);
+  const [editorVisible, setEditorVisible] = useState(false);
+  const [editorType, setEditorType] = useState(null);
+  const [editorSrc, setEditorSrc] = useState(null);
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
   }, [isDarkMode]);
 
   useEffect(() => {
-    document.body.classList.toggle("modal-open", overlayVisible);
-  }, [overlayVisible]);
+    document.body.classList.toggle("modal-open", editorVisible);
+  }, [editorVisible]);
 
   const handleMediaPreview = (type, src) => {
-    setOverlayType(type);
-    setOverlaySrc(src);
-    setOverlayVisible(true);
+    setEditorType(type);
+    setEditorSrc(src);
+    setEditorVisible(true);
+  };
+
+  const handleMediaConfirm = (editedSrc: string) => {
+    // For now we just close the editor. Later we can pass this to PostForm.
+    setEditorVisible(false);
+    setEditorType(null);
+    setEditorSrc(null);
+    // Optional: pass back to PostForm or save state
   };
 
   return (
@@ -93,12 +101,13 @@ export default function App() {
         </div>
       )}
 
-      {/* Media Overlay */}
-      {overlayVisible && overlaySrc && (
-        <MediaOverlay
-          type={overlayType}
-          src={overlaySrc}
-          onClose={() => setOverlayVisible(false)}
+      {/* Media Editor */}
+      {editorVisible && editorSrc && (
+        <MediaEditor
+          type={editorType}
+          src={editorSrc}
+          onClose={() => setEditorVisible(false)}
+          onConfirm={handleMediaConfirm}
         />
       )}
     </div>
