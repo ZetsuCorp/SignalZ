@@ -1,39 +1,39 @@
 const fetch = require("node-fetch");
-const xml2js = require("xml2js");
 
-// HINT for Netlify bundler (important)
-require.resolve("xml2js");
+const API_KEY = process.env.GOOGLE_API_KEY;
+const CX = process.env.GOOGLE_CUSTOM_CX;
 
-exports.handler = async function (event, context) {
-  const topic = event.queryStringParameters.q || "technology";
-  const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(topic)}`;
+exports.handler = async function (event) {
+  const topic = event.queryStringParameters?.q || "technology";
+  const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(
+    topic
+  )}&cx=${CX}&key=${API_KEY}&num=10`;
 
   try {
-    const response = await fetch(rssUrl);
-    const xml = await response.text();
+    const response = await fetch(url);
+    const json = await response.json();
 
-    const parser = new xml2js.Parser();
-    const result = await parser.parseStringPromise(xml);
-
-    const items = result.rss?.channel?.[0]?.item || [];
-
-    const news = items.map((item) => ({
-      title: item.title?.[0] || "No title",
-      link: item.link?.[0],
-      pubDate: item.pubDate?.[0] || null,
-      source: item.source?.[0]?._ || null,
+    const items = (json.items || []).map((item) => ({
+      title: item.title || "No title",
+      link: item.link,
+      snippet: item.snippet,
+      displayLink: item.displayLink,
+      image:
+        item.pagemap?.cse_image?.[0]?.src ||
+        item.pagemap?.metatags?.[0]["og:image"] ||
+        null,
     }));
 
     return {
       statusCode: 200,
-      body: JSON.stringify(news),
+      body: JSON.stringify(items),
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "max-age=600",
       },
     };
   } catch (err) {
-    console.error("Error fetching Google News:", err);
+    console.error("Error fetching Google News JSON:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: "Failed to fetch news." }),
