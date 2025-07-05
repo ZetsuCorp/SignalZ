@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "./media-overlay.css";
 
 interface MediaOverlayProps {
   type: "image" | "video";
@@ -12,27 +13,28 @@ const MediaOverlay: React.FC<MediaOverlayProps> = ({ type, src, onClose }) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.body.classList.add("modal-open");
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.classList.remove("modal-open");
+    };
   }, [onClose]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
-      onClick={onClose}
-    >
+    <div className="media-overlay" onClick={onClose}>
       <div
-        className="max-w-full max-h-full p-4"
+        className="media-overlay-inner max-w-[640px] max-h-[480px] w-full h-auto p-4"
         onClick={(e) => e.stopPropagation()}
       >
         {type === "image" ? (
-          <img src={src} alt="Preview" className="max-w-full max-h-screen rounded-xl shadow-lg" />
+          <img src={src} alt="Preview" className="w-full h-auto rounded-xl" />
         ) : (
           <video
             src={src}
             controls
             autoPlay
             loop
-            className="max-w-full max-h-screen rounded-xl shadow-lg"
+            className="w-full h-auto rounded-xl"
           />
         )}
       </div>
