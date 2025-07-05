@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
-import MediaEditor from "./MediaEditor"; // 🆕 use MediaEditor
+import MediaEditor from "./MediaEditor";
 
 export default function App() {
   const [wallType, setWallType] = useState("main");
@@ -27,49 +27,45 @@ export default function App() {
   };
 
   const handleMediaConfirm = (editedSrc: string) => {
-    // For now we just close the editor. Later we can pass this to PostForm.
     setEditorVisible(false);
     setEditorType(null);
     setEditorSrc(null);
-    // Optional: pass back to PostForm or save state
   };
 
   return (
     <div className="app-wrapper">
       {/* Sidebar */}
       <aside className="left-panel">
-        <div className="left-panel-scroll">
-          <h2>Start a Post</h2>
+        <div className="sidebar-content">
+          <h2 className="sidebar-title">Create</h2>
           <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
-
-          <div className="signal-source">
-            <h3>Signal Source</h3>
-            <div className="source-pill">{wallType.toUpperCase()}</div>
-            <p className="source-desc">
-              This tag determines which feed the post appears in. Choose between
-              <strong> MAIN</strong>, <strong> ALT</strong>, or <strong> ZETSU</strong>.
+          <div className="mt-6">
+            <h3 className="text-sm font-semibold">Signal Source</h3>
+            <div className="source-pill mb-2">{wallType.toUpperCase()}</div>
+            <p className="text-xs text-cyan-300">
+              Posts go to the selected wall.
             </p>
           </div>
-
-          <button onClick={() => setShowSettings(true)}>⚙️ Settings</button>
-
-          <div className="monetize-panel">
-            <h3>Monetize</h3>
-            <a className="monetize-link" href="/monetize">
-              Open Monetization
-            </a>
-          </div>
+          <button
+            className="mt-4 text-sm text-cyan-200 hover:underline"
+            onClick={() => setShowSettings(true)}
+          >
+            ⚙️ Settings
+          </button>
+          <a href="/monetize" className="monetize-link mt-4 block">
+            💸 Open Monetization
+          </a>
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* Feed */}
       <main className="right-panel">
-        <header className="text-center pb-4">
-          <h1 className="text-2xl m-0">🌐 SIGNALZ</h1>
-          <p className="text-sm text-gray-600">What the internet is talking about.</p>
+        <header className="text-center py-4 border-b border-cyan-800">
+          <h1 className="text-3xl font-bold text-cyan-200">🌐 SIGNALZ</h1>
+          <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
 
-        <div className="tabs mb-4 flex gap-2">
+        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
           {["main", "alt", "zetsu"].map((id) => (
             <button
               key={id}
@@ -81,14 +77,16 @@ export default function App() {
           ))}
         </div>
 
-        <WorldFeed wallType={wallType} />
+        <div className="feed-scroll">
+          <WorldFeed wallType={wallType} />
+        </div>
       </main>
 
-      {/* Settings Drawer */}
+      {/* Settings */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
-          <div className="toggle-row">
+          <div className="toggle-row mt-3">
             <input
               type="checkbox"
               id="darkmode"
@@ -97,11 +95,13 @@ export default function App() {
             />
             <label htmlFor="darkmode">Dark Mode</label>
           </div>
-          <button onClick={() => setShowSettings(false)}>Close</button>
+          <button className="mt-4" onClick={() => setShowSettings(false)}>
+            Close
+          </button>
         </div>
       )}
 
-      {/* Media Editor */}
+      {/* Media Overlay */}
       {editorVisible && editorSrc && (
         <MediaEditor
           type={editorType}
