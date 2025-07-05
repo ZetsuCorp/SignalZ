@@ -21,11 +21,25 @@ async function submitComment(postId, content, wallType) {
   return res.ok;
 }
 
+// Utility: fetch Google News
+async function fetchGoogleNews() {
+  try {
+    const res = await fetch("/.netlify/functions/get-news");
+    if (!res.ok) throw new Error("Failed to fetch news");
+    const data = await res.json();
+    return data.items || [];
+  } catch (err) {
+    console.error("Error fetching Google News:", err);
+    return [];
+  }
+}
+
 export default function WorldFeed({ wallType }) {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [commentsMap, setCommentsMap] = useState({});
   const [inputMap, setInputMap] = useState({});
+  const [newsItems, setNewsItems] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -41,6 +55,7 @@ export default function WorldFeed({ wallType }) {
       }
     };
     fetchPosts();
+    fetchGoogleNews().then(setNewsItems);
   }, [wallType]);
 
   useEffect(() => {
@@ -253,7 +268,27 @@ export default function WorldFeed({ wallType }) {
       {/* Right Panel */}
       <div style={{ width: "20%", background: "#0a0a0a", padding: "1rem", borderLeft: "1px solid #222", color: "white" }}>
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>📰 News Feed</h2>
-        <p>Coming soon...</p>
+        {newsItems.length === 0 ? (
+          <p style={{ fontSize: "0.85rem", color: "#aaa" }}>Loading news...</p>
+        ) : (
+          newsItems.map((item, idx) => (
+            <div key={idx} style={{ marginBottom: "1rem", borderBottom: "1px solid #222", paddingBottom: "0.75rem" }}>
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#00cfff", textDecoration: "none", fontWeight: "bold" }}
+              >
+                {item.title}
+              </a>
+              {item.pubDate && (
+                <div style={{ fontSize: "0.7rem", color: "#888", marginTop: "0.25rem" }}>
+                  {new Date(item.pubDate).toLocaleDateString()}
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
