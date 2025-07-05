@@ -18,6 +18,8 @@
 .media-overlay-inner {
   max-width: 90vw;
   max-height: 90vh;
+  width: auto;
+  height: auto;
   background: #000;
   border-radius: 1rem;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
@@ -30,12 +32,10 @@
 .media-overlay img,
 .media-overlay video {
   display: block;
-  height: auto;
-  width: auto;
   max-width: 100%;
   max-height: 100%;
+  object-fit: contain;
   border-radius: 1rem;
-  margin: auto;
 }
 
 .media-overlay video {
