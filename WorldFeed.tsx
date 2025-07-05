@@ -6,7 +6,7 @@ export default function WorldFeed({ wallType }) {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const safeWall = (wallType || "main").toLowerCase(); // 💡 Normalize and fallback
+      const safeWall = (wallType || "main").toLowerCase();
 
       try {
         const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
@@ -49,75 +49,49 @@ export default function WorldFeed({ wallType }) {
 
         return (
           <div key={post.id || post.headline + post.caption} className="post">
-            {post.video_url ? (
-              <video
-                controls
-                src={post.video_url}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  marginBottom: "0.5rem",
-                }}
-              />
-            ) : post.image_url ? (
-              <img
-                src={post.image_url}
-                alt="preview"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  marginBottom: "0.5rem",
-                }}
-              />
-            ) : null}
+            <div className="post-media">
+              {post.video_url ? (
+                <video
+                  className="auto-pause"
+                  controls
+                  src={post.video_url}
+                />
+              ) : post.image_url ? (
+                <img
+                  src={post.image_url}
+                  alt="preview"
+                  className="auto-pause"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "8px",
+                    marginBottom: "0.5rem",
+                  }}
+                />
+              ) : null}
+            </div>
 
-            <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#003366" }}>
-              {post.headline}
-            </h3>
+            {post.brand && <div className="brand">{post.brand}</div>}
 
-            <p style={{ fontSize: "0.9rem", color: "#333", marginBottom: "0.5rem" }}>
-              {post.caption}
-            </p>
+            <h3 style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{post.headline}</h3>
+
+            <p className="caption">{post.caption}</p>
 
             {post.cta_url && (
               <a
                 href={post.cta_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: "inline-block",
-                  background: "linear-gradient(to right, #ff4136, #ffdc00)",
-                  color: "white",
-                  padding: "0.4rem 0.75rem",
-                  borderRadius: "999px",
-                  fontSize: "0.8rem",
-                  fontWeight: "bold",
-                  textDecoration: "none",
-                  marginBottom: "0.5rem",
-                }}
+                className="cta-button"
               >
                 Visit Link
               </a>
             )}
 
             {safeTags.length > 0 && (
-              <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#777" }}>
+              <div className="tag-container">
                 {safeTags.map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      display: "inline-block",
-                      background: "#f0f0f0",
-                      border: "1px solid #ccc",
-                      padding: "0.2rem 0.5rem",
-                      borderRadius: "999px",
-                      marginRight: "0.5rem",
-                    }}
-                  >
+                  <span key={tag} className="tag-pill">
                     #{tag}
                   </span>
                 ))}
