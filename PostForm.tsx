@@ -182,3 +182,6 @@ function PostForm({ wallType, onMediaPreview }) {
     </button>
   </div>
 );
+}
+
+export default PostForm;
