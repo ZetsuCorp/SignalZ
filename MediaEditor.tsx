@@ -25,13 +25,15 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
     <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex flex-col items-center justify-center p-4">
       <div
         ref={containerRef}
-        className="relative bg-black rounded-lg shadow-2xl overflow-hidden"
+        className="relative rounded-lg shadow-2xl overflow-hidden"
         style={{
           width: 640,
           height: 640,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: "#001f3f", // Navy blue background
+          border: "4px solid silver",  // Silver embossed border
         }}
       >
         {type === "image" && (
