@@ -1,27 +1,15 @@
-const fetch = require("node-fetch");
+const Parser = require("rss-parser");
+const parser = new Parser();
 
-const API_KEY = process.env.GOOGLE_API_KEY;
-const CX = process.env.GOOGLE_CUSTOM_CX;
-
-exports.handler = async function (event) {
-  const topic = event.queryStringParameters?.q || "technology";
-  const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(
-    topic
-  )}&cx=${CX}&key=${API_KEY}&num=10`;
-
+exports.handler = async function () {
   try {
-    const response = await fetch(url);
-    const json = await response.json();
+    const feed = await parser.parseURL("https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en");
 
-    const items = (json.items || []).map((item) => ({
-      title: item.title || "No title",
+    const items = feed.items.map((item) => ({
+      title: item.title,
       link: item.link,
-      snippet: item.snippet,
-      displayLink: item.displayLink,
-      image:
-        item.pagemap?.cse_image?.[0]?.src ||
-        item.pagemap?.metatags?.[0]["og:image"] ||
-        null,
+      pubDate: item.pubDate,
+      contentSnippet: item.contentSnippet,
     }));
 
     return {
@@ -33,10 +21,10 @@ exports.handler = async function (event) {
       },
     };
   } catch (err) {
-    console.error("Error fetching Google News JSON:", err);
+    console.error("RSS fetch error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Failed to fetch news." }),
+      body: JSON.stringify({ error: "Failed to fetch news RSS." }),
     };
   }
 };
