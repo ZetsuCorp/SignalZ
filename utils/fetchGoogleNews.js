@@ -1,4 +1,3 @@
-
 export async function fetchGoogleNews(topic = "technology") {
   try {
     const res = await fetch(`/.netlify/functions/get-news?q=${encodeURIComponent(topic)}`);
