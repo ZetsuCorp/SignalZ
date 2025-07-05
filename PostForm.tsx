@@ -99,7 +99,7 @@ function PostForm({ wallType, onMediaPreview }) {
   };
 
   return (
-  <div className="bg-[#0c0c0c] p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4 text-white">
+  <div className="bg-[#0c0c0c] text-cyan-200 p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4">
     <h2 className="text-lg font-bold text-cyan-300">📢 Create a New Drop</h2>
 
     <select
