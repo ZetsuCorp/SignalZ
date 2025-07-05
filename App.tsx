@@ -13,12 +13,12 @@ export default function App() {
   const [overlaySrc, setOverlaySrc] = useState(null);
 
   useEffect(() => {
-    console.log("SignalZ App mounted");
-  }, []);
-
-  useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
   }, [isDarkMode]);
+
+  useEffect(() => {
+    document.body.classList.toggle("modal-open", overlayVisible);
+  }, [overlayVisible]);
 
   const handleMediaPreview = (type, src) => {
     setOverlayType(type);
@@ -28,8 +28,8 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
-      {/* Left Panel */}
-      <div className="left-panel">
+      {/* Sidebar */}
+      <aside className="left-panel">
         <div className="left-panel-scroll">
           <h2>Start a Post</h2>
           <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
@@ -43,10 +43,8 @@ export default function App() {
             </p>
           </div>
 
-          {/* Settings Button */}
           <button onClick={() => setShowSettings(true)}>⚙️ Settings</button>
 
-          {/* Monetize Button */}
           <div className="monetize-panel">
             <h3>Monetize</h3>
             <a className="monetize-link" href="/monetize">
@@ -54,24 +52,17 @@ export default function App() {
             </a>
           </div>
         </div>
-      </div>
+      </aside>
 
-      {/* Right Panel */}
-      <div className="right-panel">
-        <header style={{ textAlign: "center", paddingBottom: "1rem" }}>
-          <h1 style={{ fontSize: "2rem", margin: 0 }}>🌐 SIGNALZ</h1>
-          <p style={{ fontSize: "0.9rem", color: "#666" }}>
-            What the internet is talking about.
-          </p>
+      {/* Main Content */}
+      <main className="right-panel">
+        <header className="text-center pb-4">
+          <h1 className="text-2xl m-0">🌐 SIGNALZ</h1>
+          <p className="text-sm text-gray-600">What the internet is talking about.</p>
         </header>
 
-        {/* Tabs */}
-        <div className="tabs" style={{ marginBottom: "1rem" }}>
-          {[
-            "main",
-            "alt",
-            "zetsu"
-          ].map((id) => (
+        <div className="tabs mb-4 flex gap-2">
+          {["main", "alt", "zetsu"].map((id) => (
             <button
               key={id}
               onClick={() => setWallType(id)}
@@ -82,9 +73,8 @@ export default function App() {
           ))}
         </div>
 
-        {/* Feed */}
         <WorldFeed wallType={wallType} />
-      </div>
+      </main>
 
       {/* Settings Drawer */}
       {showSettings && (
