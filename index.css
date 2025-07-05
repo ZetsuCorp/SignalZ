@@ -5,23 +5,21 @@ body {
 }
 
 /* APP WRAPPER */
-/* APP WRAPPER */
 .app-wrapper {
   display: flex;                                /* ✅ Fix: enable horizontal layout */
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-.app-wrapper {
   background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
 }
 
+/* LEFT PANEL */
 .left-panel {
   background: linear-gradient(145deg, #0a0a0a, #111); /* ✅ black-gradient */
-  color: #00f0ff;                                   /* ✅ neon text */
-  border-right: 2px solid #00f0ff33;                /* ✅ neon border */
-  box-shadow: inset -2px 0 10px rgba(0, 255, 255, 0.1); /* ✅ soft glow */
+  color: #00f0ff;                                     /* ✅ neon text */
+  border-right: 2px solid #00f0ff33;                  /* ✅ neon border */
+  box-shadow: inset -2px 0 10px rgba(0, 255, 255, 0.1);/* ✅ soft glow */
 }
-
 
 /* FORM FIELDS */
 .left-panel input,
