@@ -16,10 +16,9 @@
 }
 
 .media-overlay-inner {
-  max-width: 90vw;
+  width: 100%;
+  max-width: 640px;
   max-height: 90vh;
-  width: auto;
-  height: auto;
   background: #000;
   border-radius: 1rem;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
@@ -27,13 +26,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: auto;
 }
 
 .media-overlay img,
 .media-overlay video {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: auto;
+  max-height: 90vh;
   object-fit: contain;
   border-radius: 1rem;
 }
