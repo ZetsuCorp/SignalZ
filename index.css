@@ -1,58 +1,110 @@
 /* GLOBAL OVERRIDES */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
+  font-family: 'Segoe UI', sans-serif;
   background-color: #0c0c0c;
   color: #e0fefe;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* APP WRAPPER */
 .app-wrapper {
-  display: flex;                                /* ✅ Fix: enable horizontal layout */
+  display: flex;
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
   background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
+  overflow: hidden;
 }
 
-/* LEFT PANEL */
+/* LEFT PANEL (Slim + Vertical) */
 .left-panel {
-  background: linear-gradient(145deg, #0a0a0a, #111); /* ✅ black-gradient */
-  color: #00f0ff;                                     /* ✅ neon text */
-  border-right: 2px solid #00f0ff33;                  /* ✅ neon border */
-  box-shadow: inset -2px 0 10px rgba(0, 255, 255, 0.1);/* ✅ soft glow */
+  width: 80px;
+  background: linear-gradient(145deg, #0a0a0a, #111);
+  border-right: 1px solid #00f0ff33;
+  box-shadow: inset -2px 0 10px rgba(0, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 5px;
+  gap: 10px;
 }
 
-/* FORM FIELDS */
-.left-panel input,
-.left-panel textarea {
-  border: 1px solid #00f0ff55;
+/* LEFT PANEL BUTTONS */
+.left-panel button {
+  width: 100%;
+  padding: 10px;
+  font-size: 12px;
+  background: rgba(0, 255, 255, 0.08);
+  border: 1px solid #00f0ff44;
+  color: #00f0ff;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.left-panel button:hover {
+  background: rgba(0, 255, 255, 0.15);
+  box-shadow: 0 0 6px #00f0ff99;
+}
+
+/* MAIN CONTENT AREA */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* FORM INPUTS */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
   background-color: rgba(0, 255, 255, 0.05);
-  color: #e0ffff;
+  border: 1px solid #00f0ff44;
+  color: #e0fefe;
+  border-radius: 6px;
+  margin-bottom: 10px;
 }
 
-.left-panel input:focus,
-.left-panel textarea:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border-color: #00f0ff;
+  outline: none;
   background-color: rgba(0, 255, 255, 0.08);
   box-shadow: 0 0 6px #00f0ff88;
 }
 
-/* BUTTONS */
-.left-panel button {
-  background-color: rgba(0, 255, 255, 0.1);
-  border: 1px solid #00f0ff66;
-  color: #00f0ff;
+/* ACTION BUTTONS */
+button.submit {
+  background: linear-gradient(to right, #00ff99, #00f0ff);
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.left-panel button:hover {
-  background-color: rgba(0, 255, 255, 0.15);
-  box-shadow: 0 0 8px #00f0ff99;
+button.submit:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 10px #00f0ff88;
 }
 
 /* TABS */
 .tab {
-  background-color: #111;
-  border: 1px solid #00f0ff44;
+  background: #111;
+  border: 1px solid #00f0ff33;
   color: #00f0ff;
+  padding: 8px;
+  border-radius: 6px;
 }
 
 .tab.active {
@@ -66,30 +118,44 @@ body {
   border: 1px solid #00f0ff22;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
   color: #e0fefe;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
-/* SIGNAL SOURCE PILL */
+/* PILL UI */
 .source-pill {
-  background-color: rgba(0, 255, 255, 0.08);
-  border-color: #00f0ff55;
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 9999px;
+  background: rgba(0, 255, 255, 0.08);
+  border: 1px solid #00f0ff55;
   color: #00f0ff;
+  margin-right: 6px;
 }
 
 /* SETTINGS DRAWER */
 .settings-drawer {
   background-color: #111;
   color: #00f0ff;
-  border-left: 2px solid #00f0ff33;
+  border-left: 1px solid #00f0ff33;
+  padding: 20px;
 }
 
 .settings-drawer button {
-  background-color: rgba(0, 255, 255, 0.1);
+  background: rgba(0, 255, 255, 0.1);
   color: #00f0ff;
   border: 1px solid #00f0ff44;
+  padding: 8px;
+  border-radius: 6px;
 }
 
 /* TOGGLE */
 .toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: #00f0ff;
 }
 
@@ -99,12 +165,16 @@ body {
 
 /* MONETIZE LINK */
 .monetize-link {
-  background-color: rgba(0, 255, 255, 0.1);
-  border-color: #00f0ff44;
+  display: inline-block;
+  padding: 8px 12px;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00f0ff44;
   color: #00f0ff;
+  border-radius: 6px;
+  text-decoration: none;
 }
 
 .monetize-link:hover {
-  background-color: rgba(0, 255, 255, 0.2);
+  background: rgba(0, 255, 255, 0.2);
   box-shadow: 0 0 6px #00f0ff88;
 }
