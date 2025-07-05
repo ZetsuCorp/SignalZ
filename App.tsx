@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
+import MediaOverlay from "./MediaOverlay";
 
 export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [overlayType, setOverlayType] = useState(null);
+  const [overlaySrc, setOverlaySrc] = useState(null);
 
   useEffect(() => {
     console.log("SignalZ App mounted");
@@ -15,13 +20,19 @@ export default function App() {
     document.body.classList.toggle("dark-mode", isDarkMode);
   }, [isDarkMode]);
 
+  const handleMediaPreview = (type, src) => {
+    setOverlayType(type);
+    setOverlaySrc(src);
+    setOverlayVisible(true);
+  };
+
   return (
     <div className="app-wrapper">
       {/* Left Panel */}
       <div className="left-panel">
         <div className="left-panel-scroll">
           <h2>Start a Post</h2>
-          <PostForm wallType={wallType} />
+          <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
 
           <div className="signal-source">
             <h3>Signal Source</h3>
@@ -56,7 +67,11 @@ export default function App() {
 
         {/* Tabs */}
         <div className="tabs" style={{ marginBottom: "1rem" }}>
-          {["main", "alt", "zetsu"].map((id) => (
+          {[
+            "main",
+            "alt",
+            "zetsu"
+          ].map((id) => (
             <button
               key={id}
               onClick={() => setWallType(id)}
@@ -86,6 +101,15 @@ export default function App() {
           </div>
           <button onClick={() => setShowSettings(false)}>Close</button>
         </div>
+      )}
+
+      {/* Media Overlay */}
+      {overlayVisible && overlaySrc && (
+        <MediaOverlay
+          type={overlayType}
+          src={overlaySrc}
+          onClose={() => setOverlayVisible(false)}
+        />
       )}
     </div>
   );
