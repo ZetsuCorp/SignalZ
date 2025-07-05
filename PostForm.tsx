@@ -126,15 +126,17 @@ function PostForm({ wallType, onMediaPreview }) {
         className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
       />
 
-      <textarea
-        placeholder="What's meaningful about it?"
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-300"
-      />
-      <p className={`text-sm mt-1 ${caption.length > MAX_CHARACTERS ? "text-red-500" : "text-gray-400"}`}>
-        {caption.length} / {MAX_CHARACTERS}
-      </p>
+      <div>
+        <textarea
+          placeholder="What's meaningful about it?"
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        />
+        <p className={`text-sm mt-1 text-right ${caption.length > MAX_CHARACTERS ? "text-red-500" : "text-gray-400"}`}>
+          {caption.length} / {MAX_CHARACTERS}
+        </p>
+      </div>
 
       <input
         type="text"
