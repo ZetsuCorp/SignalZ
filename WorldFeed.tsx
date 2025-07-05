@@ -1,18 +1,39 @@
 import React, { useEffect, useState } from "react";
 
+// Utility: fetch all comments for a post
+async function fetchComments(postId) {
+  try {
+    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
+    if (!res.ok) throw new Error("Failed to fetch comments");
+    return await res.json();
+  } catch (err) {
+    console.error("Error fetching comments:", err);
+    return [];
+  }
+}
+
+// Utility: post a comment
+async function submitComment(postId, content, wallType) {
+  const res = await fetch("/.netlify/functions/create-comment", {
+    method: "POST",
+    body: JSON.stringify({ post_id: postId, content, wall_type: wallType }),
+  });
+  return res.ok;
+}
+
 export default function WorldFeed({ wallType }) {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
+  const [commentsMap, setCommentsMap] = useState({});
+  const [inputMap, setInputMap] = useState({});
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const safeWall = (wallType || "main").toLowerCase();
-
       try {
+        const safeWall = (wallType || "main").toLowerCase();
         const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
-        console.log("Fetched posts:", data);
         setPosts(data || []);
       } catch (err) {
         console.error("Error fetching posts:", err);
@@ -22,20 +43,31 @@ export default function WorldFeed({ wallType }) {
     fetchPosts();
   }, [wallType]);
 
+  useEffect(() => {
+    posts.forEach(async (post) => {
+      const comments = await fetchComments(post.id);
+      setCommentsMap((prev) => ({ ...prev, [post.id]: comments }));
+    });
+  }, [posts]);
+
+  const handleCommentSubmit = async (postId) => {
+    const content = inputMap[postId];
+    if (!content || !content.trim()) return;
+
+    const ok = await submitComment(postId, content, wallType);
+    if (ok) {
+      const updated = await fetchComments(postId);
+      setCommentsMap((prev) => ({ ...prev, [postId]: updated }));
+      setInputMap((prev) => ({ ...prev, [postId]: "" }));
+    }
+  };
+
   if (error) {
-    return (
-      <div style={{ textAlign: "center", color: "red", padding: "1rem" }}>
-        {error}
-      </div>
-    );
+    return <div style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</div>;
   }
 
   if (posts.length === 0) {
-    return (
-      <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>
-        No posts yet for this wall.
-      </div>
-    );
+    return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
   return (
@@ -48,7 +80,7 @@ export default function WorldFeed({ wallType }) {
           : [];
 
         return (
-          <div key={post.id || post.headline + post.caption} className="post">
+          <div key={post.id} className="post">
             {post.video_url ? (
               <video
                 controls
@@ -75,13 +107,8 @@ export default function WorldFeed({ wallType }) {
               />
             ) : null}
 
-            <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>
-              {post.headline}
-            </h3>
-
-            <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>
-              {post.caption}
-            </p>
+            <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{post.headline}</h3>
+            <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{post.caption}</p>
 
             {post.cta_url && (
               <a
@@ -124,6 +151,48 @@ export default function WorldFeed({ wallType }) {
                 ))}
               </div>
             )}
+
+            {/* Comments Section */}
+            <div style={{ marginTop: "1rem" }}>
+              <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
+              <div style={{ marginBottom: "0.75rem" }}>
+                {(commentsMap[post.id] || []).map((comment, i) => (
+                  <p key={i} style={{ fontSize: "0.85rem", color: "white", marginBottom: "0.4rem" }}>
+                    💬 {comment.content}
+                  </p>
+                ))}
+              </div>
+
+              <textarea
+                placeholder="Write a comment..."
+                value={inputMap[post.id] || ""}
+                onChange={(e) => setInputMap((prev) => ({ ...prev, [post.id]: e.target.value }))}
+                style={{
+                  width: "100%",
+                  background: "#0d0d0d",
+                  color: "white",
+                  border: "1px solid #00f0ff55",
+                  borderRadius: "6px",
+                  padding: "8px",
+                  fontSize: "0.85rem",
+                  marginBottom: "0.5rem",
+                }}
+              />
+              <button
+                onClick={() => handleCommentSubmit(post.id)}
+                style={{
+                  padding: "8px 16px",
+                  background: "linear-gradient(to right, #00ff99, #00f0ff)",
+                  color: "black",
+                  border: "none",
+                  borderRadius: "6px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                Post
+              </button>
+            </div>
           </div>
         );
       })}
