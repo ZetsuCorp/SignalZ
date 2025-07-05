@@ -64,95 +64,140 @@ export default function WorldFeed({ wallType }) {
     }
   };
 
+  if (error) {
+    return <div style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</div>;
+  }
+
+  if (posts.length === 0) {
+    return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
+  }
+
   return (
-    <div style={{ display: "flex", width: "100%", minHeight: "100vh", background: "#000" }}>
-      {/* Left Panel - Chum Bucket */}
-      <div style={{ width: "18%", background: "#111", padding: "1rem", color: "#00f0ff", borderRight: "1px solid #00f0ff33" }}>
-        <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>🪣 Chum Bucket</h3>
-        <p style={{ fontSize: "0.75rem", color: "#aaa" }}>Random ideas will show here later.</p>
+    <div className="flex w-full h-screen overflow-hidden">
+      {/* Left Panel */}
+      <div className="w-[20%] p-4 bg-[#111] text-white border-r border-cyan-700 overflow-y-auto">
+        <h2 className="text-cyan-400 font-semibold text-sm mb-4">🪣 Chum Bucket</h2>
+        <p>Coming soon...</p>
       </div>
 
-      {/* Center - Feed Content */}
-      <div style={{ flex: 1, padding: "1rem", overflowY: "auto" }}>
-        {error ? (
-          <div style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</div>
-        ) : posts.length === 0 ? (
-          <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>
-        ) : (
-          posts.map((post) => {
-            const safeTags = Array.isArray(post.tags)
-              ? post.tags
-              : typeof post.tags === "string"
-              ? post.tags.split(",").map((tag) => tag.trim())
-              : [];
+      {/* Main Feed */}
+      <div className="flex-1 overflow-y-auto p-4">
+        {posts.map((post) => {
+          const safeTags = Array.isArray(post.tags)
+            ? post.tags
+            : typeof post.tags === "string"
+            ? post.tags.split(",").map((tag) => tag.trim())
+            : [];
 
-            const comments = commentsMap[post.id] || [];
-            const commentValue = inputMap[post.id] || "";
-            const isOverLimit = commentValue.length > MAX_COMMENT_LENGTH;
-            const isEmpty = commentValue.trim() === "";
+          const comments = commentsMap[post.id] || [];
+          const commentValue = inputMap[post.id] || "";
+          const isOverLimit = commentValue.length > MAX_COMMENT_LENGTH;
+          const isEmpty = commentValue.trim() === "";
 
-            return (
-              <div key={post.id} className="post" style={{ marginBottom: "2rem" }}>
-                {post.video_url ? (
-                  <video controls src={post.video_url} style={{ width: "100%", borderRadius: "8px", marginBottom: "0.5rem" }} />
-                ) : post.image_url ? (
-                  <img src={post.image_url} alt="preview" style={{ width: "100%", borderRadius: "8px", marginBottom: "0.5rem" }} />
-                ) : null}
+          return (
+            <div key={post.id} className="post mb-10">
+              {post.video_url ? (
+                <video
+                  controls
+                  src={post.video_url}
+                  className="w-full rounded border border-gray-700 mb-2"
+                />
+              ) : post.image_url ? (
+                <img
+                  src={post.image_url}
+                  alt="preview"
+                  className="w-full rounded border border-gray-700 mb-2"
+                />
+              ) : null}
 
-                <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{post.headline}</h3>
-                <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{post.caption}</p>
+              <h3 className="text-white font-bold text-lg">{post.headline}</h3>
+              <p className="text-white text-sm mb-2">{post.caption}</p>
 
-                {post.cta_url && (
-                  <a href={post.cta_url} target="_blank" rel="noopener noreferrer" style={{ background: "linear-gradient(to right, #ff4136, #ffdc00)", color: "white", padding: "0.4rem 0.75rem", borderRadius: "999px", fontSize: "0.8rem", fontWeight: "bold", textDecoration: "none", display: "inline-block", marginBottom: "0.5rem" }}>
-                    Visit Link
-                  </a>
-                )}
+              {post.cta_url && (
+                <a
+                  href={post.cta_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-gradient-to-r from-red-500 to-yellow-300 text-white px-3 py-1 rounded-full text-xs font-bold mb-2"
+                >
+                  Visit Link
+                </a>
+              )}
 
-                {safeTags.length > 0 && (
-                  <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "white" }}>
-                    {safeTags.map((tag) => (
-                      <span key={tag} style={{ background: "#1a1a1a", border: "1px solid #00f0ff55", padding: "0.2rem 0.5rem", borderRadius: "999px", marginRight: "0.5rem", color: "#ffffff" }}>
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <div style={{ marginTop: "1rem" }}>
-                  <h4 style={{ fontSize: "0.95rem", color: "#00f0ff" }}>Comments</h4>
-
-                  <div style={{ marginBottom: "0.75rem" }}>
-                    {comments.map((comment, i) => (
-                      <p key={i} style={{ fontSize: "0.85rem", color: "white" }}>💬 {comment.content}</p>
-                    ))}
-                  </div>
-
-                  <textarea
-                    placeholder="Write a comment..."
-                    value={commentValue}
-                    onChange={(e) => setInputMap((prev) => ({ ...prev, [post.id]: e.target.value.slice(0, MAX_COMMENT_LENGTH) }))}
-                    style={{ width: "100%", background: "#0d0d0d", color: "white", border: "1px solid #00f0ff55", borderRadius: "6px", padding: "8px", fontSize: "0.85rem" }}
-                  />
-                  <p style={{ textAlign: "right", fontSize: "0.75rem", color: isOverLimit ? "#ff5555" : "#aaa" }}>{commentValue.length} / {MAX_COMMENT_LENGTH}</p>
-
-                  <button
-                    onClick={() => handleCommentSubmit(post.id)}
-                    disabled={isEmpty || isOverLimit}
-                    style={{ padding: "8px 16px", background: "linear-gradient(to right, #00ff99, #00f0ff)", color: "black", border: "none", borderRadius: "6px", fontWeight: "bold", cursor: isEmpty || isOverLimit ? "not-allowed" : "pointer", opacity: isEmpty || isOverLimit ? 0.6 : 1 }}
-                  >
-                    Post
-                  </button>
+              {safeTags.length > 0 && (
+                <div className="text-white text-xs mt-2">
+                  {safeTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-block bg-[#1a1a1a] border border-cyan-700 px-2 py-0.5 rounded-full mr-2"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
                 </div>
+              )}
+
+              <div className="mt-4">
+                <h4 className="text-cyan-400 text-sm mb-1">Comments</h4>
+                {comments.length > 5 ? (
+                  <div
+                    className="max-h-28 overflow-hidden relative mask-gradient mb-3"
+                    style={{ WebkitMaskImage: "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)" }}
+                  >
+                    <div className="flex flex-col gap-1 animate-scrollComments">
+                      {comments.map((comment, i) => (
+                        <div
+                          key={i}
+                          className="text-white text-sm whitespace-nowrap overflow-hidden text-ellipsis"
+                        >
+                          💬 {comment.content}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mb-3">
+                    {comments.map((comment, i) => (
+                      <p key={i} className="text-white text-sm mb-1">
+                        💬 {comment.content}
+                      </p>
+                    ))}
+                  </div>
+                )}
+
+                <textarea
+                  placeholder="Write a comment..."
+                  value={commentValue}
+                  onChange={(e) =>
+                    setInputMap((prev) => ({
+                      ...prev,
+                      [post.id]: e.target.value.slice(0, MAX_COMMENT_LENGTH),
+                    }))
+                  }
+                  className="w-full bg-[#0d0d0d] text-white border border-cyan-700 rounded p-2 text-sm mb-1"
+                />
+                <p className={`text-right text-xs mb-2 ${isOverLimit ? "text-red-500" : "text-gray-400"}`}>
+                  {commentValue.length} / {MAX_COMMENT_LENGTH}
+                </p>
+                <button
+                  onClick={() => handleCommentSubmit(post.id)}
+                  disabled={isEmpty || isOverLimit}
+                  className={`px-4 py-2 bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold rounded transition-opacity duration-200 ${
+                    isEmpty || isOverLimit ? "opacity-60 cursor-not-allowed" : ""
+                  }`}
+                >
+                  Post
+                </button>
               </div>
-            );
-          })
-        )}
+            </div>
+          );
+        })}
       </div>
 
-      {/* Right Panel - News */}
-      <div style={{ width: "18%", background: "#111", padding: "1rem", color: "#00f0ff", borderLeft: "1px solid #00f0ff33" }}>
-        <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>📰 News</h3>
-        <p style={{ fontSize: "0.75rem", color: "#aaa" }}>Latest news coming soon.</p>
+      {/* Right Panel */}
+      <div className="w-[20%] p-4 bg-[#111] text-white border-l border-cyan-700 overflow-y-auto">
+        <h2 className="text-cyan-400 font-semibold text-sm mb-4">📰 News</h2>
+        <p>Coming soon...</p>
       </div>
     </div>
   );
