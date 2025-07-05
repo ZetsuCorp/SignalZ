@@ -1,1 +1,107 @@
 
+/* GLOBAL OVERRIDES */
+body {
+  background-color: #0c0c0c;
+  color: #e0fefe;
+}
+
+/* APP WRAPPER */
+.app-wrapper {
+  background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
+}
+
+.left-panel {
+  background: linear-gradient(145deg, #0a0a0a, #111); /* ✅ black-gradient */
+  color: #00f0ff;                                   /* ✅ neon text */
+  border-right: 2px solid #00f0ff33;                /* ✅ neon border */
+  box-shadow: inset -2px 0 10px rgba(0, 255, 255, 0.1); /* ✅ soft glow */
+}
+
+
+/* FORM FIELDS */
+.left-panel input,
+.left-panel textarea {
+  border: 1px solid #00f0ff55;
+  background-color: rgba(0, 255, 255, 0.05);
+  color: #e0ffff;
+}
+
+.left-panel input:focus,
+.left-panel textarea:focus {
+  border-color: #00f0ff;
+  background-color: rgba(0, 255, 255, 0.08);
+  box-shadow: 0 0 6px #00f0ff88;
+}
+
+/* BUTTONS */
+.left-panel button {
+  background-color: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00f0ff66;
+  color: #00f0ff;
+}
+
+.left-panel button:hover {
+  background-color: rgba(0, 255, 255, 0.15);
+  box-shadow: 0 0 8px #00f0ff99;
+}
+
+/* TABS */
+.tab {
+  background-color: #111;
+  border: 1px solid #00f0ff44;
+  color: #00f0ff;
+}
+
+.tab.active {
+  background: linear-gradient(to right, #00ff99, #00f0ff);
+  color: black;
+}
+
+/* POST CARD */
+.post {
+  background: #111;
+  border: 1px solid #00f0ff22;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
+  color: #e0fefe;
+}
+
+/* SIGNAL SOURCE PILL */
+.source-pill {
+  background-color: rgba(0, 255, 255, 0.08);
+  border-color: #00f0ff55;
+  color: #00f0ff;
+}
+
+/* SETTINGS DRAWER */
+.settings-drawer {
+  background-color: #111;
+  color: #00f0ff;
+  border-left: 2px solid #00f0ff33;
+}
+
+.settings-drawer button {
+  background-color: rgba(0, 255, 255, 0.1);
+  color: #00f0ff;
+  border: 1px solid #00f0ff44;
+}
+
+/* TOGGLE */
+.toggle-row {
+  color: #00f0ff;
+}
+
+.toggle-row input[type="checkbox"] {
+  accent-color: #00f0ff;
+}
+
+/* MONETIZE LINK */
+.monetize-link {
+  background-color: rgba(0, 255, 255, 0.1);
+  border-color: #00f0ff44;
+  color: #00f0ff;
+}
+
+.monetize-link:hover {
+  background-color: rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 6px #00f0ff88;
+}
