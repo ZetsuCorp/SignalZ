@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 interface MediaEditorProps {
-  type: "image" | "video";
+  type: "image";
   src: string;
   onClose: () => void;
   onConfirm: (blobUrl: string) => void;
@@ -11,6 +11,7 @@ interface MediaEditorProps {
 const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm }) => {
   const [zoom, setZoom] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -21,10 +22,10 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center space-y-4 p-4">
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex flex-col items-center justify-center p-4">
       <div
         ref={containerRef}
-        className="bg-black rounded-xl shadow-xl overflow-hidden"
+        className="relative bg-black rounded-lg shadow-2xl overflow-hidden"
         style={{
           width: 640,
           height: 640,
@@ -33,32 +34,31 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
           justifyContent: "center",
         }}
       >
-        {type === "image" ? (
-          <img
-            src={src}
+        {type === "image" && (
+          <div
             style={{
-              transform: `scale(${zoom})`,
-              transition: "transform 0.2s",
-              maxWidth: "100%",
-              maxHeight: "100%",
-              objectFit: "contain",
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-            alt="Preview"
-          />
-        ) : (
-          <video
-            src={src}
-            controls
-            autoPlay
-            loop
-            style={{
-              transform: `scale(${zoom})`,
-              transition: "transform 0.2s",
-              maxWidth: "100%",
-              maxHeight: "100%",
-              objectFit: "contain",
-            }}
-          />
+          >
+            <img
+              ref={imageRef}
+              src={src}
+              alt="Preview"
+              style={{
+                transform: `scale(${zoom})`,
+                transition: "transform 0.2s",
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+                pointerEvents: "none",
+              }}
+            />
+          </div>
         )}
       </div>
 
@@ -69,10 +69,10 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
         step="0.01"
         value={zoom}
         onChange={(e) => setZoom(parseFloat(e.target.value))}
-        className="w-64"
+        className="w-64 mt-4"
       />
 
-      <div className="flex space-x-4">
+      <div className="flex space-x-4 mt-4">
         <button
           onClick={() => onConfirm(src)}
           className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
