@@ -1,4 +1,4 @@
-/* GLOBAL RESETS */
+/* === GLOBAL RESETS === */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,7 +13,7 @@ body {
   overflow: hidden;
 }
 
-/* === APP CONTAINER === */
+/* === APP WRAPPER === */
 .app-wrapper {
   display: flex;
   height: 100vh;
@@ -34,11 +34,22 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   overflow-y: auto;
 }
 
-/* LEFT PANEL BUTTONS */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* === LEFT PANEL BUTTONS === */
 .left-panel button {
   background-color: rgba(0, 255, 255, 0.08);
   border: 1px solid #00f0ff44;
@@ -55,11 +66,51 @@ body {
   box-shadow: 0 0 8px #00f0ff99;
 }
 
-/* === MAIN CONTENT === */
-.main-content {
+/* === MAIN PANEL === */
+.right-panel {
   flex: 1;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #0c0c0c;
+}
+
+/* === FEED SCROLL CONTAINER === */
+.feed-scroll {
+  flex: 1;
   overflow-y: auto;
+  padding: 24px;
+}
+
+/* === HEADER === */
+.right-panel header {
+  border-bottom: 1px solid #00f0ff33;
+  padding-bottom: 12px;
+  margin-bottom: 0;
+}
+
+/* === TABS === */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #00f0ff33;
+}
+
+.tab {
+  background: #111;
+  border: 1px solid #00f0ff33;
+  color: #00f0ff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: linear-gradient(to right, #00ff99, #00f0ff);
+  color: black;
 }
 
 /* === FORM INPUTS === */
@@ -76,7 +127,6 @@ select {
   font-size: 14px;
 }
 
-/* Prevent textarea from stretching */
 textarea {
   resize: none;
 }
@@ -90,8 +140,7 @@ select:focus {
   box-shadow: 0 0 6px #00f0ff88;
 }
 
-
-/* === SUBMIT / ACTION BUTTON === */
+/* === ACTION / SUBMIT BUTTONS === */
 button.submit {
   background: linear-gradient(to right, #00ff99, #00f0ff);
   color: black;
@@ -106,21 +155,6 @@ button.submit {
 button.submit:hover {
   filter: brightness(1.1);
   box-shadow: 0 0 12px #00f0ff88;
-}
-
-/* === TABS === */
-.tab {
-  background: #111;
-  border: 1px solid #00f0ff33;
-  color: #00f0ff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.tab.active {
-  background: linear-gradient(to right, #00ff99, #00f0ff);
-  color: black;
 }
 
 /* === POST CARD === */
@@ -152,6 +186,13 @@ button.submit:hover {
   color: #00f0ff;
   border-left: 1px solid #00f0ff33;
   padding: 20px;
+  width: 280px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 20;
+  overflow-y: auto;
 }
 
 .settings-drawer button {
