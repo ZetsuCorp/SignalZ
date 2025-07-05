@@ -27,6 +27,8 @@ export default function WorldFeed({ wallType }) {
   const [commentsMap, setCommentsMap] = useState({});
   const [inputMap, setInputMap] = useState({});
 
+  const MAX_COMMENT_LENGTH = 100;
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -52,9 +54,9 @@ export default function WorldFeed({ wallType }) {
 
   const handleCommentSubmit = async (postId) => {
     const content = inputMap[postId];
-    if (!content || !content.trim()) return;
+    if (!content || !content.trim() || content.length > MAX_COMMENT_LENGTH) return;
 
-    const ok = await submitComment(postId, content, wallType);
+    const ok = await submitComment(postId, content.trim(), wallType);
     if (ok) {
       const updated = await fetchComments(postId);
       setCommentsMap((prev) => ({ ...prev, [postId]: updated }));
@@ -80,6 +82,9 @@ export default function WorldFeed({ wallType }) {
           : [];
 
         const comments = commentsMap[post.id] || [];
+        const commentValue = inputMap[post.id] || "";
+        const isOverLimit = commentValue.length > MAX_COMMENT_LENGTH;
+        const isEmpty = commentValue.trim() === "";
 
         return (
           <div key={post.id} className="post">
@@ -180,8 +185,13 @@ export default function WorldFeed({ wallType }) {
 
               <textarea
                 placeholder="Write a comment..."
-                value={inputMap[post.id] || ""}
-                onChange={(e) => setInputMap((prev) => ({ ...prev, [post.id]: e.target.value }))}
+                value={commentValue}
+                onChange={(e) =>
+                  setInputMap((prev) => ({
+                    ...prev,
+                    [post.id]: e.target.value.slice(0, MAX_COMMENT_LENGTH),
+                  }))
+                }
                 style={{
                   width: "100%",
                   background: "#0d0d0d",
@@ -190,11 +200,24 @@ export default function WorldFeed({ wallType }) {
                   borderRadius: "6px",
                   padding: "8px",
                   fontSize: "0.85rem",
-                  marginBottom: "0.5rem",
+                  marginBottom: "0.25rem",
                 }}
               />
+
+              <p
+                style={{
+                  textAlign: "right",
+                  fontSize: "0.75rem",
+                  color: isOverLimit ? "#ff5555" : "#aaa",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {commentValue.length} / {MAX_COMMENT_LENGTH}
+              </p>
+
               <button
                 onClick={() => handleCommentSubmit(post.id)}
+                disabled={isEmpty || isOverLimit}
                 style={{
                   padding: "8px 16px",
                   background: "linear-gradient(to right, #00ff99, #00f0ff)",
@@ -202,7 +225,9 @@ export default function WorldFeed({ wallType }) {
                   border: "none",
                   borderRadius: "6px",
                   fontWeight: "bold",
-                  cursor: "pointer",
+                  cursor: isEmpty || isOverLimit ? "not-allowed" : "pointer",
+                  opacity: isEmpty || isOverLimit ? 0.6 : 1,
+                  transition: "opacity 0.2s ease",
                 }}
               >
                 Post
