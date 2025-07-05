@@ -76,6 +76,11 @@ select {
   font-size: 14px;
 }
 
+/* Prevent textarea from stretching */
+textarea {
+  resize: none;
+}
+
 input:focus,
 textarea:focus,
 select:focus {
@@ -84,6 +89,7 @@ select:focus {
   background-color: rgba(0, 255, 255, 0.08);
   box-shadow: 0 0 6px #00f0ff88;
 }
+
 
 /* === SUBMIT / ACTION BUTTON === */
 button.submit {
