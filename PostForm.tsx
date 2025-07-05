@@ -126,21 +126,30 @@ function PostForm({ wallType, onMediaPreview }) {
         className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
       />
 
-      {/* Caption with counter inside */}
+      {/* Caption with character counter inside */}
       <div className="relative">
         <textarea
           placeholder="What's meaningful about it?"
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
+          maxLength={MAX_CHARACTERS + 10}
           className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-300 pr-14"
+          style={{ paddingBottom: "2rem" }}
         />
-        <div
+        <span
           className={`absolute bottom-2 right-3 text-xs ${
             caption.length > MAX_CHARACTERS ? "text-red-500" : "text-gray-400"
           }`}
+          style={{
+            pointerEvents: "none",
+            fontFamily: "monospace",
+            background: "#0c0c0c",
+            padding: "0 4px",
+            borderRadius: "4px",
+          }}
         >
           {caption.length} / {MAX_CHARACTERS}
-        </div>
+        </span>
       </div>
 
       <input
