@@ -24,7 +24,7 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
     <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center space-y-4 p-4">
       <div
         ref={containerRef}
-        className="bg-blue-900 rounded-xl shadow-xl overflow-hidden border border-gray-300"
+        className="bg-blue-900 rounded-xl shadow-xl overflow-hidden border"
         style={{
           width: 640,
           height: 640,
@@ -76,13 +76,27 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
       <div className="flex space-x-4">
         <button
           onClick={() => onConfirm(src)}
-          className="px-4 py-2 bg-black bg-opacity-50 text-white rounded border border-gray-300 hover:border-white hover:shadow-lg hover:scale-105 transition-all"
+          className="px-4 py-2 bg-black text-white rounded border transition-all duration-200"
+          style={{ borderColor: "#C0C0C0", boxShadow: "inset 0 0 0 transparent" }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.boxShadow = "inset 0 0 10px rgba(255,255,255,0.2)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.boxShadow = "inset 0 0 0 transparent")
+          }
         >
           ✅ Confirm
         </button>
         <button
           onClick={onClose}
-          className="px-4 py-2 bg-black bg-opacity-50 text-white rounded border border-gray-300 hover:border-white hover:shadow-lg hover:scale-105 transition-all"
+          className="px-4 py-2 bg-black text-white rounded border transition-all duration-200"
+          style={{ borderColor: "#C0C0C0", boxShadow: "inset 0 0 0 transparent" }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.boxShadow = "inset 0 0 10px rgba(255,255,255,0.2)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.boxShadow = "inset 0 0 0 transparent")
+          }
         >
           ❌ Cancel
         </button>
