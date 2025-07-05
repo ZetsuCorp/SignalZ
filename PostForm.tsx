@@ -8,9 +8,7 @@ function PostForm({ wallType, onMediaPreview }) {
   const [ctaUrl, setCtaUrl] = useState("");
   const [tags, setTags] = useState("");
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
   const [video, setVideo] = useState(null);
-  const [videoPreview, setVideoPreview] = useState(null);
   const [sessionId, setSessionId] = useState("");
 
   const imageInputRef = useRef(null);
@@ -30,7 +28,6 @@ function PostForm({ wallType, onMediaPreview }) {
     if (file) {
       setImage(file);
       const previewUrl = URL.createObjectURL(file);
-      setImagePreview(previewUrl);
       if (onMediaPreview) onMediaPreview("image", previewUrl);
     }
   };
@@ -40,7 +37,6 @@ function PostForm({ wallType, onMediaPreview }) {
     if (file) {
       setVideo(file);
       const previewUrl = URL.createObjectURL(file);
-      setVideoPreview(previewUrl);
       if (onMediaPreview) onMediaPreview("video", previewUrl);
     }
   };
@@ -98,9 +94,7 @@ function PostForm({ wallType, onMediaPreview }) {
     setCtaUrl("");
     setTags("");
     setImage(null);
-    setImagePreview(null);
     setVideo(null);
-    setVideoPreview(null);
     alert("Posted!");
   };
 
