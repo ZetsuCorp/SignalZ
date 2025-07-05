@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
+import MediaOverlay from "./MediaOverlay";
+import { v4 as uuidv4 } from "uuid";
 
 function PostForm() {
   const [headline, setHeadline] = useState("");
@@ -13,6 +14,8 @@ function PostForm() {
   const [video, setVideo] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
   const [sessionId, setSessionId] = useState("");
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [overlayType, setOverlayType] = useState(null);
 
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
@@ -30,7 +33,10 @@ function PostForm() {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
-      setImagePreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      setOverlayType("image");
+      setShowOverlay(true);
     }
   };
 
@@ -38,36 +44,23 @@ function PostForm() {
     const file = e.target.files?.[0];
     if (file) {
       setVideo(file);
-      setVideoPreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      setVideoPreview(previewUrl);
+      setOverlayType("video");
+      setShowOverlay(true);
     }
   };
 
-  const uploadImage = async () => {
-    if (!image) return "";
-    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
-    const { error } = await supabase.storage
-      .from("images")
-      .upload(filePath, image);
+  const uploadMedia = async (media, bucket) => {
+    if (!media) return "";
+    const filePath = `${sessionId}/${Date.now()}_${media.name}`;
+    const { error } = await supabase.storage.from(bucket).upload(filePath, media);
     if (error) {
-      alert("Image upload failed");
+      alert(`${bucket} upload failed`);
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
-  };
-
-  const uploadVideo = async () => {
-    if (!video) return "";
-    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
-    const { error } = await supabase.storage
-      .from("videos")
-      .upload(filePath, video);
-    if (error) {
-      alert("Video upload failed");
-      return "";
-    }
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
+    return `${supabaseUrl}/storage/v1/object/public/${bucket}/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -76,8 +69,8 @@ function PostForm() {
       return;
     }
 
-    const imageUrl = await uploadImage();
-    const videoUrl = await uploadVideo();
+    const imageUrl = await uploadMedia(image, "images");
+    const videoUrl = await uploadMedia(video, "videos");
 
     await fetch("/.netlify/functions/create-posts", {
       method: "POST",
@@ -94,7 +87,6 @@ function PostForm() {
       }),
     });
 
-    // Reset
     setHeadline("");
     setCaption("");
     setCtaUrl("");
@@ -151,7 +143,6 @@ function PostForm() {
         className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
       />
 
-      {/* Add Image Button */}
       <button
         type="button"
         onClick={() => imageInputRef.current.click()}
@@ -166,15 +157,7 @@ function PostForm() {
         onChange={handleImageChange}
         style={{ display: "none" }}
       />
-      {imagePreview && (
-        <img
-          src={imagePreview}
-          alt="preview"
-          className="w-full h-auto mt-2 rounded border"
-        />
-      )}
 
-      {/* Add Video Button */}
       <button
         type="button"
         onClick={() => videoInputRef.current.click()}
@@ -189,13 +172,6 @@ function PostForm() {
         onChange={handleVideoChange}
         style={{ display: "none" }}
       />
-      {videoPreview && (
-        <video
-          src={videoPreview}
-          controls
-          className="w-full h-auto mt-2 rounded border"
-        />
-      )}
 
       <button
         onClick={handlePost}
@@ -203,6 +179,14 @@ function PostForm() {
       >
         Post to {wallType.toUpperCase()} Wall
       </button>
+
+      {showOverlay && (imagePreview || videoPreview) && (
+        <MediaOverlay
+          type={overlayType}
+          src={overlayType === "image" ? imagePreview : videoPreview}
+          onClose={() => setShowOverlay(false)}
+        />
+      )}
     </div>
   );
 }
