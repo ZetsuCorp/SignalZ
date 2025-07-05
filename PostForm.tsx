@@ -1,14 +1,12 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
 
-function PostForm() {
+function PostForm({ wallType, onMediaPreview }) {
   const [headline, setHeadline] = useState("");
   const [caption, setCaption] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
   const [tags, setTags] = useState("");
-  const [wallType, setWallType] = useState("main");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [video, setVideo] = useState(null);
@@ -31,7 +29,9 @@ function PostForm() {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
-      setImagePreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      if (onMediaPreview) onMediaPreview("image", previewUrl);
     }
   };
 
@@ -39,36 +39,34 @@ function PostForm() {
     const file = e.target.files?.[0];
     if (file) {
       setVideo(file);
-      setVideoPreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      setVideoPreview(previewUrl);
+      if (onMediaPreview) onMediaPreview("video", previewUrl);
     }
   };
 
   const uploadImage = async () => {
     if (!image) return "";
-    const filePath = ${sessionId}/${Date.now()}_${image.name};
-    const { error } = await supabase.storage
-      .from("images")
-      .upload(filePath, image);
+    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
+    const { error } = await supabase.storage.from("images").upload(filePath, image);
     if (error) {
       alert("Image upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return ${supabaseUrl}/storage/v1/object/public/images/${filePath};
+    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
     if (!video) return "";
-    const filePath = ${sessionId}/${Date.now()}_${video.name};
-    const { error } = await supabase.storage
-      .from("videos")
-      .upload(filePath, video);
+    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
+    const { error } = await supabase.storage.from("videos").upload(filePath, video);
     if (error) {
       alert("Video upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return ${supabaseUrl}/storage/v1/object/public/videos/${filePath};
+    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -95,7 +93,6 @@ function PostForm() {
       }),
     });
 
-    // Reset
     setHeadline("");
     setCaption("");
     setCtaUrl("");
@@ -113,8 +110,9 @@ function PostForm() {
 
       <select
         value={wallType}
-        onChange={(e) => setWallType(e.target.value)}
-        className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+        onChange={(e) => {}}
+        disabled
+        className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-100 cursor-not-allowed"
       >
         <option value="main">Main Wall</option>
         <option value="alt">Alt Wall</option>
@@ -152,7 +150,6 @@ function PostForm() {
         className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
       />
 
-      {/* Add Image Button */}
       <button
         type="button"
         onClick={() => imageInputRef.current.click()}
@@ -167,15 +164,7 @@ function PostForm() {
         onChange={handleImageChange}
         style={{ display: "none" }}
       />
-      {imagePreview && (
-        <img
-          src={imagePreview}
-          alt="preview"
-          className="w-full h-auto mt-2 rounded border"
-        />
-      )}
 
-      {/* Add Video Button */}
       <button
         type="button"
         onClick={() => videoInputRef.current.click()}
@@ -190,13 +179,6 @@ function PostForm() {
         onChange={handleVideoChange}
         style={{ display: "none" }}
       />
-      {videoPreview && (
-        <video
-          src={videoPreview}
-          controls
-          className="w-full h-auto mt-2 rounded border"
-        />
-      )}
 
       <button
         onClick={handlePost}
