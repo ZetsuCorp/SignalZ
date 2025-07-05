@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
@@ -12,7 +11,6 @@ function PostForm({ wallType, onMediaPreview }) {
   const [video, setVideo] = useState(null);
   const [sessionId, setSessionId] = useState("");
 
-  const MAX_CHARACTERS = 240;
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
@@ -72,10 +70,6 @@ function PostForm({ wallType, onMediaPreview }) {
       alert("Headline and caption required");
       return;
     }
-    if (caption.length > MAX_CHARACTERS) {
-      alert(`Caption is too long (limit is ${MAX_CHARACTERS} characters)`);
-      return;
-    }
 
     const imageUrl = await uploadImage();
     const videoUrl = await uploadVideo();
@@ -133,9 +127,6 @@ function PostForm({ wallType, onMediaPreview }) {
         onChange={(e) => setCaption(e.target.value)}
         className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-300"
       />
-      <p className={`text-sm mt-1 ${caption.length > MAX_CHARACTERS ? "text-red-500" : "text-gray-400"}`}>
-        {caption.length} / {MAX_CHARACTERS}
-      </p>
 
       <input
         type="text"
@@ -185,10 +176,7 @@ function PostForm({ wallType, onMediaPreview }) {
 
       <button
         onClick={handlePost}
-        disabled={caption.length > MAX_CHARACTERS}
-        className={`bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition ${
-          caption.length > MAX_CHARACTERS ? "opacity-50 cursor-not-allowed" : ""
-        }`}
+        className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition"
       >
         🚀 Post to {wallType.toUpperCase()} Wall
       </button>
