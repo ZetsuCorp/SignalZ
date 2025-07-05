@@ -24,14 +24,14 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
     <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center space-y-4 p-4">
       <div
         ref={containerRef}
-        className="bg-blue-900 rounded-xl shadow-xl overflow-hidden border"
+        className="bg-blue-900 rounded-xl shadow-xl overflow-hidden border border-gray-300"
         style={{
           width: 640,
           height: 640,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          borderColor: "#C0C0C0", // Silver border
+          borderColor: "#C0C0C0",
         }}
       >
         {type === "image" ? (
@@ -76,13 +76,13 @@ const MediaEditor: React.FC<MediaEditorProps> = ({ type, src, onClose, onConfirm
       <div className="flex space-x-4">
         <button
           onClick={() => onConfirm(src)}
-          className="px-4 py-2 bg-black bg-opacity-50 text-white rounded border border-gray-300 hover:border-white hover:shadow-lg"
+          className="px-4 py-2 bg-black bg-opacity-50 text-white rounded border border-gray-300 hover:border-white hover:shadow-lg hover:scale-105 transition-all"
         >
           ✅ Confirm
         </button>
         <button
           onClick={onClose}
-          className="px-4 py-2 bg-black bg-opacity-50 text-white rounded border border-gray-300 hover:border-white hover:shadow-lg"
+          className="px-4 py-2 bg-black bg-opacity-50 text-white rounded border border-gray-300 hover:border-white hover:shadow-lg hover:scale-105 transition-all"
         >
           ❌ Cancel
         </button>
