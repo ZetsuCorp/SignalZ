@@ -9,16 +9,18 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.2",
+    "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.6.0",
+    "esbuild": "^0.20.0",
     "typescript": "^5.4.0",
-    "vite": "^4.5.14",
-    "esbuild": "^0.20.0"
+    "vite": "^4.5.14"
   }
 }
