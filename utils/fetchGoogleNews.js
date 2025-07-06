@@ -1,11 +1,13 @@
+const Parser = require("rss-parser");
+const parser = new Parser();
 
 module.exports = async function fetchGoogleNews() {
-  return [
-    {
-      title: "SignalZ Launches Beta",
-      link: "https://example.com/article",
-      pubDate: new Date().toISOString(),
-      source: "SignalZ News",
-    },
-  ];
+  const feed = await parser.parseURL("https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en");
+
+  return feed.items.slice(0, 10).map(item => ({
+    title: item.title,
+    link: item.link,
+    pubDate: item.pubDate,
+    source: item.creator || "Google News",
+  }));
 };
