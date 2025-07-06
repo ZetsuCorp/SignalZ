@@ -81,15 +81,14 @@ export default function WorldFeed({ wallType }) {
 
       {/* Center Feed */}
       <div
+        className="hide-scrollbar"
         style={{
           flex: 1,
           padding: "1rem",
           background: "#0d0d0d",
           position: "relative",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
+          overflowY: "scroll",
         }}
-        className="hide-scrollbar"
       >
         {posts.map((post) => {
           const safeTags = Array.isArray(post.tags)
@@ -238,17 +237,15 @@ export default function WorldFeed({ wallType }) {
 
       {/* Right Panel */}
       <div
+        className="hide-scrollbar"
         style={{
           width: "22%",
           background: "#0a0a0a",
           padding: "1rem",
           borderLeft: "1px solid #222",
           color: "white",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          overflow: "hidden",
+          overflowY: "scroll",
         }}
-        className="hide-scrollbar"
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
         <NewsFeed />
