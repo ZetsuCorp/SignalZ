@@ -18,8 +18,15 @@ const handler: Handler = async (event) => {
     }
   }
 
-  const { prompt, funnel_type = "quiz", cta_url = "#" } = JSON.parse(event.body || "{}")
+  const { prompt, funnel_type = "quiz" } = JSON.parse(event.body || "{}")
   const id = uuidv4()
+
+  if (!prompt || prompt.trim() === "") {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Prompt is required." })
+    }
+  }
 
   try {
     // ✅ Step 1: Generate image from OpenAI
@@ -39,9 +46,9 @@ const handler: Handler = async (event) => {
 
     const dalleJson = await dalleRes.json()
     const imageUrl = dalleJson?.data?.[0]?.url
-    if (!imageUrl) throw new Error("Failed to get image from OpenAI")
+    if (!imageUrl) throw new Error("Failed to generate image from OpenAI")
 
-    // ✅ Step 2: Download the image
+    // ✅ Step 2: Download image
     const imageBuffer = await (await fetch(imageUrl)).arrayBuffer()
 
     // ✅ Step 3: Upload to Supabase Storage
@@ -56,7 +63,7 @@ const handler: Handler = async (event) => {
 
     const publicImageUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/chum/${id}.png`
 
-    // ✅ Step 4: Insert post data into Supabase table
+    // ✅ Step 4: Insert metadata into Supabase table
     const { error: insertError } = await supabase
       .from("chum_posts")
       .insert([
@@ -66,7 +73,7 @@ const handler: Handler = async (event) => {
           image_url: publicImageUrl,
           prompt_theme: prompt,
           funnel_type,
-          cta_url,
+          cta_url: null, // To be added later via editor
           status: "ready"
         }
       ])
