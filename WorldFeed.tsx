@@ -249,7 +249,7 @@ export default function WorldFeed({ wallType }) {
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
 
-        {/* Video Container */}
+        {/* Embedded Live News */}
         <div
           style={{
             width: "100%",
@@ -260,18 +260,18 @@ export default function WorldFeed({ wallType }) {
             border: "1px solid #00f0ff44",
           }}
         >
-          <video
-           <iframe
-  title="ABC News Live"
-  src="https://abcnews.go.com/Live"
-  style={{
-    width: "100%",
-    height: "100%",
-    border: "none",
-  }}
-  allow="autoplay; encrypted-media"
-  allowFullScreen
-/>
+          <iframe
+            title="ABC News Live"
+            src="https://abcnews.go.com/Live"
+            style={{
+              width: "100%",
+              height: "100%",
+              border: "none",
+            }}
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+          />
+        </div>
 
         <NewsFeed />
       </div>
