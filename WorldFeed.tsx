@@ -249,29 +249,19 @@ export default function WorldFeed({ wallType }) {
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
 
-        {/* Embedded Live News */}
-        <div
-          style={{
-            width: "100%",
-            height: "160px",
-            marginBottom: "1rem",
-            borderRadius: "10px",
-            overflow: "hidden",
-            border: "1px solid #00f0ff44",
-          }}
-        >
-          <iframe
-            title="ABC News Live"
-            src="https://abcnews.go.com/Live"
-            style={{
-              width: "100%",
-              height: "100%",
-              border: "none",
-            }}
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          />
-        </div>
+       <iframe
+  width="100%"
+  height="100%"
+  src="https://abcnews.go.com/video/embed?id=abc_live11"
+  allowFullScreen
+  frameBorder="0"
+  style={{
+    borderRadius: "10px",
+    border: "1px solid #00f0ff44",
+    objectFit: "cover",
+  }}
+/>
+
 
         <NewsFeed />
       </div>
