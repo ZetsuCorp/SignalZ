@@ -172,16 +172,57 @@ export default function WorldFeed({ wallType }) {
                 </div>
               )}
 
-              {/* Comments */}
+              {/* Comments Section */}
               <div style={{ marginTop: "1rem" }}>
                 <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
-                <div style={{ marginBottom: "0.75rem" }}>
-                  {comments.map((comment, i) => (
-                    <p key={i} style={{ fontSize: "0.85rem", color: "white", marginBottom: "0.4rem" }}>
-                      💬 {comment.content}
-                    </p>
-                  ))}
-                </div>
+                {comments.length > 5 ? (
+                  <div
+                    className="comment-scroll-wrapper"
+                    style={{
+                      maxHeight: "120px",
+                      overflow: "hidden",
+                      position: "relative",
+                      maskImage: "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
+                      WebkitMaskImage: "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
+                      marginBottom: "0.75rem",
+                    }}
+                  >
+                    <div
+                      className="comment-scroll-inner"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                        animation: "scrollComments 10s linear infinite",
+                      }}
+                    >
+                      {comments.map((comment, i) => (
+                        <div
+                          key={i}
+                          className="comment-line"
+                          style={{
+                            fontSize: "0.85rem",
+                            color: "white",
+                            padding: "4px 0",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                            overflow: "hidden",
+                          }}
+                        >
+                          💬 {comment.content}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ marginBottom: "0.75rem" }}>
+                    {comments.map((comment, i) => (
+                      <p key={i} style={{ fontSize: "0.85rem", color: "white", marginBottom: "0.4rem" }}>
+                        💬 {comment.content}
+                      </p>
+                    ))}
+                  </div>
+                )}
 
                 <textarea
                   placeholder="Write a comment..."
@@ -249,19 +290,18 @@ export default function WorldFeed({ wallType }) {
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
 
-       <iframe
-  width="100%"
-  height="100%"
-  src="https://abcnews.go.com/video/embed?id=abc_live11"
-  allowFullScreen
-  frameBorder="0"
-  style={{
-    borderRadius: "10px",
-    border: "1px solid #00f0ff44",
-    objectFit: "cover",
-  }}
-/>
-
+        <iframe
+          width="100%"
+          height="100%"
+          src="https://abcnews.go.com/video/embed?id=abc_live11"
+          allowFullScreen
+          frameBorder="0"
+          style={{
+            borderRadius: "10px",
+            border: "1px solid #00f0ff44",
+            objectFit: "cover",
+          }}
+        />
 
         <NewsFeed />
       </div>
