@@ -343,13 +343,12 @@ video.auto-pause {
   overflow: hidden;
 }
 
+/* Hide scrollbar globally for specific sections */
 .hide-scrollbar {
-  overflow-y: scroll;
-  scrollbar-width: none;      /* Firefox */
-  -ms-overflow-style: none;   /* IE and Edge */
-
-  /* Chrome, Safari, Opera */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
+
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Safari */
 }
