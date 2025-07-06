@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 
+const getFallbackImage = (title: string) => {
+  const query = encodeURIComponent(title.split(" ").slice(0, 3).join(" "));
+  return `https://source.unsplash.com/400x200/?${query}`;
+};
+
 const NewsFeed: React.FC = () => {
   const [newsItems, setNewsItems] = useState([]);
 
@@ -27,20 +32,22 @@ const NewsFeed: React.FC = () => {
       {newsItems.length === 0 ? (
         <p style={{ fontSize: "0.85rem", color: "#aaa" }}>Loading news...</p>
       ) : (
-        newsItems.map((item, idx) => (
-          <div
-            key={idx}
-            style={{
-              marginBottom: "1rem",
-              background: "#111",
-              border: "1px solid #00f0ff33",
-              borderRadius: "10px",
-              padding: "0.75rem",
-            }}
-          >
-            {item.image && (
+        newsItems.map((item, idx) => {
+          const imageUrl = item.image || getFallbackImage(item.title || "news");
+
+          return (
+            <div
+              key={idx}
+              style={{
+                marginBottom: "1rem",
+                background: "#111",
+                border: "1px solid #00f0ff33",
+                borderRadius: "10px",
+                padding: "0.75rem",
+              }}
+            >
               <img
-                src={item.image}
+                src={imageUrl}
                 alt="news preview"
                 style={{
                   width: "100%",
@@ -50,26 +57,26 @@ const NewsFeed: React.FC = () => {
                   marginBottom: "0.5rem",
                 }}
               />
-            )}
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "#00cfff",
-                fontWeight: "bold",
-                textDecoration: "none",
-                fontSize: "0.85rem",
-              }}
-            >
-              {item.title}
-            </a>
-            <div style={{ fontSize: "0.65rem", color: "#888", marginTop: "0.25rem" }}>
-              {item.source && <span>{item.source} · </span>}
-              {item.pubDate && new Date(item.pubDate).toLocaleDateString()}
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "#00cfff",
+                  fontWeight: "bold",
+                  textDecoration: "none",
+                  fontSize: "0.85rem",
+                }}
+              >
+                {item.title}
+              </a>
+              <div style={{ fontSize: "0.65rem", color: "#888", marginTop: "0.25rem" }}>
+                {item.source && <span>{item.source} · </span>}
+                {item.pubDate && new Date(item.pubDate).toLocaleDateString()}
+              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       )}
     </div>
   );
