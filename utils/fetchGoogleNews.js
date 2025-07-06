@@ -1,13 +1,17 @@
-const Parser = require("rss-parser");
-const parser = new Parser();
+const getRandomImage = (query) =>
+  `https://source.unsplash.com/600x400/?${encodeURIComponent(query)}`;
 
-module.exports = async function fetchGoogleNews() {
-  const feed = await parser.parseURL("https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en");
+return feed.items.slice(0, 10).map(item => {
+  const image =
+    item.mediaContent?.$.url ||
+    item.enclosure?.url ||
+    getRandomImage(item.title); // fallback based on title
 
-  return feed.items.slice(0, 10).map(item => ({
+  return {
     title: item.title,
     link: item.link,
     pubDate: item.pubDate,
     source: item.creator || "Google News",
-  }));
-};
+    image,
+  };
+});
