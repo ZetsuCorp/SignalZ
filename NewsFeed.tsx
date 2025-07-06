@@ -38,6 +38,19 @@ const NewsFeed: React.FC = () => {
               padding: "0.75rem",
             }}
           >
+            {item.image && (
+              <img
+                src={item.image}
+                alt="news preview"
+                style={{
+                  width: "100%",
+                  maxHeight: "160px",
+                  objectFit: "cover",
+                  borderRadius: "6px",
+                  marginBottom: "0.5rem",
+                }}
+              />
+            )}
             <a
               href={item.link}
               target="_blank"
