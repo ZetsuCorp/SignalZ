@@ -25,6 +25,3 @@
     "vite": "^4.5.14"
   }
 }
-"scripts": {
-  "build:functions": "esbuild netlify/functions/*.ts --outdir=netlify/functions --platform=node --target=node18 --bundle"
-}
