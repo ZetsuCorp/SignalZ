@@ -80,7 +80,17 @@ export default function WorldFeed({ wallType }) {
       </div>
 
       {/* Center Feed */}
-      <div style={{ flex: 1, padding: "1rem", background: "#0d0d0d", position: "relative" }}>
+      <div
+        style={{
+          flex: 1,
+          padding: "1rem",
+          background: "#0d0d0d",
+          position: "relative",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+        className="hide-scrollbar"
+      >
         {posts.map((post) => {
           const safeTags = Array.isArray(post.tags)
             ? post.tags
