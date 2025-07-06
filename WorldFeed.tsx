@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
+import ChumFeedPanel from "./ChumFeedPanel"; // ✅ NEW import
 
-// ✅ FIXED: Fetch comments
+// ✅ Fetch comments
 async function fetchComments(postId) {
   try {
     const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
@@ -32,7 +33,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`); // ✅ FIXED
+        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
@@ -73,10 +74,9 @@ export default function WorldFeed({ wallType }) {
 
   return (
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
-      {/* Left Panel */}
-      <div style={{ width: "20%", background: "#0a0a0a", padding: "1rem", borderRight: "1px solid #222", color: "white" }}>
-        <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🪣 Chum Bucket</h2>
-        <p>Coming soon...</p>
+      {/* ✅ Left Panel — Chum Feed */}
+      <div style={{ width: "20%", height: "100vh" }}>
+        <ChumFeedPanel />
       </div>
 
       {/* Center Feed */}
@@ -90,7 +90,6 @@ export default function WorldFeed({ wallType }) {
           overflowY: "scroll",
         }}
       >
-        {/* (posts rendering unchanged) */}
         {posts.map((post) => {
           const safeTags = Array.isArray(post.tags)
             ? post.tags
@@ -259,7 +258,6 @@ export default function WorldFeed({ wallType }) {
           );
         })}
 
-        {/* Fade + arrow */}
         <div
           style={{
             position: "sticky",
