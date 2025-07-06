@@ -343,7 +343,13 @@ video.auto-pause {
   overflow: hidden;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(5px); }
+.hide-scrollbar {
+  overflow-y: scroll;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE and Edge */
+
+  /* Chrome, Safari, Opera */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
