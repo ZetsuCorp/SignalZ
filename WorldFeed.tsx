@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
 
-// Fetch comments
+// ✅ FIXED: Fetch comments
 async function fetchComments(postId) {
   try {
-    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
+    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -13,7 +13,7 @@ async function fetchComments(postId) {
   }
 }
 
-// Submit a comment
+// ✅ Submit a comment
 async function submitComment(postId, content, wallType) {
   const res = await fetch("/.netlify/functions/create-comment", {
     method: "POST",
@@ -32,7 +32,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
+        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`); // ✅ FIXED
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
@@ -90,6 +90,7 @@ export default function WorldFeed({ wallType }) {
           overflowY: "scroll",
         }}
       >
+        {/* (posts rendering unchanged) */}
         {posts.map((post) => {
           const safeTags = Array.isArray(post.tags)
             ? post.tags
@@ -172,7 +173,7 @@ export default function WorldFeed({ wallType }) {
                 </div>
               )}
 
-              {/* Comments Section */}
+              {/* Comments */}
               <div style={{ marginTop: "1rem" }}>
                 <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
                 {comments.length > 5 ? (
@@ -258,7 +259,7 @@ export default function WorldFeed({ wallType }) {
           );
         })}
 
-        {/* Fade effect and arrow */}
+        {/* Fade + arrow */}
         <div
           style={{
             position: "sticky",
