@@ -261,13 +261,17 @@ export default function WorldFeed({ wallType }) {
           }}
         >
           <video
-            controls
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            src="https://archive.org/download/AlJazeeraEnglish_202307/video.mp4"
-          >
-            Your browser does not support the video tag.
-          </video>
-        </div>
+           <iframe
+  title="ABC News Live"
+  src="https://abcnews.go.com/Live"
+  style={{
+    width: "100%",
+    height: "100%",
+    border: "none",
+  }}
+  allow="autoplay; encrypted-media"
+  allowFullScreen
+/>
 
         <NewsFeed />
       </div>
