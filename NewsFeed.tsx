@@ -12,14 +12,15 @@ const NewsFeed: React.FC = () => {
 
   return (
     <div
+      className="hide-scrollbar"
       style={{
         width: "100%",
-        background: "#0a0a0a",
+        height: "100vh",
+        overflowY: "scroll",
         padding: "1rem",
+        background: "#0a0a0a",
         borderLeft: "1px solid #222",
         color: "white",
-        overflowY: "auto",
-        maxHeight: "100vh",
       }}
     >
       <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>📰 News Feed</h2>
