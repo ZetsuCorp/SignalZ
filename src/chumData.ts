@@ -5,7 +5,7 @@ const chumPosts = [
     cta_url: "https://link.com/product1"
   },
   {
-    image_url: "https://xyz.supabase.co/storage/v1/object/public/chum/image2.png",
+    image_url: "https://lh3.googleusercontent.com/pw/AP1GczNi1kSKn4gvdalYPO2_PhnujKPUm0P0w8Ul4mEmBmBUqXDA8mQ1ajJERSbvW6xFIyJVOjngDEpZCEWQ-QimFDKkGS_02RMWLogSINAYMQ91VJFamVHn_nPi7MO_Xq69DEnleLFMzotX8zpFRpwtfoey1g=w827-h827-s-no-gm?authuser=0",
     caption: "Why would someone invent this?",
     cta_url: "https://link.com/product2"
   },
