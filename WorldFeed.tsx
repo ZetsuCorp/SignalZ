@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NewsFeed from "./NewsFeed"; // Corrected path for your current folder layout
+import NewsFeed from "./NewsFeed";
 
 // Utility: fetch all comments for a post
 async function fetchComments(postId) {
@@ -72,15 +72,32 @@ export default function WorldFeed({ wallType }) {
   }
 
   return (
-    <div style={{ display: "flex", width: "100%" }}>
+    <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
       {/* Left Panel */}
-      <div style={{ width: "20%", background: "#0a0a0a", padding: "1rem", borderRight: "1px solid #222", color: "white" }}>
+      <div
+        style={{
+          width: "20%",
+          background: "#0a0a0a",
+          padding: "1rem",
+          borderRight: "1px solid #222",
+          color: "white",
+          height: "100%",
+        }}
+      >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🪣 Chum Bucket</h2>
         <p>Coming soon...</p>
       </div>
 
       {/* Center Feed */}
-      <div style={{ flex: 1, padding: "1rem", background: "#0d0d0d" }}>
+      <div
+        style={{
+          flex: 1,
+          padding: "1rem",
+          background: "#0d0d0d",
+          maxHeight: "100vh",
+          overflowY: "auto",
+        }}
+      >
         {posts.map((post) => {
           const safeTags = Array.isArray(post.tags)
             ? post.tags
@@ -251,8 +268,18 @@ export default function WorldFeed({ wallType }) {
         })}
       </div>
 
-      {/* Right Panel (modular NewsFeed) */}
-      <div style={{ width: "20%" }}>
+      {/* Right Panel (NewsFeed with longer height) */}
+      <div
+        style={{
+          width: "22%",
+          background: "#0a0a0a",
+          padding: "1rem",
+          borderLeft: "1px solid #222",
+          color: "white",
+          height: "auto",
+        }}
+      >
+        <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
         <NewsFeed />
       </div>
     </div>
