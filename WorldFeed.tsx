@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
 
-// Utility: fetch all comments for a post
+// Fetch comments
 async function fetchComments(postId) {
   try {
     const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
@@ -13,7 +13,7 @@ async function fetchComments(postId) {
   }
 }
 
-// Utility: post a comment
+// Submit a comment
 async function submitComment(postId, content, wallType) {
   const res = await fetch("/.netlify/functions/create-comment", {
     method: "POST",
@@ -74,21 +74,13 @@ export default function WorldFeed({ wallType }) {
   return (
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
       {/* Left Panel */}
-      <div
-        style={{
-          width: "20%",
-          background: "#0a0a0a",
-          padding: "1rem",
-          borderRight: "1px solid #222",
-          color: "white",
-        }}
-      >
+      <div style={{ width: "20%", background: "#0a0a0a", padding: "1rem", borderRight: "1px solid #222", color: "white" }}>
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🪣 Chum Bucket</h2>
         <p>Coming soon...</p>
       </div>
 
       {/* Center Feed */}
-      <div style={{ flex: 1, padding: "1rem", background: "#0d0d0d" }}>
+      <div style={{ flex: 1, padding: "1rem", background: "#0d0d0d", position: "relative" }}>
         {posts.map((post) => {
           const safeTags = Array.isArray(post.tags)
             ? post.tags
@@ -171,58 +163,16 @@ export default function WorldFeed({ wallType }) {
                 </div>
               )}
 
-              {/* Comments Section */}
+              {/* Comments */}
               <div style={{ marginTop: "1rem" }}>
                 <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
-
-                {comments.length > 5 ? (
-                  <div
-                    className="comment-scroll-wrapper"
-                    style={{
-                      maxHeight: "120px",
-                      overflow: "hidden",
-                      position: "relative",
-                      maskImage: "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
-                      WebkitMaskImage: "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
-                      marginBottom: "0.75rem",
-                    }}
-                  >
-                    <div
-                      className="comment-scroll-inner"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "6px",
-                        animation: "scrollComments 10s linear infinite",
-                      }}
-                    >
-                      {comments.map((comment, i) => (
-                        <div
-                          key={i}
-                          className="comment-line"
-                          style={{
-                            fontSize: "0.85rem",
-                            color: "white",
-                            padding: "4px 0",
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                          }}
-                        >
-                          💬 {comment.content}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div style={{ marginBottom: "0.75rem" }}>
-                    {comments.map((comment, i) => (
-                      <p key={i} style={{ fontSize: "0.85rem", color: "white", marginBottom: "0.4rem" }}>
-                        💬 {comment.content}
-                      </p>
-                    ))}
-                  </div>
-                )}
+                <div style={{ marginBottom: "0.75rem" }}>
+                  {comments.map((comment, i) => (
+                    <p key={i} style={{ fontSize: "0.85rem", color: "white", marginBottom: "0.4rem" }}>
+                      💬 {comment.content}
+                    </p>
+                  ))}
+                </div>
 
                 <textarea
                   placeholder="Write a comment..."
@@ -257,9 +207,26 @@ export default function WorldFeed({ wallType }) {
             </div>
           );
         })}
+
+        {/* Fade effect and arrow */}
+        <div
+          style={{
+            position: "sticky",
+            bottom: 0,
+            width: "100%",
+            height: "80px",
+            background: "linear-gradient(to bottom, rgba(13,13,13,0), rgba(13,13,13,1))",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            pointerEvents: "none",
+          }}
+        >
+          <div style={{ animation: "bounce 2s infinite", fontSize: "1.5rem", color: "#00f0ff" }}>⬇</div>
+        </div>
       </div>
 
-      {/* Right Panel (NewsFeed) */}
+      {/* Right Panel */}
       <div
         style={{
           width: "22%",
