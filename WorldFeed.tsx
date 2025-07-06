@@ -33,7 +33,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
+        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`); // ✅ FIXED
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
@@ -258,6 +258,7 @@ export default function WorldFeed({ wallType }) {
           );
         })}
 
+        {/* Fade Arrow */}
         <div
           style={{
             position: "sticky",
