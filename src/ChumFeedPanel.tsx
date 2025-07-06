@@ -6,9 +6,8 @@ const ChumFeedPanel: React.FC = () => {
     <div
       className="hide-scrollbar"
       style={{
-        width: "100%",
         height: "100vh",
-        overflowY: "scroll",
+        overflowY: "auto",
         padding: "1rem",
         background: "#0a0a0a",
         borderRight: "1px solid #222",
@@ -37,26 +36,35 @@ const ChumFeedPanel: React.FC = () => {
               marginBottom: "0.5rem",
             }}
           />
-          <p style={{ fontSize: "0.85rem", color: "#ccc", marginBottom: "0.5rem" }}>
-            {item.caption}
-          </p>
-          <a
-            href={item.cta_url}
-            target="_blank"
-            rel="noopener noreferrer"
+          <p
             style={{
-              display: "inline-block",
-              background: "linear-gradient(to right, #00ff99, #00f0ff)",
-              color: "black",
-              padding: "0.4rem 0.75rem",
-              borderRadius: "999px",
-              fontSize: "0.8rem",
-              fontWeight: "bold",
-              textDecoration: "none",
+              fontSize: "0.85rem",
+              color: "#ccc",
+              marginBottom: "0.5rem",
             }}
           >
-            Visit Link
-          </a>
+            {item.caption}
+          </p>
+
+          {item.cta_url && (
+            <a
+              href={item.cta_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                background: "linear-gradient(to right, #00ff99, #00f0ff)",
+                color: "black",
+                padding: "0.4rem 0.75rem",
+                borderRadius: "999px",
+                fontSize: "0.8rem",
+                fontWeight: "bold",
+                textDecoration: "none",
+              }}
+            >
+              Visit Link
+            </a>
+          )}
         </div>
       ))}
     </div>
