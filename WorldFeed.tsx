@@ -81,7 +81,6 @@ export default function WorldFeed({ wallType }) {
           padding: "1rem",
           borderRight: "1px solid #222",
           color: "white",
-          height: "100%",
         }}
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🪣 Chum Bucket</h2>
@@ -89,15 +88,7 @@ export default function WorldFeed({ wallType }) {
       </div>
 
       {/* Center Feed */}
-      <div
-        style={{
-          flex: 1,
-          padding: "1rem",
-          background: "#0d0d0d",
-          maxHeight: "100vh",
-          overflowY: "auto",
-        }}
-      >
+      <div style={{ flex: 1, padding: "1rem", background: "#0d0d0d" }}>
         {posts.map((post) => {
           const safeTags = Array.isArray(post.tags)
             ? post.tags
@@ -268,7 +259,7 @@ export default function WorldFeed({ wallType }) {
         })}
       </div>
 
-      {/* Right Panel (NewsFeed with longer height) */}
+      {/* Right Panel (NewsFeed) */}
       <div
         style={{
           width: "22%",
@@ -276,7 +267,6 @@ export default function WorldFeed({ wallType }) {
           padding: "1rem",
           borderLeft: "1px solid #222",
           color: "white",
-          height: "auto",
         }}
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
