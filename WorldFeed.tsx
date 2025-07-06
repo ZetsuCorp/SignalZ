@@ -248,6 +248,27 @@ export default function WorldFeed({ wallType }) {
         }}
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
+
+        {/* Video Container */}
+        <div
+          style={{
+            width: "100%",
+            height: "160px",
+            marginBottom: "1rem",
+            borderRadius: "10px",
+            overflow: "hidden",
+            border: "1px solid #00f0ff44",
+          }}
+        >
+          <video
+            controls
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            src="https://archive.org/download/AlJazeeraEnglish_202307/video.mp4"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
         <NewsFeed />
       </div>
     </div>
