@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
 
+// Fetch comments
 async function fetchComments(postId) {
   try {
     const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
@@ -12,6 +13,7 @@ async function fetchComments(postId) {
   }
 }
 
+// Submit a comment
 async function submitComment(postId, content, wallType) {
   const res = await fetch("/.netlify/functions/create-comment", {
     method: "POST",
@@ -101,16 +103,51 @@ export default function WorldFeed({ wallType }) {
           return (
             <div key={post.id} className="post" style={{ marginBottom: "2rem" }}>
               {post.video_url ? (
-                <video controls src={post.video_url} style={videoImageStyle()} />
+                <video
+                  controls
+                  src={post.video_url}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                    marginBottom: "0.5rem",
+                  }}
+                />
               ) : post.image_url ? (
-                <img src={post.image_url} alt="preview" style={videoImageStyle()} />
+                <img
+                  src={post.image_url}
+                  alt="preview"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                    marginBottom: "0.5rem",
+                  }}
+                />
               ) : null}
 
-              <h3 style={headlineStyle()}>{post.headline}</h3>
-              <p style={captionStyle()}>{post.caption}</p>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{post.headline}</h3>
+              <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{post.caption}</p>
 
               {post.cta_url && (
-                <a href={post.cta_url} target="_blank" rel="noopener noreferrer" style={ctaStyle()}>
+                <a
+                  href={post.cta_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-block",
+                    background: "linear-gradient(to right, #ff4136, #ffdc00)",
+                    color: "white",
+                    padding: "0.4rem 0.75rem",
+                    borderRadius: "999px",
+                    fontSize: "0.8rem",
+                    fontWeight: "bold",
+                    textDecoration: "none",
+                    marginBottom: "0.5rem",
+                  }}
+                >
                   Visit Link
                 </a>
               )}
@@ -118,14 +155,25 @@ export default function WorldFeed({ wallType }) {
               {safeTags.length > 0 && (
                 <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "white" }}>
                   {safeTags.map((tag) => (
-                    <span key={tag} style={tagStyle()}>
+                    <span
+                      key={tag}
+                      style={{
+                        display: "inline-block",
+                        background: "#1a1a1a",
+                        border: "1px solid #00f0ff55",
+                        padding: "0.2rem 0.5rem",
+                        borderRadius: "999px",
+                        marginRight: "0.5rem",
+                        color: "#ffffff",
+                      }}
+                    >
                       #{tag}
                     </span>
                   ))}
                 </div>
               )}
 
-              {/* Comments Section */}
+              {/* Comments */}
               <div style={{ marginTop: "1rem" }}>
                 <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
                 <div style={{ marginBottom: "0.75rem" }}>
@@ -140,9 +188,29 @@ export default function WorldFeed({ wallType }) {
                   placeholder="Write a comment..."
                   value={inputMap[post.id] || ""}
                   onChange={(e) => setInputMap((prev) => ({ ...prev, [post.id]: e.target.value }))}
-                  style={textareaStyle()}
+                  style={{
+                    width: "100%",
+                    background: "#0d0d0d",
+                    color: "white",
+                    border: "1px solid #00f0ff55",
+                    borderRadius: "6px",
+                    padding: "8px",
+                    fontSize: "0.85rem",
+                    marginBottom: "0.5rem",
+                  }}
                 />
-                <button onClick={() => handleCommentSubmit(post.id)} style={buttonStyle()}>
+                <button
+                  onClick={() => handleCommentSubmit(post.id)}
+                  style={{
+                    padding: "8px 16px",
+                    background: "linear-gradient(to right, #00ff99, #00f0ff)",
+                    color: "black",
+                    border: "none",
+                    borderRadius: "6px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                >
                   Post
                 </button>
               </div>
@@ -150,22 +218,37 @@ export default function WorldFeed({ wallType }) {
           );
         })}
 
-        <div style={fadeScrollCueStyle()}>
+        {/* Fade effect and arrow */}
+        <div
+          style={{
+            position: "sticky",
+            bottom: 0,
+            width: "100%",
+            height: "80px",
+            background: "linear-gradient(to bottom, rgba(13,13,13,0), rgba(13,13,13,1))",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            pointerEvents: "none",
+          }}
+        >
           <div style={{ animation: "bounce 2s infinite", fontSize: "1.5rem", color: "#00f0ff" }}>⬇</div>
         </div>
       </div>
 
-      {/* Right Panel (with hidden scrollbar) */}
+      {/* Right Panel */}
       <div
-        className="hide-scrollbar"
         style={{
           width: "22%",
           background: "#0a0a0a",
           padding: "1rem",
           borderLeft: "1px solid #222",
           color: "white",
-          overflowY: "scroll",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          overflow: "hidden",
         }}
+        className="hide-scrollbar"
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
         <NewsFeed />
@@ -173,56 +256,3 @@ export default function WorldFeed({ wallType }) {
     </div>
   );
 }
-
-// 🧩 Styles broken out for cleanliness
-const videoImageStyle = () => ({
-  width: "100%",
-  height: "auto",
-  borderRadius: "8px",
-  border: "1px solid #ccc",
-  marginBottom: "0.5rem",
-});
-const headlineStyle = () => ({
-  fontSize: "1.2rem",
-  fontWeight: "bold",
-  color: "white",
-});
-const captionStyle = () => ({
-  fontSize: "0.9rem",
-  color: "white",
-  marginBottom: "0.5rem",
-});
-const ctaStyle = () => ({
-  display: "inline-block",
-  background: "linear-gradient(to right, #ff4136, #ffdc00)",
-  color: "white",
-  padding: "0.4rem 0.75rem",
-  borderRadius: "999px",
-  fontSize: "0.8rem",
-  fontWeight: "bold",
-  textDecoration: "none",
-  marginBottom: "0.5rem",
-});
-const tagStyle = () => ({
-  display: "inline-block",
-  background: "#1a1a1a",
-  border: "1px solid #00f0ff55",
-  padding: "0.2rem 0.5rem",
-  borderRadius: "999px",
-  marginRight: "0.5rem",
-  color: "#ffffff",
-});
-const textareaStyle = () => ({
-  width: "100%",
-  background: "#0d0d0d",
-  color: "white",
-  border: "1px solid #00f0ff55",
-  borderRadius: "6px",
-  padding: "8px",
-  fontSize: "0.85rem",
-  marginBottom: "0.5rem",
-});
-const buttonStyle = () => ({
-  padding: "8px 16px",
-  background: "linear-gradient(to right, #00ff99, #00f0ff)",
-  color
