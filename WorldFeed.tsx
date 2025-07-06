@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NewsFeed from "@/components/NewsFeed"; // Make sure this path matches your project structure
+import NewsFeed from "./NewsFeed"; // Corrected path for your current folder layout
 
 // Utility: fetch all comments for a post
 async function fetchComments(postId) {
@@ -251,7 +251,7 @@ export default function WorldFeed({ wallType }) {
         })}
       </div>
 
-      {/* Right Panel (new NewsFeed component) */}
+      {/* Right Panel (modular NewsFeed) */}
       <div style={{ width: "20%" }}>
         <NewsFeed />
       </div>
