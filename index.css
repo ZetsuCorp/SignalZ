@@ -189,6 +189,39 @@ button.submit:hover {
   box-shadow: 0 0 12px #00f0ff88;
 }
 
+/* === SUBMIT LINK SECTION === */
+.submit-link-wrapper {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px dashed #00f0ff44;
+}
+
+.submit-link-wrapper h3 {
+  color: #00f0ff;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.submit-link-wrapper input {
+  margin-bottom: 10px;
+}
+
+.submit-link-wrapper button {
+  background: #0044ff;
+  color: #fff;
+  border: 1px solid #00f0ff44;
+  padding: 10px;
+  width: 100%;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.submit-link-wrapper button:hover {
+  background: #0066ff;
+  box-shadow: 0 0 10px #00f0ff99;
+}
+
 /* === POST CARD === */
 .post {
   background: #111;
@@ -308,7 +341,6 @@ video.auto-pause {
   box-shadow: 0 0 6px #00f0ff88;
 }
 
-
 /* === COMMENT SCROLL WHEEL === */
 .comment-scroll-wrapper {
   max-height: 120px;
@@ -343,12 +375,12 @@ video.auto-pause {
   overflow: hidden;
 }
 
-/* Hide scrollbar globally for specific sections */
+/* === HIDE SCROLLBARS === */
 .hide-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
