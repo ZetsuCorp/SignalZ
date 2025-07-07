@@ -68,12 +68,6 @@ body {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.left-panel::-webkit-scrollbar {
-  display: none;
 }
 
 .sidebar-content {
@@ -118,12 +112,6 @@ body {
   flex: 1;
   overflow-y: auto;
   padding: 24px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.feed-scroll::-webkit-scrollbar {
-  display: none;
 }
 
 /* === HEADER === */
@@ -312,12 +300,6 @@ video.auto-pause {
   height: 100vh;
   z-index: 20;
   overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.settings-drawer::-webkit-scrollbar {
-  display: none;
 }
 
 .settings-drawer button {
@@ -391,4 +373,14 @@ video.auto-pause {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+/* === HIDE SCROLLBARS === */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
