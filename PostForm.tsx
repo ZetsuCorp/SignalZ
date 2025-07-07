@@ -10,6 +10,7 @@ function PostForm({ wallType, onMediaPreview }) {
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [sessionId, setSessionId] = useState("");
+  const [linkInput, setLinkInput] = useState(""); // NEW
 
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
@@ -98,6 +99,18 @@ function PostForm({ wallType, onMediaPreview }) {
     alert("Posted!");
   };
 
+  const handleSubmitLink = async () => {
+    if (!linkInput.trim()) {
+      alert("Please enter a link");
+      return;
+    }
+
+    console.log("Submitting link to SignalZ:", linkInput);
+    // Hook in backend logic or metadata scraping here
+    setLinkInput("");
+    alert("Link submitted to SignalZ (mock)");
+  };
+
   return (
     <div className="bg-[#0c0c0c] text-cyan-200 p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4">
       <h2 className="text-lg font-bold text-cyan-300">📢 Create a New Drop</h2>
@@ -180,6 +193,24 @@ function PostForm({ wallType, onMediaPreview }) {
       >
         🚀 Post to {wallType.toUpperCase()} Wall
       </button>
+
+      {/* New Submit Link Section */}
+      <div className="mt-6 space-y-2">
+        <h3 className="text-cyan-300 font-semibold">🌐 Submit a Social Link to SignalZ</h3>
+        <input
+          type="text"
+          placeholder="Paste any video or social link"
+          value={linkInput}
+          onChange={(e) => setLinkInput(e.target.value)}
+          className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none"
+        />
+        <button
+          onClick={handleSubmitLink}
+          className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
+        >
+          🔗 Submit Link
+        </button>
+      </div>
     </div>
   );
 }
