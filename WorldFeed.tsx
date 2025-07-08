@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
 import ChumFeedPanel from "./src/ChumFeedPanel";
 
-// Fetch comments
+// ✅ Fetch comments
 async function fetchComments(postId) {
   try {
     const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
@@ -14,7 +14,7 @@ async function fetchComments(postId) {
   }
 }
 
-// Submit a comment
+// ✅ Submit a comment
 async function submitComment(postId, content, wallType) {
   const res = await fetch("/.netlify/functions/create-comment", {
     method: "POST",
@@ -34,14 +34,9 @@ export default function WorldFeed({ wallType }) {
       try {
         const safeWall = (wallType || "main").toLowerCase();
         const res = await fetch(`/.netlify/functions/get-all-posts?wall_type=${safeWall}`);
-        if (!res.ok) throw new Error("Failed to fetch all posts");
-        const { posts: standardPosts = [], links: linkedPosts = [] } = await res.json();
-
-        const combined = [...standardPosts, ...linkedPosts].sort((a, b) => {
-          return new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at);
-        });
-
-        setPosts(combined);
+        if (!res.ok) throw new Error("Failed to fetch posts");
+        const data = await res.json();
+        setPosts(data || []);
       } catch (err) {
         console.error("Error fetching posts:", err);
         setError("Failed to load posts.");
@@ -79,7 +74,7 @@ export default function WorldFeed({ wallType }) {
 
   return (
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
-      {/* Left Panel - Chum */}
+      {/* Left Panel - Chum Feed */}
       <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
         <ChumFeedPanel />
       </div>
@@ -99,13 +94,10 @@ export default function WorldFeed({ wallType }) {
           const safeTags = Array.isArray(post.tags)
             ? post.tags
             : typeof post.tags === "string"
-            ? post.tags.split(",").map((t) => t.trim())
+            ? post.tags.split(",").map((tag) => tag.trim())
             : [];
 
           const comments = commentsMap[post.id] || [];
-          const headline = post.headline || post.link_title || "Untitled";
-          const caption = post.caption || "Shared via SignalZ";
-          const visitURL = post.cta_url || post.cta_link_url || post.url || null;
 
           return (
             <div key={post.id} className="post" style={{ marginBottom: "2rem" }}>
@@ -135,12 +127,12 @@ export default function WorldFeed({ wallType }) {
                 />
               ) : null}
 
-              <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{headline}</h3>
-              <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{caption}</p>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{post.headline}</h3>
+              <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{post.caption}</p>
 
-              {visitURL && (
+              {post.cta_url && (
                 <a
-                  href={visitURL}
+                  href={post.cta_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -185,15 +177,18 @@ export default function WorldFeed({ wallType }) {
                 <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
                 {comments.length > 5 ? (
                   <div
+                    className="comment-scroll-wrapper"
                     style={{
                       maxHeight: "120px",
                       overflow: "hidden",
+                      position: "relative",
                       maskImage: "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
                       WebkitMaskImage: "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
                       marginBottom: "0.75rem",
                     }}
                   >
                     <div
+                      className="comment-scroll-inner"
                       style={{
                         display: "flex",
                         flexDirection: "column",
@@ -204,6 +199,7 @@ export default function WorldFeed({ wallType }) {
                       {comments.map((comment, i) => (
                         <div
                           key={i}
+                          className="comment-line"
                           style={{
                             fontSize: "0.85rem",
                             color: "white",
@@ -293,6 +289,7 @@ export default function WorldFeed({ wallType }) {
         }}
       >
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
+
         <iframe
           width="100%"
           height="100%"
@@ -305,6 +302,7 @@ export default function WorldFeed({ wallType }) {
             objectFit: "cover",
           }}
         />
+
         <NewsFeed />
       </div>
     </div>
