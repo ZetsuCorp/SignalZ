@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
-import ChumFeedPanel from "./src/ChumFeedPanel"; // ✅ Correct relative import
+import ChumFeedPanel from "./src/ChumFeedPanel";
 
 // ✅ Fetch comments
 async function fetchComments(postId) {
@@ -33,7 +33,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
+        const res = await fetch(`/.netlify/functions/get-link-posts?wall_type=${safeWall}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
