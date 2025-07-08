@@ -2,15 +2,16 @@
 import { Handler } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 
+// ✅ Match working client setup
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY; // ✅ Match other working functions
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const handler: Handler = async (event) => {
   const wallType = event.queryStringParameters?.wall_type || "main";
 
   try {
-    // ✅ Get normal posts
+    // ✅ Get regular posts from 'posts' table
     const { data: postsData, error: postsError } = await supabase
       .from("posts")
       .select("id, headline, caption, cta_url, tags, session_id, created_at, image_url, video_url, wall_type")
@@ -19,16 +20,18 @@ export const handler: Handler = async (event) => {
 
     if (postsError) throw postsError;
 
-    // ✅ Get link posts (linked_posts table)
+    // ✅ Get link-shared posts from 'linked_posts' table with proper aliasing
     const { data: linkedData, error: linkedError } = await supabase
       .from("linked_posts")
-      .select("id, link_title as headline, caption, cta_link_url as cta_url, tags, session_id, created_at, link_image as image_url, video_url, wall_type")
+      .select(
+        "id, link_title as headline, caption, cta_link_url as cta_url, tags, session_id, created_at, link_image as image_url, video_url, wall_type"
+      )
       .eq("wall_type", wallType)
       .order("created_at", { ascending: false });
 
     if (linkedError) throw linkedError;
 
-    // ✅ Combine & sort newest first
+    // ✅ Merge and sort by recency
     const allPosts = [...postsData, ...linkedData].sort(
       (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     );
@@ -41,8 +44,10 @@ export const handler: Handler = async (event) => {
     console.error("Error fetching all posts:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Failed to fetch posts", error: err.message }),
+      body: JSON.stringify({
+        message: "Failed to fetch posts",
+        error: err.message,
+      }),
     };
   }
 };
-
