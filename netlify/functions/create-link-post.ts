@@ -12,31 +12,39 @@ const handler: Handler = async (event) => {
   }
 
   try {
-    const { url, session_id, wall_type } = JSON.parse(event.body!);
+    const { url, session_id, wall_type, tags, link_title, link_image, image_url, video_url } = JSON.parse(event.body!);
 
     if (!url || !session_id || !wall_type) {
       return { statusCode: 400, body: 'Missing required fields' };
     }
 
-    const { data, error } = await supabase.from('posts').insert([
+    // 🧠 Extract domain from the URL
+    const sourceDomain = new URL(url).hostname.replace("www.", "");
+
+    const { data, error } = await supabase.from('linked_posts').insert([
       {
-        cta_url: url,
+        url,
         session_id,
         wall_type,
-        headline: '🔥 Link Drop',
-        caption: 'User shared a link',
-        image_url: null,
-        video_url: null,
-        tags: ['link']
-      }
+        tags: tags || [],
+        link_title: link_title || "Untitled",
+        link_image: link_image || null,
+        image_url: image_url || null,
+        video_url: video_url || null,
+        cta_link_url: sourceDomain, // 👈 Push the domain
+        updated_at: new Date().toISOString(),
+      },
     ]);
 
     if (error) throw error;
 
-    return { statusCode: 200, body: JSON.stringify({ success: true, data }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: true, id: data[0].id }),
+    };
   } catch (err) {
-    console.error('Error creating link post:', err);
-    return { statusCode: 500, body: 'Internal Server Error' };
+    console.error("Link post error:", err);
+    return { statusCode: 500, body: "Internal Server Error" };
   }
 };
 
