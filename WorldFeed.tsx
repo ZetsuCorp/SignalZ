@@ -2,6 +2,15 @@ import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
 import ChumFeedPanel from "./src/ChumFeedPanel"; // ✅ Correct relative import
 
+// ✅ Safe domain extractor
+function extractDomain(url) {
+  try {
+    return new URL(url).hostname.replace("www.", "");
+  } catch {
+    return "";
+  }
+}
+
 // ✅ Fetch comments
 async function fetchComments(postId) {
   try {
@@ -129,6 +138,46 @@ export default function WorldFeed({ wallType }) {
 
               <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{post.headline}</h3>
               <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{post.caption}</p>
+
+              {/* 🌐 Smart Link Preview */}
+              {safeTags.includes("link") && post.caption?.startsWith("http") && (
+                <a
+                  href={post.caption}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    border: "1px solid #00f0ff44",
+                    borderRadius: "12px",
+                    padding: "1rem",
+                    backgroundColor: "#0f0f0f",
+                    marginTop: "0.5rem",
+                    textDecoration: "none",
+                    color: "white",
+                  }}
+                >
+                  {post.image_url && (
+                    <img
+                      src={post.image_url}
+                      alt="Link preview"
+                      style={{
+                        width: "100%",
+                        maxHeight: "180px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                        marginBottom: "0.5rem",
+                      }}
+                    />
+                  )}
+                  <div style={{ fontWeight: "bold", fontSize: "1rem", marginBottom: "0.25rem" }}>
+                    {post.headline || "Shared via SignalZ"}
+                  </div>
+                  <div style={{ fontSize: "0.8rem", color: "#ccc" }}>
+                    {extractDomain(post.caption)}
+                  </div>
+                </a>
+              )}
 
               {post.cta_url && (
                 <a
