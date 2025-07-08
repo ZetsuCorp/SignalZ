@@ -2,9 +2,8 @@
 import { Handler } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 
-// ✅ Use public anon key to match other functions
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.VITE_SUPABASE_URL!;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const handler: Handler = async (event) => {
@@ -16,32 +15,33 @@ export const handler: Handler = async (event) => {
     const body = JSON.parse(event.body || "{}");
 
     const {
-      link_title,
-      caption,
-      cta_link_url,
-      tags = [],
+      url,
       session_id,
       wall_type = "main",
-      link_image,
-      video_url,
+      tags = ["link"],
+      link_title = "Shared via SignalZ",
+      link_image = null,
+      video_url = null,
+      image_url = null,
+      cta_link_url,
     } = body;
 
-    if (!link_title || !cta_link_url || !session_id) {
+    if (!url || !session_id || !wall_type) {
       return {
         statusCode: 400,
         body: JSON.stringify({ message: "Missing required fields" }),
       };
     }
 
-    const { error } = await supabase.from("linked_posts").insert([
+    const { error } = await supabase.from("posts").insert([
       {
-        link_title,
-        caption,
+        headline: link_title,
+        caption: url,
         cta_link_url,
-        tags: Array.isArray(tags) ? tags : tags.split(",").map((t) => t.trim()),
+        tags,
         session_id,
         wall_type,
-        link_image,
+        image_url: link_image || image_url,
         video_url,
       },
     ]);
@@ -50,7 +50,7 @@ export const handler: Handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Link post created successfully" }),
+      body: JSON.stringify({ message: "Link post created in posts table" }),
     };
   } catch (err) {
     console.error("Error creating link post:", err);
