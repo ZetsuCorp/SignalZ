@@ -16,22 +16,38 @@ const handler: Handler = async (event) => {
     };
   }
 
-  const { data, error } = await supabase
+  // Get normal posts
+  const { data: posts, error: postError } = await supabase
     .from("posts")
     .select("*")
     .eq("wall_type", wall_type)
     .order("created_at", { ascending: false });
 
-  if (error) {
+  // Get social link posts
+  const { data: links, error: linkError } = await supabase
+    .from("linked_posts")
+    .select("*")
+    .eq("wall_type", wall_type)
+    .order("created_at", { ascending: false });
+
+  if (postError || linkError) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
+      body: JSON.stringify({
+        error: postError?.message || linkError?.message,
+      }),
     };
   }
 
+  // Add tag to distinguish link posts
+  const linksTagged = (links || []).map((p) => ({ ...p, isLinkPost: true }));
+
+  // Merge and return
+  const allPosts = [...(posts || []), ...linksTagged];
+
   return {
     statusCode: 200,
-    body: JSON.stringify(data),
+    body: JSON.stringify(allPosts),
   };
 };
 
