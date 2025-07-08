@@ -5,7 +5,7 @@ import ChumFeedPanel from "./src/ChumFeedPanel"; // ✅ Correct relative import
 // ✅ Fetch comments
 async function fetchComments(postId) {
   try {
-    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
+    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -33,7 +33,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
+        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
