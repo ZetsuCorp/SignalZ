@@ -1,63 +1,62 @@
+// netlify/functions/create-link-post.ts
 import { Handler } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL!,
-  process.env.VITE_SUPABASE_ANON_KEY!
-);
+// ✅ Use public anon key to match other functions
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-const handler: Handler = async (event) => {
+export const handler: Handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
   try {
     const body = JSON.parse(event.body || "{}");
+
     const {
-      url,
-      session_id,
-      wall_type,
-      tags,
       link_title,
-      link_image,
-      image_url,
-      video_url,
+      caption,
       cta_link_url,
+      tags = [],
+      session_id,
+      wall_type = "main",
+      link_image,
+      video_url,
     } = body;
 
-    if (!url || !session_id || !wall_type) {
-      console.error("Missing required fields:", { url, session_id, wall_type });
-      return { statusCode: 400, body: "Missing required fields" };
+    if (!link_title || !cta_link_url || !session_id) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Missing required fields" }),
+      };
     }
 
-    const { data, error } = await supabase.from("linked_posts").insert([
+    const { error } = await supabase.from("linked_posts").insert([
       {
-        url,
+        link_title,
+        caption,
+        cta_link_url,
+        tags: Array.isArray(tags) ? tags : tags.split(",").map((t) => t.trim()),
         session_id,
         wall_type,
-        tags: tags || [],
-        link_title: link_title || "Untitled",
-        link_image: link_image || null,
-        image_url: image_url || null,
-        video_url: video_url || null,
-        cta_link_url: cta_link_url || null,
-        updated_at: new Date().toISOString(),
+        link_image,
+        video_url,
       },
     ]);
 
-    if (error) {
-      console.error("Supabase error:", error);
-      return { statusCode: 500, body: JSON.stringify(error) };
-    }
+    if (error) throw error;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, id: data?.[0]?.id }),
+      body: JSON.stringify({ message: "Link post created successfully" }),
     };
   } catch (err) {
-    console.error("Function error:", err);
-    return { statusCode: 500, body: "Internal Server Error" };
+    console.error("Error creating link post:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Error creating link post", error: err.message }),
+    };
   }
 };
-
-export { handler };
