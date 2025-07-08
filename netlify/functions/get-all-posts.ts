@@ -2,7 +2,7 @@
 import { Handler } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -10,7 +10,6 @@ export const handler: Handler = async (event) => {
   const wallType = event.queryStringParameters?.wall_type || "main";
 
   try {
-    // Fetch from posts table
     const { data: postsData, error: postsError } = await supabase
       .from("posts")
       .select("id, headline, caption, cta_url, tags, session_id, created_at, image_url, video_url, wall_type")
@@ -19,7 +18,6 @@ export const handler: Handler = async (event) => {
 
     if (postsError) throw postsError;
 
-    // Fetch from linked_posts table
     const { data: linkedData, error: linkedError } = await supabase
       .from("linked_posts")
       .select("id, link_title as headline, caption, cta_link_url as cta_url, tags, session_id, created_at, link_image as image_url, video_url, wall_type")
@@ -28,7 +26,6 @@ export const handler: Handler = async (event) => {
 
     if (linkedError) throw linkedError;
 
-    // Combine and sort all posts
     const allPosts = [...postsData, ...linkedData].sort(
       (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     );
