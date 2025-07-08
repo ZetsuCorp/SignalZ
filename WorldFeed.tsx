@@ -1,14 +1,31 @@
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
-import ChumFeedPanel from "./src/ChumFeedPanel"; // ✅ Correct relative import
+import ChumFeedPanel from "./src/ChumFeedPanel";
 
-// ✅ Safe domain extractor
+// ✅ Helpers
 function extractDomain(url) {
   try {
     return new URL(url).hostname.replace("www.", "");
   } catch {
     return "";
   }
+}
+
+function isYouTubeOrTikTok(url) {
+  return /youtube\.com|youtu\.be|tiktok\.com/.test(url);
+}
+
+function getEmbedUrl(url) {
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+    const id = match ? match[1] : "";
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
+  }
+  if (url.includes("tiktok.com")) {
+    const match = url.match(/\/video\/(\d+)/);
+    return match ? `https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1` : null;
+  }
+  return null;
 }
 
 // ✅ Fetch comments
@@ -83,12 +100,10 @@ export default function WorldFeed({ wallType }) {
 
   return (
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
-      {/* ✅ Left Panel - Chum Feed */}
       <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
         <ChumFeedPanel />
       </div>
 
-      {/* ✅ Center Feed */}
       <div
         className="hide-scrollbar"
         style={{
@@ -139,44 +154,60 @@ export default function WorldFeed({ wallType }) {
               <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{post.headline}</h3>
               <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{post.caption}</p>
 
-              {/* 🌐 Smart Link Preview */}
               {safeTags.includes("link") && post.caption?.startsWith("http") && (
-                <a
-                  href={post.caption}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    border: "1px solid #00f0ff44",
-                    borderRadius: "12px",
-                    padding: "1rem",
-                    backgroundColor: "#0f0f0f",
-                    marginTop: "0.5rem",
-                    textDecoration: "none",
-                    color: "white",
-                  }}
-                >
-                  {post.image_url && (
-                    <img
-                      src={post.image_url}
-                      alt="Link preview"
+                isYouTubeOrTikTok(post.caption) && getEmbedUrl(post.caption) ? (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <iframe
+                      src={getEmbedUrl(post.caption)}
+                      frameBorder="0"
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
                       style={{
                         width: "100%",
-                        maxHeight: "180px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                        marginBottom: "0.5rem",
+                        height: "315px",
+                        borderRadius: "10px",
+                        border: "1px solid #00f0ff44",
                       }}
                     />
-                  )}
-                  <div style={{ fontWeight: "bold", fontSize: "1rem", marginBottom: "0.25rem" }}>
-                    {post.headline || "Shared via SignalZ"}
                   </div>
-                  <div style={{ fontSize: "0.8rem", color: "#ccc" }}>
-                    {extractDomain(post.caption)}
-                  </div>
-                </a>
+                ) : (
+                  <a
+                    href={post.caption}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      border: "1px solid #00f0ff44",
+                      borderRadius: "12px",
+                      padding: "1rem",
+                      backgroundColor: "#0f0f0f",
+                      marginTop: "0.5rem",
+                      textDecoration: "none",
+                      color: "white",
+                    }}
+                  >
+                    {post.image_url && (
+                      <img
+                        src={post.image_url}
+                        alt="Link preview"
+                        style={{
+                          width: "100%",
+                          maxHeight: "180px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                          marginBottom: "0.5rem",
+                        }}
+                      />
+                    )}
+                    <div style={{ fontWeight: "bold", fontSize: "1rem", marginBottom: "0.25rem" }}>
+                      {post.headline || "Shared via SignalZ"}
+                    </div>
+                    <div style={{ fontSize: "0.8rem", color: "#ccc" }}>
+                      {extractDomain(post.caption)}
+                    </div>
+                  </a>
+                )
               )}
 
               {post.cta_url && (
@@ -221,7 +252,6 @@ export default function WorldFeed({ wallType }) {
                 </div>
               )}
 
-              {/* ✅ Comments */}
               <div style={{ marginTop: "1rem" }}>
                 <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
                 {comments.length > 5 ? (
