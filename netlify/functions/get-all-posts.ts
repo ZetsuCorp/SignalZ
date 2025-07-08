@@ -14,13 +14,15 @@ export const handler: Handler = async (event) => {
     // ✅ Get regular posts from 'posts' table
     const { data: postsData, error: postsError } = await supabase
       .from("posts")
-      .select("id, headline, caption, cta_url, tags, session_id, created_at, image_url, video_url, wall_type")
+      .select(
+        "id, headline, caption, cta_url, tags, session_id, created_at, image_url, video_url, wall_type"
+      )
       .eq("wall_type", wallType)
       .order("created_at", { ascending: false });
 
     if (postsError) throw postsError;
 
-    // ✅ Get link-shared posts from 'linked_posts' table with proper aliasing
+    // ✅ Get link-shared posts from 'linked_posts' table with correct aliasing
     const { data: linkedData, error: linkedError } = await supabase
       .from("linked_posts")
       .select(
