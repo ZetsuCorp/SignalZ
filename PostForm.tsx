@@ -10,7 +10,7 @@ function PostForm({ wallType, onMediaPreview }) {
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [sessionId, setSessionId] = useState("");
-  const [linkInput, setLinkInput] = useState(""); // NEW
+  const [linkInput, setLinkInput] = useState("");
 
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
@@ -105,10 +105,35 @@ function PostForm({ wallType, onMediaPreview }) {
       return;
     }
 
-    console.log("Submitting link to SignalZ:", linkInput);
-    // Hook in backend logic or metadata scraping here
-    setLinkInput("");
-    alert("Link submitted to SignalZ (mock)");
+    try {
+      const domain = new URL(linkInput).hostname.replace("www.", "");
+
+      const response = await fetch("/.netlify/functions/create-link-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: linkInput,
+          session_id: sessionId,
+          wall_type: wallType,
+          tags: ["link"],
+          link_title: "Shared via SignalZ",
+          link_image: null,
+          image_url: null,
+          video_url: null,
+          cta_link_url: domain,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Link submission failed");
+      }
+
+      setLinkInput("");
+      alert("Link submitted to SignalZ!");
+    } catch (err) {
+      console.error("Submit link error:", err);
+      alert("Invalid link or submission error");
+    }
   };
 
   return (
@@ -194,7 +219,6 @@ function PostForm({ wallType, onMediaPreview }) {
         🚀 Post to {wallType.toUpperCase()} Wall
       </button>
 
-      {/* New Submit Link Section */}
       <div className="mt-6 space-y-2">
         <h3 className="text-cyan-300 font-semibold">🌐 Submit a Social Link to SignalZ</h3>
         <input
