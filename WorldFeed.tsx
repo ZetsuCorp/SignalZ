@@ -1,11 +1,12 @@
+
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
-import ChumFeedPanel from "./src/ChumFeedPanel";
+import ChumFeedPanel from "./src/ChumFeedPanel"; // ✅ Correct relative import
 
 // ✅ Fetch comments
 async function fetchComments(postId) {
   try {
-    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
+    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -33,7 +34,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(`/.netlify/functions/get-all-posts?wall_type=${safeWall}`);
+        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
@@ -74,12 +75,12 @@ export default function WorldFeed({ wallType }) {
 
   return (
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
-      {/* Left Panel - Chum Feed */}
+      {/* ✅ Left Panel - Chum Feed */}
       <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
         <ChumFeedPanel />
       </div>
 
-      {/* Center Feed */}
+      {/* ✅ Center Feed */}
       <div
         className="hide-scrollbar"
         style={{
@@ -172,7 +173,7 @@ export default function WorldFeed({ wallType }) {
                 </div>
               )}
 
-              {/* Comments */}
+              {/* ✅ Comments */}
               <div style={{ marginTop: "1rem" }}>
                 <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
                 {comments.length > 5 ? (
