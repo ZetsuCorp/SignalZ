@@ -164,9 +164,12 @@ export default function WorldFeed({ wallType }) {
                       allowFullScreen
                       style={{
                         width: "100%",
-                        height: "315px",
+                        aspectRatio: "9 / 16",
+                        maxHeight: "600px",
                         borderRadius: "10px",
                         border: "1px solid #00f0ff44",
+                        overflow: "hidden",
+                        display: "block",
                       }}
                     />
                   </div>
@@ -337,7 +340,6 @@ export default function WorldFeed({ wallType }) {
           );
         })}
 
-        {/* Fade Arrow */}
         <div
           style={{
             position: "sticky",
@@ -355,7 +357,6 @@ export default function WorldFeed({ wallType }) {
         </div>
       </div>
 
-      {/* Right Panel */}
       <div
         className="hide-scrollbar"
         style={{
