@@ -19,11 +19,11 @@ function getEmbedUrl(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     const id = match ? match[1] : "";
-    return https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0;
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
   }
   if (url.includes("tiktok.com")) {
     const match = url.match(/\/video\/(\d+)/);
-    return match ? https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1 : null;
+    return match ? `https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1` : null;
   }
   return null;
 }
@@ -31,7 +31,7 @@ function getEmbedUrl(url) {
 // ✅ Fetch comments
 async function fetchComments(postId) {
   try {
-    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
+    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -59,7 +59,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
+        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
