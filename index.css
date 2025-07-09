@@ -20,22 +20,28 @@ body {
   overflow: hidden;
 }
 
-/* === LIGHT/DARK THEME === */
+/* Auto-adjust text color for theme */
 @media (prefers-color-scheme: light) {
   body {
     background-color: var(--bg-light);
     color: var(--text-light);
   }
-  .post, .caption, .brand {
+
+  .post,
+  .caption,
+  .brand {
     color: var(--text-light);
   }
+
   .post {
     background: #f1f1f1;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  .post, .caption, .brand {
+  .post,
+  .caption,
+  .brand {
     color: var(--text-dark);
   }
 }
@@ -140,7 +146,9 @@ body {
 }
 
 /* === FORM INPUTS === */
-input, textarea, select {
+input,
+textarea,
+select {
   width: 100%;
   padding: 10px;
   background-color: rgba(0, 255, 255, 0.05);
@@ -151,9 +159,13 @@ input, textarea, select {
   font-size: 14px;
 }
 
-textarea { resize: none; }
+textarea {
+  resize: none;
+}
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border-color: #00f0ff;
   outline: none;
   background-color: rgba(0, 255, 255, 0.08);
@@ -171,23 +183,30 @@ button.submit {
   cursor: pointer;
   transition: 0.2s ease;
 }
+
 button.submit:hover {
   filter: brightness(1.1);
   box-shadow: 0 0 12px #00f0ff88;
 }
 
-/* === SUBMIT LINK === */
+/* === SUBMIT LINK SECTION === */
 .submit-link-wrapper {
   margin-top: 24px;
   padding-top: 18px;
   border-top: 1px dashed #00f0ff44;
 }
+
 .submit-link-wrapper h3 {
   color: #00f0ff;
   font-weight: 600;
   font-size: 15px;
   margin-bottom: 10px;
 }
+
+.submit-link-wrapper input {
+  margin-bottom: 10px;
+}
+
 .submit-link-wrapper button {
   background: #0044ff;
   color: #fff;
@@ -197,6 +216,7 @@ button.submit:hover {
   border-radius: 6px;
   transition: 0.2s ease;
 }
+
 .submit-link-wrapper button:hover {
   background: #0066ff;
   box-shadow: 0 0 10px #00f0ff99;
@@ -215,7 +235,7 @@ button.submit:hover {
   margin-right: auto;
 }
 
-/* === POST MEDIA === */
+/* === POST MEDIA WRAPPER === */
 .post-media {
   position: relative;
   width: 100%;
@@ -224,14 +244,8 @@ button.submit:hover {
   border-radius: 10px;
   margin-bottom: 12px;
 }
-video.auto-pause {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 10px;
-}
 
-/* === FLOATING BRAND === */
+/* === FLOATING BRAND NAME === */
 .brand {
   position: absolute;
   top: 16px;
@@ -243,6 +257,14 @@ video.auto-pause {
   border-radius: 9999px;
   z-index: 2;
   color: var(--text-dark);
+}
+
+/* === VIDEO STYLING === */
+video.auto-pause {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
 }
 
 /* === CAPTION === */
@@ -279,6 +301,7 @@ video.auto-pause {
   z-index: 20;
   overflow-y: auto;
 }
+
 .settings-drawer button {
   background: rgba(0, 255, 255, 0.1);
   color: #00f0ff;
@@ -288,7 +311,7 @@ video.auto-pause {
   width: 100%;
 }
 
-/* === TOGGLES === */
+/* === TOGGLE === */
 .toggle-row {
   display: flex;
   align-items: center;
@@ -296,6 +319,7 @@ video.auto-pause {
   color: #00f0ff;
   margin-bottom: 10px;
 }
+
 .toggle-row input[type="checkbox"] {
   accent-color: #00f0ff;
 }
@@ -311,12 +335,13 @@ video.auto-pause {
   text-decoration: none;
   transition: 0.2s;
 }
+
 .monetize-link:hover {
   background: rgba(0, 255, 255, 0.2);
   box-shadow: 0 0 6px #00f0ff88;
 }
 
-/* === COMMENT SCROLL === */
+/* === COMMENT SCROLL WHEEL === */
 .comment-scroll-wrapper {
   max-height: 120px;
   overflow: hidden;
@@ -324,16 +349,23 @@ video.auto-pause {
   mask-image: linear-gradient(to bottom, transparent, white 10%, white 90%, transparent);
   -webkit-mask-image: linear-gradient(to bottom, transparent, white 10%, white 90%, transparent);
 }
+
 .comment-scroll-inner {
   display: flex;
   flex-direction: column;
   gap: 6px;
   animation: scrollComments 10s linear infinite;
 }
+
 @keyframes scrollComments {
-  0% { transform: translateY(0%); }
-  100% { transform: translateY(-50%); }
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
 }
+
 .comment-line {
   font-size: 14px;
   color: var(--text-dark);
@@ -343,73 +375,12 @@ video.auto-pause {
   overflow: hidden;
 }
 
-/* === SCROLLBAR === */
+/* === HIDE SCROLLBARS === */
 .hide-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
-}
-
-/* === TRENDING CAROUSEL === */
-.trending-carousel-container {
-  width: 100%;
-  background: #0a0a0a;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #00f0ff22;
-}
-.carousel-track {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-}
-.trend-post {
-  min-width: 250px;
-  max-width: 320px;
-  background: #111;
-  border: 1px solid #00f0ff33;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.08);
-  flex-shrink: 0;
-}
-.trend-title {
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.trend-caption {
-  font-size: 12px;
-  color: #aaa;
-  margin-bottom: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.trend-cta {
-  font-size: 12px;
-  color: #00f0ff;
-  text-decoration: underline;
-  margin-top: 4px;
-  display: inline-block;
-}
-.rank-badge {
-  text-align: center;
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: gold;
-}
-.social-stats {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: #ccc;
-  margin-top: 8px;
 }
