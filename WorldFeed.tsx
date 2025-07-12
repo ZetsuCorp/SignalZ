@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
 import ChumFeedPanel from "./src/ChumFeedPanel";
-
+/////////////////////////////////////////////////////
 // ✅ Helpers
 function extractDomain(url) {
   try {
@@ -89,7 +89,7 @@ export default function WorldFeed({ wallType }) {
       setInputMap((prev) => ({ ...prev, [postId]: "" }));
     }
   };
-
+//////////////////////////////////////////////////////////////
   if (error) {
     return <div style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</div>;
   }
@@ -97,7 +97,7 @@ export default function WorldFeed({ wallType }) {
   if (posts.length === 0) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
-
+/////////////////////////////////////////////////////////////////
   return (
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
       <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
@@ -122,7 +122,7 @@ export default function WorldFeed({ wallType }) {
             : [];
 
           const comments = commentsMap[post.id] || [];
-
+/////////////////////////////////////////////////////////////////////
           return (
             <div key={post.id} className="post" style={{ marginBottom: "2rem" }}>
               {post.video_url ? (
@@ -337,6 +337,7 @@ export default function WorldFeed({ wallType }) {
                 </button>
               </div>
             </div>
+            //////////////////////////////////////////////////////////////////////
           );
         })}
 
