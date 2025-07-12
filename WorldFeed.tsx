@@ -27,7 +27,7 @@ function getEmbedUrl(url) {
   }
   return null;
 }
-
+/////////////////////////////////////////////////////////////
 // ✅ Fetch comments
 async function fetchComments(postId) {
   try {
@@ -48,7 +48,7 @@ async function submitComment(postId, content, wallType) {
   });
   return res.ok;
 }
-
+////////////////////////////////////////////////////////////////////////
 export default function WorldFeed({ wallType }) {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
