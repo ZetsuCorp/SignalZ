@@ -124,7 +124,21 @@ export default function WorldFeed({ wallType }) {
           const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
           return (
-            <div key={post.id} className="post" style={{ marginBottom: "2rem" }}>
+          <div
+  key={post.id}
+  className="post"
+  style={{
+    marginBottom: "2rem",
+    backgroundImage: "url('/postcard-assets/cardbase/test.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    borderRadius: "12px",
+    padding: "1rem",
+    position: "relative",
+    overflow: "hidden",
+  }}
+>
+
               {post.video_url ? (
                 <video
                   controls
