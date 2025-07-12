@@ -224,8 +224,10 @@ button.submit:hover {
 
 /* === POST CARD === */
 .post {.post {
-  /* background: #111; */ /* ⛔️ this breaks your inline background image */
-  background-color: #111; /* ✅ preserves inline background-image */
+  .post {
+  background-color: transparent;
+}
+
 
   border: 1px solid #00f0ff22;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
