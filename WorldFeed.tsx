@@ -130,7 +130,8 @@ export default function WorldFeed({ wallType }) {
   className="post"
   style={{
     marginBottom: "2rem",
-   backgroundImage: `url('/postcard-assets/cardbase/${sessionBg}.png')`,
+   bbackgroundImage: `url('/postcard-assets/cardbase/${post.image_url}')`
+,
     backgroundSize: "cover",
     backgroundPosition: "center",
     borderRadius: "12px",
