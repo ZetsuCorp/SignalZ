@@ -123,13 +123,14 @@ export default function WorldFeed({ wallType }) {
 
           const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
+        const sessionBg = sessionStorage.getItem("session_bg") || "test1";
           return (
           <div
   key={post.id}
   className="post"
   style={{
     marginBottom: "2rem",
-    backgroundImage: "url('/postcard-assets/cardbase/test.png')",
+   backgroundImage: `url('/postcard-assets/cardbase/${sessionBg}.png')`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     borderRadius: "12px",
