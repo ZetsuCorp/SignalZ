@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-// Hash session ID to a number
-function hash(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
-
 // Generate or fetch session ID
 function getOrCreateSessionId(): string {
   const existing = sessionStorage.getItem("session_id");
@@ -24,8 +14,17 @@ function getOrCreateSessionId(): string {
   return id;
 }
 
-// Backgrounds: update count to match your actual cardbase image total
-const backgroundList = Array.from({ length: 20 }, (_, i) => `bg${i + 1}`);
+// Get or set a random background image for the session
+function getOrCreateSessionBackground(): string {
+  const existing = sessionStorage.getItem("session_bg");
+  if (existing) return existing;
+
+  const totalImages = 20; // ✅ Update if you add more
+  const randomIndex = Math.floor(Math.random() * totalImages) + 1;
+  const bg = `bg${randomIndex}`;
+  sessionStorage.setItem("session_bg", bg);
+  return bg;
+}
 
 export default function SessionContainer() {
   const [sessionId, setSessionId] = useState("");
@@ -33,11 +32,10 @@ export default function SessionContainer() {
 
   useEffect(() => {
     const id = getOrCreateSessionId();
-    setSessionId(id);
+    const bg = getOrCreateSessionBackground();
 
-    const imageKey = hash(id) % backgroundList.length;
-    const selectedBg = backgroundList[imageKey];
-    setBgImage(`/postcard-assets/cardbase/${selectedBg}.png`);
+    setSessionId(id);
+    setBgImage(`/postcard-assets/cardbase/${bg}.png`);
   }, []);
 
   return (
