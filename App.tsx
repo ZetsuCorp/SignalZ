@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
 import MediaEditor from "./MediaEditor";
+import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
+
 
 export default function App() {
   const [wallType, setWallType] = useState("main");
