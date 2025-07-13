@@ -393,23 +393,27 @@ video.auto-pause {
     height: auto;
   }
 
- .left-panel {
-  display: none;
-}
+  .left-panel {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #00f0ff33;
+    flex-shrink: 0;
+  }
 
-.right-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-}
+  .right-panel {
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+  }
+
   .feed-scroll {
     padding: 12px;
   }
 
   .post {
     max-width: 100%;
-    margin: 12px;
+    margin: 12px 0;
     padding: 16px;
   }
 
@@ -446,4 +450,3 @@ video.auto-pause {
     border-left: none;
   }
 }
-
