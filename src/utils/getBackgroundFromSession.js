@@ -1,7 +1,7 @@
 export const getBackgroundFromSession = (sessionId) => {
-  const backgroundImages = ["test0", "test1", "test2", "test3"]; // 🔥 Only exists here
+  const totalImages = 4; // Update this number if you add more images
   const index = sessionId
-    ? parseInt(sessionId.slice(-1), 16) % backgroundImages.length
+    ? parseInt(sessionId.slice(-1), 16) % totalImages
     : 0;
-  return backgroundImages[index];
+  return `bg${index}.png`;
 };
