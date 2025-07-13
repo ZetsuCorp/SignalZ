@@ -16,14 +16,14 @@ const handler: Handler = async (event) => {
     };
   }
 
-  // Get normal posts
+  // 🔎 Get normal posts with new fields included
   const { data: posts, error: postError } = await supabase
     .from("posts")
-    .select("*")
+    .select("*, session_id, background") // ✅ explicitly include for clarity
     .eq("wall_type", wall_type)
     .order("created_at", { ascending: false });
 
-  // Get social link posts
+  // 🔗 Get social link posts
   const { data: links, error: linkError } = await supabase
     .from("linked_posts")
     .select("*")
@@ -39,10 +39,10 @@ const handler: Handler = async (event) => {
     };
   }
 
-  // Add tag to distinguish link posts
+  // 🏷️ Tag linked posts
   const linksTagged = (links || []).map((p) => ({ ...p, isLinkPost: true }));
 
-  // Merge and return
+  // 📦 Merge and return
   const allPosts = [...(posts || []), ...linksTagged];
 
   return {
