@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-// Simple hash function to turn sessionId into a number
+// Simple hash function to map session ID to image index
 function hash(str: string): number {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0; // Force 32-bit
+    hash |= 0;
   }
   return Math.abs(hash);
 }
 
-// Get or generate session ID
+// Generate or retrieve session ID
 function getOrCreateSessionId(): string {
   const existing = sessionStorage.getItem("session_id");
   if (existing) return existing;
@@ -43,22 +43,12 @@ export default function SessionContainer() {
 
   return (
     <div
-      style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        padding: "20px",
-        borderRadius: "12px",
-        color: "#fff",
-        textShadow: "1px 1px 2px #000",
-        width: "100%",
-        maxWidth: "400px",
-        margin: "20px auto",
-        textAlign: "center",
-      }}
+      className="session-container"
+      style={{ backgroundImage: `url(${bgImage})` }}
     >
-      <h2>You are:</h2>
-      <div style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{sessionId}</div>
+      <h2 style={{ marginBottom: "8px" }}>You are:</h2>
+      <div style={{ fontSize: "1.3rem" }}>{sessionId}</div>
     </div>
   );
 }
+
