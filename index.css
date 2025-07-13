@@ -385,7 +385,7 @@ video.auto-pause {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
+/*//////////////////////////////////////////////
 /* === SESSION ID CONTAINER === */
 .session-container {
   position: fixed;
@@ -394,16 +394,22 @@ video.auto-pause {
   z-index: 9999;
 
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 
   width: 360px;
   max-width: 90vw;
-  padding: 12px 16px;
+  padding: 16px 20px;
 
-  background-color: rgba(15, 15, 15, 0.92);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* overlay + blur effect */
+  background-color: rgba(0, 0, 0, 0.6); /* translucent overlay */
   border: 1px solid #00f0ff33;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
   backdrop-filter: blur(6px);
 
