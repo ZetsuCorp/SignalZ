@@ -14,14 +14,14 @@ function getOrCreateSessionId(): string {
   return id;
 }
 
-// Get or set a random background image for the session
+// Get or set a random background image (test1.png, test2.png, etc.)
 function getOrCreateSessionBackground(): string {
   const existing = sessionStorage.getItem("session_bg");
   if (existing) return existing;
 
-  const totalImages = 20; // ✅ Update if you add more
+  const totalImages = 20; // ✅ Match your actual number of test images
   const randomIndex = Math.floor(Math.random() * totalImages) + 1;
-  const bg = `bg${randomIndex}`;
+  const bg = `test${randomIndex}`;
   sessionStorage.setItem("session_bg", bg);
   return bg;
 }
