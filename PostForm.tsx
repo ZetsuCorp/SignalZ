@@ -76,23 +76,24 @@ const handlePost = async () => {
   const videoUrl = await uploadVideo();
 
   // ✅ Get session's background image filename
-  const background = sessionStorage.getItem("session_bg");
+  const background = getBackgroundFromSession(sessionId);
 
-  await fetch("/.netlify/functions/create-posts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      headline,
-      caption,
-      cta_url: ctaUrl,
-      image_url: imageUrl,
-      video_url: videoUrl,
-      tags: tags.split(",").map((t) => t.trim()),
-      session_id: sessionId,
-      wall_type: wallType,
-      background, // ✅ Now added to the post object
-    }),
-  });
+await fetch("/.netlify/functions/create-posts", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    headline,
+    caption,
+    cta_url: ctaUrl,
+    image_url: imageUrl,
+    video_url: videoUrl,
+    tags: tags.split(",").map((t) => t.trim()),
+    session_id: sessionId,
+    wall_type: wallType,
+    background, // clean + shared
+  }),
+});
+
 
     setHeadline("");
     setCaption("");
