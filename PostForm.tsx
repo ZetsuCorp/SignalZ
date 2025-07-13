@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
+import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
+
 
 function PostForm({ wallType, onMediaPreview }) {
   const [headline, setHeadline] = useState("");
