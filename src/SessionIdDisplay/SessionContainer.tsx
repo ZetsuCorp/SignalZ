@@ -19,7 +19,7 @@ function getOrCreateSessionBackground(): string {
   const existing = sessionStorage.getItem("session_bg");
   if (existing) return existing;
 
-  const totalImages = 20; // ✅ Match your actual number of test images
+  const totalImages = 4; // ✅ Match your actual number of test images
   const randomIndex = Math.floor(Math.random() * totalImages) + 1;
   const bg = `test${randomIndex}`;
   sessionStorage.setItem("session_bg", bg);
