@@ -1,6 +1,19 @@
 import React from "react";
 
 export default function PostCard({ post, comments }) {
+  const backgroundImages = [
+    "test0.png",
+    "test1.png",
+    "test2.png",
+    "test3.png",
+  ];
+
+  const index = post.session_id
+    ? parseInt(post.session_id.slice(-1), 16) % backgroundImages.length
+    : 0;
+
+  const backgroundImageUrl = `/postcard-assets/cardbase/${backgroundImages[index]}`;
+
   return (
     <div
       className="post-card"
@@ -9,8 +22,7 @@ export default function PostCard({ post, comments }) {
         position: "relative",
         overflow: "hidden",
         borderRadius: "12px",
-        backgroundImage: `url('/postcard-assets/cardbase/${backgroundImages[index]}')`,
-
+        backgroundImage: `url('${backgroundImageUrl}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "1rem",
