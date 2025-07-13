@@ -385,3 +385,60 @@ video.auto-pause {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* === MOBILE RESPONSIVE === */
+@media (max-width: 768px) {
+  .app-wrapper {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .left-panel,
+  .right-panel {
+    display: none;
+  }
+
+  .feed-scroll {
+    padding: 12px;
+  }
+
+  .post {
+    max-width: 100%;
+    margin: 12px;
+    padding: 16px;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .brand {
+    font-size: 12px;
+    padding: 4px 8px;
+    top: 10px;
+    left: 10px;
+  }
+
+  .caption {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .comment-scroll-wrapper {
+    max-height: 80px;
+  }
+
+  iframe {
+    width: 100%;
+    height: auto;
+  }
+
+  .settings-drawer {
+    width: 100%;
+    position: static;
+    height: auto;
+    border-left: none;
+  }
+}
+
