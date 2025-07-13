@@ -123,23 +123,29 @@ export default function WorldFeed({ wallType }) {
 
           const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
-        const sessionBg = sessionStorage.getItem("session_bg") || "test1";
-          return (
-          <div
-  key={post.id}
-  className="post"
-  style={{
-    marginBottom: "2rem",
-    bbackgroundImage: `url('/postcard-assets/cardbase/${post.background || "test1"}.png')`
-,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    borderRadius: "12px",
-    padding: "1rem",
-    position: "relative",
-    overflow: "hidden",
-  }}
->
+       /////////////////////////////////////////////////////////////////////
+const backgroundImages = ["test0.png", "test1.png", "test2.png", "test3.png"];
+const index = post.session_id
+  ? parseInt(post.session_id.slice(-1), 16) % backgroundImages.length
+  : 0;
+const bg = backgroundImages[index];
+
+return (
+  <div
+    key={post.id}
+    className="post"
+    style={{
+      marginBottom: "2rem",
+      backgroundImage: `url('/postcard-assets/cardbase/${bg}')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      borderRadius: "12px",
+      padding: "1rem",
+      position: "relative",
+      overflow: "hidden",
+    }}
+  >
+
 
               {post.video_url ? (
                 <video
