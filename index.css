@@ -387,11 +387,4 @@ video.auto-pause {
 }
 
 /* === MOBILE RESPONSIVE === */
-@media (max-width: 768px) {
-  .app-wrapper {
-    flex-direction: column;
-    height: auto;
-  }
 
-
-}
