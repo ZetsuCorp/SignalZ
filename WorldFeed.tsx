@@ -123,12 +123,8 @@ export default function WorldFeed({ wallType }) {
 
           const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
-       /////////////////////////////////////////////////////////////////////
-const backgroundImages = ["test0.png", "test1.png", "test2.png", "test3.png"];
-const index = post.session_id
-  ? parseInt(post.session_id.slice(-1), 16) % backgroundImages.length
-  : 0;
-const bg = backgroundImages[index];
+    /////////////////////////////////////////////////////////////////////
+const bg = post.background || "test1.png";
 
 return (
   <div
