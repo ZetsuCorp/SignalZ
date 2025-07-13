@@ -19,6 +19,7 @@ const handler: Handler = async (event) => {
     tags,
     session_id,
     wall_type,
+    background, // ✅ added
   } = body;
 
   const { error } = await supabase.from("posts").insert([
@@ -31,6 +32,7 @@ const handler: Handler = async (event) => {
       tags,
       session_id,
       wall_type,
+      background, // ✅ store image reference from session
     },
   ]);
 
