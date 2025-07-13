@@ -9,7 +9,8 @@ export default function PostCard({ post, comments }) {
         position: "relative",
         overflow: "hidden",
         borderRadius: "12px",
-        backgroundImage: "url('/postcard-assets/cardbase/test0.png')",
+        backgroundImage: `url('/postcard-assets/cardbase/${backgroundImages[index]}')`,
+
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "1rem",
