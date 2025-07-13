@@ -1,18 +1,9 @@
 import React from "react";
+import { getBackgroundFromSession } from "../src/utils/getBackgroundFromSession";
 
 export default function PostCard({ post, comments }) {
-  const backgroundImages = [
-    "test0.png",
-    "test1.png",
-    "test2.png",
-    "test3.png",
-  ];
-
-  const index = post.session_id
-    ? parseInt(post.session_id.slice(-1), 16) % backgroundImages.length
-    : 0;
-
-  const backgroundImageUrl = `/postcard-assets/cardbase/${backgroundImages[index]}`;
+  const background = getBackgroundFromSession(post.session_id);
+  const backgroundImageUrl = `/postcard-assets/cardbase/${background}.png`;
 
   return (
     <div
