@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-// Simple hash function to map session ID to image index
+// Hash session ID to a number
 function hash(str: string): number {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -10,7 +10,7 @@ function hash(str: string): number {
   return Math.abs(hash);
 }
 
-// Generate or retrieve session ID
+// Generate or fetch session ID
 function getOrCreateSessionId(): string {
   const existing = sessionStorage.getItem("session_id");
   if (existing) return existing;
@@ -24,9 +24,8 @@ function getOrCreateSessionId(): string {
   return id;
 }
 
-const backgroundList = [
-  "bg1", "bg2", "bg3", "bg4", "bg5", "bg6", "bg7", "bg8", "bg9", "bg10"
-];
+// Backgrounds: update count to match your actual cardbase image total
+const backgroundList = Array.from({ length: 20 }, (_, i) => `bg${i + 1}`);
 
 export default function SessionContainer() {
   const [sessionId, setSessionId] = useState("");
@@ -44,11 +43,15 @@ export default function SessionContainer() {
   return (
     <div
       className="session-container"
-      style={{ backgroundImage: `url(${bgImage})` }}
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
     >
-      <h2 style={{ marginBottom: "8px" }}>You are:</h2>
-      <div style={{ fontSize: "1.3rem" }}>{sessionId}</div>
+      <div style={{ color: "#00f0ff", fontWeight: "bold" }}>{sessionId}</div>
+      <div style={{ fontSize: "13px", color: "#aaa" }}>🧠 Stats coming soon</div>
     </div>
   );
 }
-
