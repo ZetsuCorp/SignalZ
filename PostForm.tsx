@@ -66,29 +66,33 @@ function PostForm({ wallType, onMediaPreview }) {
     return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
   };
 
-  const handlePost = async () => {
-    if (!headline || !caption) {
-      alert("Headline and caption required");
-      return;
-    }
+const handlePost = async () => {
+  if (!headline || !caption) {
+    alert("Headline and caption required");
+    return;
+  }
 
-    const imageUrl = await uploadImage();
-    const videoUrl = await uploadVideo();
+  const imageUrl = await uploadImage();
+  const videoUrl = await uploadVideo();
 
-    await fetch("/.netlify/functions/create-posts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        headline,
-        caption,
-        cta_url: ctaUrl,
-        image_url: imageUrl,
-        video_url: videoUrl,
-        tags: tags.split(",").map((t) => t.trim()),
-        session_id: sessionId,
-        wall_type: wallType,
-      }),
-    });
+  // ✅ Get session's background image filename
+  const background = sessionStorage.getItem("session_bg");
+
+  await fetch("/.netlify/functions/create-posts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      headline,
+      caption,
+      cta_url: ctaUrl,
+      image_url: imageUrl,
+      video_url: videoUrl,
+      tags: tags.split(",").map((t) => t.trim()),
+      session_id: sessionId,
+      wall_type: wallType,
+      background, // ✅ Now added to the post object
+    }),
+  });
 
     setHeadline("");
     setCaption("");
@@ -121,6 +125,7 @@ function PostForm({ wallType, onMediaPreview }) {
           image_url: null,
           video_url: null,
           cta_link_url: domain,
+           background, // ✅ Added this
         }),
       });
 
