@@ -4,7 +4,6 @@ import WorldFeed from "./WorldFeed";
 import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
 
-
 export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
@@ -36,7 +35,10 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
-      {/* Sidebar */}
+      {/* 🔹 Session ID Floating Overlay */}
+      <SessionContainer />
+
+      {/* 🔹 Sidebar Panel */}
       <aside className="left-panel">
         <div className="sidebar-content">
           <h2 className="sidebar-title">Create</h2>
@@ -60,7 +62,7 @@ export default function App() {
         </div>
       </aside>
 
-      {/* Feed */}
+      {/* 🔹 Main Feed Area */}
       <main className="right-panel">
         <header className="text-center py-4 border-b border-cyan-800">
           <h1 className="text-3xl font-bold text-cyan-200">🌐 SIGNALZ</h1>
@@ -84,7 +86,7 @@ export default function App() {
         </div>
       </main>
 
-      {/* Settings */}
+      {/* 🔹 Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
@@ -103,7 +105,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Media Overlay */}
+      {/* 🔹 Media Overlay Editor */}
       {editorVisible && editorSrc && (
         <MediaEditor
           type={editorType}
