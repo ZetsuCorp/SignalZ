@@ -3,5 +3,5 @@ export const getBackgroundFromSession = (sessionId) => {
   const index = sessionId
     ? parseInt(sessionId.slice(-1), 16) % totalImages
     : 0;
-  return `bg${index}.png`;
+  return backgroundImages[index];
 };
