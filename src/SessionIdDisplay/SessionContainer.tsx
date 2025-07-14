@@ -5,7 +5,7 @@ function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// ✅ Generate or fetch session ID
+// ✅ Generate or fetch session ID with emoji logic + sigicon prefix
 function getOrCreateSessionId(): string {
   const existing = sessionStorage.getItem("session_id");
   if (existing) return existing;
@@ -79,6 +79,7 @@ export default function SessionContainer() {
   useEffect(() => {
     const id = getOrCreateSessionId();
     const bg = getOrCreateSessionBackground();
+
     setSessionId(id);
     setBgImage(`/postcard-assets/cardbase/${bg}.png`);
   }, []);
@@ -95,31 +96,20 @@ export default function SessionContainer() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        position: "relative",
-        padding: "1em",
-        borderRadius: "12px",
-        overflow: "hidden",
+        padding: "1em"
       }}
     >
-      {/* Full container dark shadow overlay */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "rgba(0, 0, 0, 0.7)",
-          backdropFilter: "blur(3px)",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Content above the shadow */}
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "0.75em",
-          position: "relative",
-          zIndex: 1,
+          gap: "0.5em",
+          background: "rgba(0, 0, 0, 0.65)",
+          borderRadius: "12px",
+          padding: "0.75em 1.25em",
+          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.5)",
+          backdropFilter: "blur(4px)",
+          width: "fit-content",
         }}
       >
         {imgPath && (
@@ -127,10 +117,10 @@ export default function SessionContainer() {
             src={imgPath}
             alt="sigicon"
             style={{
-              width: "2.5em",
-              height: "2.5em",
+              width: "2.25em",
+              height: "2.25em",
               borderRadius: "6px",
-              objectFit: "contain",
+              objectFit: "contain"
             }}
           />
         )}
@@ -139,8 +129,7 @@ export default function SessionContainer() {
             color: "#00f0ff",
             fontWeight: "bold",
             fontSize: "1rem",
-            maxWidth: "100%",
-            overflowWrap: "break-word",
+            overflowWrap: "break-word"
           }}
         >
           {cleanName}
