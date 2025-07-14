@@ -88,73 +88,64 @@ export default function SessionContainer() {
   const imgPath = imgMatch ? `/sigicons/${imgMatch[1]}` : null;
   const cleanName = sessionId.replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif/, '');
 
-  // Extract the last emoji as flair
-  const flairEmoji = cleanName.match(/[\p{Emoji}]{1}$/u)?.[0] || "";
-  const nameWithoutEmoji = cleanName.replace(flairEmoji, "");
-
   return (
     <div
-      className="session-container"
       style={{
+        position: "relative",
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        height: "6em",
         display: "flex",
         alignItems: "center",
-        gap: "0.75em",
-        padding: "1em"
+        padding: "1em",
       }}
     >
-      {imgPath && (
-        <img
-          src={imgPath}
-          alt="sigicon"
-          style={{
-            width: "2.25em",
-            height: "2.25em",
-            borderRadius: "6px",
-            objectFit: "contain"
-          }}
-        />
-      )}
+      {/* Shadow overlay that fills entire container */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0, 0, 0, 0.6)",
+          backdropFilter: "blur(2px)",
+          zIndex: 0,
+        }}
+      />
 
-      <div style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
+      {/* Foreground content */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.75em",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        {imgPath && (
+          <img
+            src={imgPath}
+            alt="sigicon"
+            style={{
+              width: "2.5em",
+              height: "2.5em",
+              borderRadius: "6px",
+              objectFit: "contain",
+            }}
+          />
+        )}
         <div
           style={{
-            background: "rgba(0, 0, 0, 0.6)",
-            padding: "0.4em 0.75em",
-            borderRadius: "8px",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
             color: "#00f0ff",
             fontWeight: "bold",
             fontSize: "1rem",
-            backdropFilter: "blur(2px)",
             maxWidth: "100%",
-            overflowWrap: "break-word"
+            overflowWrap: "break-word",
           }}
         >
-          {nameWithoutEmoji}
+          {cleanName}
         </div>
-
-        {flairEmoji && (
-          <div
-            style={{
-              background: "rgba(0, 0, 0, 0.6)",
-              borderRadius: "999px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
-              width: "2.25em",
-              height: "2.25em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "1.25em",
-              backdropFilter: "blur(2px)"
-            }}
-          >
-            {flairEmoji}
-          </div>
-        )}
       </div>
     </div>
   );
