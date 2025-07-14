@@ -55,6 +55,7 @@ function getOrCreateSessionId(): string {
   const flairEmojis = ["🔥", "💀", "✨", "🌀", "🚀", "🎯", "🤖", "💎", "👾", "🌈"];
   const flair = pick(flairEmojis);
 
+  // Name format includes the image path in front
   const id = `sigicons/${Sicon}#${part1}${part2}${part3}${finalThing}${matchedEmoji}${flair}`;
   sessionStorage.setItem("session_id", id);
   return id;
@@ -84,7 +85,7 @@ export default function SessionContainer() {
     setBgImage(`/postcard-assets/cardbase/${bg}.png`);
   }, []);
 
-  // Separate image and name
+  // Break apart the session string
   const imgMatch = sessionId.match(/^sigicons\/([a-zA-Z0-9\-]+\.gif)/);
   const imgPath = imgMatch ? `/sigicons/${imgMatch[1]}` : null;
   const cleanName = sessionId.replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif/, '');
@@ -106,11 +107,15 @@ export default function SessionContainer() {
         <img
           src={imgPath}
           alt="sigicon"
-          style={{ width: "2em", height: "2em" }}
+          style={{
+            width: "2.25em",
+            height: "2.25em",
+            borderRadius: "6px",
+            objectFit: "contain"
+          }}
         />
       )}
       <div style={{ color: "#00f0ff", fontWeight: "bold" }}>{cleanName}</div>
     </div>
   );
 }
-
