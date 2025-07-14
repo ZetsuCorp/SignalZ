@@ -118,7 +118,7 @@ export default function SessionContainer() {
             alt="sigicon"
             style={{
               width: "2.25em",
-              height: "1em",
+              height: "3em",
               borderRadius: "6px",
               objectFit: "contain"
             }}
