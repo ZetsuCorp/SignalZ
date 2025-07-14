@@ -115,7 +115,22 @@ export default function SessionContainer() {
           }}
         />
       )}
-      <div style={{ color: "#00f0ff", fontWeight: "bold" }}>{cleanName}</div>
+    <div
+  style={{
+    background: "rgba(0, 0, 0, 0.6)",
+    padding: "0.4em 0.75em",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
+    color: "#00f0ff",
+    fontWeight: "bold",
+    fontSize: "1rem",
+    backdropFilter: "blur(2px)",
+    maxWidth: "100%",
+    overflowWrap: "break-word",
+  }}
+>
+  {cleanName}
+</div>
     </div>
   );
 }
