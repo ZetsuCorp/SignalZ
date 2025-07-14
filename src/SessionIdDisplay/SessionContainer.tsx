@@ -112,6 +112,9 @@ export default function SessionContainer() {
           width: "fit-content",
         }}
       >
+        <div style={{ fontSize: "0.75rem", color: "#aaa", marginBottom: "0.25em" }}>
+          Your SigZ Session ID:
+        </div>
         {imgPath && (
           <img
             src={imgPath}
