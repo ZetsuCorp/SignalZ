@@ -5,7 +5,7 @@ function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// ✅ Generate or fetch session ID with emoji logic + sigicon prefix
+// ✅ Generate or fetch session ID
 function getOrCreateSessionId(): string {
   const existing = sessionStorage.getItem("session_id");
   if (existing) return existing;
@@ -79,7 +79,6 @@ export default function SessionContainer() {
   useEffect(() => {
     const id = getOrCreateSessionId();
     const bg = getOrCreateSessionBackground();
-
     setSessionId(id);
     setBgImage(`/postcard-assets/cardbase/${bg}.png`);
   }, []);
@@ -90,30 +89,30 @@ export default function SessionContainer() {
 
   return (
     <div
+      className="session-container"
       style={{
-        position: "relative",
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        height: "6em",
-        display: "flex",
-        alignItems: "center",
+        position: "relative",
         padding: "1em",
+        borderRadius: "12px",
+        overflow: "hidden",
       }}
     >
-      {/* Shadow overlay that fills entire container */}
+      {/* Full container dark shadow overlay */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(0, 0, 0, 0.6)",
-          backdropFilter: "blur(2px)",
+          background: "rgba(0, 0, 0, 0.7)",
+          backdropFilter: "blur(3px)",
           zIndex: 0,
         }}
       />
 
-      {/* Foreground content */}
+      {/* Content above the shadow */}
       <div
         style={{
           display: "flex",
