@@ -128,19 +128,41 @@ const bg = post.background || "test1.png";
 
 return (
   <div
-    key={post.id}
-    className="post"
+  key={post.id}
+  className="post shadow-xl"
+  style={{
+    marginBottom: "2rem",
+    backgroundImage: `url('/postcard-assets/cardbase/${bg}')`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    borderRadius: "16px",
+    border: "4px solid rgba(0, 255, 255, 0.5)",
+    boxShadow: "0 0 15px #00f0ff55",
+    padding: "1.5rem",
+    position: "relative",
+    overflow: "hidden",
+    zIndex: 1,
+  }}
+>
+  {/* OPTIONAL: Holo overlay */}
+  <div
     style={{
-      marginBottom: "2rem",
-      backgroundImage: `url('/postcard-assets/cardbase/${bg}')`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      borderRadius: "12px",
-      padding: "1rem",
-      position: "relative",
-      overflow: "hidden",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      background:
+        "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.08) 100%)",
+      zIndex: 0,
+      pointerEvents: "none",
+      mixBlendMode: "screen",
     }}
-  >
+  />
+
+  {/* Rest of the content sits above */}
+  <div style={{ position: "relative", zIndex: 2 }}>
+
 
 
               {post.video_url ? (
