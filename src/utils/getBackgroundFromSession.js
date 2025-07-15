@@ -1,4 +1,3 @@
-
 export const getBackgroundFromSession = (sessionId) => {
   const totalImages = 4; // Update this number if you add more images
   const index = sessionId
