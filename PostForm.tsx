@@ -12,6 +12,7 @@ function PostForm({ wallType, onMediaPreview }) {
   const [video, setVideo] = useState(null);
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
+  const [displayName, setDisplayName] = useState(""); // ✅ NEW
   const [linkInput, setLinkInput] = useState("");
 
   const imageInputRef = useRef(null);
@@ -25,10 +26,14 @@ function PostForm({ wallType, onMediaPreview }) {
     }
     setSessionId(existing);
 
-    // ✅ Grab icon from sessionStorage
     const icon = sessionStorage.getItem("session_icon");
     if (icon) {
       setSigIcon(icon);
+    }
+
+    const name = sessionStorage.getItem("session_display_name"); // ✅ NEW
+    if (name) {
+      setDisplayName(name);
     }
   }, []);
 
@@ -95,7 +100,8 @@ function PostForm({ wallType, onMediaPreview }) {
         video_url: videoUrl,
         tags: tags.split(",").map((t) => t.trim()),
         session_id: sessionId,
-        sigicon_url: sigIcon, // 🔥 Attached signal icon
+        sigicon_url: sigIcon,
+        display_name: displayName, // ✅ Added here
         wall_type: wallType,
         background,
       }),
@@ -126,7 +132,7 @@ function PostForm({ wallType, onMediaPreview }) {
         body: JSON.stringify({
           url: linkInput,
           session_id: sessionId,
-          sigicon_url: sigIcon, // 🔥 Included icon for link drop
+          sigicon_url: sigIcon,
           wall_type: wallType,
           tags: ["link"],
           link_title: "Shared via SignalZ",
