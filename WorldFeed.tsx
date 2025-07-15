@@ -191,6 +191,7 @@ return (
     }
   </span>
 )}
+        </div>
 
 
       {/* Card Title */}
