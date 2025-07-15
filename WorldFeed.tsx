@@ -184,11 +184,7 @@ return (
       textShadow: "0 0 6px #00f0ff",
     }}
   >
-  {
-  post.session_id
-    .replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif#/, '') // Remove 'sigicons/...gif#'
-    .match(/^[a-zA-Z_]+/)?.[0] || "Unknown"
-}
+   {post.display_name}
   </span>
 )}
 
