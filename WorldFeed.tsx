@@ -123,7 +123,7 @@ export default function WorldFeed({ wallType }) {
 
           const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
 const bg = post.background || "test1.png";
 
 return (
@@ -132,7 +132,7 @@ return (
     className="post shadow-xl"
     style={{
       marginBottom: "2rem",
-      backgroundImage: `url('/postcard-assets/cardbase/${bg}')`,
+      backgroundImage: `url('/postcard-assets/cardbase/${bg}')`, // ✅ backtick string for JSX
       backgroundSize: "cover",
       backgroundPosition: "center",
       borderRadius: "16px",
@@ -144,7 +144,7 @@ return (
       zIndex: 1,
     }}
   >
-    {/* 🔮 Holographic overlay */}
+    {/* OPTIONAL: Holo overlay */}
     <div
       style={{
         position: "absolute",
@@ -159,63 +159,6 @@ return (
         mixBlendMode: "screen",
       }}
     />
-
-    {/* 🪪 ID, Icon, Stars */}
-    <div
-      style={{
-        position: "relative",
-        zIndex: 1,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: "1rem",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <span style={{ fontSize: "1.25rem" }}>🪪</span>
-        {post.sigicon_url && (
-          <img
-            src={post.sigicon_url}
-            alt="SigIcon"
-            style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "50%",
-              border: "1px solid white",
-              backgroundColor: "rgba(0,0,0,0.6)",
-            }}
-          />
-        )}
-      </div>
-      <div style={{ fontSize: "1.1rem", color: "white" }}>🌟🌟🌟🌟</div>
-    </div>
-
-    {/* 🧾 Card Title */}
-    <h3
-      style={{
-        fontSize: "1.25rem",
-        fontWeight: "bold",
-        color: "white",
-        marginBottom: "0.25rem",
-      }}
-    >
-      {post.headline}
-    </h3>
-
-    {/* 📂 Card Caption */}
-    <p
-      style={{
-        fontSize: "0.95rem",
-        color: "white",
-        marginBottom: "0.75rem",
-      }}
-    >
-      {post.caption}
-    </p>
-
-    {/* ℹ️ Continue rendering images/videos/embeds/comments here */}
-  </div>
-);
 
 
 
