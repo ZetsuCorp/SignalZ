@@ -213,6 +213,35 @@ return (
 
       {/* --- Content Media Already Here (image/video/embed) --- */}
 
+
+              {post.video_url ? (
+                <video
+                  controls
+                  src={post.video_url}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                    marginBottom: "0.5rem",
+                  }}
+                />
+              ) : post.image_url ? (
+                <img
+                  src={post.image_url}
+                  alt="preview"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                    marginBottom: "0.5rem",
+                  }}
+                />
+              ) : null}
+
+
+      
       {/* ATK / DEF Slot */}
       <div style={{
         marginTop: "1rem",
@@ -242,32 +271,6 @@ return (
       </div>
     </div>
 
-
-              {post.video_url ? (
-                <video
-                  controls
-                  src={post.video_url}
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: "8px",
-                    border: "1px solid #ccc",
-                    marginBottom: "0.5rem",
-                  }}
-                />
-              ) : post.image_url ? (
-                <img
-                  src={post.image_url}
-                  alt="preview"
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: "8px",
-                    border: "1px solid #ccc",
-                    marginBottom: "0.5rem",
-                  }}
-                />
-              ) : null}
 
     {post.sigicon_url && (
   <div
