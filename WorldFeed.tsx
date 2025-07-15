@@ -127,38 +127,177 @@ export default function WorldFeed({ wallType }) {
 const bg = post.background || "test1.png";
 
 return (
- <div
-  key={post.id}
-  className="post shadow-xl"
-  style={{
-    marginBottom: "2rem",
-    backgroundImage: `url('/postcard-assets/cardbase/${bg}')`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    borderRadius: "16px",
-    border: "4px solid rgba(0, 255, 255, 0.5)",
-    boxShadow: "0 0 15px #00f0ff55",
-    padding: "1.5rem",
-    position: "relative",
-    overflow: "hidden",
-    zIndex: 1,
-  }}
->
-  {/* OPTIONAL: Holo overlay */}
   <div
+    key={post.id}
+    className="post shadow-xl"
     style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      background:
-        "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.08) 100%)",
-      zIndex: 0,
-      pointerEvents: "none",
-      mixBlendMode: "screen",
+      marginBottom: "2rem",
+      backgroundImage: `url('/postcard-assets/cardbase/${bg}')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      borderRadius: "16px",
+      border: "4px solid rgba(0, 255, 255, 0.5)",
+      boxShadow: "0 0 15px #00f0ff55",
+      padding: "1.5rem",
+      position: "relative",
+      overflow: "hidden",
+      zIndex: 1,
     }}
-  />
+  >
+    {/* HOLO OVERLAY */}
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        background: "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,255,255,0.08))",
+        mixBlendMode: "screen",
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
+
+    {/* 🔥 TCG HEADER */}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "0.75rem",
+        zIndex: 1,
+        position: "relative",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <span style={{ fontSize: "1.25rem" }}>🪪</span>
+        {post.sigicon_url && (
+          <img
+            src={post.sigicon_url}
+            alt="SigIcon"
+            style={{
+              width: "34px",
+              height: "34px",
+              borderRadius: "50%",
+              border: "1px solid #fff",
+            }}
+          />
+        )}
+      </div>
+      <div style={{ fontSize: "1.1rem" }}>🌟🌟🌟🌟</div>
+    </div>
+
+    {/* 📛 CARD TITLE */}
+    <h3
+      style={{
+        fontSize: "1.2rem",
+        fontWeight: "bold",
+        color: "#ffd700",
+        textShadow: "1px 1px 3px #000",
+        marginBottom: "0.4rem",
+        zIndex: 1,
+        position: "relative",
+      }}
+    >
+      {post.headline}
+    </h3>
+
+    {/* 📂 CARD TYPE */}
+    <div
+      style={{
+        fontSize: "0.85rem",
+        color: "#00f0ff",
+        marginBottom: "1rem",
+        zIndex: 1,
+        position: "relative",
+      }}
+    >
+      📂 Type — SIGZICON
+    </div>
+
+    {/* 🎥 MEDIA */}
+    {post.video_url ? (
+      <video
+        controls
+        src={post.video_url}
+        style={{
+          width: "100%",
+          borderRadius: "10px",
+          border: "2px solid #00f0ff88",
+          marginBottom: "0.75rem",
+          zIndex: 1,
+          position: "relative",
+        }}
+      />
+    ) : post.image_url ? (
+      <img
+        src={post.image_url}
+        alt="Content"
+        style={{
+          width: "100%",
+          borderRadius: "10px",
+          border: "2px solid #00f0ff88",
+          marginBottom: "0.75rem",
+          zIndex: 1,
+          position: "relative",
+        }}
+      />
+    ) : null}
+
+    {/* 📄 DESCRIPTION */}
+    <div
+      style={{
+        background: "rgba(0,0,0,0.5)",
+        border: "1px solid #666",
+        borderRadius: "12px",
+        padding: "0.75rem",
+        fontSize: "0.9rem",
+        color: "#eee",
+        zIndex: 1,
+        position: "relative",
+        marginBottom: "1rem",
+      }}
+    >
+      {post.caption}
+    </div>
+
+    {/* 🧪 ATK/DEF BAR */}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        background: "#111",
+        padding: "0.5rem 0.75rem",
+        borderRadius: "8px",
+        border: "1px solid #00f0ff33",
+        fontSize: "0.85rem",
+        zIndex: 1,
+        position: "relative",
+      }}
+    >
+      <span>❤️ Likes: {post.likes || 0}</span>
+      <span>💬 Comments: {(commentsMap?.[post.id] || []).length}</span>
+    </div>
+
+    {/* 👁️ Z-ATK / Z-DEF BAR */}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        fontSize: "0.75rem",
+        marginTop: "0.5rem",
+        color: "#ccc",
+        zIndex: 1,
+        position: "relative",
+      }}
+    >
+      <span>👁️ Views: {post.views || 0}</span>
+      <span>🔁 Shares: {post.shares || 0}</span>
+    </div>
+  </div>
+);
+
 
 
 
