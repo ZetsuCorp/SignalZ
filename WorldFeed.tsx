@@ -184,10 +184,14 @@ return (
       textShadow: "0 0 6px #00f0ff",
     }}
   >
-    {post.session_id.replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif/, '')}
+    {
+      post.session_id
+        .replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif#/, '') // 🔥 removes the icon filename and #
+        .replace(/[0-9]+$/, '') // 🔥 removes trailing numbers like "8821"
+    }
   </span>
 )}
-<span role="img" aria-label="stars">🌟🌟🌟🌟</span>
+
 </div>
 
       {/* Card Title */}
