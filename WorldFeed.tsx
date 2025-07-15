@@ -172,7 +172,7 @@ return (
         padding: "6px 10px",
         borderRadius: "12px",
       }}>
-    {post.session_id && (
+    {post.display_name && (
   <span
     style={{
       fontWeight: "bold",
