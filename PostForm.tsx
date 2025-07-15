@@ -87,7 +87,8 @@ function PostForm({ wallType, onMediaPreview }) {
 
     const imageUrl = await uploadImage();
     const videoUrl = await uploadVideo();
-    const background = getBackgroundFromSession(sessionId);
+    const background = sessionStorage.getItem("session_bg");
+
 
     await fetch("/.netlify/functions/create-posts", {
       method: "POST",
