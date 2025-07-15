@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./animations.css";
 
 // 🔥 Random pick utility
 function pick<T>(arr: T[]): T {
