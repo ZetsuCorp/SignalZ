@@ -172,21 +172,25 @@ return (
         padding: "6px 10px",
         borderRadius: "12px",
       }}>
-   {post.display_name && (
-  <span
-    style={{
-      fontWeight: "bold",
-      fontSize: "0.85rem",
-      color: "#00f0ff",
-      backgroundColor: "rgba(0, 0, 0, 0.6)",
-      padding: "4px 8px",
-      borderRadius: "6px",
-      textShadow: "0 0 6px #00f0ff",
-    }}
-  >
-    {post.display_name}
-  </span>
+ {post.display_name && (
+  <div style={{ width: "100%", textAlign: "center", marginBottom: "0.5rem" }}>
+    <span
+      style={{
+        fontWeight: "bold",
+        fontSize: "0.85rem",
+        color: "#00f0ff",
+        backgroundColor: "rgba(0, 0, 0, 0.6)",
+        padding: "4px 8px",
+        borderRadius: "6px",
+        textShadow: "0 0 6px #00f0ff",
+        display: "inline-block",
+      }}
+    >
+      {post.display_name}
+    </span>
+  </div>
 )}
+
         </div>
 
 
