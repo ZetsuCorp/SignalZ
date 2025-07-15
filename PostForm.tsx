@@ -125,7 +125,8 @@ function PostForm({ wallType, onMediaPreview }) {
 
     try {
       const domain = new URL(linkInput).hostname.replace("www.", "");
-      const background = getBackgroundFromSession(sessionId);
+      const background = sessionStorage.getItem("session_bg");
+
 
       const response = await fetch("/.netlify/functions/create-link-post", {
         method: "POST",
