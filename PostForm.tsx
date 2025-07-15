@@ -98,7 +98,6 @@ function PostForm({ wallType, onMediaPreview }) {
         sigicon_url: sigIcon, // 🔥 Attached signal icon
         wall_type: wallType,
         background,
-        display_name: displayname,
       }),
     });
 
@@ -136,7 +135,6 @@ function PostForm({ wallType, onMediaPreview }) {
           video_url: null,
           cta_link_url: domain,
           background,
-          display_name: displayname,
         }),
       });
 
