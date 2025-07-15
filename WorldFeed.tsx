@@ -127,7 +127,7 @@ export default function WorldFeed({ wallType }) {
 const bg = post.background || "test1.png";
 
 return (
-  <div
+ <div
   key={post.id}
   className="post shadow-xl"
   style={{
@@ -159,9 +159,6 @@ return (
       mixBlendMode: "screen",
     }}
   />
-
-  {/* Rest of the content sits above */}
-  <div style={{ position: "relative", zIndex: 2 }}>
 
 
 
