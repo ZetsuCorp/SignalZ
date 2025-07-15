@@ -75,8 +75,7 @@ function getOrCreateSessionBackground(): string {
 
   const totalImages = 4;
   const randomIndex = Math.floor(Math.random() * totalImages);
-  const bg = `test${randomIndex}.png`;
-
+  const bg = `test${randomIndex}`;
   sessionStorage.setItem("session_bg", bg);
   return bg;
 }
