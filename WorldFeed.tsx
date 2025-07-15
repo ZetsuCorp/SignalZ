@@ -123,8 +123,9 @@ export default function WorldFeed({ wallType }) {
 
           const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
- /////////////////////////////////////////////////////////////////////
-const bg = post.background || "test1.png";
+/////////////////////////////////////////////////////////////////////
+const bg = post.background;
+if (!bg) console.warn("⚠️ Missing background for post ID:", post.id);
 
 return (
   <div
@@ -132,7 +133,9 @@ return (
     className="post shadow-xl"
     style={{
       marginBottom: "2rem",
-      backgroundImage: `url('/postcard-assets/cardbase/${bg}')`,
+      backgroundImage: bg
+        ? `url('/postcard-assets/cardbase/${bg}')`
+        : "repeating-linear-gradient(45deg, #222, #111 10px)", // ⛔ fallback pattern
       backgroundSize: "cover",
       backgroundPosition: "center",
       borderRadius: "16px",
