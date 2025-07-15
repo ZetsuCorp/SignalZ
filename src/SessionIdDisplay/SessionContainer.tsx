@@ -75,13 +75,25 @@ function getOrCreateSessionBackground(): string {
 export default function SessionContainer() {
   const [sessionId, setSessionId] = useState("");
   const [bgImage, setBgImage] = useState("");
+  const [animationClass, setAnimationClass] = useState("");
 
   useEffect(() => {
     const id = getOrCreateSessionId();
     const bg = getOrCreateSessionBackground();
-
     setSessionId(id);
     setBgImage(`/postcard-assets/cardbase/${bg}.png`);
+
+    const animations = [
+      "swoosh",
+      "burst",
+      "burn",
+      "ripple",
+      "slide-down",
+      "zap",
+      "spin"
+    ];
+    const picked = pick(animations);
+    setAnimationClass(picked);
   }, []);
 
   const imgMatch = sessionId.match(/^sigicons\/([a-zA-Z0-9\-]+\.gif)/);
@@ -90,13 +102,13 @@ export default function SessionContainer() {
 
   return (
     <div
-      className="session-container"
+      className={`session-container ${animationClass}`}
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        padding: "1em"
+        padding: "1em",
       }}
     >
       <div
