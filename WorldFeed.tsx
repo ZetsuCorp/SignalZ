@@ -144,7 +144,7 @@ return (
       zIndex: 1,
     }}
   >
-    {/* HOLO OVERLAY */}
+    {/* 🔮 Holographic overlay */}
     <div
       style={{
         position: "absolute",
@@ -152,22 +152,23 @@ return (
         left: 0,
         width: "100%",
         height: "100%",
-        background: "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,255,255,0.08))",
-        mixBlendMode: "screen",
+        background:
+          "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.08) 100%)",
         zIndex: 0,
         pointerEvents: "none",
+        mixBlendMode: "screen",
       }}
     />
 
-    {/* 🔥 TCG HEADER */}
+    {/* 🪪 ID, Icon, Stars */}
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "0.75rem",
-        zIndex: 1,
         position: "relative",
+        zIndex: 1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: "1rem",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -177,126 +178,45 @@ return (
             src={post.sigicon_url}
             alt="SigIcon"
             style={{
-              width: "34px",
-              height: "34px",
+              width: "32px",
+              height: "32px",
               borderRadius: "50%",
-              border: "1px solid #fff",
+              border: "1px solid white",
+              backgroundColor: "rgba(0,0,0,0.6)",
             }}
           />
         )}
       </div>
-      <div style={{ fontSize: "1.1rem" }}>🌟🌟🌟🌟</div>
+      <div style={{ fontSize: "1.1rem", color: "white" }}>🌟🌟🌟🌟</div>
     </div>
 
-    {/* 📛 CARD TITLE */}
+    {/* 🧾 Card Title */}
     <h3
       style={{
-        fontSize: "1.2rem",
+        fontSize: "1.25rem",
         fontWeight: "bold",
-        color: "#ffd700",
-        textShadow: "1px 1px 3px #000",
-        marginBottom: "0.4rem",
-        zIndex: 1,
-        position: "relative",
+        color: "white",
+        marginBottom: "0.25rem",
       }}
     >
       {post.headline}
     </h3>
 
-    {/* 📂 CARD TYPE */}
-    <div
+    {/* 📂 Card Caption */}
+    <p
       style={{
-        fontSize: "0.85rem",
-        color: "#00f0ff",
-        marginBottom: "1rem",
-        zIndex: 1,
-        position: "relative",
-      }}
-    >
-      📂 Type — SIGZICON
-    </div>
-
-    {/* 🎥 MEDIA */}
-    {post.video_url ? (
-      <video
-        controls
-        src={post.video_url}
-        style={{
-          width: "100%",
-          borderRadius: "10px",
-          border: "2px solid #00f0ff88",
-          marginBottom: "0.75rem",
-          zIndex: 1,
-          position: "relative",
-        }}
-      />
-    ) : post.image_url ? (
-      <img
-        src={post.image_url}
-        alt="Content"
-        style={{
-          width: "100%",
-          borderRadius: "10px",
-          border: "2px solid #00f0ff88",
-          marginBottom: "0.75rem",
-          zIndex: 1,
-          position: "relative",
-        }}
-      />
-    ) : null}
-
-    {/* 📄 DESCRIPTION */}
-    <div
-      style={{
-        background: "rgba(0,0,0,0.5)",
-        border: "1px solid #666",
-        borderRadius: "12px",
-        padding: "0.75rem",
-        fontSize: "0.9rem",
-        color: "#eee",
-        zIndex: 1,
-        position: "relative",
-        marginBottom: "1rem",
+        fontSize: "0.95rem",
+        color: "white",
+        marginBottom: "0.75rem",
       }}
     >
       {post.caption}
-    </div>
+    </p>
 
-    {/* 🧪 ATK/DEF BAR */}
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        background: "#111",
-        padding: "0.5rem 0.75rem",
-        borderRadius: "8px",
-        border: "1px solid #00f0ff33",
-        fontSize: "0.85rem",
-        zIndex: 1,
-        position: "relative",
-      }}
-    >
-      <span>❤️ Likes: {post.likes || 0}</span>
-      <span>💬 Comments: {(commentsMap?.[post.id] || []).length}</span>
-    </div>
-
-    {/* 👁️ Z-ATK / Z-DEF BAR */}
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        fontSize: "0.75rem",
-        marginTop: "0.5rem",
-        color: "#ccc",
-        zIndex: 1,
-        position: "relative",
-      }}
-    >
-      <span>👁️ Views: {post.views || 0}</span>
-      <span>🔁 Shares: {post.shares || 0}</span>
-    </div>
+    {/* ℹ️ Continue rendering images/videos/embeds/comments here */}
   </div>
 );
+
 
 
 
