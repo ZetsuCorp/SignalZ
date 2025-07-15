@@ -187,7 +187,7 @@ return (
     {
       post.display_name
         .replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif#/, '') // strip any icon path
-        .replace(/[0-9]+$/, '') // strip ending numbers like 8821
+         .match(/^[a-zA-Z_]+/)?.[0] || "Unknown"
     }
   </span>
 )}
