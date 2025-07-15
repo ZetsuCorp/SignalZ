@@ -172,7 +172,7 @@ return (
         padding: "6px 10px",
         borderRadius: "12px",
       }}>
-       {post.session_id && (
+    {post.session_id && (
   <span
     style={{
       fontWeight: "bold",
@@ -188,7 +188,7 @@ return (
   </span>
 )}
 <span role="img" aria-label="stars">🌟🌟🌟🌟</span>
-
+</div>
 
       {/* Card Title */}
       <div
