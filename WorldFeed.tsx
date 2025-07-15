@@ -172,7 +172,7 @@ return (
         padding: "6px 10px",
         borderRadius: "12px",
       }}>
-    {post.display_name && (
+   {post.display_name && (
   <span
     style={{
       fontWeight: "bold",
@@ -184,11 +184,14 @@ return (
       textShadow: "0 0 6px #00f0ff",
     }}
   >
-   {post.display_name}
+    {
+      post.display_name
+        .replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif#/, '') // strip any icon path
+        .replace(/[0-9]+$/, '') // strip ending numbers like 8821
+    }
   </span>
 )}
 
-</div>
 
       {/* Card Title */}
       <div
