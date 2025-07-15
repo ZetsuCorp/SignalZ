@@ -224,8 +224,6 @@ return (
   >
     <span>👁️ Views: {post.views || 0}</span>
     <span>🔁 Shares: {post.shares || 0}</span>
-  </div>
-</div>
 
 
 
