@@ -184,11 +184,7 @@ return (
       textShadow: "0 0 6px #00f0ff",
     }}
   >
-    {
-      post.display_name
-        .replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif#/, '') // strip any icon path
-         .match(/^[a-zA-Z_]+/)?.[0] || "Unknown"
-    }
+    {post.display_name}
   </span>
 )}
         </div>
