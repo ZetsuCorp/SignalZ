@@ -169,6 +169,35 @@ return (
                 />
               ) : null}
 
+    {post.sigicon_url && (
+  <div
+    style={{
+      position: "absolute",
+      top: "0.5rem",
+      left: "0.5rem",
+      width: "40px",
+      height: "40px",
+      backgroundColor: "rgba(0, 0, 0, 0.6)",
+      borderRadius: "50%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "3px",
+    }}
+  >
+    <img
+      src={post.sigicon_url}
+      alt="Signal Icon"
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+        borderRadius: "50%",
+      }}
+    />
+  </div>
+)}
+
               <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{post.headline}</h3>
               <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{post.caption}</p>
 
