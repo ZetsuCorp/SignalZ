@@ -123,7 +123,7 @@ export default function WorldFeed({ wallType }) {
 
           const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 const bg = post.background || "test1.png";
 
 return (
@@ -132,7 +132,7 @@ return (
     className="post shadow-xl"
     style={{
       marginBottom: "2rem",
-      backgroundImage: `url('/postcard-assets/cardbase/${bg}')`, // ✅ backtick string for JSX
+      backgroundImage: `url('/postcard-assets/cardbase/${bg}')`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       borderRadius: "16px",
@@ -142,12 +142,105 @@ return (
       position: "relative",
       overflow: "hidden",
       zIndex: 1,
-  
+    }}
+  >
+    {/* Holo overlay */}
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        background:
+          "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.08) 100%)",
+        zIndex: 0,
+        pointerEvents: "none",
+        mixBlendMode: "screen",
       }}
     />
 
+    {/* TCG Layout */}
+    <div style={{ position: "relative", zIndex: 2 }}>
+      {/* Header Line */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        marginBottom: "0.5rem",
+        background: "rgba(0,0,0,0.5)",
+        padding: "6px 10px",
+        borderRadius: "12px",
+      }}>
+        {post.sigicon_url && (
+          <img
+            src={post.sigicon_url}
+            alt="Sigicon"
+            style={{
+              width: "28px",
+              height: "28px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              border: "1px solid #00f0ff"
+            }}
+          />
+        )}
+        <span role="img" aria-label="stars">🌟🌟🌟🌟</span>
+      </div>
 
+      {/* Card Title */}
+      <div style={{
+        fontSize: "1.2rem",
+        fontWeight: "bold",
+        color: "white",
+        background: "rgba(0,0,0,0.4)",
+        padding: "4px 8px",
+        borderRadius: "6px",
+        marginBottom: "0.3rem",
+        display: "inline-block"
+      }}>
+        📛 {post.headline}
+      </div>
 
+      {/* Type / Tagline */}
+      <div style={{
+        fontSize: "0.85rem",
+        color: "#ccc",
+        marginBottom: "1rem"
+      }}>
+        📂 Type — SIGZICON
+      </div>
+
+      {/* --- Content Media Already Here (image/video/embed) --- */}
+
+      {/* ATK / DEF Slot */}
+      <div style={{
+        marginTop: "1rem",
+        display: "flex",
+        justifyContent: "space-between",
+        fontSize: "0.9rem",
+        color: "white",
+        background: "rgba(0,0,0,0.3)",
+        padding: "6px 10px",
+        borderRadius: "10px"
+      }}>
+        <div>❤️ Likes: {post.likes || 0}</div>
+        <div>💬 Comments: {comments.length || 0}</div>
+      </div>
+
+      {/* Z-ATK / Z-DEF Slot */}
+      <div style={{
+        marginTop: "0.4rem",
+        fontSize: "0.85rem",
+        color: "#aaa",
+        background: "rgba(0,0,0,0.25)",
+        padding: "4px 10px",
+        borderRadius: "10px",
+        textAlign: "center"
+      }}>
+        👁️ Views and Shares
+      </div>
+    </div>
 
 
               {post.video_url ? (
