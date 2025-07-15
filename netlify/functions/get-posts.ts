@@ -1,4 +1,3 @@
-
 import { Handler } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 
@@ -20,14 +19,14 @@ const handler: Handler = async (event) => {
   // 🔎 Get normal posts with sigicon_url included
   const { data: posts, error: postError } = await supabase
     .from("posts")
-    .select("*, session_id, background, sigicon_url") // ✅ added sigicon_url
+    .select("*, session_id, background, sigicon_url")
     .eq("wall_type", wall_type)
     .order("created_at", { ascending: false });
 
   // 🔗 Get social link posts
   const { data: links, error: linkError } = await supabase
     .from("linked_posts")
-    .select("*, sigicon_url") // ✅ include here too if needed
+    .select("*, sigicon_url")
     .eq("wall_type", wall_type)
     .order("created_at", { ascending: false });
 
