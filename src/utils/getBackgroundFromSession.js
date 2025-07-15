@@ -1,7 +1,4 @@
-export const getBackgroundFromSession = (sessionId) => {
-  const totalImages = 4; // Update this number if you add more images
-  const index = sessionId
-    ? parseInt(sessionId.slice(-1), 16) % totalImages
-    : 0;
-     return `test${index}.png`;
-};
+import { getBackgroundFromSession } from "../utils/getBackgroundFromSession";
+
+const bg = getBackgroundFromSession(sessionId); // uses sessionId to choose image
+sessionStorage.setItem("session_bg", bg);
