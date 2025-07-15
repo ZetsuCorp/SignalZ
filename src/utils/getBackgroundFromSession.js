@@ -1,7 +1,7 @@
-export const getBackgroundFromSession = () => {
-  // Pull the pre-selected background from sessionStorage
-  const stored = sessionStorage.getItem("session_bg");
-
-  // Fallback to default if not found
-  return stored || "/postcard-assets/cardbase/test0.png";
+export const getBackgroundFromSession = (sessionId) => {
+  const totalImages = 4; // Update this number if you add more images
+  const index = sessionId
+    ? parseInt(sessionId.slice(-1), 16) % totalImages
+    : 0;
+     return test${index}.png;
 };
