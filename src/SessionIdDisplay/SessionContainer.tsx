@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-
 // 🔥 Random pick utility
 function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -58,6 +57,11 @@ function getOrCreateSessionId(): string {
 
   const id = `sigicons/${Sicon}#${part1}${part2}${part3}${finalThing}${matchedEmoji}${flair}`;
   sessionStorage.setItem("session_id", id);
+
+  // 💾 Store matching icon path separately for reuse
+  const iconPath = `/sigicons/${Sicon}`;
+  sessionStorage.setItem("session_icon", iconPath);
+
   return id;
 }
 
@@ -85,13 +89,7 @@ export default function SessionContainer() {
     setBgImage(`/postcard-assets/cardbase/${bg}.png`);
 
     const animations = [
-      "swoosh",
-      "burst",
-      "burn",
-      "ripple",
-      "slide-down",
-      "zap",
-      "spin"
+      "swoosh", "burst", "burn", "ripple", "slide-down", "zap", "spin"
     ];
     const picked = pick(animations);
     setAnimationClass(picked);
