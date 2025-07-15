@@ -241,36 +241,6 @@ return (
               ) : null}
 
 
-      
-      {/* ATK / DEF Slot */}
-      <div style={{
-        marginTop: "1rem",
-        display: "flex",
-        justifyContent: "space-between",
-        fontSize: "0.9rem",
-        color: "white",
-        background: "rgba(0,0,0,0.3)",
-        padding: "6px 10px",
-        borderRadius: "10px"
-      }}>
-        <div>❤️ Likes: {post.likes || 0}</div>
-        <div>💬 Comments: {comments.length || 0}</div>
-      </div>
-
-      {/* Z-ATK / Z-DEF Slot */}
-      <div style={{
-        marginTop: "0.4rem",
-        fontSize: "0.85rem",
-        color: "#aaa",
-        background: "rgba(0,0,0,0.25)",
-        padding: "4px 10px",
-        borderRadius: "10px",
-        textAlign: "center"
-      }}>
-        👁️ Views and Shares
-      </div>
-    </div>
-
 
     {post.sigicon_url && (
   <div
@@ -383,6 +353,36 @@ return (
                   Visit Link
                 </a>
               )}
+
+      
+      {/* ATK / DEF Slot */}
+      <div style={{
+        marginTop: "1rem",
+        display: "flex",
+        justifyContent: "space-between",
+        fontSize: "0.9rem",
+        color: "white",
+        background: "rgba(0,0,0,0.3)",
+        padding: "6px 10px",
+        borderRadius: "10px"
+      }}>
+        <div>❤️ Likes: {post.likes || 0}</div>
+        <div>💬 Comments: {comments.length || 0}</div>
+      </div>
+
+      {/* Z-ATK / Z-DEF Slot */}
+      <div style={{
+        marginTop: "0.4rem",
+        fontSize: "0.85rem",
+        color: "#aaa",
+        background: "rgba(0,0,0,0.25)",
+        padding: "4px 10px",
+        borderRadius: "10px",
+        textAlign: "center"
+      }}>
+        👁️ Views and Shares
+      </div>
+    </div>
 
               {safeTags.length > 0 && (
                 <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "white" }}>
