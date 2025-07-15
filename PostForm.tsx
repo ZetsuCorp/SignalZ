@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
 import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
 
-
 function PostForm({ wallType, onMediaPreview }) {
   const [headline, setHeadline] = useState("");
   const [caption, setCaption] = useState("");
@@ -12,6 +11,7 @@ function PostForm({ wallType, onMediaPreview }) {
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [sessionId, setSessionId] = useState("");
+  const [sigIcon, setSigIcon] = useState("");
   const [linkInput, setLinkInput] = useState("");
 
   const imageInputRef = useRef(null);
@@ -24,6 +24,12 @@ function PostForm({ wallType, onMediaPreview }) {
       localStorage.setItem("session_id", existing);
     }
     setSessionId(existing);
+
+    // ✅ Grab icon from sessionStorage
+    const icon = sessionStorage.getItem("session_icon");
+    if (icon) {
+      setSigIcon(icon);
+    }
   }, []);
 
   const handleImageChange = (e) => {
@@ -68,34 +74,32 @@ function PostForm({ wallType, onMediaPreview }) {
     return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
   };
 
-const handlePost = async () => {
-  if (!headline || !caption) {
-    alert("Headline and caption required");
-    return;
-  }
+  const handlePost = async () => {
+    if (!headline || !caption) {
+      alert("Headline and caption required");
+      return;
+    }
 
-  const imageUrl = await uploadImage();
-  const videoUrl = await uploadVideo();
+    const imageUrl = await uploadImage();
+    const videoUrl = await uploadVideo();
+    const background = getBackgroundFromSession(sessionId);
 
-  // ✅ Get session's background image filename
-  const background = getBackgroundFromSession(sessionId);
-
-await fetch("/.netlify/functions/create-posts", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    headline,
-    caption,
-    cta_url: ctaUrl,
-    image_url: imageUrl,
-    video_url: videoUrl,
-    tags: tags.split(",").map((t) => t.trim()),
-    session_id: sessionId,
-    wall_type: wallType,
-    background, // clean + shared
-  }),
-});
-
+    await fetch("/.netlify/functions/create-posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        headline,
+        caption,
+        cta_url: ctaUrl,
+        image_url: imageUrl,
+        video_url: videoUrl,
+        tags: tags.split(",").map((t) => t.trim()),
+        session_id: sessionId,
+        sigicon_url: sigIcon, // 🔥 Attached signal icon
+        wall_type: wallType,
+        background,
+      }),
+    });
 
     setHeadline("");
     setCaption("");
@@ -114,6 +118,7 @@ await fetch("/.netlify/functions/create-posts", {
 
     try {
       const domain = new URL(linkInput).hostname.replace("www.", "");
+      const background = getBackgroundFromSession(sessionId);
 
       const response = await fetch("/.netlify/functions/create-link-post", {
         method: "POST",
@@ -121,6 +126,7 @@ await fetch("/.netlify/functions/create-posts", {
         body: JSON.stringify({
           url: linkInput,
           session_id: sessionId,
+          sigicon_url: sigIcon, // 🔥 Included icon for link drop
           wall_type: wallType,
           tags: ["link"],
           link_title: "Shared via SignalZ",
@@ -128,7 +134,7 @@ await fetch("/.netlify/functions/create-posts", {
           image_url: null,
           video_url: null,
           cta_link_url: domain,
-           background, // ✅ Added this
+          background,
         }),
       });
 
