@@ -19,7 +19,7 @@ const handler: Handler = async (event) => {
   // 🔎 Get normal posts with sigicon_url included
   const { data: posts, error: postError } = await supabase
     .from("posts")
-    .select("*, session_id, background, sigicon_url")
+    .select("*, session_id, background, sigicon_url, display_name")
     .eq("wall_type", wall_type)
     .order("created_at", { ascending: false });
 
