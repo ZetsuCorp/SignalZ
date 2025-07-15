@@ -172,21 +172,23 @@ return (
         padding: "6px 10px",
         borderRadius: "12px",
       }}>
-        {post.sigicon_url && (
-          <img
-            src={post.sigicon_url}
-            alt="Sigicon"
-            style={{
-              width: "28px",
-              height: "28px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              border: "1px solid #00f0ff"
-            }}
-          />
-        )}
-        <span role="img" aria-label="stars">🌟🌟🌟🌟</span>
-      </div>
+       {post.session_id && (
+  <span
+    style={{
+      fontWeight: "bold",
+      fontSize: "0.85rem",
+      color: "#00f0ff",
+      backgroundColor: "rgba(0, 0, 0, 0.6)",
+      padding: "4px 8px",
+      borderRadius: "6px",
+      textShadow: "0 0 6px #00f0ff",
+    }}
+  >
+    {post.session_id.replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif/, '')}
+  </span>
+)}
+<span role="img" aria-label="stars">🌟🌟🌟🌟</span>
+
 
       {/* Card Title */}
       <div
