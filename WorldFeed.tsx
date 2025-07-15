@@ -142,21 +142,7 @@ return (
       position: "relative",
       overflow: "hidden",
       zIndex: 1,
-    }}
-  >
-    {/* OPTIONAL: Holo overlay */}
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        background:
-          "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.08) 100%)",
-        zIndex: 0,
-        pointerEvents: "none",
-        mixBlendMode: "screen",
+  
       }}
     />
 
