@@ -12,7 +12,7 @@ function PostForm({ wallType, onMediaPreview }) {
   const [video, setVideo] = useState(null);
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
-  const [displayName, setDisplayName] = useState(""); // ✅ NEW
+  const [displayName, setDisplayName] = useState("");
   const [linkInput, setLinkInput] = useState("");
 
   const imageInputRef = useRef(null);
@@ -26,15 +26,15 @@ function PostForm({ wallType, onMediaPreview }) {
     }
     setSessionId(existing);
 
-    const icon = sessionStorage.getItem("session_icon");
-    if (icon) {
-      setSigIcon(icon);
-    }
+    // ✅ Store session background as .png string
+    const sessionBg = getBackgroundFromSession(existing);
+    sessionStorage.setItem("session_bg", sessionBg);
 
-    const name = sessionStorage.getItem("session_display_name"); // ✅ NEW
-    if (name) {
-      setDisplayName(name);
-    }
+    const icon = sessionStorage.getItem("session_icon");
+    if (icon) setSigIcon(icon);
+
+    const name = sessionStorage.getItem("session_display_name");
+    if (name) setDisplayName(name);
   }, []);
 
   const handleImageChange = (e) => {
@@ -63,8 +63,7 @@ function PostForm({ wallType, onMediaPreview }) {
       alert("Image upload failed");
       return "";
     }
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
+    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
@@ -75,8 +74,7 @@ function PostForm({ wallType, onMediaPreview }) {
       alert("Video upload failed");
       return "";
     }
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
+    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -87,8 +85,7 @@ function PostForm({ wallType, onMediaPreview }) {
 
     const imageUrl = await uploadImage();
     const videoUrl = await uploadVideo();
-    const background = sessionStorage.getItem("session_bg");
-
+    const background = sessionStorage.getItem("session_bg"); // ✅ Will now include .png
 
     await fetch("/.netlify/functions/create-posts", {
       method: "POST",
@@ -102,7 +99,7 @@ function PostForm({ wallType, onMediaPreview }) {
         tags: tags.split(",").map((t) => t.trim()),
         session_id: sessionId,
         sigicon_url: sigIcon,
-        display_name: displayName, // ✅ Added here
+        display_name: displayName,
         wall_type: wallType,
         background,
       }),
@@ -127,7 +124,6 @@ function PostForm({ wallType, onMediaPreview }) {
       const domain = new URL(linkInput).hostname.replace("www.", "");
       const background = getBackgroundFromSession(sessionId);
 
-
       const response = await fetch("/.netlify/functions/create-link-post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -146,9 +142,7 @@ function PostForm({ wallType, onMediaPreview }) {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Link submission failed");
-      }
+      if (!response.ok) throw new Error("Link submission failed");
 
       setLinkInput("");
       alert("Link submitted to SignalZ!");
@@ -166,7 +160,7 @@ function PostForm({ wallType, onMediaPreview }) {
         value={wallType}
         onChange={() => {}}
         disabled
-        className="w-full bg-[#111] text-cyan-200 border border-cyan-500 p-2 rounded focus:outline-none"
+        className="w-full bg-[#111] text-cyan-200 border border-cyan-500 p-2 rounded"
       >
         <option value="main">Main Wall</option>
         <option value="alt">Alt Wall</option>
@@ -178,14 +172,14 @@ function PostForm({ wallType, onMediaPreview }) {
         placeholder="Brand Name / Headline"
         value={headline}
         onChange={(e) => setHeadline(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded"
       />
 
       <textarea
         placeholder="What's meaningful about it?"
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none"
       />
 
       <input
@@ -193,7 +187,7 @@ function PostForm({ wallType, onMediaPreview }) {
         placeholder="Link (optional)"
         value={ctaUrl}
         onChange={(e) => setCtaUrl(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded"
       />
 
       <input
@@ -201,13 +195,13 @@ function PostForm({ wallType, onMediaPreview }) {
         placeholder="Tags (comma separated)"
         value={tags}
         onChange={(e) => setTags(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded"
       />
 
       <button
         type="button"
         onClick={() => imageInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
+        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
       >
         🖼 Add Image
       </button>
@@ -222,7 +216,7 @@ function PostForm({ wallType, onMediaPreview }) {
       <button
         type="button"
         onClick={() => videoInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
+        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
       >
         🎬 Add Video
       </button>
@@ -236,7 +230,7 @@ function PostForm({ wallType, onMediaPreview }) {
 
       <button
         onClick={handlePost}
-        className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition"
+        className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md"
       >
         🚀 Post to {wallType.toUpperCase()} Wall
       </button>
@@ -248,7 +242,7 @@ function PostForm({ wallType, onMediaPreview }) {
           placeholder="Paste any video or social link"
           value={linkInput}
           onChange={(e) => setLinkInput(e.target.value)}
-          className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none"
+          className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded"
         />
         <button
           onClick={handleSubmitLink}
