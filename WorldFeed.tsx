@@ -220,11 +220,11 @@ return (
       fontSize: "0.75rem",
       color: "#ccc",
       marginTop: "0.5rem",
-    }}
-  >
+   
     <span>👁️ Views: {post.views || 0}</span>
     <span>🔁 Shares: {post.shares || 0}</span>
-
+ }}
+  >
 
 
 
