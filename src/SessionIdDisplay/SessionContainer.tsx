@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./index.css";
-import "./animations.css"; // ← Add this line
 
 
 // 🔥 Random pick utility
