@@ -189,16 +189,23 @@ return (
       </div>
 
       {/* Card Title */}
-      <div style={{
-        fontSize: "1.2rem",
-        fontWeight: "bold",
-        color: "white",
-        background: "rgba(0,0,0,0.4)",
-        padding: "4px 8px",
-        borderRadius: "6px",
-        marginBottom: "0.3rem",
-        display: "inline-block"
-      }}>
+      <div
+  style={{
+    background: "linear-gradient(145deg, #0ff, #033)",
+    border: "2px solid #00f0ff88",
+    borderRadius: "10px",
+    padding: "8px 16px",
+    textAlign: "center",
+    fontSize: "1.2rem",
+    fontWeight: "bold",
+    color: "#ffffff",
+    textShadow: "0 0 2px #0ff, 0 0 5px #0ff",
+    boxShadow:
+      "inset 0 2px 5px rgba(255,255,255,0.2), inset 0 -2px 5px rgba(0,0,0,0.3), 0 4px 8px rgba(0,255,255,0.2)",
+    margin: "0.5rem 0 0.75rem",
+    zIndex: 2,
+    position: "relative",
+  }}>
         📛 {post.headline}
       </div>
 
