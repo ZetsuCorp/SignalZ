@@ -63,7 +63,7 @@ export default function App() {
       </aside>
 
       {/* 🔹 Main Feed Area */}
-     
+      <main className="right-panel">
      <header className="text-center py-4 border-b border-cyan-800 relative">
   <div className="sigz-logo-container inline-block relative">
     {/* 🌐 Icon as Base */}
