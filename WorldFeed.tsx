@@ -123,7 +123,6 @@ export default function WorldFeed({ wallType }) {
 
           const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
 const bg = post.background;
 if (!bg) console.warn("⚠️ Missing background for post ID:", post.id);
 
@@ -135,6 +134,7 @@ return (
       marginBottom: "2rem",
       backgroundImage: bg
         ? `url('/postcard-assets/cardbase/${bg}.png')`
+
         : "repeating-linear-gradient(45deg, #222, #111 10px)", // ⛔ fallback pattern
       backgroundSize: "cover",
       backgroundPosition: "center",
