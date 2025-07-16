@@ -66,18 +66,23 @@ export default function App() {
       <main className="right-panel">
      <header className="text-center py-4 border-b border-cyan-800 relative">
   <div className="inline-block relative w-fit">
-    {/* 🌐 Icon with overlayed ripple */}
-    <span className="text-4xl relative z-10">🌐</span>
+    {/* 🌐 Background Layer */}
+    <span className="text-4xl text-cyan-200 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
+      🌐
+    </span>
+
+    {/* 🔁 Ripple Foreground Layer */}
     <img
       src="/sigicons/ripple.gif"
       alt="Ripple"
-      className="absolute top-1/2 left-1/2 w-12 h-12 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
+      className="relative z-10 w-14 h-14 pointer-events-none"
     />
   </div>
 
   <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
   <p className="text-sm text-cyan-400">What the internet is talking about.</p>
 </header>
+
 
 
 
