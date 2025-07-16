@@ -63,11 +63,25 @@ export default function App() {
       </aside>
 
       {/* 🔹 Main Feed Area */}
-      <main className="right-panel">
-        <header className="text-center py-4 border-b border-cyan-800">
-          <h1 className="text-3xl font-bold text-cyan-200">🌐 SIGNALZ</h1>
-          <p className="text-sm text-cyan-400">What the internet is talking about.</p>
-        </header>
+      <header className="text-center py-4 border-b border-cyan-800 relative">
+  <div className="sigz-logo-container inline-block relative">
+    {/* 🌐 Icon as Base */}
+    <span className="text-4xl relative z-10">🌐</span>
+
+    {/* 🔁 Ripple GIF Overlay */}
+    <div className="sigzicon-overlay absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none">
+      <img
+        src="/postcard-assets/ripple.gif"
+        alt="Ripple Effect"
+        className="w-12 h-12 opacity-70"
+      />
+    </div>
+  </div>
+
+  <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
+  <p className="text-sm text-cyan-400">What the internet is talking about.</p>
+</header>
+
 
         <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
           {["main", "alt", "zetsu"].map((id) => (
