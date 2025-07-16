@@ -12,7 +12,8 @@ function PostForm({ wallType, onMediaPreview }) {
   const [video, setVideo] = useState(null);
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
-  const [displayName, setDisplayName] = useState(""); // ✅ NEW
+  const [displayName, setDisplayName] = useState("");
+  const [backgroundImage, setBackgroundImage] = useState(""); // ✅
   const [linkInput, setLinkInput] = useState("");
 
   const imageInputRef = useRef(null);
@@ -27,14 +28,13 @@ function PostForm({ wallType, onMediaPreview }) {
     setSessionId(existing);
 
     const icon = sessionStorage.getItem("session_icon");
-    if (icon) {
-      setSigIcon(icon);
-    }
+    if (icon) setSigIcon(icon);
 
-    const name = sessionStorage.getItem("session_display_name"); // ✅ NEW
-    if (name) {
-      setDisplayName(name);
-    }
+    const name = sessionStorage.getItem("session_display_name");
+    if (name) setDisplayName(name);
+
+    const bg = sessionStorage.getItem("session_bg");
+    if (bg) setBackgroundImage(bg);
   }, []);
 
   const handleImageChange = (e) => {
@@ -87,8 +87,6 @@ function PostForm({ wallType, onMediaPreview }) {
 
     const imageUrl = await uploadImage();
     const videoUrl = await uploadVideo();
-    const background = sessionStorage.getItem("session_bg");
-
 
     await fetch("/.netlify/functions/create-posts", {
       method: "POST",
@@ -102,9 +100,9 @@ function PostForm({ wallType, onMediaPreview }) {
         tags: tags.split(",").map((t) => t.trim()),
         session_id: sessionId,
         sigicon_url: sigIcon,
-        display_name: displayName, // ✅ Added here
+        display_name: displayName,
         wall_type: wallType,
-        background,
+        background: backgroundImage,
       }),
     });
 
@@ -125,8 +123,7 @@ function PostForm({ wallType, onMediaPreview }) {
 
     try {
       const domain = new URL(linkInput).hostname.replace("www.", "");
-      const background = getBackgroundFromSession(sessionId);
-
+      const background = backgroundImage || getBackgroundFromSession(sessionId);
 
       const response = await fetch("/.netlify/functions/create-link-post", {
         method: "POST",
@@ -146,10 +143,7 @@ function PostForm({ wallType, onMediaPreview }) {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Link submission failed");
-      }
-
+      if (!response.ok) throw new Error("Link submission failed");
       setLinkInput("");
       alert("Link submitted to SignalZ!");
     } catch (err) {
@@ -159,7 +153,19 @@ function PostForm({ wallType, onMediaPreview }) {
   };
 
   return (
-    <div className="bg-[#0c0c0c] text-cyan-200 p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4">
+    <div
+      className="p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4 relative z-10"
+      style={{
+        backgroundImage: backgroundImage
+          ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
+          : "#0c0c0c",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backdropFilter: "blur(2px)",
+        color: "#00f0ff",
+      }}
+    >
       <h2 className="text-lg font-bold text-cyan-300">📢 Create a New Drop</h2>
 
       <select
