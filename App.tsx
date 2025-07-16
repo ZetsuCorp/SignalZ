@@ -63,18 +63,15 @@ export default function App() {
       </aside>
 
       {/* 🔹 Main Feed Area */}
-      <header className="text-center py-4 border-b border-cyan-800 relative">
+     
+     <header className="text-center py-4 border-b border-cyan-800 relative">
   <div className="sigz-logo-container inline-block relative">
     {/* 🌐 Icon as Base */}
-    <span className="text-4xl relative z-10">🌐</span>
+    <span className="text-3xl relative z-10">🌐</span>
 
-    {/* 🔁 Ripple GIF Overlay */}
-    <div className="sigzicon-overlay absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none">
-      <img
-        src="/postcard-assets/ripple.gif"
-        alt="Ripple Effect"
-        className="w-12 h-12 opacity-70"
-      />
+    {/* 🔵 Ripple or PNG Layer */}
+    <div className="sigzicon-overlay absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
+      <img src="/postcard-assets/sigzicon.png" alt="Sigz Icon" className="w-10 h-10 ripple-icon" />
     </div>
   </div>
 
