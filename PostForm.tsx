@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
@@ -58,26 +57,26 @@ function PostForm({ wallType, onMediaPreview }) {
 
   const uploadImage = async () => {
     if (!image) return "";
-    const filePath = ${sessionId}/${Date.now()}_${image.name};
+    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
     const { error } = await supabase.storage.from("images").upload(filePath, image);
     if (error) {
       alert("Image upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return ${supabaseUrl}/storage/v1/object/public/images/${filePath};
+    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
     if (!video) return "";
-    const filePath = ${sessionId}/${Date.now()}_${video.name};
+    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
     const { error } = await supabase.storage.from("videos").upload(filePath, video);
     if (error) {
       alert("Video upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return ${supabaseUrl}/storage/v1/object/public/videos/${filePath};
+    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -263,5 +262,3 @@ function PostForm({ wallType, onMediaPreview }) {
 }
 
 export default PostForm;
-
-
