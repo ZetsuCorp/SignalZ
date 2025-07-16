@@ -134,7 +134,7 @@ return (
     style={{
       marginBottom: "2rem",
       backgroundImage: bg
-        ? `url('/postcard-assets/cardbase/${bg}')`
+        ? `url('/postcard-assets/cardbase/${bg}.png')`
         : "repeating-linear-gradient(45deg, #222, #111 10px)", // ⛔ fallback pattern
       backgroundSize: "cover",
       backgroundPosition: "center",
@@ -147,6 +147,7 @@ return (
       zIndex: 1,
     }}
   >
+
     {/* Holo overlay */}
     <div
       style={{
