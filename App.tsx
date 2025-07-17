@@ -4,6 +4,28 @@ import WorldFeed from "./WorldFeed";
 import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
 
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import JessicaPage from './pages/JessicaPage';
+
+function App() {
+  return (
+    <Router>
+      <div className="bg-black text-white p-4">
+        <nav className="mb-4">
+          <Link to="/jessica" className="text-cyan-400 hover:underline">🧠 Visit Jessica AI</Link>
+        </nav>
+        <Routes>
+          <Route path="/jessica" element={<JessicaPage />} />
+          {/* other routes */}
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+
 export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
