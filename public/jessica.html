@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Jessica AI – Post Test</title>
+  <title>Jessica AI – Google CSE Post Builder</title>
+  <script async src="https://cse.google.com/cse.js?cx=b3aed2fbcf2074d6a"></script>
   <style>
     body {
       background: #0a0a0a;
@@ -26,7 +27,7 @@
       border-radius: 12px;
       width: 240px;
       padding: 16px;
-      margin-bottom: 20px;
+      margin: 10px;
       box-shadow: 0 0 8px #00f0ff33;
     }
     .post-card img {
@@ -46,13 +47,99 @@
       text-decoration: none;
       border-radius: 6px;
     }
+    .hidden-search {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+    .post-grid {
+      display: flex;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body>
   <h1>🧠 Jessica AI</h1>
   <button onclick="runJessica()">Run Jessica</button>
-  <div id="jessica-output"></div>
+  <div class="post-grid" id="jessica-output"></div>
 
-  <script src="jessica.js"></script>
+  <!-- Hidden CSE box -->
+  <div class="gcse-search hidden-search"></div>
+
+  <script>
+    const sources = [
+      { platform: "youtube", query: "trending on youtube today" },
+      { platform: "tiktok", query: "trending on tiktok today" },
+      { platform: "instagram", query: "trending on instagram today" }
+    ];
+
+    const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+    const wallType = platform => ["youtube", "tiktok", "instagram"].includes(platform) ? "alt" : "main";
+
+    async function runJessica() {
+      const output = document.getElementById("jessica-output");
+      output.innerHTML = "🧠 Running...";
+
+      const results = [];
+
+      for (const { platform, query } of sources) {
+        await runSearch(query);
+        const posts = await new Promise(resolve => {
+          setTimeout(() => {
+            const cards = [];
+            document.querySelectorAll(".gsc-webResult").forEach(card => {
+              const title = card.querySelector(".gs-title")?.textContent?.trim();
+              const link = card.querySelector(".gs-title")?.href;
+              if (title && link) {
+                cards.push({
+                  headline: title,
+                  caption: link,
+                  cta_link_url: link,
+                  tags: [platform],
+                  session_id: "jessica_" + Date.now(),
+                  wall_type: wallType(platform),
+                  image_url: `https://placehold.co/300x200?text=${capitalize(platform)}`,
+                  video_url: "",
+                  likes: Math.floor(Math.random() * 300),
+                  comments: Math.floor(Math.random() * 50),
+                  reposts: Math.floor(Math.random() * 25),
+                });
+              }
+            });
+            resolve(cards.slice(0, 4)); // limit to top 4
+          }, 1500); // give time for CSE to load
+        });
+
+        results.push(...posts);
+      }
+
+      output.innerHTML = "";
+      results.forEach(post => {
+        const card = document.createElement("div");
+        card.className = "post-card";
+        card.innerHTML = `
+          <img src="${post.image_url}" alt="${post.tags[0]}">
+          <div><strong>${post.headline}</strong></div>
+          <div style="font-size: 12px; color: #00f0ff99;">#${post.tags[0]} → ${post.wall_type}</div>
+          <a href="${post.cta_link_url}" target="_blank">🔗 View Post</a>
+        `;
+        output.appendChild(card);
+      });
+    }
+
+    function runSearch(query) {
+      return new Promise(resolve => {
+        const inputBox = document.querySelector("input.gsc-input");
+        const searchButton = document.querySelector("button.gsc-search-button");
+        if (!inputBox || !searchButton) return resolve();
+
+        inputBox.value = query;
+        searchButton.click();
+
+        // Wait a little before resolving (ensure search runs)
+        setTimeout(resolve, 300);
+      });
+    }
+  </script>
 </body>
 </html>
