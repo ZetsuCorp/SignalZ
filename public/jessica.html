@@ -2,144 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Jessica AI – Google CSE Post Builder</title>
-  <script async src="https://cse.google.com/cse.js?cx=b3aed2fbcf2074d6a"></script>
-  <style>
-    body {
-      background: #0a0a0a;
-      color: #00f0ff;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 2rem;
-    }
-    button {
-      background: #00f0ff;
-      color: #000;
-      padding: 10px 20px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-bottom: 1rem;
-    }
-    .post-card {
-      background: #111;
-      border: 1px solid #00f0ff22;
-      border-radius: 12px;
-      width: 240px;
-      padding: 16px;
-      margin: 10px;
-      box-shadow: 0 0 8px #00f0ff33;
-    }
-    .post-card img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-    .post-card a {
-      display: inline-block;
-      margin-top: 8px;
-      color: #000;
-      background: #00f0ff;
-      padding: 4px 8px;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 6px;
-    }
-    .hidden-search {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-    }
-    .post-grid {
-      display: flex;
-      flex-wrap: wrap;
-    }
-  </style>
+  <title>Jessica CSE Bot</title>
 </head>
 <body>
-  <h1>🧠 Jessica AI</h1>
-  <button onclick="runJessica()">Run Jessica</button>
-  <div class="post-grid" id="jessica-output"></div>
-
-  <!-- Hidden CSE box -->
-  <div class="gcse-search hidden-search"></div>
+  <h1 style="color: cyan;">Jessica Auto Search</h1>
+  <pre id="output" style="color: white; background: #111; padding: 1rem;"></pre>
 
   <script>
-    const sources = [
-      { platform: "youtube", query: "trending on youtube today" },
-      { platform: "tiktok", query: "trending on tiktok today" },
-      { platform: "instagram", query: "trending on instagram today" }
-    ];
+    const API_KEY = 'YOUR_GOOGLE_API_KEY'; // 🔐 Replace with real key
+    const CX = 'b3aed2fbcf2074d6a'; // ✅ Your CSE ID
+    const query = 'trending on youtube today';
 
-    const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
-    const wallType = platform => ["youtube", "tiktok", "instagram"].includes(platform) ? "alt" : "main";
+    async function searchCSE(q) {
+      const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(q)}`;
 
-    async function runJessica() {
-      const output = document.getElementById("jessica-output");
-      output.innerHTML = "🧠 Running...";
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
 
-      const results = [];
-
-      for (const { platform, query } of sources) {
-        await runSearch(query);
-        const posts = await new Promise(resolve => {
-          setTimeout(() => {
-            const cards = [];
-            document.querySelectorAll(".gsc-webResult").forEach(card => {
-              const title = card.querySelector(".gs-title")?.textContent?.trim();
-              const link = card.querySelector(".gs-title")?.href;
-              if (title && link) {
-                cards.push({
-                  headline: title,
-                  caption: link,
-                  cta_link_url: link,
-                  tags: [platform],
-                  session_id: "jessica_" + Date.now(),
-                  wall_type: wallType(platform),
-                  image_url: `https://placehold.co/300x200?text=${capitalize(platform)}`,
-                  video_url: "",
-                  likes: Math.floor(Math.random() * 300),
-                  comments: Math.floor(Math.random() * 50),
-                  reposts: Math.floor(Math.random() * 25),
-                });
-              }
-            });
-            resolve(cards.slice(0, 4)); // limit to top 4
-          }, 1500); // give time for CSE to load
-        });
-
-        results.push(...posts);
+        if (data.items) {
+          const output = data.items.map((item, i) => 
+            `${i + 1}. ${item.title}\n${item.link}\n${item.snippet}\n`
+          ).join('\n\n');
+          document.getElementById('output').textContent = output;
+        } else {
+          document.getElementById('output').textContent = "No results or API error.";
+        }
+      } catch (err) {
+        document.getElementById('output').textContent = "Fetch failed: " + err.message;
       }
-
-      output.innerHTML = "";
-      results.forEach(post => {
-        const card = document.createElement("div");
-        card.className = "post-card";
-        card.innerHTML = `
-          <img src="${post.image_url}" alt="${post.tags[0]}">
-          <div><strong>${post.headline}</strong></div>
-          <div style="font-size: 12px; color: #00f0ff99;">#${post.tags[0]} → ${post.wall_type}</div>
-          <a href="${post.cta_link_url}" target="_blank">🔗 View Post</a>
-        `;
-        output.appendChild(card);
-      });
     }
 
-    function runSearch(query) {
-      return new Promise(resolve => {
-        const inputBox = document.querySelector("input.gsc-input");
-        const searchButton = document.querySelector("button.gsc-search-button");
-        if (!inputBox || !searchButton) return resolve();
-
-        inputBox.value = query;
-        searchButton.click();
-
-        // Wait a little before resolving (ensure search runs)
-        setTimeout(resolve, 300);
-      });
-    }
+    searchCSE(query); // auto-run the query
   </script>
 </body>
 </html>
