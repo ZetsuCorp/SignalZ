@@ -1,12 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
 import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
-
-
-
 
 export default function App() {
   const [wallType, setWallType] = useState("main");
@@ -58,7 +54,7 @@ export default function App() {
             className="mt-4 text-sm text-cyan-200 hover:underline"
             onClick={() => setShowSettings(true)}
           >
-                    ⚙️ Settings
+            ⚙️ Settings
           </button>
 
           <a href="/monetize" className="monetize-link mt-4 block">
@@ -68,42 +64,32 @@ export default function App() {
           <a href="/jessica" className="mt-2 block text-sm text-cyan-300 hover:underline">
             🧠 Run Jessica AI
           </a>
-
         </div>
       </aside>
 
-
       {/* 🔹 Main Feed Area */}
       <main className="right-panel">
-    <header className="text-center py-4 border-b border-cyan-800 relative">
-  <div className="sigz-icon-stack relative inline-block w-14 h-14">
-    {/* 🌐 Emoji (back layer) */}
-    <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">
-      🌐
-    </span>
-
-    {/* 🔁 Ripple GIF (top layer) */}
-    <img
-      src="/sigicons/ripple.gif"
-      alt="Ripple"
-      className="ripple-overlay absolute top-1/2 left-1/2 w-14 h-14 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
-    />
-  </div>
-
-  <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
-  <p className="text-sm text-cyan-400">What the internet is talking about.</p>
-</header>
-
-
-
-
+        <header className="text-center py-4 border-b border-cyan-800 relative">
+          <div className="sigz-icon-stack relative inline-block w-14 h-14">
+            <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">
+              🌐
+            </span>
+            <img
+              src="/sigicons/ripple.gif"
+              alt="Ripple"
+              className="ripple-overlay absolute top-1/2 left-1/2 w-14 h-14 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+            />
+          </div>
+          <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
+          <p className="text-sm text-cyan-400">What the internet is talking about.</p>
+        </header>
 
         <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
           {["main", "alt", "zetsu"].map((id) => (
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={tab ${wallType === id ? "active" : ""}}
+              className={`tab ${wallType === id ? "active" : ""}`}
             >
               {id.toUpperCase()}
             </button>
