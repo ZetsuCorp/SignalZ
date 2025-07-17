@@ -6,7 +6,7 @@ const wallMap = {
   youtube: "alt",
   tiktok: "alt",
   snapchat: "alt",
-  instagram: "alt",
+  instagram: "main",
 
   reddit: "main",
   twitter: "main",
