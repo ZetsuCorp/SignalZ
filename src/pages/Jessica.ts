@@ -1,16 +1,7 @@
 const sources = [
-  {
-    platform: "youtube",
-    query: "trending on youtube today",
-  },
-  {
-    platform: "tiktok",
-    query: "trending on tiktok today",
-  },
-  {
-    platform: "instagram",
-    query: "trending on instagram today",
-  },
+  { platform: "youtube", query: "trending on youtube today" },
+  { platform: "tiktok", query: "trending on tiktok today" },
+  { platform: "instagram", query: "trending on instagram today" },
 ];
 
 function capitalize(str) {
@@ -18,8 +9,7 @@ function capitalize(str) {
 }
 
 function wallType(platform) {
-  const alt = ["youtube", "tiktok", "instagram"];
-  return alt.includes(platform) ? "alt" : "main";
+  return ["youtube", "tiktok", "instagram"].includes(platform) ? "alt" : "main";
 }
 
 async function fetchGoogleLinks(query) {
@@ -33,7 +23,8 @@ async function fetchGoogleLinks(query) {
   const anchors = Array.from(doc.querySelectorAll("a"));
   const valid = anchors
     .map((a) => {
-      const text = a.querySelector("h3")?.innerText || "";
+      const h3 = a.querySelector("h3");
+      const text = h3 ? h3.textContent : "";
       const href = a.href;
       return text && href.includes("http") ? { title: text, link: href } : null;
     })
