@@ -1,12 +1,11 @@
-import { Handler } from "@netlify/functions";
-import { createClient } from "@supabase/supabase-js";
+const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
-  process.env.VITE_SUPABASE_URL!,
-  process.env.VITE_SUPABASE_ANON_KEY!
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_ANON_KEY
 );
 
-const handler: Handler = async (event) => {
+exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -17,14 +16,14 @@ const handler: Handler = async (event) => {
   try {
     const data = JSON.parse(event.body || "{}");
 
-    // Check for duplicate by cta_url
+    // Check for existing by cta_url
     const { data: existingByUrl, error: urlError } = await supabase
       .from("jessica_posts")
       .select("id")
       .eq("cta_url", data.cta_url)
       .limit(1);
 
-    // Check for duplicate by image_url
+    // Check for existing by image_url
     const { data: existingByImg, error: imgError } = await supabase
       .from("jessica_posts")
       .select("id")
@@ -50,7 +49,7 @@ const handler: Handler = async (event) => {
       };
     }
 
-    // Insert new Jessica post
+    // Insert the new post
     const { error: insertError } = await supabase
       .from("jessica_posts")
       .insert([data]);
@@ -73,5 +72,3 @@ const handler: Handler = async (event) => {
     };
   }
 };
-
-export { handler };
