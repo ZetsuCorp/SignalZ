@@ -15,39 +15,39 @@ const handler: Handler = async (event) => {
   }
 
   try {
-    const raw = JSON.parse(event.body || "{}");
+    const body = JSON.parse(event.body || "{}");
 
-    // 🧽 Coerce and sanitize fields to avoid Supabase issues
+    // 🧼 Sanitize + prepare final post
     const post = {
-      headline: String(raw.headline || ""),
-      caption: String(raw.caption || ""),
-      cta_url: String(raw.cta_url || ""),
-      tags: String(raw.tags || ""),            // <— avoid array literal issue
-      session_id: String(raw.session_id || ""),
-      wall_type: String(raw.wall_type || "main"),
-      image_url: String(raw.image_url || ""),
-      video_url: String(raw.video_url || ""),
-      cta_link_url: String(raw.cta_link_url || ""),
-      background: String(raw.background || ""),
-      sigicon_url: String(raw.sigicon_url || ""),
-      display_name: String(raw.display_name || "Jessica AI"),
-      session_bg: String(raw.session_bg || ""),
-      likes: parseInt(raw.likes ?? "0", 10),
-      comments: parseInt(raw.comments ?? "0", 10),
-      reposts: parseInt(raw.reposts ?? "0", 10),
+      headline: body.headline || "",
+      caption: body.caption || "",
+      cta_url: body.cta_url || "",
+      tags: parseTags(body.tags),
+      session_id: body.session_id || "",
+      wall_type: body.wall_type || "main",
+      image_url: body.image_url || "",
+      video_url: body.video_url || "",
+      cta_link_url: body.cta_link_url || "",
+      background: body.background || "",
+      sigicon_url: body.sigicon_url || "",
+      display_name: body.display_name || "Jessica AI",
+      session_bg: body.session_bg || "",
+      likes: Number(body.likes ?? 0),
+      comments: Number(body.comments ?? 0),
+      reposts: Number(body.reposts ?? 0),
     };
 
-    // 🛡️ Optional deduplication (by cta_url or image_url)
-    const { data: dupes, error: dupeErr } = await supabase
+    // 🔍 Check for duplicates
+    const { data: dupes, error: dupError } = await supabase
       .from("jessica_posts")
       .select("id")
       .or(`cta_url.eq.${post.cta_url},image_url.eq.${post.image_url}`)
       .limit(1);
 
-    if (dupeErr) {
+    if (dupError) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: dupeErr.message }),
+        body: JSON.stringify({ error: dupError.message }),
       };
     }
 
@@ -58,28 +58,40 @@ const handler: Handler = async (event) => {
       };
     }
 
-    // ✅ Insert sanitized post
-    const { error } = await supabase
+    // 🚀 Insert into Supabase
+    const { error: insertError } = await supabase
       .from("jessica_posts")
       .insert([post]);
 
-    if (error) {
+    if (insertError) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: error.message }),
+        body: JSON.stringify({ error: insertError.message }),
       };
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Jessica post created." }),
+      body: JSON.stringify({ message: "Post created by Jessica." }),
     };
-  } catch (err) {
+  } catch (e) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: "Malformed request body" }),
+      body: JSON.stringify({ error: "Malformed JSON or unknown error" }),
     };
   }
 };
+
+// 🎯 Converts raw tags to Postgres text[] array format
+function parseTags(tags: unknown): string[] {
+  if (!tags) return [];
+  if (Array.isArray(tags)) return tags.map((tag) => String(tag));
+  if (typeof tags === "string") {
+    return tags.includes(",")
+      ? tags.split(",").map((t) => t.trim())
+      : [tags];
+  }
+  return [];
+}
 
 export { handler };
