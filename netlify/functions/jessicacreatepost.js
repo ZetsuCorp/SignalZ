@@ -1,9 +1,9 @@
 const { createClient } = require('@supabase/supabase-js');
 
-// Supabase client with environment variables
+// Use project-wide env vars
 const supabase = createClient(
- process.env.VITE_SUPABASE_URL!,
-  process.env.VITE_SUPABASE_ANON_KEY!
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_ANON_KEY
 );
 
 exports.handler = async (event) => {
@@ -17,7 +17,7 @@ exports.handler = async (event) => {
   try {
     const data = JSON.parse(event.body);
 
-    // 🛡️ Check for duplicates by cta_url or image_url
+    // Check for duplicates
     const { data: existing, error: fetchError } = await supabase
       .from('jessica_posts')
       .select('id')
@@ -38,7 +38,6 @@ exports.handler = async (event) => {
       };
     }
 
-    // ✅ Insert into Supabase
     const { error } = await supabase
       .from('jessica_posts')
       .insert([data]);
@@ -62,4 +61,3 @@ exports.handler = async (event) => {
     };
   }
 };
-
