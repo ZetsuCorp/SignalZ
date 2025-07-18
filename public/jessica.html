@@ -21,6 +21,7 @@
     ];
 
     const feed = document.getElementById('feed');
+    const DEFAULT_IMG = 'https://via.placeholder.com/600x300/00f0ff/000?text=Jessica+AI';
 
     const intros = [
       "— Ever wondered what’s buzzing on",
@@ -96,7 +97,16 @@
           card.className = 'jessica-post';
 
           const fallbackHTML = `
-            <a href="${item.link}" target="_blank" class="jessica-fallback-link">
+            <a href="${item.link}" target="_blank" style="
+              display: block;
+              background: #0f0f0f;
+              color: white;
+              padding: 1rem;
+              border: 1px solid #00f0ff44;
+              border-radius: 12px;
+              text-decoration: none;
+              margin-top: 0.5rem;
+            ">
               <strong>${item.title || "Visit Link"}</strong><br />
               <small>${extractDomain(item.link)}</small>
             </a>
@@ -128,6 +138,10 @@
               <span class="jessica-id" style="font-weight: bold; font-size: 0.85rem; color: #00f0ff;">
                 Jessica reporting from — <span class="jessica-platform-label">${platform}</span>
               </span>
+            </div>
+
+            <div class="jessica-img">
+              <img src="${DEFAULT_IMG}" alt="Preview">
             </div>
 
             <div class="jessica-meta">
