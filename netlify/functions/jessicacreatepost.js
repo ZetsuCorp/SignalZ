@@ -2,8 +2,8 @@ const { createClient } = require('@supabase/supabase-js');
 
 // Supabase client with environment variables
 const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
+ process.env.VITE_SUPABASE_URL!,
+  process.env.VITE_SUPABASE_ANON_KEY!
 );
 
 exports.handler = async (event) => {
