@@ -16,6 +16,13 @@ exports.handler = async (event) => {
   try {
     const data = JSON.parse(event.body || "{}");
 
+    // 🛡️ Force-cast any problematic fields to prevent malformed array issues
+    data.tags = String(data.tags);
+    data.wall_type = String(data.wall_type);
+
+    // 🐛 Optional: Log for debug
+    console.log("📦 Jessica incoming post:", data);
+
     // Check for existing by cta_url
     const { data: existingByUrl, error: urlError } = await supabase
       .from("jessica_posts")
@@ -49,7 +56,7 @@ exports.handler = async (event) => {
       };
     }
 
-    // Insert the new post
+    // ✅ Insert the new post
     const { error: insertError } = await supabase
       .from("jessica_posts")
       .insert([data]);
@@ -65,6 +72,7 @@ exports.handler = async (event) => {
       statusCode: 200,
       body: JSON.stringify({ message: "Jessica post created successfully." }),
     };
+
   } catch (err) {
     return {
       statusCode: 400,
