@@ -47,33 +47,6 @@
       }
     }
 
-    function renderIframeOrFallback(url, fallbackHTML) {
-      const wrapper = document.createElement('div');
-      wrapper.style.marginTop = '1rem';
-
-      const iframe = document.createElement('iframe');
-      iframe.src = url;
-      iframe.style.width = '100%';
-      iframe.style.height = '300px';
-      iframe.style.border = '1px solid #00f0ff55';
-      iframe.style.borderRadius = '12px';
-
-      let loaded = false;
-
-      iframe.onload = () => {
-        loaded = true;
-      };
-
-      setTimeout(() => {
-        if (!loaded) {
-          wrapper.innerHTML = fallbackHTML;
-        }
-      }, 1200);
-
-      wrapper.appendChild(iframe);
-      return wrapper;
-    }
-
     async function fetchAndRender({ platform, query }) {
       const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
 
@@ -96,52 +69,19 @@
           const card = document.createElement('div');
           card.className = 'jessica-post';
 
-          const fallbackHTML = `
-            <a href="${item.link}" target="_blank" style="
-              display: block;
-              background: #0f0f0f;
-              color: white;
-              padding: 1rem;
-              border: 1px solid #00f0ff44;
-              border-radius: 12px;
-              text-decoration: none;
-              margin-top: 0.5rem;
-            ">
-              <strong>${item.title || "Visit Link"}</strong><br />
-              <small>${extractDomain(item.link)}</small>
-            </a>
-          `;
+          const previewImg = item.pagemap?.cse_image?.[0]?.src || DEFAULT_IMG;
 
           card.innerHTML = `
-            <div class="jessica-meta-header" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
-              <div class="sigz-icon-stack" style="position: relative; width: 48px; height: 48px;">
-                <span style="
-                  position: absolute;
-                  top: 50%; left: 50%;
-                  transform: translate(-50%, -50%);
-                  font-size: 2rem;
-                  z-index: 0;
-                ">🌐</span>
-                <img
-                  src="/sigicons/ripple.gif"
-                  alt="Ripple"
-                  style="
-                    position: absolute;
-                    top: 50%; left: 50%;
-                    width: 48px; height: 48px;
-                    transform: translate(-50%, -50%);
-                    z-index: 10;
-                    pointer-events: none;
-                  "
-                />
+            <div class="jessica-meta-header">
+              <div class="sigz-icon-stack">
+                <span class="emoji-icon">🌐</span>
+                <img class="ripple-overlay" src="/sigicons/ripple.gif" alt="Ripple" />
               </div>
-              <span class="jessica-id" style="font-weight: bold; font-size: 0.85rem; color: #00f0ff;">
-                Jessica reporting from — <span class="jessica-platform-label">${platform}</span>
-              </span>
+              <span class="jessica-id">Jessica reporting from — <span class="jessica-platform-label">${platform}</span></span>
             </div>
 
             <div class="jessica-img">
-              <img src="${DEFAULT_IMG}" alt="Preview">
+              <img src="${previewImg}" alt="Preview">
             </div>
 
             <div class="jessica-meta">
@@ -150,11 +90,12 @@
               <p class="jessica-caption">"${item.snippet}"</p>
               <span class="jessica-date">${timestamp}</span>
               <p class="jessica-outro">${outro}</p>
+              <a href="${item.link}" class="jessica-link" target="_blank">
+                🌐 Visit Source (${extractDomain(item.link)})
+              </a>
             </div>
           `;
 
-          const previewBlock = renderIframeOrFallback(item.link, fallbackHTML);
-          card.appendChild(previewBlock);
           feed.appendChild(card);
         });
       } catch (err) {
