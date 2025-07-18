@@ -39,6 +39,41 @@
       "— Read more"
     ];
 
+    function extractDomain(link) {
+      try {
+        return new URL(link).hostname.replace("www.", "");
+      } catch {
+        return "unknown";
+      }
+    }
+
+    function renderIframeOrFallback(url, fallbackHTML) {
+      const wrapper = document.createElement('div');
+      wrapper.style.marginTop = '1rem';
+
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.style.width = '100%';
+      iframe.style.height = '300px';
+      iframe.style.border = '1px solid #00f0ff55';
+      iframe.style.borderRadius = '12px';
+
+      let loaded = false;
+
+      iframe.onload = () => {
+        loaded = true;
+      };
+
+      setTimeout(() => {
+        if (!loaded) {
+          wrapper.innerHTML = fallbackHTML;
+        }
+      }, 1200);
+
+      wrapper.appendChild(iframe);
+      return wrapper;
+    }
+
     async function fetchAndRender({ platform, query }) {
       const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
 
@@ -60,6 +95,22 @@
         posts.forEach(item => {
           const card = document.createElement('div');
           card.className = 'jessica-post';
+
+          const fallbackHTML = `
+            <a href="${item.link}" target="_blank" style="
+              display: block;
+              background: #0f0f0f;
+              color: white;
+              padding: 1rem;
+              border: 1px solid #00f0ff44;
+              border-radius: 12px;
+              text-decoration: none;
+              margin-top: 0.5rem;
+            ">
+              <strong>${item.title || "Visit Link"}</strong><br />
+              <small>${extractDomain(item.link)}</small>
+            </a>
+          `;
 
           card.innerHTML = `
             <div class="jessica-meta-header" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
@@ -100,10 +151,10 @@
               <span class="jessica-date">${timestamp}</span>
               <p class="jessica-outro">${outro}</p>
             </div>
-
-            <a href="${item.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
           `;
 
+          const previewBlock = renderIframeOrFallback(item.link, fallbackHTML);
+          card.appendChild(previewBlock);
           feed.appendChild(card);
         });
       } catch (err) {
