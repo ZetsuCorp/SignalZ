@@ -96,8 +96,30 @@
             </div>
           `;
 
+          // ✅ Push to Supabase via Netlify
+          fetch('/.netlify/functions/jessicacreatepost', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              headline: `${intro} ${outro}`,
+              caption: `"${item.snippet}"`,
+              cta_url: item.link,
+              tags: platform,
+              session_id: "JESSICA_AI",
+              wall_type: "main",
+              image_url: previewImg,
+              sigicon_url: "/sigicons/jessica.png",
+              background: "jessicabg1.png",
+              display_name: "Jessica AI",
+              likes: 0,
+              comments: 0,
+              reposts: 0
+            })
+          });
+
           feed.appendChild(card);
         });
+
       } catch (err) {
         console.warn(`Jessica failed on ${platform}:`, err);
       }
