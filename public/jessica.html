@@ -1,162 +1,94 @@
-<script>
-  const API_KEY = 'AIzaSyBqlCCuh41JXepJP1YRv2XJcdNfyp0WsqI';
-  const CX = 'b3aed2fbcf2074d6a';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jessica Auto Feed</title>
+  <link rel="stylesheet" href="jessica.css" />
+</head>
+<body>
+  <h1>🤖 Jessica’s Feed</h1>
+  <div class="jessica-feed" id="feed"></div>
 
-  const queries = [
-    { platform: "Twitter", query: "new on twitter" },
-    { platform: "X", query: "latest X posts" },
-    { platform: "Reddit", query: "breaking reddit news" },
-    { platform: "TikTok", query: "viral TikToks July 17" },
-  ];
+  <script>
+    const API_KEY = 'AIzaSyBqlCCuh41JXepJP1YRv2XJcdNfyp0WsqI';
+    const CX = 'b3aed2fbcf2074d6a';
 
-  const feed = document.getElementById('feed');
-  const DEFAULT_IMG = 'https://via.placeholder.com/600x300/00f0ff/000?text=Jessica+AI';
+    const queries = [
+      { platform: "Twitter", query: "new on twitter" },
+      { platform: "X", query: "latest X posts" },
+      { platform: "Reddit", query: "breaking reddit news" },
+      { platform: "TikTok", query: "viral TikToks July 17" },
+    ];
 
-  const intros = [
-    "— Ever wondered what’s buzzing on",
-    "— Hot off the wire from",
-    "— The latest scoop from",
-    "— Here's what’s lighting up",
-    "— Jessica on scene at"
-  ];
+    const feed = document.getElementById('feed');
+    const DEFAULT_IMG = 'https://via.placeholder.com/600x300/00f0ff/000?text=Jessica+AI';
 
-  const outros = [
-    "— Find out here",
-    "— Tap in for the full story",
-    "— Get the details",
-    "— Full report below",
-    "— Read more"
-  ];
+    const intros = [
+      "— Ever wondered what’s buzzing on",
+      "— Hot off the wire from",
+      "— The latest scoop from",
+      "— Here's what’s lighting up",
+      "— Jessica on scene at"
+    ];
 
-  async function fetchAndRender({ platform, query }) {
-    const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
+    const outros = [
+      "— Find out here",
+      "— Tap in for the full story",
+      "— Get the details",
+      "— Full report below",
+      "— Read more"
+    ];
 
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
+    async function fetchAndRender({ platform, query }) {
+      const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
 
-      const posts = (data.items || []).filter(item =>
-        item.link &&
-        item.snippet && item.snippet.length > 30 &&
-        !item.link.includes("feed/trending") &&
-        !item.link.includes("explore")
-      );
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
 
-      const timestamp = new Date().toLocaleString();
-      const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
-      const outro = `${outros[Math.floor(Math.random() * outros.length)]}`;
+        const posts = (data.items || []).filter(item =>
+          item.link &&
+          item.snippet && item.snippet.length > 30 &&
+          !item.link.includes("feed/trending") &&
+          !item.link.includes("explore")
+        );
 
-      posts.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'jessica-post';
-        const headline = "📛 Jessica Drop";
-        const caption = item.snippet;
-        const bg = "bg1"; // optional: randomize or style later
-        const sigicon = "/postcard-assets/sigzicon.png"; // optional
+        const timestamp = new Date().toLocaleString();
+        const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
+        const outro = `${outros[Math.floor(Math.random() * outros.length)]}`;
 
-        card.innerHTML = `
-          <div
-            class="post shadow-xl"
-            style="
-              margin-bottom: 2rem;
-              background-image: url('/postcard-assets/cardbase/${bg}.png');
-              background-size: cover;
-              background-position: center;
-              border-radius: 16px;
-              border: 4px solid rgba(0, 255, 255, 0.5);
-              box-shadow: 0 0 15px #00f0ff55;
-              padding: 1.5rem;
-              position: relative;
-              overflow: hidden;
-              z-index: 1;
-              color: white;
-            "
-          >
-            <div style="
-              position: absolute;
-              top: 0; left: 0;
-              width: 100%; height: 100%;
-              background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.08) 100%);
-              z-index: 0;
-              pointer-events: none;
-              mix-blend-mode: screen;
-            "></div>
+        posts.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'jessica-post';
 
-            <div style="position: relative; z-index: 2;">
-              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; background: rgba(0,0,0,0.5); padding: 6px 10px; border-radius: 12px;">
-                <span style="font-size: 0.85rem; color: #0ff;">Jessica reporting from — ${platform}</span>
-              </div>
-
-              <div style="
-                background: linear-gradient(145deg, #0ff, #033);
-                border: 2px solid #00f0ff88;
-                border-radius: 10px;
-                padding: 8px 16px;
-                text-align: center;
-                font-size: 1.2rem;
-                font-weight: bold;
-                color: #ffffff;
-                text-shadow: 0 0 2px #0ff, 0 0 5px #0ff;
-                margin: 0.5rem 0 0.75rem;
-                box-shadow: inset 0 2px 5px rgba(255,255,255,0.2), inset 0 -2px 5px rgba(0,0,0,0.3), 0 4px 8px rgba(0,255,255,0.2);
-              ">${headline}</div>
-
-              <div style="font-size: 0.85rem; color: #ccc; margin-bottom: 1rem;">📂 Type — SIGZICON</div>
-
-              <img src="${DEFAULT_IMG}" alt="preview" style="
-                width: 100%;
-                height: auto;
-                border-radius: 8px;
-                border: 1px solid #ccc;
-                margin-bottom: 0.5rem;
-              " />
-
-              <div style="font-size: 0.9rem; color: white; margin-bottom: 0.5rem;">"${caption}"</div>
-
-              <a href="${item.link}" target="_blank" style="
-                display: inline-block;
-                background: linear-gradient(to right, #ff4136, #ffdc00);
-                color: white;
-                padding: 0.4rem 0.75rem;
-                border-radius: 999px;
-                font-size: 0.8rem;
-                font-weight: bold;
-                text-decoration: none;
-                margin-bottom: 0.5rem;
-              ">🔗 Visit Link</a>
-
-              <div style="
-                margin-top: 1rem;
-                display: flex;
-                justify-content: space-between;
-                font-size: 0.9rem;
-                background: rgba(0,0,0,0.3);
-                padding: 6px 10px;
-                border-radius: 10px;
-              ">
-                <div>❤️ Likes: ${Math.floor(Math.random() * 100)}</div>
-                <div>💬 Comments: ${Math.floor(Math.random() * 10)}</div>
-              </div>
-
-              <div style="
-                margin-top: 0.4rem;
-                font-size: 0.85rem;
-                color: #aaa;
-                background: rgba(0,0,0,0.25);
-                padding: 4px 10px;
-                border-radius: 10px;
-                text-align: center;
-              ">👁️ Views and Shares</div>
+          card.innerHTML = `
+            <div class="jessica-meta-header">
+              <span class="jessica-id">Jessica reporting from — ${platform}</span>
             </div>
-          </div>
-        `;
 
-        feed.appendChild(card);
-      });
-    } catch (err) {
-      console.warn(`Jessica failed on ${platform}:`, err);
+            <div class="jessica-img">
+              <img src="${DEFAULT_IMG}" alt="Preview">
+            </div>
+
+            <div class="jessica-meta">
+              <span class="jessica-platform">${platform}</span>
+              <p class="jessica-intro">${intro}</p>
+              <p class="jessica-caption">"${item.snippet}"</p>
+              <span class="jessica-date">${timestamp}</span>
+              <p class="jessica-outro">${outro}</p>
+            </div>
+
+            <a href="${item.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
+          `;
+
+          feed.appendChild(card);
+        });
+      } catch (err) {
+        console.warn(`Jessica failed on ${platform}:`, err);
+      }
     }
-  }
 
-  queries.forEach(fetchAndRender);
-</script>
+    queries.forEach(fetchAndRender);
+  </script>
+</body>
+</html>
