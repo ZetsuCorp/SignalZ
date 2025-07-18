@@ -21,51 +21,94 @@ h1 {
   gap: 24px;
 }
 
-/* === POST CARD === */
+/* === TCG-STYLE POST CARD === */
 .jessica-post {
-  background: #101820;
-  border: 2px solid #00f0ff44;
+  position: relative;
+  background-color: #101820;
+  background-size: cover;
+  background-position: center;
   border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 0 20px #00f0ff22;
+  border: 4px solid rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 15px #00f0ff55;
+  padding: 1.5rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1;
 }
 
 .jessica-post:hover {
   transform: scale(1.015);
-  box-shadow: 0 0 25px #00f0ff66;
+  box-shadow: 0 0 25px #00f0ff99;
 }
 
-/* === IMAGE BLOCK === */
-.jessica-img img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  object-fit: cover;
+/* === HOLOGRAPHIC OVERLAY === */
+.jessica-post::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.08) 100%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* === LAYER CONTAINER === */
+.jessica-post > * {
+  position: relative;
+  z-index: 2;
 }
 
 /* === META HEADER === */
 .jessica-meta-header {
-  font-size: 0.9rem;
-  color: #00ffee;
-  font-weight: 600;
-  margin-bottom: 10px;
-  letter-spacing: 0.3px;
+  font-size: 0.85rem;
+  color: #0ff;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 6px 10px;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  text-align: center;
 }
 
-/* === PLATFORM TAG === */
+/* === GRADIENT TITLE === */
+.jessica-title {
+  background: linear-gradient(145deg, #0ff, #033);
+  border: 2px solid #00f0ff88;
+  border-radius: 10px;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 2px #0ff, 0 0 5px #0ff;
+  box-shadow: inset 0 2px 5px rgba(255,255,255,0.2),
+              inset 0 -2px 5px rgba(0,0,0,0.3),
+              0 4px 8px rgba(0,255,255,0.2);
+  margin-bottom: 1rem;
+}
+
+/* === PLATFORM TYPE TAG === */
 .jessica-platform {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   background: #00f0ff22;
   color: #00f0ff;
   padding: 4px 10px;
   border-radius: 8px;
   display: inline-block;
   margin-bottom: 8px;
+}
+
+/* === IMAGE PREVIEW === */
+.jessica-img img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 0.75rem;
+  object-fit: cover;
 }
 
 /* === INTRO LINE === */
@@ -76,18 +119,18 @@ h1 {
   margin-bottom: 6px;
 }
 
-/* === SNIPPET === */
+/* === SNIPPET / MAIN TEXT === */
 .jessica-caption {
   font-size: 0.95rem;
-  color: #cbefff;
-  margin: 8px 0;
-  line-height: 1.4;
+  color: #ffffff;
+  margin: 6px 0;
+  line-height: 1.5;
 }
 
 /* === DATE === */
 .jessica-date {
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   margin-bottom: 10px;
 }
 
@@ -99,19 +142,43 @@ h1 {
   margin-bottom: 12px;
 }
 
-/* === CTA LINK === */
+/* === CTA BUTTON === */
 .jessica-link {
-  margin-top: auto;
   font-weight: bold;
-  color: #00f0ff;
+  color: white;
+  background: linear-gradient(to right, #ff4136, #ffdc00);
   text-decoration: none;
-  border-top: 1px solid #00f0ff22;
-  padding-top: 10px;
-  display: block;
-  text-align: right;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  display: inline-block;
+  width: fit-content;
+  margin-top: 0.5rem;
 }
 
 .jessica-link:hover {
-  text-decoration: underline;
-  color: #66ffff;
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+/* === STATS BAR === */
+.jessica-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 10px;
+  border-radius: 10px;
+  margin-top: 1rem;
+}
+
+.jessica-stats-extra {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+  color: #aaa;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  padding: 4px 10px;
+  margin-top: 0.4rem;
 }
