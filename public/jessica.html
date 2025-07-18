@@ -62,8 +62,31 @@
           card.className = 'jessica-post';
 
           card.innerHTML = `
-            <div class="jessica-meta-header">
-              <span class="jessica-id">Jessica reporting from — ${platform}</span>
+            <div class="jessica-meta-header" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+              <div class="sigz-icon-stack" style="position: relative; width: 48px; height: 48px;">
+                <span style="
+                  position: absolute;
+                  top: 50%; left: 50%;
+                  transform: translate(-50%, -50%);
+                  font-size: 2rem;
+                  z-index: 0;
+                ">🌐</span>
+                <img
+                  src="/sigicons/ripple.gif"
+                  alt="Ripple"
+                  style="
+                    position: absolute;
+                    top: 50%; left: 50%;
+                    width: 48px; height: 48px;
+                    transform: translate(-50%, -50%);
+                    z-index: 10;
+                    pointer-events: none;
+                  "
+                />
+              </div>
+              <span class="jessica-id" style="font-weight: bold; font-size: 0.85rem; color: #00f0ff;">
+                Jessica reporting from — <span class="jessica-platform-label">${platform}</span>
+              </span>
             </div>
 
             <div class="jessica-img">
