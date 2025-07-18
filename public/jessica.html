@@ -94,6 +94,10 @@
         const outro = `${outros[Math.floor(Math.random() * outros.length)]}`;
 
         posts.forEach(item => {
+          const imageUrl = item.pagemap?.cse_image?.[0]?.src?.startsWith("http")
+            ? item.pagemap.cse_image[0].src
+            : DEFAULT_IMG;
+
           const card = document.createElement('div');
           card.className = 'jessica-post';
 
@@ -143,7 +147,7 @@
             </div>
 
             <div class="jessica-img">
-              <img src="${DEFAULT_IMG}" alt="Preview" onerror="this.onerror=null; this.src='${DEFAULT_IMG}'" />
+              <img src="${imageUrl}" alt="Preview" onerror="this.onerror=null; this.src='${DEFAULT_IMG}'" />
             </div>
 
             <div class="jessica-meta">
