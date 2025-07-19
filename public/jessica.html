@@ -10,8 +10,8 @@
   <div class="jessica-feed" id="feed"></div>
 
   <script>
-    const API_KEY = 'AIzaSyDvXiEv8WNKA46RcDn9rGCKReOO6RlYqks';
-    const CX = '806ccee4d77894557';
+    const API_KEY = 'AIzaSyBqlCCuh41JXepJP1YRv2XJcdNfyp0WsqI';
+    const CX = 'b3aed2fbcf2074d6a';
 
     const queries = [
       { platform: "Twitter", query: "new on twitter" },
@@ -39,16 +39,8 @@
       "— Read more"
     ];
 
-    function extractDomain(link) {
-      try {
-        return new URL(link).hostname.replace("www.", "");
-      } catch {
-        return "unknown";
-      }
-    }
-
     async function fetchAndRender({ platform, query }) {
-      const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
+      const url = https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en;
 
       try {
         const res = await fetch(url);
@@ -62,26 +54,20 @@
         );
 
         const timestamp = new Date().toLocaleString();
-        const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
-        const outro = `${outros[Math.floor(Math.random() * outros.length)]}`;
+        const intro = ${intros[Math.floor(Math.random() * intros.length)]} ${platform};
+        const outro = ${outros[Math.floor(Math.random() * outros.length)]};
 
         posts.forEach(item => {
           const card = document.createElement('div');
           card.className = 'jessica-post';
 
-          const previewImg = item.pagemap?.cse_image?.[0]?.src || DEFAULT_IMG;
-
-          card.innerHTML = `
+          card.innerHTML = 
             <div class="jessica-meta-header">
-              <div class="sigz-icon-stack">
-                <span class="emoji-icon">🌐</span>
-                <img class="ripple-overlay" src="/sigicons/ripple.gif" alt="Ripple" />
-              </div>
-              <span class="jessica-id">Jessica reporting from — <span class="jessica-platform-label">${platform}</span></span>
+              <span class="jessica-id">Jessica reporting from — ${platform}</span>
             </div>
 
             <div class="jessica-img">
-              <img src="${previewImg}" alt="Preview">
+              <img src="${DEFAULT_IMG}" alt="Preview">
             </div>
 
             <div class="jessica-meta">
@@ -90,38 +76,15 @@
               <p class="jessica-caption">"${item.snippet}"</p>
               <span class="jessica-date">${timestamp}</span>
               <p class="jessica-outro">${outro}</p>
-              <a href="${item.link}" class="jessica-link" target="_blank">
-                🌐 Visit Source (${extractDomain(item.link)})
-              </a>
             </div>
-          `;
 
-          // ✅ Push to Supabase via Netlify
-          fetch('/.netlify/functions/jessicacreatepost', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              headline: `${intro} ${outro}`,
-              caption: `"${item.snippet}"`,
-              cta_url: item.link,
-              tags: platform,
-              session_id: "JESSICA_AI",
-              wall_type: "main",
-              image_url: previewImg,
-              sigicon_url: "/sigicons/jessica.png",
-              background: "jessicabg1.png",
-              display_name: "Jessica AI",
-              likes: 0,
-              comments: 0,
-              reposts: 0
-            })
-          });
+            <a href="${item.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
+          ;
 
           feed.appendChild(card);
         });
-
       } catch (err) {
-        console.warn(`Jessica failed on ${platform}:`, err);
+        console.warn(Jessica failed on ${platform}:, err);
       }
     }
 
