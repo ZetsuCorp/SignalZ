@@ -33,13 +33,15 @@ exports.handler = async (event) => {
       likes: toNumber(body.likes),
       comments: toNumber(body.comments),
       reposts: toNumber(body.reposts),
+      search_session: toNumber(body.search_session || 1),
+      created_at: new Date().toISOString(),
     };
 
-    // 🛑 Check for duplicate by cta_url or image_url
+    // Check for duplicates using filters (safer)
     const { data: dupes, error: dupError } = await supabase
       .from("jessica_posts")
       .select("id")
-      .or(`cta_url.eq.${post.cta_url},image_url.eq.${post.image_url}`)
+      .or(`cta_url.eq.${encodeURIComponent(post.cta_url)},image_url.eq.${encodeURIComponent(post.image_url)}`)
       .limit(1);
 
     if (dupError) {
@@ -56,7 +58,7 @@ exports.handler = async (event) => {
       };
     }
 
-    // 🚀 Insert new post
+    // Insert the post
     const { error: insertError } = await supabase
       .from("jessica_posts")
       .insert([post]);
@@ -72,7 +74,7 @@ exports.handler = async (event) => {
       statusCode: 200,
       body: JSON.stringify({ message: "Post created by Jessica." }),
     };
-  } catch (e) {
+  } catch (err) {
     return {
       statusCode: 400,
       body: JSON.stringify({ error: "Malformed JSON or unknown error" }),
@@ -85,9 +87,7 @@ function parseTags(tags) {
   if (!tags) return [];
   if (Array.isArray(tags)) return tags.map(String);
   if (typeof tags === "string") {
-    return tags.includes(",")
-      ? tags.split(",").map((t) => t.trim())
-      : [tags];
+    return tags.includes(",") ? tags.split(",").map((t) => t.trim()) : [tags];
   }
   return [];
 }
