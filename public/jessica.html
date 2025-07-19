@@ -19,7 +19,11 @@
     font-weight: bold;
   ">🔄 Refresh Feed</button>
 
-  <div class="jessica-feed" id="feed"></div>
+  <div id="feed">
+    <section id="session1" class="session-block"><h2>📡 Session 1</h2></section>
+    <section id="session2" class="session-block"><h2>🛰️ Session 2</h2></section>
+    <section id="session3" class="session-block"><h2>🧠 Session 3</h2></section>
+  </div>
 
   <script>
     const API_KEY = 'AIzaSyApZmcPKbA0Qcphmz5_8Dt_u_re1VvMd-k';
@@ -30,9 +34,12 @@
       { platform: "X", query: "latest X posts" },
       { platform: "Reddit", query: "breaking reddit news" },
       { platform: "TikTok", query: "viral TikToks July 17" },
+      { platform: "Instagram", query: "explore instagram reels" },
+      { platform: "YouTube", query: "trending on youtube" },
+      { platform: "News", query: "top headlines" },
+      { platform: "AI", query: "latest AI tools 2025" },
+      { platform: "Crypto", query: "new crypto launches" }
     ];
-
-    const feed = document.getElementById('feed');
 
     const intros = [
       "— Ever wondered what’s buzzing on",
@@ -58,40 +65,39 @@
 
     async function fetchAndRender({ platform, query }) {
       const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
-
       try {
         const res = await fetch(url);
         const data = await res.json();
-
-        const posts = (data.items || []).filter(item =>
-          item.link &&
-          item.snippet && item.snippet.length > 30 &&
-          !item.link.includes("feed/trending") &&
-          !item.link.includes("explore")
-        );
-
         const timestamp = new Date().toLocaleString();
         const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
         const outro = `${outros[Math.floor(Math.random() * outros.length)]}`;
 
-        return posts.map(item => ({
-          platform,
-          link: item.link,
-          snippet: item.snippet,
-          timestamp,
-          intro,
-          outro,
-          image_url: generateImageUrl(platform, new Date().toISOString())
-        }));
+        return (data.items || [])
+          .filter(item =>
+            item.link &&
+            item.snippet?.length > 30 &&
+            !item.link.includes("feed/trending") &&
+            !item.link.includes("explore")
+          )
+          .map(item => ({
+            platform,
+            link: item.link,
+            snippet: item.snippet,
+            timestamp,
+            intro,
+            outro,
+            image_url: generateImageUrl(platform, new Date().toISOString())
+          }));
       } catch (err) {
         console.warn(`Jessica failed on ${platform}:`, err);
         return [];
       }
     }
 
-    function renderPosts(allPosts) {
-      feed.innerHTML = '';
-      allPosts.forEach(({ platform, link, snippet, timestamp, intro, outro, image_url }) => {
+    function renderCategoryPosts(containerId, posts) {
+      const section = document.getElementById(containerId);
+      section.innerHTML = `<h2>${section.querySelector('h2').textContent}</h2>`; // clear except header
+      posts.forEach(({ platform, link, snippet, timestamp, intro, outro, image_url }) => {
         const card = document.createElement('div');
         card.className = 'jessica-post';
         card.innerHTML = `
@@ -110,20 +116,20 @@
           </div>
           <a href="${link}" target="_blank" class="jessica-link">🔗 Open Post</a>
         `;
-        feed.appendChild(card);
+        section.appendChild(card);
       });
     }
 
-    async function postToSupabase({ platform, link, snippet, intro, outro, image_url }) {
+    async function postToSupabase(post) {
       const payload = {
-        headline: intro,
-        caption: snippet,
-        cta_url: link,
-        image_url,
-        tags: [platform],
+        headline: post.intro,
+        caption: post.snippet,
+        cta_url: post.link,
+        image_url: post.image_url,
+        tags: [post.platform],
         session_id: "jessica-bot",
         wall_type: "main",
-        sigicon_url: image_url,
+        sigicon_url: post.image_url,
         display_name: "Jessica AI",
         likes: 0,
         comments: 0,
@@ -136,43 +142,36 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
-
         const result = await res.json();
-        if (res.status === 200) {
-          console.log("✅ Supabase post created:", result.message);
-        } else if (res.status === 409) {
-          console.log("⚠️ Skipped duplicate post:", payload.cta_url);
-        } else {
-          console.warn("❌ Failed to create post:", result.error);
-        }
+        if (res.status === 200) console.log("✅ Supabase post created:", result.message);
+        else if (res.status === 409) console.log("⚠️ Skipped duplicate post:", payload.cta_url);
+        else console.warn("❌ Failed:", result.error);
       } catch (err) {
-        console.error("🚫 Network or logic error:", err);
+        console.error("🚫 Network error:", err);
       }
     }
 
     async function loadJessica() {
-      const cached = localStorage.getItem('jessicaFeedCache');
-      if (cached) {
-        const posts = JSON.parse(cached);
-        renderPosts(posts);
-      } else {
-        const results = await Promise.all(queries.map(fetchAndRender));
-        const allPosts = results.flat();
-        localStorage.setItem('jessicaFeedCache', JSON.stringify(allPosts));
-        renderPosts(allPosts);
-      }
+      const [set1, set2, set3] = [
+        queries.slice(0, 3),
+        queries.slice(3, 6),
+        queries.slice(6, 9)
+      ];
+
+      const s1 = (await Promise.all(set1.map(fetchAndRender))).flat();
+      const s2 = (await Promise.all(set2.map(fetchAndRender))).flat();
+      const s3 = (await Promise.all(set3.map(fetchAndRender))).flat();
+
+      localStorage.setItem('jessicaFeedCache', JSON.stringify([...s1, ...s2, ...s3]));
+
+      renderCategoryPosts("session1", s1);
+      renderCategoryPosts("session2", s2);
+      renderCategoryPosts("session3", s3);
     }
 
     document.getElementById('refreshBtn').addEventListener('click', async () => {
       localStorage.removeItem('jessicaFeedCache');
-      const results = await Promise.all(queries.map(fetchAndRender));
-      const allPosts = results.flat();
-      localStorage.setItem('jessicaFeedCache', JSON.stringify(allPosts));
-      renderPosts(allPosts);
-
-      for (const post of allPosts) {
-        await postToSupabase(post);
-      }
+      await loadJessica();
     });
 
     loadJessica();
