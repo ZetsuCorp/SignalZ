@@ -18,6 +18,7 @@
     cursor: pointer;
     font-weight: bold;
   ">🔄 Refresh Feed</button>
+
   <div class="jessica-feed" id="feed"></div>
 
   <script>
@@ -49,11 +50,6 @@
       "— Full report below",
       "— Read more"
     ];
-
-    document.getElementById('refreshBtn').onclick = () => {
-      localStorage.removeItem('jessicaFeedCache');
-      location.reload();
-    };
 
     async function fetchAndRender({ platform, query }) {
       const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
@@ -112,17 +108,29 @@
       });
     }
 
-    (async () => {
+    async function loadJessica() {
       const cached = localStorage.getItem('jessicaFeedCache');
       if (cached) {
-        renderPosts(JSON.parse(cached));
+        const posts = JSON.parse(cached);
+        renderPosts(posts);
       } else {
         const results = await Promise.all(queries.map(fetchAndRender));
         const allPosts = results.flat();
         localStorage.setItem('jessicaFeedCache', JSON.stringify(allPosts));
         renderPosts(allPosts);
       }
-    })();
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', async () => {
+      localStorage.removeItem('jessicaFeedCache');
+      const results = await Promise.all(queries.map(fetchAndRender));
+      const allPosts = results.flat();
+      localStorage.setItem('jessicaFeedCache', JSON.stringify(allPosts));
+      renderPosts(allPosts);
+    });
+
+    // ✅ Initial load from cache or fetch
+    loadJessica();
   </script>
 </body>
 </html>
