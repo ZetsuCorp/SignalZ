@@ -108,6 +108,42 @@
       });
     }
 
+    async function postToSupabase({ platform, link, snippet, intro, outro }) {
+      const payload = {
+        headline: intro,
+        caption: snippet,
+        cta_url: link,
+        image_url: DEFAULT_IMG,
+        tags: [platform],
+        session_id: "jessica-bot",
+        wall_type: "main",
+        sigicon_url: DEFAULT_IMG,
+        display_name: "Jessica AI",
+        likes: 0,
+        comments: 0,
+        reposts: 0
+      };
+
+      try {
+        const res = await fetch("/.netlify/functions/create-jessica-post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (res.status === 200) {
+          console.log("✅ Supabase post created:", result.message);
+        } else if (res.status === 409) {
+          console.log("⚠️ Skipped duplicate post:", payload.cta_url);
+        } else {
+          console.warn("❌ Failed to create post:", result.error);
+        }
+      } catch (err) {
+        console.error("🚫 Network or logic error:", err);
+      }
+    }
+
     async function loadJessica() {
       const cached = localStorage.getItem('jessicaFeedCache');
       if (cached) {
@@ -127,9 +163,13 @@
       const allPosts = results.flat();
       localStorage.setItem('jessicaFeedCache', JSON.stringify(allPosts));
       renderPosts(allPosts);
+
+      // 🔁 Send each post to Supabase
+      for (const post of allPosts) {
+        await postToSupabase(post);
+      }
     });
 
-    // ✅ Initial load from cache or fetch
     loadJessica();
   </script>
 </body>
