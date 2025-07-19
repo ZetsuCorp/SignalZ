@@ -1,4 +1,3 @@
-
 /* === GLOBAL RESET === */
 body {
   margin: 0;
@@ -22,94 +21,103 @@ h1 {
   gap: 24px;
 }
 
-/* === POST CARD === */
+/* === POST CARD WRAPPER === */
 .jessica-post {
-  background: #101820;
-  border: 2px solid #00f0ff44;
+  margin-bottom: 2rem;
+  background-size: cover;
+  background-position: center;
   border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 0 20px #00f0ff22;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 4px solid rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 15px #00f0ff55;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
-.jessica-post:hover {
-  transform: scale(1.015);
-  box-shadow: 0 0 25px #00f0ff66;
-}
-
-/* === IMAGE BLOCK === */
-.jessica-img img {
+/* === HOLO OVERLAY === */
+.jessica-post::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
   width: 100%;
-  height: auto;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  object-fit: cover;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.08) 100%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* === META HEADER === */
-.jessica-meta-header {
-  font-size: 0.9rem;
-  color: #00ffee;
-  font-weight: 600;
-  margin-bottom: 10px;
-  letter-spacing: 0.3px;
+/* === POST INNER CONTENT === */
+.jessica-post-content {
+  position: relative;
+  z-index: 2;
 }
 
-/* === PLATFORM TAG === */
-.jessica-platform {
+/* === DISPLAY NAME BLOCK === */
+.jessica-display-name {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.jessica-display-name span {
+  font-weight: bold;
   font-size: 0.85rem;
-  background: #00f0ff22;
   color: #00f0ff;
-  padding: 4px 10px;
-  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-shadow: 0 0 6px #00f0ff;
   display: inline-block;
-  margin-bottom: 8px;
 }
 
-/* === INTRO LINE === */
-.jessica-intro {
-  font-style: italic;
-  font-size: 0.9rem;
-  color: #99ccff;
-  margin-bottom: 6px;
+/* === HEADER LINE STRIP === */
+.jessica-header-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 10px;
+  border-radius: 12px;
 }
 
-/* === SNIPPET === */
-.jessica-caption {
-  font-size: 0.95rem;
-  color: #cbefff;
-  margin: 8px 0;
-  line-height: 1.4;
+/* === MAIN CARD TITLE === */
+.jessica-card-title {
+  background: linear-gradient(145deg, #0ff, #033);
+  border: 2px solid #00f0ff88;
+  border-radius: 10px;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 2px #0ff, 0 0 5px #0ff;
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.2),
+    inset 0 -2px 5px rgba(0,0,0,0.3),
+    0 4px 8px rgba(0,255,255,0.2);
+  margin: 0.5rem 0 0.75rem;
+  z-index: 2;
+  position: relative;
 }
 
-/* === DATE === */
-.jessica-date {
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 10px;
-}
-
-/* === OUTRO LINE === */
-.jessica-outro {
-  font-style: italic;
+/* === CARD TYPE / TAG === */
+.jessica-card-type {
   font-size: 0.85rem;
-  color: #aaccee;
-  margin-bottom: 12px;
+  color: #ccc;
+  margin-bottom: 1rem;
 }
 
-/* === CTA LINK === */
+/* === CALLOUT LINK === */
 .jessica-link {
-  margin-top: auto;
   font-weight: bold;
   color: #00f0ff;
   text-decoration: none;
-  border-top: 1px solid #00f0ff22;
-  padding-top: 10px;
   display: block;
   text-align: right;
+  margin-top: 1rem;
 }
 
 .jessica-link:hover {
