@@ -7,11 +7,22 @@
 </head>
 <body>
   <h1>🤖 Jessica’s Feed</h1>
+  <button id="refreshBtn" style="
+    display: block;
+    margin: 0 auto 2rem auto;
+    background: #00f0ff22;
+    border: 1px solid #00f0ff55;
+    color: #00f0ff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  ">🔄 Refresh Feed</button>
   <div class="jessica-feed" id="feed"></div>
 
   <script>
-  const API_KEY = 'AIzaSyApZmcPKbA0Qcphmz5_8Dt_u_re1VvMd-k'; // or your new key
-const CX = '806ccee4d77894557';
+    const API_KEY = 'AIzaSyApZmcPKbA0Qcphmz5_8Dt_u_re1VvMd-k';
+    const CX = '806ccee4d77894557';
 
     const queries = [
       { platform: "Twitter", query: "new on twitter" },
@@ -39,6 +50,11 @@ const CX = '806ccee4d77894557';
       "— Read more"
     ];
 
+    document.getElementById('refreshBtn').onclick = () => {
+      localStorage.removeItem('jessicaFeedCache');
+      location.reload();
+    };
+
     async function fetchAndRender({ platform, query }) {
       const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
 
@@ -57,35 +73,56 @@ const CX = '806ccee4d77894557';
         const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
         const outro = `${outros[Math.floor(Math.random() * outros.length)]}`;
 
-        posts.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'jessica-post';
-
-          card.innerHTML = `
-            <div class="jessica-meta-header">
-              <span class="jessica-id">Jessica reporting from — ${platform}</span>
-            </div>
-            <div class="jessica-img">
-              <img src="${DEFAULT_IMG}" alt="Preview">
-            </div>
-            <div class="jessica-meta">
-              <span class="jessica-platform">${platform}</span>
-              <p class="jessica-intro">${intro}</p>
-              <p class="jessica-caption">"${item.snippet}"</p>
-              <span class="jessica-date">${timestamp}</span>
-              <p class="jessica-outro">${outro}</p>
-            </div>
-            <a href="${item.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
-          `;
-
-          feed.appendChild(card);
-        });
+        return posts.map(item => ({
+          platform,
+          link: item.link,
+          snippet: item.snippet,
+          timestamp,
+          intro,
+          outro
+        }));
       } catch (err) {
         console.warn(`Jessica failed on ${platform}:`, err);
+        return [];
       }
     }
 
-    queries.forEach(fetchAndRender);
+    function renderPosts(allPosts) {
+      feed.innerHTML = '';
+      allPosts.forEach(({ platform, link, snippet, timestamp, intro, outro }) => {
+        const card = document.createElement('div');
+        card.className = 'jessica-post';
+        card.innerHTML = `
+          <div class="jessica-meta-header">
+            <span class="jessica-id">Jessica reporting from — ${platform}</span>
+          </div>
+          <div class="jessica-img">
+            <img src="${DEFAULT_IMG}" alt="Preview">
+          </div>
+          <div class="jessica-meta">
+            <span class="jessica-platform">${platform}</span>
+            <p class="jessica-intro">${intro}</p>
+            <p class="jessica-caption">"${snippet}"</p>
+            <span class="jessica-date">${timestamp}</span>
+            <p class="jessica-outro">${outro}</p>
+          </div>
+          <a href="${link}" target="_blank" class="jessica-link">🔗 Open Post</a>
+        `;
+        feed.appendChild(card);
+      });
+    }
+
+    (async () => {
+      const cached = localStorage.getItem('jessicaFeedCache');
+      if (cached) {
+        renderPosts(JSON.parse(cached));
+      } else {
+        const results = await Promise.all(queries.map(fetchAndRender));
+        const allPosts = results.flat();
+        localStorage.setItem('jessicaFeedCache', JSON.stringify(allPosts));
+        renderPosts(allPosts);
+      }
+    })();
   </script>
 </body>
 </html>
