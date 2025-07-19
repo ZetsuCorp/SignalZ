@@ -1,94 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Jessica Auto Feed</title>
-  <link rel="stylesheet" href="jessica.css" />
-</head>
-<body>
-  <h1>🤖 Jessica’s Feed</h1>
-  <div class="jessica-feed" id="feed"></div>
+<script>
+  const API_KEY = 'AIzaSyDvXiEv8WNKA46RcDn9rGCKReOO6RlYqks';
+  const CX = 'b3aed2fbcf2074d6a';
 
-  <script>
-    const API_KEY = 'AIzaSyDvXiEv8WNKA46RcDn9rGCKReOO6RlYqks';
-    const CX = 'b3aed2fbcf2074d6a';
+  const queries = [
+    { platform: "Twitter", query: "new on twitter" },
+    { platform: "X", query: "latest X posts" },
+    { platform: "Reddit", query: "breaking reddit news" },
+    { platform: "TikTok", query: "viral TikToks July 17" },
+  ];
 
-    const queries = [
-      { platform: "Twitter", query: "new on twitter" },
-      { platform: "X", query: "latest X posts" },
-      { platform: "Reddit", query: "breaking reddit news" },
-      { platform: "TikTok", query: "viral TikToks July 17" },
-    ];
+  const feed = document.getElementById('feed');
+  const DEFAULT_IMG = 'https://via.placeholder.com/600x300/00f0ff/000?text=Jessica+AI';
 
-    const feed = document.getElementById('feed');
-    const DEFAULT_IMG = 'https://via.placeholder.com/600x300/00f0ff/000?text=Jessica+AI';
+  const intros = [
+    "— Ever wondered what’s buzzing on",
+    "— Hot off the wire from",
+    "— The latest scoop from",
+    "— Here's what’s lighting up",
+    "— Jessica on scene at"
+  ];
 
-    const intros = [
-      "— Ever wondered what’s buzzing on",
-      "— Hot off the wire from",
-      "— The latest scoop from",
-      "— Here's what’s lighting up",
-      "— Jessica on scene at"
-    ];
+  const outros = [
+    "— Find out here",
+    "— Tap in for the full story",
+    "— Get the details",
+    "— Full report below",
+    "— Read more"
+  ];
 
-    const outros = [
-      "— Find out here",
-      "— Tap in for the full story",
-      "— Get the details",
-      "— Full report below",
-      "— Read more"
-    ];
+  async function fetchAndRender({ platform, query }) {
+    const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
 
-    async function fetchAndRender({ platform, query }) {
-      const url = https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
 
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
+      const posts = (data.items || []).filter(item =>
+        item.link &&
+        item.snippet && item.snippet.length > 30 &&
+        !item.link.includes("feed/trending") &&
+        !item.link.includes("explore")
+      );
 
-        const posts = (data.items || []).filter(item =>
-          item.link &&
-          item.snippet && item.snippet.length > 30 &&
-          !item.link.includes("feed/trending") &&
-          !item.link.includes("explore")
-        );
+      const timestamp = new Date().toLocaleString();
+      const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
+      const outro = `${outros[Math.floor(Math.random() * outros.length)]}`;
 
-        const timestamp = new Date().toLocaleString();
-        const intro = ${intros[Math.floor(Math.random() * intros.length)]} ${platform};
-        const outro = ${outros[Math.floor(Math.random() * outros.length)]};
+      posts.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'jessica-post';
 
-        posts.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'jessica-post';
+        card.innerHTML = `
+          <div class="jessica-meta-header">
+            <span class="jessica-id">Jessica reporting from — ${platform}</span>
+          </div>
+          <div class="jessica-img">
+            <img src="${DEFAULT_IMG}" alt="Preview">
+          </div>
+          <div class="jessica-meta">
+            <span class="jessica-platform">${platform}</span>
+            <p class="jessica-intro">${intro}</p>
+            <p class="jessica-caption">"${item.snippet}"</p>
+            <span class="jessica-date">${timestamp}</span>
+            <p class="jessica-outro">${outro}</p>
+          </div>
+          <a href="${item.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
+        `;
 
-          card.innerHTML = 
-            <div class="jessica-meta-header">
-              <span class="jessica-id">Jessica reporting from — ${platform}</span>
-            </div>
-
-            <div class="jessica-img">
-              <img src="${DEFAULT_IMG}" alt="Preview">
-            </div>
-
-            <div class="jessica-meta">
-              <span class="jessica-platform">${platform}</span>
-              <p class="jessica-intro">${intro}</p>
-              <p class="jessica-caption">"${item.snippet}"</p>
-              <span class="jessica-date">${timestamp}</span>
-              <p class="jessica-outro">${outro}</p>
-            </div>
-
-            <a href="${item.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
-          ;
-
-          feed.appendChild(card);
-        });
-      } catch (err) {
-        console.warn(Jessica failed on ${platform}:, err);
-      }
+        feed.appendChild(card);
+      });
+    } catch (err) {
+      console.warn(`Jessica failed on ${platform}:`, err);
     }
+  }
 
-    queries.forEach(fetchAndRender);
-  </script>
-</body>
-</html>
+  queries.forEach(fetchAndRender);
+</script>
