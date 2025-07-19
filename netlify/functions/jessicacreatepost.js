@@ -1,3 +1,4 @@
+// netlify/functions/create-jessica-post.ts
 import { Handler } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 
@@ -17,27 +18,27 @@ const handler: Handler = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
 
-    // 🧼 Sanitize + prepare final post
+    // 🧼 Prepare clean post object
     const post = {
       headline: body.headline || "",
       caption: body.caption || "",
       cta_url: body.cta_url || "",
+      cta_link_url: body.cta_link_url || "",
+      image_url: body.image_url || "",
+      video_url: body.video_url || "",
       tags: parseTags(body.tags),
       session_id: body.session_id || "",
       wall_type: body.wall_type || "main",
-      image_url: body.image_url || "",
-      video_url: body.video_url || "",
-      cta_link_url: body.cta_link_url || "",
       background: body.background || "",
       sigicon_url: body.sigicon_url || "",
       display_name: body.display_name || "Jessica AI",
       session_bg: body.session_bg || "",
-      likes: Number(body.likes ?? 0),
-      comments: Number(body.comments ?? 0),
-      reposts: Number(body.reposts ?? 0),
+      likes: toNumber(body.likes),
+      comments: toNumber(body.comments),
+      reposts: toNumber(body.reposts),
     };
 
-    // 🔍 Check for duplicates
+    // ❌ Skip duplicates based on cta_url or image_url
     const { data: dupes, error: dupError } = await supabase
       .from("jessica_posts")
       .select("id")
@@ -58,7 +59,7 @@ const handler: Handler = async (event) => {
       };
     }
 
-    // 🚀 Insert into Supabase
+    // 🚀 Create post
     const { error: insertError } = await supabase
       .from("jessica_posts")
       .insert([post]);
@@ -82,16 +83,22 @@ const handler: Handler = async (event) => {
   }
 };
 
-// 🎯 Converts raw tags to Postgres text[] array format
+// 🏷️ Normalize tags input
 function parseTags(tags: unknown): string[] {
   if (!tags) return [];
-  if (Array.isArray(tags)) return tags.map((tag) => String(tag));
+  if (Array.isArray(tags)) return tags.map((t) => String(t));
   if (typeof tags === "string") {
     return tags.includes(",")
       ? tags.split(",").map((t) => t.trim())
       : [tags];
   }
   return [];
+}
+
+// 🔢 Ensure numeric fields are safe
+function toNumber(val: unknown): number {
+  const n = Number(val);
+  return isNaN(n) ? 0 : n;
 }
 
 export { handler };
