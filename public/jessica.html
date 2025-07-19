@@ -125,7 +125,7 @@
       };
 
       try {
-        const res = await fetch("/.netlify/functions/create-jessica-post", {
+        const res = await fetch("/.netlify/functions/jessicacreatepost.js", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
