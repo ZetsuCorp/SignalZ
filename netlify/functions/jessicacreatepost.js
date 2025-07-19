@@ -1,13 +1,11 @@
-// netlify/functions/create-jessica-post.ts
-import { Handler } from "@netlify/functions";
-import { createClient } from "@supabase/supabase-js";
+const { createClient } = require("@supabase/supabase-js");
 
 const supabase = createClient(
-  process.env.VITE_SUPABASE_URL!,
-  process.env.VITE_SUPABASE_ANON_KEY!
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_ANON_KEY
 );
 
-const handler: Handler = async (event) => {
+exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -18,7 +16,6 @@ const handler: Handler = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
 
-    // 🧼 Prepare clean post object
     const post = {
       headline: body.headline || "",
       caption: body.caption || "",
@@ -38,7 +35,7 @@ const handler: Handler = async (event) => {
       reposts: toNumber(body.reposts),
     };
 
-    // ❌ Skip duplicates based on cta_url or image_url
+    // 🛑 Check for duplicate by cta_url or image_url
     const { data: dupes, error: dupError } = await supabase
       .from("jessica_posts")
       .select("id")
@@ -59,7 +56,7 @@ const handler: Handler = async (event) => {
       };
     }
 
-    // 🚀 Create post
+    // 🚀 Insert new post
     const { error: insertError } = await supabase
       .from("jessica_posts")
       .insert([post]);
@@ -83,10 +80,10 @@ const handler: Handler = async (event) => {
   }
 };
 
-// 🏷️ Normalize tags input
-function parseTags(tags: unknown): string[] {
+// Helpers
+function parseTags(tags) {
   if (!tags) return [];
-  if (Array.isArray(tags)) return tags.map((t) => String(t));
+  if (Array.isArray(tags)) return tags.map(String);
   if (typeof tags === "string") {
     return tags.includes(",")
       ? tags.split(",").map((t) => t.trim())
@@ -95,10 +92,7 @@ function parseTags(tags: unknown): string[] {
   return [];
 }
 
-// 🔢 Ensure numeric fields are safe
-function toNumber(val: unknown): number {
+function toNumber(val) {
   const n = Number(val);
   return isNaN(n) ? 0 : n;
 }
-
-export { handler };
