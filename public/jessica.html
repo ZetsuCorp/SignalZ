@@ -33,7 +33,6 @@
     ];
 
     const feed = document.getElementById('feed');
-    const DEFAULT_IMG = 'https://via.placeholder.com/600x300/00f0ff/000?text=Jessica+AI';
 
     const intros = [
       "— Ever wondered what’s buzzing on",
@@ -50,6 +49,12 @@
       "— Full report below",
       "— Read more"
     ];
+
+    function generateImageUrl(platform, timestamp) {
+      const p = platform.replace(/\W+/g, '').toUpperCase().slice(0, 6);
+      const t = timestamp.replace(/\D+/g, '').slice(-6);
+      return `https://via.placeholder.com/600x300/00f0ff/000?text=J-${p}-${t}`;
+    }
 
     async function fetchAndRender({ platform, query }) {
       const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
@@ -75,7 +80,8 @@
           snippet: item.snippet,
           timestamp,
           intro,
-          outro
+          outro,
+          image_url: generateImageUrl(platform, new Date().toISOString())
         }));
       } catch (err) {
         console.warn(`Jessica failed on ${platform}:`, err);
@@ -85,7 +91,7 @@
 
     function renderPosts(allPosts) {
       feed.innerHTML = '';
-      allPosts.forEach(({ platform, link, snippet, timestamp, intro, outro }) => {
+      allPosts.forEach(({ platform, link, snippet, timestamp, intro, outro, image_url }) => {
         const card = document.createElement('div');
         card.className = 'jessica-post';
         card.innerHTML = `
@@ -93,7 +99,7 @@
             <span class="jessica-id">Jessica reporting from — ${platform}</span>
           </div>
           <div class="jessica-img">
-            <img src="${DEFAULT_IMG}" alt="Preview">
+            <img src="${image_url}" alt="Preview">
           </div>
           <div class="jessica-meta">
             <span class="jessica-platform">${platform}</span>
@@ -108,16 +114,16 @@
       });
     }
 
-    async function postToSupabase({ platform, link, snippet, intro, outro }) {
+    async function postToSupabase({ platform, link, snippet, intro, outro, image_url }) {
       const payload = {
         headline: intro,
         caption: snippet,
         cta_url: link,
-        image_url: DEFAULT_IMG,
+        image_url,
         tags: [platform],
         session_id: "jessica-bot",
         wall_type: "main",
-        sigicon_url: DEFAULT_IMG,
+        sigicon_url: image_url,
         display_name: "Jessica AI",
         likes: 0,
         comments: 0,
@@ -164,7 +170,6 @@
       localStorage.setItem('jessicaFeedCache', JSON.stringify(allPosts));
       renderPosts(allPosts);
 
-      // 🔁 Send each post to Supabase
       for (const post of allPosts) {
         await postToSupabase(post);
       }
