@@ -12,12 +12,14 @@
     <button onclick="runSession(1)">📡 Load Session 1</button>
     <button onclick="runSession(2)">🛰️ Load Session 2</button>
     <button onclick="runSession(3)">🧠 Load Session 3</button>
+    <button onclick="loadJessicaPosts()">🤖 Load Jessica Feed</button>
   </div>
 
   <div id="feed">
     <section id="session1" class="session-block"><h2>📡 Session 1</h2></section>
     <section id="session2" class="session-block"><h2>🛰️ Session 2</h2></section>
     <section id="session3" class="session-block"><h2>🧠 Session 3</h2></section>
+    <section id="jessicaFeed" class="session-block"><h2>🤖 Jessica Feed</h2></section>
   </div>
 
   <script>
@@ -167,11 +169,16 @@
       if (!group) return;
 
       const results = (await Promise.all(group.map(fetchAndRender))).flat();
-
       renderPosts(`session${sessionNum}`, results);
+    }
 
-      for (const post of results) {
-        await postToSupabase(post);
+    async function loadJessicaPosts() {
+      try {
+        const res = await fetch('/.netlify/functions/jessicagetpost?wall_type=main');
+        const posts = await res.json();
+        renderPosts("jessicaFeed", posts);
+      } catch (err) {
+        console.error("❌ Failed to load Jessica feed:", err);
       }
     }
 
