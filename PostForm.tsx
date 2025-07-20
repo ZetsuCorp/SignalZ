@@ -57,7 +57,7 @@ function PostForm({ wallType, onMediaPreview }) {
 
   const uploadImage = async () => {
     if (!image) return "";
-const filePath = ${sessionId}/${Date.now()}_${image.name};
+    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
     const { error } = await supabase.storage.from("images").upload(filePath, image);
     if (error) {
       alert("Image upload failed");
