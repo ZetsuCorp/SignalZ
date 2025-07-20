@@ -4,6 +4,31 @@
   <meta charset="UTF-8" />
   <title>Jessica Auto Feed</title>
   <link rel="stylesheet" href="jessica.css" />
+  <style>
+    .jessica-sigicon-stack {
+      position: relative;
+      width: 40px;
+      height: 40px;
+    }
+
+    .emoji-icon {
+      font-size: 28px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    .ripple-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      z-index: 2;
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
   <h1>🤖 Jessica’s Feed</h1>
@@ -87,7 +112,7 @@
             timestamp,
             intro,
             outro,
-            image_url: generateImageUrl(platform, new Date().toISOString())
+            image_url: item.pagemap?.cse_image?.[0]?.src || generateImageUrl(platform, new Date().toISOString())
           }));
       } catch (err) {
         console.warn(`Jessica failed on ${platform}:`, err);
@@ -190,7 +215,8 @@
       if (!group) return;
 
       const results = (await Promise.all(group.map(fetchAndRender))).flat();
-      renderPosts(`session${sessionNum}`, results);
+      const limitedResults = results.slice(0, 4);
+      renderPosts(`session${sessionNum}`, limitedResults);
     }
 
     window.addEventListener('DOMContentLoaded', () => runSession(1));
