@@ -90,28 +90,47 @@ useEffect(() => {
           if (isVisible) el.play().catch(() => {});
           else el.pause();
         }
+
+        if (el.tagName === "IFRAME") {
+          const src = el.dataset.src || el.src || "";
+          const isYouTube = src.includes("youtube");
+          const isTikTok = src.includes("tiktok");
+
+          // Only optimize loading for YouTube
+          if (isYouTube) {
+            if (!isVisible && el.dataset.src) {
+              el.src = "";
+            } else if (isVisible && el.dataset.src && el.src === "") {
+              el.src = el.dataset.src;
+            }
+          }
+
+          // Leave all other platforms alone (like Facebook, Instagram)
+        }
       });
     },
     {
       root: null,
       rootMargin: "0px",
-      threshold: 0.6, // Only play when 60%+ visible
+      threshold: 0.6,
     }
   );
 
   const interval = setTimeout(() => {
-    const videos = document.querySelectorAll("video");
-    videos.forEach((video) => observer.observe(video));
-  }, 500); // let DOM settle
+    const allMedia = document.querySelectorAll("video, iframe");
+    allMedia.forEach((el) => {
+      if (el.tagName === "IFRAME" && !el.dataset.src) {
+        el.dataset.src = el.src;
+      }
+      observer.observe(el);
+    });
+  }, 500);
 
   return () => {
     clearTimeout(interval);
     observer.disconnect();
   };
 }, [posts]);
-
-
-
 
 
 
