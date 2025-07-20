@@ -109,19 +109,20 @@ useEffect(() => {
     }
   );
 
-  const delay = setTimeout(() => {
+  const interval = setTimeout(() => {
     const allMedia = document.querySelectorAll("video, iframe");
     allMedia.forEach((el) => {
       if (el.tagName === "IFRAME") el.dataset.src = el.src;
       observer.observe(el);
     });
-  }, 300); // ⏱️ allow DOM to fully mount first
+  }, 500); // 👈 slight delay lets DOM settle
 
   return () => {
-    clearTimeout(delay);
+    clearTimeout(interval);
     observer.disconnect();
   };
 }, [posts]);
+
 
 
 
