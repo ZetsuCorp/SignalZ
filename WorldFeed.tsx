@@ -79,6 +79,7 @@ export default function WorldFeed({ wallType }) {
   }, [posts]);
 
 /// video playback ///
+/// video playback ///
 useEffect(() => {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -93,10 +94,11 @@ useEffect(() => {
 
         if (el.tagName === "IFRAME") {
           if (el.src.includes("youtube") || el.src.includes("tiktok")) {
+            // For embeds, reload to stop them when not visible
             if (!isVisible && el.dataset.src) {
-              el.src = "";
+              el.src = ""; // clear it
             } else if (isVisible && el.dataset.src && el.src === "") {
-              el.src = el.dataset.src;
+              el.src = el.dataset.src; // restore it
             }
           }
         }
@@ -105,23 +107,24 @@ useEffect(() => {
     {
       root: null,
       rootMargin: "0px",
-      threshold: 0.6,
+      threshold: 0.6, // trigger when 60% visible
     }
   );
 
-  const delay = setTimeout(() => {
-    const allMedia = document.querySelectorAll("video, iframe");
-    allMedia.forEach((el) => {
-      if (el.tagName === "IFRAME") el.dataset.src = el.src;
-      observer.observe(el);
-    });
-  }, 300); // ⏱️ allow DOM to fully mount first
+  // Observe all videos and iframes
+  const allMedia = document.querySelectorAll("video, iframe");
+  allMedia.forEach((el) => {
+    // Save the original src to restore later
+    if (el.tagName === "IFRAME") {
+      el.dataset.src = el.src;
+    }
+    observer.observe(el);
+  });
 
-  return () => {
-    clearTimeout(delay);
-    observer.disconnect();
-  };
+  return () => observer.disconnect();
 }, [posts]);
+
+
 
 
 
