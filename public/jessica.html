@@ -122,26 +122,32 @@
 
     function renderPosts(containerId, posts) {
       const section = document.getElementById(containerId);
-      section.innerHTML = `<h2>${section.querySelector('h2').textContent}</h2>`; // Keep header
+      section.innerHTML = `<h2>${section.querySelector('h2').textContent}</h2>`;
 
       posts.forEach(post => {
         const card = document.createElement('div');
         card.className = 'jessica-post';
+        card.style.backgroundImage = `url('${post.image_url}')`;
+
         card.innerHTML = `
-          <div class="jessica-meta-header">
-            <span class="jessica-id">Jessica reporting from — ${post.platform}</span>
-          </div>
-          <div class="jessica-img">
-            <img src="${post.image_url}" alt="Preview">
-          </div>
-          <div class="jessica-meta">
-            <span class="jessica-platform">${post.platform}</span>
-            <p class="jessica-intro">${post.intro}</p>
+          <div class="jessica-post-content">
+            <div class="jessica-display-name">
+              <span>Jessica AI</span>
+            </div>
+
+            <div class="jessica-header-line">
+              <span class="jessica-id">Jessica reporting from — ${post.platform}</span>
+            </div>
+
+            <div class="jessica-card-title">📛 ${post.intro}</div>
+            <div class="jessica-card-type">📂 Type — SIGZICON</div>
+
             <p class="jessica-caption">"${post.snippet}"</p>
             <span class="jessica-date">${post.timestamp}</span>
             <p class="jessica-outro">${post.outro}</p>
+
+            <a href="${post.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
           </div>
-          <a href="${post.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
         `;
         section.appendChild(card);
       });
@@ -158,16 +164,13 @@
 
       const results = (await Promise.all(group.map(fetchAndRender))).flat();
 
-      // Display
       renderPosts(`session${sessionNum}`, results);
 
-      // Push to Supabase
       for (const post of results) {
         await postToSupabase(post);
       }
     }
 
-    // Auto-load Session 1 on page load
     window.addEventListener('DOMContentLoaded', () => runSession(1));
   </script>
 </body>
