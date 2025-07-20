@@ -90,41 +90,26 @@ useEffect(() => {
           if (isVisible) el.play().catch(() => {});
           else el.pause();
         }
-
-        if (el.tagName === "IFRAME") {
-          // Only apply logic if data-src is set
-          if (el.dataset.src !== undefined) {
-            if (!isVisible) {
-              el.src = "";
-            } else if (isVisible && el.src === "") {
-              el.src = el.dataset.src;
-            }
-          }
-        }
       });
     },
     {
       root: null,
       rootMargin: "0px",
-      threshold: 0.6,
+      threshold: 0.6, // Only play when 60%+ visible
     }
   );
 
   const interval = setTimeout(() => {
-    const allMedia = document.querySelectorAll("video, iframe");
-    allMedia.forEach((el) => {
-      if (el.tagName === "IFRAME" && !el.dataset.src) {
-        el.dataset.src = el.src;
-      }
-      observer.observe(el);
-    });
-  }, 500);
+    const videos = document.querySelectorAll("video");
+    videos.forEach((video) => observer.observe(video));
+  }, 500); // let DOM settle
 
   return () => {
     clearTimeout(interval);
     observer.disconnect();
   };
 }, [posts]);
+
 
 
 
