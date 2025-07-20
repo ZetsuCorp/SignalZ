@@ -57,26 +57,26 @@ function PostForm({ wallType, onMediaPreview }) {
 
   const uploadImage = async () => {
     if (!image) return "";
-    const filePath = ${sessionId}/${Date.now()}_${image.name};
+    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
     const { error } = await supabase.storage.from("images").upload(filePath, image);
     if (error) {
       alert("Image upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return ${supabaseUrl}/storage/v1/object/public/images/${filePath};
+    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
     if (!video) return "";
-    const filePath = ${sessionId}/${Date.now()}_${video.name};
+    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
     const { error } = await supabase.storage.from("videos").upload(filePath, video);
     if (error) {
       alert("Video upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return ${supabaseUrl}/storage/v1/object/public/videos/${filePath};
+    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -157,7 +157,7 @@ function PostForm({ wallType, onMediaPreview }) {
       className="p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4 relative z-10"
       style={{
         backgroundImage: backgroundImage
-          ? url(/postcard-assets/cardbase/${backgroundImage}.png)
+          ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
           : "#0c0c0c",
         backgroundSize: "cover",
         backgroundPosition: "center",
