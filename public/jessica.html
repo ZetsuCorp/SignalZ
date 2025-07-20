@@ -59,7 +59,6 @@
       "— Full report below",
       "— Read more"
     ];
-    const jessicaPostedLinks = new Set();
     const sessions = ["session1", "session2", "session3"];
     const allPosts = [];
 
@@ -104,7 +103,6 @@
       const container = document.getElementById(containerId);
       if (!container) return;
 
-      // Clear out only the inner cards, not the section or header
       container.innerHTML = "";
 
       posts.forEach((post, i) => {
@@ -224,10 +222,17 @@
       });
     });
 
-    // Button events
+    // ✅ UPDATED BUTTON EVENT
     document.getElementById("searchBtn").addEventListener("click", runAllSessions);
+
     document.getElementById("pushBtn").addEventListener("click", () => {
-      allPosts.forEach(post => postToSupabase(post));
+      allPosts
+        .filter(post =>
+          post.image_url &&
+          !post.image_url.includes("via.placeholder.com") &&
+          post.image_url.trim() !== ""
+        )
+        .forEach(post => postToSupabase(post));
     });
   </script>
 </body>
