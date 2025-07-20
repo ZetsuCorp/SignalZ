@@ -79,31 +79,35 @@ export default function WorldFeed({ wallType }) {
   }, [posts]);
 
 /// video playback ///
-  useEffect(() => {
+useEffect(() => {
   const observer = new IntersectionObserver(
     (entries) => {
+      let activeVideo = null;
+
       entries.forEach((entry) => {
         const el = entry.target;
         const isVisible = entry.isIntersecting;
 
         if (el.tagName === "VIDEO") {
-          if (isVisible) {
+          if (isVisible && !activeVideo) {
+            activeVideo = el;
             el.play().catch(() => {});
           } else {
             el.pause();
           }
         }
 
-        if (el.tagName === "IFRAME" && el.contentWindow) {
-          const action = isVisible ? "playVideo" : "pauseVideo";
-          el.contentWindow.postMessage(
+        if (el.tagName === "IFRAME" && el.src.includes("youtube")) {
+          const action = isVisible && !activeVideo ? "playVideo" : "pauseVideo";
+          el.contentWindow?.postMessage(
             JSON.stringify({ event: "command", func: action }),
             "*"
           );
+          if (isVisible && !activeVideo) activeVideo = el;
         }
       });
     },
-    { threshold: 0.6 }
+    { threshold: 0.8 }
   );
 
   const mediaEls = document.querySelectorAll("video, iframe");
@@ -111,6 +115,7 @@ export default function WorldFeed({ wallType }) {
 
   return () => observer.disconnect();
 }, [posts]);
+
 
 
   
