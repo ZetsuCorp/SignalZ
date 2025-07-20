@@ -57,26 +57,26 @@ function PostForm({ wallType, onMediaPreview }) {
 
   const uploadImage = async () => {
     if (!image) return "";
-    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
+    const filePath = ${sessionId}/${Date.now()}_${image.name};
     const { error } = await supabase.storage.from("images").upload(filePath, image);
     if (error) {
       alert("Image upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
+    return ${supabaseUrl}/storage/v1/object/public/images/${filePath};
   };
 
   const uploadVideo = async () => {
     if (!video) return "";
-    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
+    const filePath = ${sessionId}/${Date.now()}_${video.name};
     const { error } = await supabase.storage.from("videos").upload(filePath, video);
     if (error) {
       alert("Video upload failed");
       return "";
     }
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
+    return ${supabaseUrl}/storage/v1/object/public/videos/${filePath};
   };
 
   const handlePost = async () => {
@@ -115,62 +115,33 @@ function PostForm({ wallType, onMediaPreview }) {
     alert("Posted!");
   };
 
- const handleSubmitLink = async () => {
-  if (!linkInput.trim()) {
-    alert("Please enter a link");
-    return;
-  }
-
-  try {
-    const url = linkInput.trim();
-    const domain = new URL(url).hostname.replace("www.", "");
-    const background = backgroundImage || getBackgroundFromSession(sessionId);
-
-    let videoEmbedUrl = null;
-
-    if (url.includes("youtube.com/watch") || url.includes("youtu.be")) {
-      const match = url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
-      if (match) {
-        videoEmbedUrl = `https://www.youtube.com/embed/${match[1]}`;
-      }
-    } else if (url.includes("tiktok.com")) {
-      videoEmbedUrl = url;
-    } else if (url.includes("facebook.com") || url.includes("fb.watch")) {
-      videoEmbedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}`;
-    } else if (url.includes("instagram.com")) {
-      const instaMatch = url.match(/instagram\.com\/(reel|p)\/([^\/?]+)/);
-      if (instaMatch) {
-        videoEmbedUrl = `https://www.instagram.com/${instaMatch[1]}/${instaMatch[2]}/embed`;
-      }
+  const handleSubmitLink = async () => {
+    if (!linkInput.trim()) {
+      alert("Please enter a link");
+      return;
     }
 
-    const response = await fetch("/.netlify/functions/create-link-post", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        url,
-        session_id: sessionId,
-        sigicon_url: sigIcon,
-        wall_type: wallType,
-        tags: ["link"],
-        link_title: "Shared via SignalZ",
-        link_image: null,
-        image_url: null,
-        video_url: videoEmbedUrl,
-        cta_link_url: domain,
-        background,
-      }),
-    });
+    try {
+      const domain = new URL(linkInput).hostname.replace("www.", "");
+      const background = backgroundImage || getBackgroundFromSession(sessionId);
 
-    if (!response.ok) throw new Error("Link submission failed");
-    setLinkInput("");
-    alert("Link submitted to SignalZ!");
-  } catch (err) {
-    console.error("Submit link error:", err);
-    alert("Invalid link or submission error");
-  }
-};
-
+      const response = await fetch("/.netlify/functions/create-link-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: linkInput,
+          session_id: sessionId,
+          sigicon_url: sigIcon,
+          wall_type: wallType,
+          tags: ["link"],
+          link_title: "Shared via SignalZ",
+          link_image: null,
+          image_url: null,
+          video_url: null,
+          cta_link_url: domain,
+          background,
+        }),
+      });
 
       if (!response.ok) throw new Error("Link submission failed");
       setLinkInput("");
@@ -186,7 +157,7 @@ function PostForm({ wallType, onMediaPreview }) {
       className="p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4 relative z-10"
       style={{
         backgroundImage: backgroundImage
-          ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
+          ? url(/postcard-assets/cardbase/${backgroundImage}.png)
           : "#0c0c0c",
         backgroundSize: "cover",
         backgroundPosition: "center",
