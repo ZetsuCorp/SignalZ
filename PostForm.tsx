@@ -115,33 +115,62 @@ function PostForm({ wallType, onMediaPreview }) {
     alert("Posted!");
   };
 
-  const handleSubmitLink = async () => {
-    if (!linkInput.trim()) {
-      alert("Please enter a link");
-      return;
+ const handleSubmitLink = async () => {
+  if (!linkInput.trim()) {
+    alert("Please enter a link");
+    return;
+  }
+
+  try {
+    const url = linkInput.trim();
+    const domain = new URL(url).hostname.replace("www.", "");
+    const background = backgroundImage || getBackgroundFromSession(sessionId);
+
+    let videoEmbedUrl = null;
+
+    if (url.includes("youtube.com/watch") || url.includes("youtu.be")) {
+      const match = url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
+      if (match) {
+        videoEmbedUrl = `https://www.youtube.com/embed/${match[1]}`;
+      }
+    } else if (url.includes("tiktok.com")) {
+      videoEmbedUrl = url;
+    } else if (url.includes("facebook.com") || url.includes("fb.watch")) {
+      videoEmbedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}`;
+    } else if (url.includes("instagram.com")) {
+      const instaMatch = url.match(/instagram\.com\/(reel|p)\/([^\/?]+)/);
+      if (instaMatch) {
+        videoEmbedUrl = `https://www.instagram.com/${instaMatch[1]}/${instaMatch[2]}/embed`;
+      }
     }
 
-    try {
-      const domain = new URL(linkInput).hostname.replace("www.", "");
-      const background = backgroundImage || getBackgroundFromSession(sessionId);
+    const response = await fetch("/.netlify/functions/create-link-post", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        url,
+        session_id: sessionId,
+        sigicon_url: sigIcon,
+        wall_type: wallType,
+        tags: ["link"],
+        link_title: "Shared via SignalZ",
+        link_image: null,
+        image_url: null,
+        video_url: videoEmbedUrl,
+        cta_link_url: domain,
+        background,
+      }),
+    });
 
-      const response = await fetch("/.netlify/functions/create-link-post", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          url: linkInput,
-          session_id: sessionId,
-          sigicon_url: sigIcon,
-          wall_type: wallType,
-          tags: ["link"],
-          link_title: "Shared via SignalZ",
-          link_image: null,
-          image_url: null,
-          video_url: null,
-          cta_link_url: domain,
-          background,
-        }),
-      });
+    if (!response.ok) throw new Error("Link submission failed");
+    setLinkInput("");
+    alert("Link submitted to SignalZ!");
+  } catch (err) {
+    console.error("Submit link error:", err);
+    alert("Invalid link or submission error");
+  }
+};
+
 
       if (!response.ok) throw new Error("Link submission failed");
       setLinkInput("");
