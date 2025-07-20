@@ -101,8 +101,12 @@
     }
 
     function renderPosts(containerId, posts) {
-      const section = document.getElementById(containerId);
-      section.innerHTML = `<h2>${section.querySelector("h2").textContent}</h2>`;
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      // Clear out only the inner cards, not the section or header
+      container.innerHTML = "";
+
       posts.forEach((post, i) => {
         const card = document.createElement("div");
         card.className = "jessica-post";
@@ -127,7 +131,7 @@
             <a href="${post.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
           </div>
         `;
-        section.appendChild(card);
+        container.appendChild(card);
         allPosts.push(post);
       });
     }
