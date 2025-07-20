@@ -78,6 +78,42 @@ export default function WorldFeed({ wallType }) {
     });
   }, [posts]);
 
+/// video playback ///
+  useEffect(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target;
+        const isVisible = entry.isIntersecting;
+
+        if (el.tagName === "VIDEO") {
+          if (isVisible) {
+            el.play().catch(() => {});
+          } else {
+            el.pause();
+          }
+        }
+
+        if (el.tagName === "IFRAME" && el.contentWindow) {
+          const action = isVisible ? "playVideo" : "pauseVideo";
+          el.contentWindow.postMessage(
+            JSON.stringify({ event: "command", func: action }),
+            "*"
+          );
+        }
+      });
+    },
+    { threshold: 0.6 }
+  );
+
+  const mediaEls = document.querySelectorAll("video, iframe");
+  mediaEls.forEach((el) => observer.observe(el));
+
+  return () => observer.disconnect();
+}, [posts]);
+
+
+  
   const handleCommentSubmit = async (postId) => {
     const content = inputMap[postId];
     if (!content || !content.trim()) return;
