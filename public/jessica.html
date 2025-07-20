@@ -4,31 +4,6 @@
   <meta charset="UTF-8" />
   <title>Jessica Carousel Feed</title>
   <link rel="stylesheet" href="jessica.css" />
-  <style>
-    .jessica-sigicon-stack {
-      position: relative;
-      width: 40px;
-      height: 40px;
-    }
-
-    .emoji-icon {
-      font-size: 28px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-    }
-
-    .ripple-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 40px;
-      height: 40px;
-      z-index: 2;
-      pointer-events: none;
-    }
-  </style>
 </head>
 <body>
   <h1>🤖 Jessica’s Feed</h1>
@@ -57,11 +32,84 @@
   </div>
 
   <script>
-    const sessionIds = ["session1", "session2", "session3"];
+    const API_KEY = 'AIzaSyApZmcPKbA0Qcphmz5_8Dt_u_re1VvMd-k';
+    const CX = '806ccee4d77894557';
+    const queries = [
+      { platform: "Twitter", query: "new on twitter" },
+      { platform: "X", query: "latest X posts" },
+      { platform: "Reddit", query: "breaking reddit news" },
+      { platform: "TikTok", query: "viral TikToks" },
+      { platform: "Instagram", query: "explore instagram reels" },
+      { platform: "YouTube", query: "trending on youtube" },
+      { platform: "News", query: "top headlines" },
+      { platform: "AI", query: "latest AI tools" },
+      { platform: "Crypto", query: "new crypto launches" }
+    ];
+    const intros = [
+      "— Ever wondered what’s buzzing on",
+      "— Hot off the wire from",
+      "— The latest scoop from",
+      "— Here's what’s lighting up",
+      "— Jessica on scene at"
+    ];
+    const outros = [
+      "— Find out here",
+      "— Tap in for the full story",
+      "— Get the details",
+      "— Full report below",
+      "— Read more"
+    ];
+    const jessicaPostedLinks = new Set();
+    const sessions = ["session1", "session2", "session3"];
+    const allPosts = [];
 
-    const createTemplateCard = () => {
-      return `
-        <div class="jessica-post">
+    function generateImageUrl(platform, timestamp) {
+      const p = platform.replace(/\W+/g, '').toUpperCase().slice(0, 6);
+      const t = timestamp.replace(/\D+/g, '').slice(-6);
+      return `https://via.placeholder.com/600x300/00f0ff/000?text=J-${p}-${t}`;
+    }
+
+    async function fetchAndRender({ platform, query }) {
+      const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(query)}&gl=US&hl=en`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const timestamp = new Date().toLocaleString();
+        const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
+        const outro = `${outros[Math.floor(Math.random() * outros.length)]}`;
+
+        return (data.items || [])
+          .filter(item =>
+            item.link &&
+            item.snippet?.length > 30 &&
+            !item.link.includes("feed/trending") &&
+            !item.link.includes("explore")
+          )
+          .map(item => ({
+            platform,
+            link: item.link,
+            snippet: item.snippet,
+            timestamp,
+            intro,
+            outro,
+            image_url: item.pagemap?.cse_image?.[0]?.src || generateImageUrl(platform, new Date().toISOString())
+          }));
+      } catch (err) {
+        console.warn(`Jessica failed on ${platform}:`, err);
+        return [];
+      }
+    }
+
+    function renderPosts(containerId, posts) {
+      const section = document.getElementById(containerId);
+      section.innerHTML = `<h2>${section.querySelector("h2").textContent}</h2>`;
+      posts.forEach((post, i) => {
+        const card = document.createElement("div");
+        card.className = "jessica-post";
+        card.style.backgroundImage = `url('${post.image_url}')`;
+        card.style.setProperty("--anim-delay", `${i * 0.1}s`);
+        card.setAttribute("data-link", post.link);
+        card.innerHTML = `
           <div class="jessica-post-content">
             <div class="jessica-display-name"><span>Jessica AI</span></div>
             <div class="jessica-header-line">
@@ -69,31 +117,113 @@
                 <span class="emoji-icon">🌐</span>
                 <img src="/sigicons/ripple.gif" alt="Ripple" class="ripple-overlay" />
               </div>
-              <span class="jessica-id">Awaiting Input</span>
+              <span class="jessica-id">Jessica reporting from — ${post.platform}</span>
             </div>
-            <div class="jessica-card-title">🔮 Empty Slot</div>
-            <div class="jessica-card-type">📂 Type — Template</div>
-            <a href="#" class="jessica-link">🔗 No link</a>
+            <div class="jessica-card-title">📛 ${post.intro}</div>
+            <div class="jessica-card-type">📂 Type — SIGZICON</div>
+            <p class="jessica-caption">"${post.snippet}"</p>
+            <span class="jessica-date">${post.timestamp}</span>
+            <p class="jessica-outro">${post.outro}</p>
+            <a href="${post.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
           </div>
-        </div>
-      `;
-    };
+        `;
+        section.appendChild(card);
+        allPosts.push(post);
+      });
+    }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      sessionIds.forEach(id => {
+    async function runSession(sessionNum) {
+      const group = {
+        1: queries.slice(0, 3),
+        2: queries.slice(3, 6),
+        3: queries.slice(6, 9)
+      }[sessionNum];
+      const results = (await Promise.all(group.map(fetchAndRender))).flat();
+      renderPosts(`session${sessionNum}`, results.slice(0, 4));
+    }
+
+    async function runAllSessions() {
+      for (let i = 1; i <= 3; i++) {
+        await runSession(i);
+      }
+    }
+
+    async function postToSupabase(post) {
+      const payload = {
+        headline: post.intro,
+        caption: post.snippet,
+        cta_url: post.link,
+        image_url: post.image_url,
+        tags: [post.platform],
+        session_id: "jessica-bot",
+        wall_type: "main",
+        sigicon_url: post.image_url,
+        display_name: "Jessica AI",
+        likes: 0,
+        comments: 0,
+        reposts: 0
+      };
+
+      try {
+        const res = await fetch("/.netlify/functions/jessicacreatepost", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (res.status === 200) {
+          console.log("✅ Posted:", post.platform, post.link);
+          markAsPosted(post.link);
+        } else {
+          console.warn("❌ Supabase error:", result.error);
+        }
+      } catch (err) {
+        console.error("🚫 Network error:", err);
+      }
+    }
+
+    function markAsPosted(link) {
+      const list = document.getElementById("postedList");
+      if (list && ![...list.children].some(li => li.textContent === link)) {
+        const li = document.createElement("li");
+        li.textContent = link;
+        list.appendChild(li);
+      }
+    }
+
+    // Initial placeholder templates
+    window.addEventListener("DOMContentLoaded", () => {
+      sessions.forEach(id => {
         const section = document.getElementById(id);
         for (let i = 0; i < 10; i++) {
-          section.insertAdjacentHTML("beforeend", createTemplateCard());
+          const div = document.createElement("div");
+          div.className = "jessica-post";
+          div.style.setProperty("--anim-delay", `${i * 0.05}s`);
+          div.innerHTML = `
+            <div class="jessica-post-content">
+              <div class="jessica-display-name"><span>Jessica AI</span></div>
+              <div class="jessica-header-line">
+                <div class="jessica-sigicon-stack">
+                  <span class="emoji-icon">🌐</span>
+                  <img src="/sigicons/ripple.gif" alt="Ripple" class="ripple-overlay" />
+                </div>
+                <span class="jessica-id">Awaiting Input</span>
+              </div>
+              <div class="jessica-card-title">🔮 Empty Slot</div>
+              <div class="jessica-card-type">📂 Type — Template</div>
+              <a href="#" class="jessica-link">🔗 No link</a>
+            </div>
+          `;
+          section.appendChild(div);
         }
       });
     });
 
-    document.getElementById("searchBtn").addEventListener("click", () => {
-      alert("🔍 Populate logic coming soon");
-    });
-
+    // Button events
+    document.getElementById("searchBtn").addEventListener("click", runAllSessions);
     document.getElementById("pushBtn").addEventListener("click", () => {
-      alert("📤 Push to Supabase logic coming soon");
+      allPosts.forEach(post => postToSupabase(post));
     });
   </script>
 </body>
