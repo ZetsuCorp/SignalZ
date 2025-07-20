@@ -82,39 +82,47 @@ export default function WorldFeed({ wallType }) {
 useEffect(() => {
   const observer = new IntersectionObserver(
     (entries) => {
-      let activeVideo = null;
-
       entries.forEach((entry) => {
         const el = entry.target;
         const isVisible = entry.isIntersecting;
 
         if (el.tagName === "VIDEO") {
-          if (isVisible && !activeVideo) {
-            activeVideo = el;
-            el.play().catch(() => {});
-          } else {
-            el.pause();
-          }
+          if (isVisible) el.play().catch(() => {});
+          else el.pause();
         }
 
-        if (el.tagName === "IFRAME" && el.src.includes("youtube")) {
-          const action = isVisible && !activeVideo ? "playVideo" : "pauseVideo";
-          el.contentWindow?.postMessage(
-            JSON.stringify({ event: "command", func: action }),
-            "*"
-          );
-          if (isVisible && !activeVideo) activeVideo = el;
+        if (el.tagName === "IFRAME") {
+          if (el.src.includes("youtube") || el.src.includes("tiktok")) {
+            // For embeds, reload to stop them when not visible
+            if (!isVisible && el.dataset.src) {
+              el.src = ""; // clear it
+            } else if (isVisible && el.dataset.src && el.src === "") {
+              el.src = el.dataset.src; // restore it
+            }
+          }
         }
       });
     },
-    { threshold: 0.8 }
+    {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.6, // trigger when 60% visible
+    }
   );
 
-  const mediaEls = document.querySelectorAll("video, iframe");
-  mediaEls.forEach((el) => observer.observe(el));
+  // Observe all videos and iframes
+  const allMedia = document.querySelectorAll("video, iframe");
+  allMedia.forEach((el) => {
+    // Save the original src to restore later
+    if (el.tagName === "IFRAME") {
+      el.dataset.src = el.src;
+    }
+    observer.observe(el);
+  });
 
   return () => observer.disconnect();
 }, [posts]);
+
 
 
 
