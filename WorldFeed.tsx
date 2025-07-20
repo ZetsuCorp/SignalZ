@@ -92,10 +92,11 @@ useEffect(() => {
         }
 
         if (el.tagName === "IFRAME") {
-          if (el.src.includes("youtube") || el.src.includes("tiktok")) {
-            if (!isVisible && el.dataset.src) {
+          // Only apply logic if data-src is set
+          if (el.dataset.src !== undefined) {
+            if (!isVisible) {
               el.src = "";
-            } else if (isVisible && el.dataset.src && el.src === "") {
+            } else if (isVisible && el.src === "") {
               el.src = el.dataset.src;
             }
           }
@@ -112,16 +113,19 @@ useEffect(() => {
   const interval = setTimeout(() => {
     const allMedia = document.querySelectorAll("video, iframe");
     allMedia.forEach((el) => {
-      if (el.tagName === "IFRAME") el.dataset.src = el.src;
+      if (el.tagName === "IFRAME" && !el.dataset.src) {
+        el.dataset.src = el.src;
+      }
       observer.observe(el);
     });
-  }, 500); // 👈 slight delay lets DOM settle
+  }, 500);
 
   return () => {
     clearTimeout(interval);
     observer.disconnect();
   };
 }, [posts]);
+
 
 
 
