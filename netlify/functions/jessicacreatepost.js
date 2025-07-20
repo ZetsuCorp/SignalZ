@@ -37,9 +37,9 @@ exports.handler = async (event) => {
       created_at: new Date().toISOString(),
     };
 
-    // Check for duplicates using filters (safer)
+    // Check for duplicates in the main posts table
     const { data: dupes, error: dupError } = await supabase
-      .from("jessica_posts")
+      .from("posts")
       .select("id")
       .or(`cta_url.eq.${encodeURIComponent(post.cta_url)},image_url.eq.${encodeURIComponent(post.image_url)}`)
       .limit(1);
@@ -58,9 +58,9 @@ exports.handler = async (event) => {
       };
     }
 
-    // Insert the post
+    // Insert into main posts table
     const { error: insertError } = await supabase
-      .from("jessica_posts")
+      .from("posts")
       .insert([post]);
 
     if (insertError) {
