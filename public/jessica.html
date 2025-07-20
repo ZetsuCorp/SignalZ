@@ -22,9 +22,15 @@
     <section id="jessicaFeed" class="session-block"><h2>🤖 Jessica Feed</h2></section>
   </div>
 
+  <div style="margin: 2rem; padding: 1rem; background: #081e24; border: 1px solid #00f0ff55; border-radius: 8px;">
+    <h3 style="color:#00f0ff; margin-bottom: 0.5rem;">✅ Posted to World Feed</h3>
+    <ul id="postedList" style="color:#aafafc; font-size: 0.85rem; list-style-type: disc; padding-left: 1rem;"></ul>
+  </div>
+
   <script>
     const API_KEY = 'AIzaSyApZmcPKbA0Qcphmz5_8Dt_u_re1VvMd-k';
     const CX = '806ccee4d77894557';
+    const jessicaPostedLinks = new Set();
 
     const queries = [
       { platform: "Twitter", query: "new on twitter" },
@@ -115,10 +121,27 @@
         });
 
         const result = await res.json();
-        if (res.status === 200) console.log("✅ Posted:", post.platform, post.link);
-        else console.warn("❌ Supabase error:", result.error);
+        if (res.status === 200) {
+          console.log("✅ Posted:", post.platform, post.link);
+          jessicaPostedLinks.add(post.link);
+          markAsPosted(post.link);
+        } else {
+          console.warn("❌ Supabase error:", result.error);
+        }
       } catch (err) {
         console.error("🚫 Network error:", err);
+      }
+    }
+
+    function markAsPosted(link) {
+      const card = document.querySelector(`.jessica-post[data-link="${link}"]`);
+      if (card) card.classList.add("posted");
+
+      const list = document.getElementById("postedList");
+      if (list && ![...list.children].some(li => li.textContent === link)) {
+        const li = document.createElement("li");
+        li.textContent = link;
+        list.appendChild(li);
       }
     }
 
@@ -130,6 +153,11 @@
         const card = document.createElement('div');
         card.className = 'jessica-post';
         card.style.backgroundImage = `url('${post.image_url}')`;
+        card.setAttribute("data-link", post.link);
+
+        if (jessicaPostedLinks.has(post.link)) {
+          card.classList.add("posted");
+        }
 
         card.innerHTML = `
           <div class="jessica-post-content">
