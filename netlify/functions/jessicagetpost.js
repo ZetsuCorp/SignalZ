@@ -1,24 +1,21 @@
-import { Handler } from "@netlify/functions";
-import { createClient } from "@supabase/supabase-js";
+const { createClient } = require("@supabase/supabase-js");
+const fetch = require("node-fetch");
 
-// 🔐 Supabase client setup
 const supabase = createClient(
-  process.env.VITE_SUPABASE_URL!,
-  process.env.VITE_SUPABASE_ANON_KEY!
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_ANON_KEY
 );
 
-// 🧠 Handler
-export const handler: Handler = async (event) => {
+const handler = async (event) => {
   const wall_type = event.queryStringParameters?.wall_type || "main";
 
-  // 🎯 Fetch latest Jessica posts for this wall
   const { data, error } = await supabase
     .from("posts")
     .select("*, sigicon_url, display_name, background")
     .eq("session_id", "jessica-bot")
     .eq("wall_type", wall_type)
     .order("created_at", { ascending: false })
-    .limit(2); // 🛑 Limit to 2
+    .limit(2);
 
   if (error || !data) {
     return {
@@ -27,7 +24,6 @@ export const handler: Handler = async (event) => {
     };
   }
 
-  // 🚀 Push each post to main World Feed via create-posts endpoint
   const results = [];
   for (const post of data) {
     const res = await fetch(`${process.env.URL}/.netlify/functions/create-posts`, {
@@ -51,3 +47,5 @@ export const handler: Handler = async (event) => {
     }),
   };
 };
+
+module.exports = { handler };
