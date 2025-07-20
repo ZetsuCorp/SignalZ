@@ -93,11 +93,10 @@ useEffect(() => {
 
         if (el.tagName === "IFRAME") {
           if (el.src.includes("youtube") || el.src.includes("tiktok")) {
-            // For embeds, reload to stop them when not visible
             if (!isVisible && el.dataset.src) {
-              el.src = ""; // clear it
+              el.src = "";
             } else if (isVisible && el.dataset.src && el.src === "") {
-              el.src = el.dataset.src; // restore it
+              el.src = el.dataset.src;
             }
           }
         }
@@ -106,22 +105,24 @@ useEffect(() => {
     {
       root: null,
       rootMargin: "0px",
-      threshold: 0.6, // trigger when 60% visible
+      threshold: 0.6,
     }
   );
 
-  // Observe all videos and iframes
-  const allMedia = document.querySelectorAll("video, iframe");
-  allMedia.forEach((el) => {
-    // Save the original src to restore later
-    if (el.tagName === "IFRAME") {
-      el.dataset.src = el.src;
-    }
-    observer.observe(el);
-  });
+  const delay = setTimeout(() => {
+    const allMedia = document.querySelectorAll("video, iframe");
+    allMedia.forEach((el) => {
+      if (el.tagName === "IFRAME") el.dataset.src = el.src;
+      observer.observe(el);
+    });
+  }, 300); // ⏱️ allow DOM to fully mount first
 
-  return () => observer.disconnect();
+  return () => {
+    clearTimeout(delay);
+    observer.disconnect();
+  };
 }, [posts]);
+
 
 
 
