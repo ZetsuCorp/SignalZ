@@ -1,3 +1,5 @@
+// PostForm.jsx — Fully rewritten UI w/ dropdown and overlay
+
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
@@ -10,11 +12,16 @@ function PostForm({ wallType, onMediaPreview }) {
   const [tags, setTags] = useState("");
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
+  const [linkInput, setLinkInput] = useState("");
+
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [backgroundImage, setBackgroundImage] = useState("");
-  const [linkInput, setLinkInput] = useState("");
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [overlayType, setOverlayType] = useState(null);
 
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
@@ -40,6 +47,7 @@ function PostForm({ wallType, onMediaPreview }) {
     backdropFilter: "blur(6px)",
     padding: "12px 16px",
     lineHeight: "1.4",
+    textAlign: "center"
   };
 
   const handleImageChange = (e) => {
@@ -83,38 +91,23 @@ function PostForm({ wallType, onMediaPreview }) {
   };
 
   const handlePost = async () => {
-    if (!headline || !caption) {
-      alert("Headline and caption required");
-      return;
-    }
-
+    if (!headline || !caption) return alert("Headline and caption required");
     const imageUrl = await uploadImage();
     const videoUrl = await uploadVideo();
-
     await fetch("/.netlify/functions/create-posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        headline,
-        caption,
-        cta_url: ctaUrl,
-        image_url: imageUrl,
-        video_url: videoUrl,
-        tags: tags.split(",").map((t) => t.trim()),
-        session_id: sessionId,
-        sigicon_url: sigIcon,
-        display_name: displayName,
-        wall_type: wallType,
+        headline, caption, cta_url: ctaUrl,
+        image_url: imageUrl, video_url: videoUrl,
+        tags: tags.split(",").map(t => t.trim()),
+        session_id: sessionId, sigicon_url: sigIcon,
+        display_name: displayName, wall_type: wallType,
         background: backgroundImage,
-      }),
+      })
     });
-
-    setHeadline("");
-    setCaption("");
-    setCtaUrl("");
-    setTags("");
-    setImage(null);
-    setVideo(null);
+    setHeadline(""); setCaption(""); setCtaUrl(""); setTags("");
+    setImage(null); setVideo(null);
     alert("Posted!");
   };
 
@@ -137,8 +130,8 @@ function PostForm({ wallType, onMediaPreview }) {
           image_url: null,
           video_url: null,
           cta_link_url: domain,
-          background,
-        }),
+          background
+        })
       });
       if (!res.ok) throw new Error("Link submission failed");
       setLinkInput("");
@@ -149,130 +142,76 @@ function PostForm({ wallType, onMediaPreview }) {
     }
   };
 
+  const openOverlay = (type) => {
+    setOverlayType(type);
+    setMenuOpen(false);
+    setShowOverlay(true);
+  };
+
   return (
-  
-  <div
-    className="p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4 relative z-10 text-center"
-    style={{
-      backgroundImage: backgroundImage
-        ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
-        : "#0c0c0c",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      backdropFilter: "blur(2px)",
-      color: "#00f0ff",
-      textAlign: "center",
-    }}
-  >
-    <h2 className="text-lg font-bold text-cyan-300">📢 Create a New Drop</h2>
+    <div>
+      {/* Create Button + Dropdown */}
+      <div className="relative inline-block text-left z-30 mb-4">
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="bg-cyan-700 hover:bg-cyan-600 text-white font-bold px-4 py-2 rounded shadow"
+        >
+          📢 Create
+        </button>
+        {menuOpen && (
+          <div className="absolute right-0 mt-2 w-64 bg-[#101820] border border-cyan-500 rounded shadow-lg">
+            <button onClick={() => openOverlay("image")} className="w-full text-left px-4 py-2 text-cyan-300 hover:bg-cyan-900">🖼 Create Image Post</button>
+            <button onClick={() => openOverlay("video")} className="w-full text-left px-4 py-2 text-cyan-300 hover:bg-cyan-900">🎬 Create Video Post</button>
+            <button onClick={() => openOverlay("social")} className="w-full text-left px-4 py-2 text-cyan-300 hover:bg-cyan-900">🌐 Share Link</button>
+          </div>
+        )}
+      </div>
 
-    <select
-      value={wallType}
-      onChange={() => {}}
-      disabled
-      className="w-full"
-      style={{
-        ...tcgInputStyle,
-        textAlign: "center",
-      }}
-    >
-      <option value="main">Main Wall</option>
-      <option value="alt">Alt Wall</option>
-      <option value="zetsu">Z-Wall</option>
-    </select>
+      {/* Overlay Modal */}
+      {showOverlay && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm z-40 flex items-center justify-center p-6">
+          <div
+            className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 space-y-4 relative text-center"
+            style={{
+              backgroundImage: backgroundImage
+                ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
+                : undefined,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backdropFilter: "blur(4px)",
+              color: "#00f0ff"
+            }}
+          >
+            <button
+              onClick={() => setShowOverlay(false)}
+              className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
+            >✖</button>
+            <h2 className="text-lg font-bold text-cyan-300">
+              {overlayType === "image" && "🖼 Create Image Post"}
+              {overlayType === "video" && "🎬 Create Video Post"}
+              {overlayType === "social" && "🌐 Share Social Link"}
+            </h2>
 
-    <input
-      type="text"
-      placeholder="Brand Name / Headline"
-      value={headline}
-      onChange={(e) => setHeadline(e.target.value)}
-      className="w-full"
-      style={tcgInputStyle}
-    />
-
-    <textarea
-      placeholder="What's meaningful about it?"
-      value={caption}
-      onChange={(e) => setCaption(e.target.value)}
-      className="w-full resize-none"
-      style={{ ...tcgInputStyle, height: "6rem" }}
-    />
-
-    <input
-      type="text"
-      placeholder="Link (optional)"
-      value={ctaUrl}
-      onChange={(e) => setCtaUrl(e.target.value)}
-      className="w-full"
-      style={tcgInputStyle}
-    />
-
-    <input
-      type="text"
-      placeholder="Tags (comma separated)"
-      value={tags}
-      onChange={(e) => setTags(e.target.value)}
-      className="w-full"
-      style={tcgInputStyle}
-    />
-
-    <button
-      type="button"
-      onClick={() => imageInputRef.current.click()}
-      className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
-    >
-      🖼 Add Image
-    </button>
-    <input
-      type="file"
-      accept="image/*"
-      ref={imageInputRef}
-      onChange={handleImageChange}
-      style={{ display: "none" }}
-    />
-
-    <button
-      type="button"
-      onClick={() => videoInputRef.current.click()}
-      className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
-    >
-      🎬 Add Video
-    </button>
-    <input
-      type="file"
-      accept="video/*"
-      ref={videoInputRef}
-      onChange={handleVideoChange}
-      style={{ display: "none" }}
-    />
-
-    <button
-      onClick={handlePost}
-      className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition"
-    >
-      🚀 Post to {wallType.toUpperCase()} Wall
-    </button>
-
-    <div className="mt-6 space-y-2">
-      <h3 className="text-cyan-300 font-semibold">🌐 Submit a Social Link to SignalZ</h3>
-      <input
-        type="text"
-        placeholder="Paste any video or social link"
-        value={linkInput}
-        onChange={(e) => setLinkInput(e.target.value)}
-        className="w-full"
-        style={tcgInputStyle}
-      />
-      <button
-        onClick={handleSubmitLink}
-        className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
-      >
-        🔗 Submit Link
-      </button>
+            <input type="text" placeholder="Brand Name / Headline" value={headline} onChange={(e) => setHeadline(e.target.value)} className="w-full" style={tcgInputStyle} />
+            <textarea placeholder="What's meaningful about it?" value={caption} onChange={(e) => setCaption(e.target.value)} className="w-full resize-none" style={{ ...tcgInputStyle, height: "6rem" }} />
+            <input type="text" placeholder="Link (optional)" value={ctaUrl} onChange={(e) => setCtaUrl(e.target.value)} className="w-full" style={tcgInputStyle} />
+            <input type="text" placeholder="Tags (comma separated)" value={tags} onChange={(e) => setTags(e.target.value)} className="w-full" style={tcgInputStyle} />
+            <button type="button" onClick={() => imageInputRef.current.click()} className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400">🖼 Add Image</button>
+            <input type="file" accept="image/*" ref={imageInputRef} onChange={handleImageChange} style={{ display: "none" }} />
+            <button type="button" onClick={() => videoInputRef.current.click()} className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400">🎬 Add Video</button>
+            <input type="file" accept="video/*" ref={videoInputRef} onChange={handleVideoChange} style={{ display: "none" }} />
+            <button onClick={handlePost} className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md">🚀 Post to {wallType.toUpperCase()} Wall</button>
+            <div className="space-y-2">
+              <h3 className="text-cyan-300 font-semibold">🌐 Submit a Social Link to SignalZ</h3>
+              <input type="text" placeholder="Paste any video or social link" value={linkInput} onChange={(e) => setLinkInput(e.target.value)} className="w-full" style={tcgInputStyle} />
+              <button onClick={handleSubmitLink} className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400">🔗 Submit Link</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-);
-
+  );
+}
 
 export default PostForm;
