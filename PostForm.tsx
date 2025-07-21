@@ -150,124 +150,129 @@ function PostForm({ wallType, onMediaPreview }) {
   };
 
   return (
-    <div
-      className="p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4 relative z-10"
+  
+  <div
+    className="p-5 rounded-2xl shadow-lg border border-cyan-400 space-y-4 relative z-10 text-center"
+    style={{
+      backgroundImage: backgroundImage
+        ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
+        : "#0c0c0c",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      backdropFilter: "blur(2px)",
+      color: "#00f0ff",
+      textAlign: "center",
+    }}
+  >
+    <h2 className="text-lg font-bold text-cyan-300">📢 Create a New Drop</h2>
+
+    <select
+      value={wallType}
+      onChange={() => {}}
+      disabled
+      className="w-full"
       style={{
-        backgroundImage: backgroundImage
-          ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
-          : "#0c0c0c",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backdropFilter: "blur(2px)",
-        color: "#00f0ff",
+        ...tcgInputStyle,
+        textAlign: "center",
       }}
     >
-      <h2 className="text-lg font-bold text-cyan-300">📢 Create a New Drop</h2>
+      <option value="main">Main Wall</option>
+      <option value="alt">Alt Wall</option>
+      <option value="zetsu">Z-Wall</option>
+    </select>
 
-      <select
-        value={wallType}
-        onChange={() => {}}
-        disabled
-        className="w-full text-cyan-200"
-        style={tcgInputStyle}
-      >
-        <option value="main">Main Wall</option>
-        <option value="alt">Alt Wall</option>
-        <option value="zetsu">Z-Wall</option>
-      </select>
+    <input
+      type="text"
+      placeholder="Brand Name / Headline"
+      value={headline}
+      onChange={(e) => setHeadline(e.target.value)}
+      className="w-full"
+      style={tcgInputStyle}
+    />
 
+    <textarea
+      placeholder="What's meaningful about it?"
+      value={caption}
+      onChange={(e) => setCaption(e.target.value)}
+      className="w-full resize-none"
+      style={{ ...tcgInputStyle, height: "6rem" }}
+    />
+
+    <input
+      type="text"
+      placeholder="Link (optional)"
+      value={ctaUrl}
+      onChange={(e) => setCtaUrl(e.target.value)}
+      className="w-full"
+      style={tcgInputStyle}
+    />
+
+    <input
+      type="text"
+      placeholder="Tags (comma separated)"
+      value={tags}
+      onChange={(e) => setTags(e.target.value)}
+      className="w-full"
+      style={tcgInputStyle}
+    />
+
+    <button
+      type="button"
+      onClick={() => imageInputRef.current.click()}
+      className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
+    >
+      🖼 Add Image
+    </button>
+    <input
+      type="file"
+      accept="image/*"
+      ref={imageInputRef}
+      onChange={handleImageChange}
+      style={{ display: "none" }}
+    />
+
+    <button
+      type="button"
+      onClick={() => videoInputRef.current.click()}
+      className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
+    >
+      🎬 Add Video
+    </button>
+    <input
+      type="file"
+      accept="video/*"
+      ref={videoInputRef}
+      onChange={handleVideoChange}
+      style={{ display: "none" }}
+    />
+
+    <button
+      onClick={handlePost}
+      className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition"
+    >
+      🚀 Post to {wallType.toUpperCase()} Wall
+    </button>
+
+    <div className="mt-6 space-y-2">
+      <h3 className="text-cyan-300 font-semibold">🌐 Submit a Social Link to SignalZ</h3>
       <input
         type="text"
-        placeholder="Brand Name / Headline"
-        value={headline}
-        onChange={(e) => setHeadline(e.target.value)}
+        placeholder="Paste any video or social link"
+        value={linkInput}
+        onChange={(e) => setLinkInput(e.target.value)}
         className="w-full"
         style={tcgInputStyle}
       />
-
-      <textarea
-        placeholder="What's meaningful about it?"
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        className="w-full resize-none"
-        style={{ ...tcgInputStyle, height: "6rem" }}
-      />
-
-      <input
-        type="text"
-        placeholder="Link (optional)"
-        value={ctaUrl}
-        onChange={(e) => setCtaUrl(e.target.value)}
-        className="w-full"
-        style={tcgInputStyle}
-      />
-
-      <input
-        type="text"
-        placeholder="Tags (comma separated)"
-        value={tags}
-        onChange={(e) => setTags(e.target.value)}
-        className="w-full"
-        style={tcgInputStyle}
-      />
-
       <button
-        type="button"
-        onClick={() => imageInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
+        onClick={handleSubmitLink}
+        className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
       >
-        🖼 Add Image
+        🔗 Submit Link
       </button>
-      <input
-        type="file"
-        accept="image/*"
-        ref={imageInputRef}
-        onChange={handleImageChange}
-        style={{ display: "none" }}
-      />
-
-      <button
-        type="button"
-        onClick={() => videoInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 font-medium px-4 py-2 rounded w-full border border-cyan-400"
-      >
-        🎬 Add Video
-      </button>
-      <input
-        type="file"
-        accept="video/*"
-        ref={videoInputRef}
-        onChange={handleVideoChange}
-        style={{ display: "none" }}
-      />
-
-      <button
-        onClick={handlePost}
-        className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md hover:shadow-lg transition"
-      >
-        🚀 Post to {wallType.toUpperCase()} Wall
-      </button>
-
-      <div className="mt-6 space-y-2">
-        <h3 className="text-cyan-300 font-semibold">🌐 Submit a Social Link to SignalZ</h3>
-        <input
-          type="text"
-          placeholder="Paste any video or social link"
-          value={linkInput}
-          onChange={(e) => setLinkInput(e.target.value)}
-          className="w-full"
-          style={tcgInputStyle}
-        />
-        <button
-          onClick={handleSubmitLink}
-          className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
-        >
-          🔗 Submit Link
-        </button>
-      </div>
     </div>
-  );
-}
+  </div>
+);
+
 
 export default PostForm;
