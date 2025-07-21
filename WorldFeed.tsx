@@ -174,54 +174,77 @@ const handleCloseOverlay = () => {
       
 {/* 🧠 Fullscreen PostForm Overlay */}
 {showCreateOverlay && (
- <div style={{
-  maxWidth: "800px",
-  width: "100%",
-  padding: "2rem",
-  borderRadius: "16px",
-  background: "linear-gradient(145deg, #0d0d0d, #060c0d)",
-  border: "2px solid rgba(0, 255, 255, 0.4)",
-  boxShadow: "inset 0 0 30px rgba(0,255,255,0.08), 0 0 12px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.1)", // ✅ FIXED as valid string
-  backdropFilter: "blur(6px)",
-  position: "relative",
-  overflow: "hidden",
-}}>
-  {/* ✖ Button */}
-  <button
-    onClick={() => setShowCreateOverlay(false)}
+  <div
     style={{
-      position: "absolute",
-      top: "1rem",
-      right: "1rem",
-      background: "transparent",
-      color: "#00f0ff",
-      fontSize: "1.5rem",
-      border: "none",
-      cursor: "pointer",
-      textShadow: "0 0 6px #00f0ff",
+      position: "absolute", // 👈 keeps it under <App />
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(10,10,10,0.95)",
+      zIndex: 999999, // 👈 top stack
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "2rem",
     }}
   >
-    ✖
-  </button>
+    <div
+      style={{
+        maxWidth: "800px",
+        width: "100%",
+        padding: "2rem",
+        borderRadius: "16px",
+        background: "linear-gradient(145deg, #0d0d0d, #060c0d)",
+        border: "2px solid rgba(0, 255, 255, 0.4)",
+        boxShadow:
+          "inset 0 0 30px rgba(0,255,255,0.08), 0 0 12px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.1)", // ✅ valid string
+        backdropFilter: "blur(6px)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* ✖ Button */}
+      <button
+        onClick={() => setShowCreateOverlay(false)}
+        style={{
+          position: "absolute",
+          top: "1rem",
+          right: "1rem",
+          background: "transparent",
+          color: "#00f0ff",
+          fontSize: "1.5rem",
+          border: "none",
+          cursor: "pointer",
+          textShadow: "0 0 6px #00f0ff",
+        }}
+      >
+        ✖
+      </button>
 
-  {/* Header Title */}
-  <h2 style={{
-    textAlign: "center",
-    color: "#ffffff",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-    textShadow: "0 0 6px #00f0ff",
-    marginBottom: "1.5rem",
-    background: "linear-gradient(to right, #00f0ff, #00ffcc)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent"
-  }}>
-    Create {createMode.charAt(0).toUpperCase() + createMode.slice(1)} Post
-  </h2>
+      {/* Header Title */}
+      <h2
+        style={{
+          textAlign: "center",
+          color: "#ffffff",
+          fontSize: "1.25rem",
+          fontWeight: "bold",
+          textShadow: "0 0 6px #00f0ff",
+          marginBottom: "1.5rem",
+          background: "linear-gradient(to right, #00f0ff, #00ffcc)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        Create {createMode.charAt(0).toUpperCase() + createMode.slice(1)} Post
+      </h2>
 
-  {/* ✅ PostForm stays unchanged */}
-  <PostForm wallType={wallType} onMediaPreview={() => {}} />
-</div>
+      {/* ✅ PostForm */}
+      <PostForm wallType={wallType} onMediaPreview={() => {}} />
+    </div>
+  </div>
+)}
+
 
 
 
