@@ -126,15 +126,7 @@ useEffect(() => {
   return () => observer.disconnect();
 }, [posts]);
 
-
-
-
-
-
-
-
-
-  
+ 
   const handleCommentSubmit = async (postId) => {
     const content = inputMap[postId];
     if (!content || !content.trim()) return;
@@ -146,7 +138,25 @@ useEffect(() => {
       setInputMap((prev) => ({ ...prev, [postId]: "" }));
     }
   };
-//////////////////////////////////////////////////////////////
+////////////////////////////////////
+  // 🔘 Create Post Overlay Logic
+const [showCreateMenu, setShowCreateMenu] = useState(false);
+const [showCreateOverlay, setShowCreateOverlay] = useState(false);
+const [createMode, setCreateMode] = useState(""); // "image", "video", "link"
+
+const handleCreate = (mode) => {
+  setCreateMode(mode);
+  setShowCreateOverlay(true);
+  setShowCreateMenu(false);
+};
+
+const handleCloseOverlay = () => {
+  setShowCreateOverlay(false);
+  setCreateMode("");
+};
+
+  
+  //////////////////////////
   if (error) {
     return <div style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</div>;
   }
@@ -161,40 +171,8 @@ useEffect(() => {
         <ChumFeedPanel />
       </div>
 
-      <div
-        className="hide-scrollbar"
-        style={{
-          flex: 1,
-          padding: "1rem",
-          background: "#0d0d0d",
-          position: "relative",
-          overflowY: "scroll",
-        }}
-      >
-        {posts.map((post) => {
-          const safeTags = Array.isArray(post.tags)
-            ? post.tags
-            : typeof post.tags === "string"
-            ? post.tags.split(",").map((tag) => tag.trim())
-            : [];
-
-          const comments = commentsMap[post.id] || [];
-/////////////////////////////////////////////////////////////////////
-const bg = post.background;
-if (!bg) console.warn("⚠️ Missing background for post ID:", post.id);
-///////////////postoverlay/////
-        
-const [showCreateMenu, setShowCreateMenu] = useState(false);
-const [showCreateOverlay, setShowCreateOverlay] = useState(false);
-const [createMode, setCreateMode] = useState(""); // "image", "video", "link"
-
-const handleCreate = (mode) => {
-  setCreateMode(mode);
-  setShowCreateOverlay(true);
-  setShowCreateMenu(false);
-};
-///////////////////////////////////
-{/* 🔘 Floating CREATE Button + Dropdown */}
+      
+{/* Floating CREATE Button */}
 <div style={{
   position: "fixed",
   top: "1rem",
@@ -231,16 +209,71 @@ const handleCreate = (mode) => {
       width: "200px",
       textAlign: "left",
     }}>
-      <button onClick={() => handleCreate("image")} style={{ color: "#00f0ff", background: "transparent", border: "none", cursor: "pointer" }}>📷 Image Post</button>
-      <button onClick={() => handleCreate("video")} style={{ color: "#00f0ff", background: "transparent", border: "none", cursor: "pointer" }}>🎬 Video Post</button>
-      <button onClick={() => handleCreate("link")} style={{ color: "#00f0ff", background: "transparent", border: "none", cursor: "pointer" }}>🔗 Social Link</button>
+      <button
+        onClick={() => handleCreate("image")}
+        style={{
+          color: "#00f0ff",
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        📷 Image Post
+      </button>
+      <button
+        onClick={() => handleCreate("video")}
+        style={{
+          color: "#00f0ff",
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        🎬 Video Post
+      </button>
+      <button
+        onClick={() => handleCreate("link")}
+        style={{
+          color: "#00f0ff",
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        🔗 Social Link
+      </button>
     </div>
   )}
 </div>
 
-        
+
+
+
+      
+      <div
+        className="hide-scrollbar"
+        style={{
+          flex: 1,
+          padding: "1rem",
+          background: "#0d0d0d",
+          position: "relative",
+          overflowY: "scroll",
+        }}
+      >
+        {posts.map((post) => {
+          const safeTags = Array.isArray(post.tags)
+            ? post.tags
+            : typeof post.tags === "string"
+            ? post.tags.split(",").map((tag) => tag.trim())
+            : [];
+
+          const comments = commentsMap[post.id] || [];
+/////////////////////////////////////////////////////////////////////
+const bg = post.background;
+if (!bg) console.warn("⚠️ Missing background for post ID:", post.id);
+           
 return (
-  <div
+   <div
     key={post.id}
     className="post shadow-xl"
     style={{
