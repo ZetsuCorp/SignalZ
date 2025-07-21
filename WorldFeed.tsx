@@ -172,6 +172,59 @@ const handleCloseOverlay = () => {
       </div>
 
       
+{/* 🧠 Fullscreen PostForm Overlay */}
+{showCreateOverlay && (
+  <div style={{
+    position: "absolute", // ✅ changed from fixed
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(10,10,10,0.95)",
+    zIndex: 999999, // ✅ bumped to max
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "2rem",
+  }}>
+    <div style={{
+      maxWidth: "800px",
+      width: "100%",
+      background: "#0d0d0d",
+      padding: "2rem",
+      borderRadius: "12px",
+      border: "2px solid #00f0ff55",
+      boxShadow: "0 0 20px #00f0ff55",
+      position: "relative",
+    }}>
+      <button
+        onClick={() => setShowCreateOverlay(false)}
+        style={{
+          position: "absolute",
+          top: "1rem",
+          right: "1rem",
+          background: "transparent",
+          color: "#00f0ff",
+          fontSize: "1.5rem",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        ✖
+      </button>
+
+      <h2 style={{ textAlign: "center", color: "#00f0ff", marginBottom: "1rem" }}>
+        Create {createMode.charAt(0).toUpperCase() + createMode.slice(1)} Post
+      </h2>
+
+      {/* Reuses your PostForm with background and session ID logic intact */}
+      <PostForm wallType={wallType} onMediaPreview={() => {}} />
+    </div>
+  </div>
+)}
+
+
+      
 <div
   className="hide-scrollbar"
   style={{
@@ -678,56 +731,7 @@ return (
                 </button>
 
 
-{/* 🧠 Fullscreen PostForm Overlay */}
-{showCreateOverlay && (
-  <div style={{
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    backgroundColor: "rgba(10,10,10,0.95)",
-    zIndex: 9998,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "2rem",
-  }}>
-    <div style={{
-      maxWidth: "800px",
-      width: "100%",
-      background: "#0d0d0d",
-      padding: "2rem",
-      borderRadius: "12px",
-      border: "2px solid #00f0ff55",
-      boxShadow: "0 0 20px #00f0ff55",
-      position: "relative",
-    }}>
-      <button
-        onClick={() => setShowCreateOverlay(false)}
-        style={{
-          position: "absolute",
-          top: "1rem",
-          right: "1rem",
-          background: "transparent",
-          color: "#00f0ff",
-          fontSize: "1.5rem",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        ✖
-      </button>
 
-      <h2 style={{ textAlign: "center", color: "#00f0ff", marginBottom: "1rem" }}>
-        Create {createMode.charAt(0).toUpperCase() + createMode.slice(1)} Post
-      </h2>
-
-      {/* Reuses your PostForm with background and session ID logic intact */}
-      <PostForm wallType={wallType} onMediaPreview={() => {}} />
-    </div>
-  </div>
-)}
 
 
                 
