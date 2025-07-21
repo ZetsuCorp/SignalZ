@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
 import ChumFeedPanel from "./src/ChumFeedPanel";
+import PostForm from "./PostForm"; // ✅ keep using your working form
+
 /////////////////////////////////////////////////////
 // ✅ Helpers
 function extractDomain(url) {
