@@ -174,23 +174,18 @@ const handleCloseOverlay = () => {
       
 {/* 🧠 Fullscreen PostForm Overlay */}
 {showCreateOverlay && (
-  <div style={{
+ <div style={{
   maxWidth: "800px",
   width: "100%",
   padding: "2rem",
   borderRadius: "16px",
   background: "linear-gradient(145deg, #0d0d0d, #060c0d)",
   border: "2px solid rgba(0, 255, 255, 0.4)",
-  boxShadow: `
-    inset 0 0 30px rgba(0,255,255,0.08),
-    0 0 12px rgba(0,255,255,0.3),
-    0 0 30px rgba(0,255,255,0.1)
-  `,
+  boxShadow: "inset 0 0 30px rgba(0,255,255,0.08), 0 0 12px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.1)", // ✅ FIXED as valid string
   backdropFilter: "blur(6px)",
   position: "relative",
   overflow: "hidden",
 }}>
-
   {/* ✖ Button */}
   <button
     onClick={() => setShowCreateOverlay(false)}
@@ -224,11 +219,9 @@ const handleCloseOverlay = () => {
     Create {createMode.charAt(0).toUpperCase() + createMode.slice(1)} Post
   </h2>
 
-        {/* Reuses your PostForm with background and session ID logic intact */}
-      <PostForm wallType={wallType} onMediaPreview={() => {}} />
-    </div>
-  </div>
-)}
+  {/* ✅ PostForm stays unchanged */}
+  <PostForm wallType={wallType} onMediaPreview={() => {}} />
+</div>
 
 
 
