@@ -224,9 +224,12 @@ const handleCloseOverlay = () => {
     Create {createMode.charAt(0).toUpperCase() + createMode.slice(1)} Post
   </h2>
 
-  {/* ✅ PostForm stays unchanged */}
-  <PostForm wallType={wallType} onMediaPreview={() => {}} />
-</div>
+        {/* Reuses your PostForm with background and session ID logic intact */}
+      <PostForm wallType={wallType} onMediaPreview={() => {}} />
+    </div>
+  </div>
+)}
+
 
 
 /////////////////////////////////
