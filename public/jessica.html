@@ -34,17 +34,25 @@
   <script>
     const API_KEY = 'AIzaSyApZmcPKbA0Qcphmz5_8Dt_u_re1VvMd-k';
     const CX = '806ccee4d77894557';
+
     const queries = [
-      { platform: "Twitter", query: "new on twitter" },
-      { platform: "X", query: "latest X posts" },
-      { platform: "Reddit", query: "breaking reddit news" },
-      { platform: "TikTok", query: "viral TikToks" },
-      { platform: "Instagram", query: "explore instagram reels" },
-      { platform: "YouTube", query: "trending on youtube" },
-      { platform: "News", query: "top headlines" },
-      { platform: "AI", query: "latest AI tools" },
-      { platform: "Crypto", query: "new crypto launches" }
+      { platform: "Twitter", query: "viral Twitter threads 2025" },
+      { platform: "Reddit", query: "Reddit trending posts today" },
+      { platform: "TikTok", query: "TikTok viral videos July 2025" },
+      { platform: "YouTube", query: "most viewed YouTube videos this week" },
+      { platform: "AI", query: "best new AI tools 2025" },
+      { platform: "Crypto", query: "latest crypto launches 2025" },
+      { platform: "Startups", query: "new startup launches this month" },
+      { platform: "Design", query: "top product design trends 2025" },
+      { platform: "Tech", query: "coolest gadgets released 2025" },
+      { platform: "Money", query: "how to make money online July 2025" },
+      { platform: "Side Hustle", query: "easy side hustles that work 2025" },
+      { platform: "NFT", query: "new NFT project drops 2025" },
+      { platform: "News", query: "breaking news July 20 2025" },
+      { platform: "Weird", query: "weird internet trends 2025" },
+      { platform: "Meme", query: "funniest memes trending now" }
     ];
+
     const intros = [
       "— Ever wondered what’s buzzing on",
       "— Hot off the wire from",
@@ -52,6 +60,7 @@
       "— Here's what’s lighting up",
       "— Jessica on scene at"
     ];
+
     const outros = [
       "— Find out here",
       "— Tap in for the full story",
@@ -59,6 +68,7 @@
       "— Full report below",
       "— Read more"
     ];
+
     const sessions = ["session1", "session2", "session3"];
     const allPosts = [];
 
@@ -102,7 +112,6 @@
     function renderPosts(containerId, posts) {
       const container = document.getElementById(containerId);
       if (!container) return;
-
       container.innerHTML = "";
 
       posts.forEach((post, i) => {
@@ -134,20 +143,29 @@
       });
     }
 
-    async function runSession(sessionNum) {
-      const group = {
-        1: queries.slice(0, 3),
-        2: queries.slice(3, 6),
-        3: queries.slice(6, 9)
-      }[sessionNum];
-      const results = (await Promise.all(group.map(fetchAndRender))).flat();
-      renderPosts(`session${sessionNum}`, results.slice(0, 4));
+    function splitIntoSessions(array, groupSize = 2, sessionCount = 3) {
+      const shuffled = [...array].sort(() => Math.random() - 0.5);
+      const sessions = [];
+
+      for (let i = 0; i < sessionCount; i++) {
+        const start = i * groupSize;
+        const end = start + groupSize;
+        sessions.push(shuffled.slice(start, end));
+      }
+
+      return sessions;
+    }
+
+    async function handleSession(sessionId, queryGroup) {
+      const posts = (await Promise.all(queryGroup.map(fetchAndRender))).flat();
+      renderPosts(`session${sessionId}`, posts.slice(0, 4));
     }
 
     async function runAllSessions() {
-      for (let i = 1; i <= 3; i++) {
-        await runSession(i);
-      }
+      const [s1, s2, s3] = splitIntoSessions(queries, 2, 3);
+      await handleSession(1, s1);
+      await handleSession(2, s2);
+      await handleSession(3, s3);
     }
 
     async function postToSupabase(post) {
@@ -194,7 +212,6 @@
       }
     }
 
-    // Initial placeholder templates
     window.addEventListener("DOMContentLoaded", () => {
       sessions.forEach(id => {
         const section = document.getElementById(id);
@@ -222,7 +239,6 @@
       });
     });
 
-    // ✅ UPDATED BUTTON EVENT
     document.getElementById("searchBtn").addEventListener("click", runAllSessions);
 
     document.getElementById("pushBtn").addEventListener("click", () => {
