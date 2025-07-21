@@ -343,8 +343,40 @@ return (
   </div>
 )}
 
-              <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "white" }}>{post.headline}</h3>
-              <p style={{ fontSize: "0.9rem", color: "white", marginBottom: "0.5rem" }}>{post.caption}</p>
+             {/* === Description Box === */}
+<div
+  style={{
+    background: "rgba(0, 10, 20, 0.65)",
+    border: "1px solid #00f0ff44",
+    borderRadius: "10px",
+    padding: "12px 16px",
+    color: "#e0fefe",
+    fontSize: "0.85rem",
+    lineHeight: "1.4",
+    boxShadow: "inset 0 0 10px rgba(0, 255, 255, 0.1)",
+    backdropFilter: "blur(6px)",
+    marginBottom: "0.75rem",
+  }}
+>
+  {post.headline && (
+    <div style={{ fontSize: "1rem", fontWeight: "bold", color: "white", marginBottom: "0.25rem" }}>
+      {post.headline}
+    </div>
+  )}
+
+  {post.caption && (
+    <p style={{ fontSize: "0.85rem", color: "#cfffff", marginBottom: "0.5rem" }}>
+      {post.caption}
+    </p>
+  )}
+
+  {post.created_at && (
+    <div style={{ fontSize: "0.75rem", color: "#88ffff" }}>
+      {new Date(post.created_at).toLocaleString()}
+    </div>
+  )}
+</div>
+
 
               {safeTags.includes("link") && post.caption?.startsWith("http") && (
                 isYouTubeOrTikTok(post.caption) && getEmbedUrl(post.caption) ? (
