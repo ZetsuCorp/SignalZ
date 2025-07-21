@@ -182,7 +182,63 @@ useEffect(() => {
 /////////////////////////////////////////////////////////////////////
 const bg = post.background;
 if (!bg) console.warn("⚠️ Missing background for post ID:", post.id);
+///////////////postoverlay/////
+        
+const [showCreateMenu, setShowCreateMenu] = useState(false);
+const [showCreateOverlay, setShowCreateOverlay] = useState(false);
+const [createMode, setCreateMode] = useState(""); // "image", "video", "link"
 
+const handleCreate = (mode) => {
+  setCreateMode(mode);
+  setShowCreateOverlay(true);
+  setShowCreateMenu(false);
+};
+///////////////////////////////////
+{/* 🔘 Floating CREATE Button + Dropdown */}
+<div style={{
+  position: "fixed",
+  top: "1rem",
+  left: "50%",
+  transform: "translateX(-50%)",
+  zIndex: 9999,
+}}>
+  <button
+    onClick={() => setShowCreateMenu((prev) => !prev)}
+    style={{
+      background: "#00f0ff",
+      color: "#000",
+      padding: "8px 16px",
+      borderRadius: "999px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      border: "none",
+      boxShadow: "0 0 10px #00f0ff88",
+    }}
+  >
+    ＋ Create
+  </button>
+
+  {showCreateMenu && (
+    <div style={{
+      marginTop: "0.5rem",
+      background: "#111",
+      border: "1px solid #00f0ff44",
+      borderRadius: "10px",
+      padding: "0.5rem",
+      display: "flex",
+      flexDirection: "column",
+      gap: "6px",
+      width: "200px",
+      textAlign: "left",
+    }}>
+      <button onClick={() => handleCreate("image")} style={{ color: "#00f0ff", background: "transparent", border: "none", cursor: "pointer" }}>📷 Image Post</button>
+      <button onClick={() => handleCreate("video")} style={{ color: "#00f0ff", background: "transparent", border: "none", cursor: "pointer" }}>🎬 Video Post</button>
+      <button onClick={() => handleCreate("link")} style={{ color: "#00f0ff", background: "transparent", border: "none", cursor: "pointer" }}>🔗 Social Link</button>
+    </div>
+  )}
+</div>
+
+        
 return (
   <div
     key={post.id}
@@ -251,7 +307,6 @@ return (
     </span>
   </div>
 )}
-
         </div>
 
 
@@ -591,6 +646,61 @@ return (
                 >
                   Post
                 </button>
+
+
+{/* 🧠 Fullscreen PostForm Overlay */}
+{showCreateOverlay && (
+  <div style={{
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(10,10,10,0.95)",
+    zIndex: 9998,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "2rem",
+  }}>
+    <div style={{
+      maxWidth: "800px",
+      width: "100%",
+      background: "#0d0d0d",
+      padding: "2rem",
+      borderRadius: "12px",
+      border: "2px solid #00f0ff55",
+      boxShadow: "0 0 20px #00f0ff55",
+      position: "relative",
+    }}>
+      <button
+        onClick={() => setShowCreateOverlay(false)}
+        style={{
+          position: "absolute",
+          top: "1rem",
+          right: "1rem",
+          background: "transparent",
+          color: "#00f0ff",
+          fontSize: "1.5rem",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        ✖
+      </button>
+
+      <h2 style={{ textAlign: "center", color: "#00f0ff", marginBottom: "1rem" }}>
+        Create {createMode.charAt(0).toUpperCase() + createMode.slice(1)} Post
+      </h2>
+
+      {/* Reuses your PostForm with background and session ID logic intact */}
+      <PostForm wallType={wallType} onMediaPreview={() => {}} />
+    </div>
+  </div>
+)}
+
+
+                
               </div>
             </div>
             //////////////////////////////////////////////////////////////////////
