@@ -13,9 +13,6 @@ export default function App() {
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
 
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [overlayType, setOverlayType] = useState(null);
-
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
   }, [isDarkMode]);
@@ -36,56 +33,16 @@ export default function App() {
     setEditorSrc(null);
   };
 
-  const openOverlay = (type: "image" | "video" | "social") => {
-    setOverlayType(type);
-    setShowOverlay(true);
-  };
-
-  const closeOverlay = () => {
-    setOverlayType(null);
-    setShowOverlay(false);
-  };
-
   return (
     <div className="app-wrapper">
+      {/* 🔹 Session ID Floating Overlay */}
       <SessionContainer />
 
       {/* 🔹 Sidebar Panel */}
       <aside className="left-panel">
         <div className="sidebar-content">
           <h2 className="sidebar-title">Create</h2>
-          <div className="relative z-10">
-            <button
-              onClick={() => setShowOverlay(!showOverlay)}
-              className="bg-cyan-700 hover:bg-cyan-600 text-white font-bold px-4 py-2 rounded shadow"
-            >
-              📢 Create
-            </button>
-
-            {showOverlay && (
-              <div className="absolute mt-2 w-64 bg-[#101820] border border-cyan-500 rounded shadow-xl z-20">
-                <button
-                  onClick={() => openOverlay("image")}
-                  className="block w-full text-left px-4 py-2 text-cyan-300 hover:bg-cyan-900"
-                >
-                  🖼 Create Image Post
-                </button>
-                <button
-                  onClick={() => openOverlay("video")}
-                  className="block w-full text-left px-4 py-2 text-cyan-300 hover:bg-cyan-900"
-                >
-                  🎬 Create Video Post
-                </button>
-                <button
-                  onClick={() => openOverlay("social")}
-                  className="block w-full text-left px-4 py-2 text-cyan-300 hover:bg-cyan-900"
-                >
-                  🌐 Share Social Link
-                </button>
-              </div>
-            )}
-          </div>
-
+          <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
           <div className="mt-6">
             <h3 className="text-sm font-semibold">Signal Source</h3>
             <div className="source-pill mb-2">{wallType.toUpperCase()}</div>
@@ -93,7 +50,6 @@ export default function App() {
               Posts go to the selected wall.
             </p>
           </div>
-
           <button
             className="mt-4 text-sm text-cyan-200 hover:underline"
             onClick={() => setShowSettings(true)}
@@ -105,10 +61,7 @@ export default function App() {
             💸 Open Monetization
           </a>
 
-          <a
-            href="/jessica"
-            className="mt-2 block text-sm text-cyan-300 hover:underline"
-          >
+          <a href="/jessica" className="mt-2 block text-sm text-cyan-300 hover:underline">
             🧠 Run Jessica AI
           </a>
         </div>
@@ -128,9 +81,7 @@ export default function App() {
             />
           </div>
           <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
-          <p className="text-sm text-cyan-400">
-            What the internet is talking about.
-          </p>
+          <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
 
         <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
@@ -138,7 +89,7 @@ export default function App() {
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={`tab ${wallType === id ? "active" : ""}`}
+              className={tab ${wallType === id ? "active" : ""}}
             >
               {id.toUpperCase()}
             </button>
@@ -177,32 +128,6 @@ export default function App() {
           onClose={() => setEditorVisible(false)}
           onConfirm={handleMediaConfirm}
         />
-      )}
-
-      {/* 🔹 Post Creation Overlay */}
-      {showOverlay && overlayType && (
-        <div
-          className="fixed inset-0 z-50 bg-black bg-opacity-90 backdrop-blur-md flex justify-center items-center p-6"
-          onClick={closeOverlay}
-        >
-          <div
-            className="w-full max-w-3xl h-full rounded-xl overflow-auto p-4 border border-cyan-500 bg-[#0a0a0a] relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-3 right-4 text-cyan-400 text-xl hover:text-white"
-              onClick={closeOverlay}
-            >
-              ✖
-            </button>
-            <PostForm
-              wallType={wallType}
-              onMediaPreview={handleMediaPreview}
-              overlayType={overlayType}
-              closeOverlay={closeOverlay}
-            />
-          </div>
-        </div>
       )}
     </div>
   );
