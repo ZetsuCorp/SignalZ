@@ -13,7 +13,7 @@ function PostForm({ wallType, onMediaPreview }) {
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [backgroundImage, setBackgroundImage] = useState(""); // ✅
+  const [backgroundImage, setBackgroundImage] = useState("");
   const [linkInput, setLinkInput] = useState("");
 
   const imageInputRef = useRef(null);
@@ -26,23 +26,28 @@ function PostForm({ wallType, onMediaPreview }) {
       localStorage.setItem("session_id", existing);
     }
     setSessionId(existing);
-
-    const icon = sessionStorage.getItem("session_icon");
-    if (icon) setSigIcon(icon);
-
-    const name = sessionStorage.getItem("session_display_name");
-    if (name) setDisplayName(name);
-
-    const bg = sessionStorage.getItem("session_bg");
-    if (bg) setBackgroundImage(bg);
+    setSigIcon(sessionStorage.getItem("session_icon") || "");
+    setDisplayName(sessionStorage.getItem("session_display_name") || "");
+    setBackgroundImage(sessionStorage.getItem("session_bg") || "");
   }, []);
+
+  const tcgInputStyle = {
+    background: "rgba(0, 10, 20, 0.65)",
+    border: "1px solid #00f0ff44",
+    borderRadius: "10px",
+    color: "#e0fefe",
+    boxShadow: "inset 0 0 10px rgba(0, 255, 255, 0.1)",
+    backdropFilter: "blur(6px)",
+    padding: "12px 16px",
+    lineHeight: "1.4",
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
       const previewUrl = URL.createObjectURL(file);
-      if (onMediaPreview) onMediaPreview("image", previewUrl);
+      onMediaPreview?.("image", previewUrl);
     }
   };
 
@@ -51,7 +56,7 @@ function PostForm({ wallType, onMediaPreview }) {
     if (file) {
       setVideo(file);
       const previewUrl = URL.createObjectURL(file);
-      if (onMediaPreview) onMediaPreview("video", previewUrl);
+      onMediaPreview?.("video", previewUrl);
     }
   };
 
@@ -63,8 +68,7 @@ function PostForm({ wallType, onMediaPreview }) {
       alert("Image upload failed");
       return "";
     }
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return `${supabaseUrl}/storage/v1/object/public/images/${filePath}`;
+    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
@@ -75,8 +79,7 @@ function PostForm({ wallType, onMediaPreview }) {
       alert("Video upload failed");
       return "";
     }
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    return `${supabaseUrl}/storage/v1/object/public/videos/${filePath}`;
+    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -116,16 +119,11 @@ function PostForm({ wallType, onMediaPreview }) {
   };
 
   const handleSubmitLink = async () => {
-    if (!linkInput.trim()) {
-      alert("Please enter a link");
-      return;
-    }
-
+    if (!linkInput.trim()) return alert("Please enter a link");
     try {
       const domain = new URL(linkInput).hostname.replace("www.", "");
       const background = backgroundImage || getBackgroundFromSession(sessionId);
-
-      const response = await fetch("/.netlify/functions/create-link-post", {
+      const res = await fetch("/.netlify/functions/create-link-post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -142,8 +140,7 @@ function PostForm({ wallType, onMediaPreview }) {
           background,
         }),
       });
-
-      if (!response.ok) throw new Error("Link submission failed");
+      if (!res.ok) throw new Error("Link submission failed");
       setLinkInput("");
       alert("Link submitted to SignalZ!");
     } catch (err) {
@@ -172,7 +169,8 @@ function PostForm({ wallType, onMediaPreview }) {
         value={wallType}
         onChange={() => {}}
         disabled
-        className="w-full bg-[#111] text-cyan-200 border border-cyan-500 p-2 rounded focus:outline-none"
+        className="w-full text-cyan-200"
+        style={tcgInputStyle}
       >
         <option value="main">Main Wall</option>
         <option value="alt">Alt Wall</option>
@@ -184,14 +182,16 @@ function PostForm({ wallType, onMediaPreview }) {
         placeholder="Brand Name / Headline"
         value={headline}
         onChange={(e) => setHeadline(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="w-full"
+        style={tcgInputStyle}
       />
 
       <textarea
         placeholder="What's meaningful about it?"
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded h-24 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="w-full resize-none"
+        style={{ ...tcgInputStyle, height: "6rem" }}
       />
 
       <input
@@ -199,7 +199,8 @@ function PostForm({ wallType, onMediaPreview }) {
         placeholder="Link (optional)"
         value={ctaUrl}
         onChange={(e) => setCtaUrl(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="w-full"
+        style={tcgInputStyle}
       />
 
       <input
@@ -207,7 +208,8 @@ function PostForm({ wallType, onMediaPreview }) {
         placeholder="Tags (comma separated)"
         value={tags}
         onChange={(e) => setTags(e.target.value)}
-        className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="w-full"
+        style={tcgInputStyle}
       />
 
       <button
@@ -254,7 +256,8 @@ function PostForm({ wallType, onMediaPreview }) {
           placeholder="Paste any video or social link"
           value={linkInput}
           onChange={(e) => setLinkInput(e.target.value)}
-          className="w-full bg-[#111] text-white border border-cyan-500 p-2 rounded focus:outline-none"
+          className="w-full"
+          style={tcgInputStyle}
         />
         <button
           onClick={handleSubmitLink}
