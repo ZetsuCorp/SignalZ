@@ -132,9 +132,15 @@
             </div>
             <div class="jessica-card-title">📛 ${post.intro}</div>
             <div class="jessica-card-type">📂 Type — SIGZICON</div>
-            <p class="jessica-caption">"${post.snippet}"</p>
-            <span class="jessica-date">${post.timestamp}</span>
-            <p class="jessica-outro">${post.outro}</p>
+            
+        <div class="jessica-description-box">
+  <p class="jessica-caption">"${post.snippet}"</p>
+  <span class="jessica-date" style="display:block; margin-top: 0.5rem; font-size: 0.75rem; color: #88ffff;">${post.timestamp}</span>
+  <p class="jessica-outro" style="margin-top: 0.25rem;">${post.outro}</p>
+</div>
+
+
+            
             <a href="${post.link}" target="_blank" class="jessica-link">🔗 Open Post</a>
           </div>
         `;
