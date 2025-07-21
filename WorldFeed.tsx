@@ -172,102 +172,99 @@ const handleCloseOverlay = () => {
       </div>
 
       
-{/* Floating CREATE Button */}
-<div style={{
-  position: "fixed",
-  top: "1rem",
-  left: "50%",
-  transform: "translateX(-50%)",
-  zIndex: 9999,
-}}>
-  <button
-    onClick={() => setShowCreateMenu((prev) => !prev)}
-    style={{
-      background: "#00f0ff",
-      color: "#000",
-      padding: "8px 16px",
-      borderRadius: "999px",
-      fontWeight: "bold",
-      cursor: "pointer",
-      border: "none",
-      boxShadow: "0 0 10px #00f0ff88",
-    }}
-  >
-    ＋ Create
-  </button>
+<div
+  className="hide-scrollbar"
+  style={{
+    flex: 1,
+    padding: "1rem",
+    background: "#0d0d0d",
+    position: "relative",
+    overflowY: "scroll",
+  }}
+>
+  {/* 🔘 Floating CREATE Button + Dropdown */}
+  <div style={{
+    position: "fixed", // This keeps it pinned visually
+    top: "1rem",
+    left: "50%",
+    transform: "translateX(-50%)",
+    zIndex: 9999,
+  }}>
+    <button
+      onClick={() => setShowCreateMenu((prev) => !prev)}
+      style={{
+        background: "#00f0ff",
+        color: "#000",
+        padding: "8px 16px",
+        borderRadius: "999px",
+        fontWeight: "bold",
+        cursor: "pointer",
+        border: "none",
+        boxShadow: "0 0 10px #00f0ff88",
+      }}
+    >
+      ＋ Create
+    </button>
 
-  {showCreateMenu && (
-    <div style={{
-      marginTop: "0.5rem",
-      background: "#111",
-      border: "1px solid #00f0ff44",
-      borderRadius: "10px",
-      padding: "0.5rem",
-      display: "flex",
-      flexDirection: "column",
-      gap: "6px",
-      width: "200px",
-      textAlign: "left",
-    }}>
-      <button
-        onClick={() => handleCreate("image")}
-        style={{
-          color: "#00f0ff",
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        📷 Image Post
-      </button>
-      <button
-        onClick={() => handleCreate("video")}
-        style={{
-          color: "#00f0ff",
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        🎬 Video Post
-      </button>
-      <button
-        onClick={() => handleCreate("link")}
-        style={{
-          color: "#00f0ff",
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        🔗 Social Link
-      </button>
-    </div>
-  )}
-</div>
+    {showCreateMenu && (
+      <div style={{
+        marginTop: "0.5rem",
+        background: "#111",
+        border: "1px solid #00f0ff44",
+        borderRadius: "10px",
+        padding: "0.5rem",
+        display: "flex",
+        flexDirection: "column",
+        gap: "6px",
+        width: "200px",
+        textAlign: "left",
+      }}>
+        <button
+          onClick={() => handleCreate("image")}
+          style={{
+            color: "#00f0ff",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          📷 Image Post
+        </button>
+        <button
+          onClick={() => handleCreate("video")}
+          style={{
+            color: "#00f0ff",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          🎬 Video Post
+        </button>
+        <button
+          onClick={() => handleCreate("link")}
+          style={{
+            color: "#00f0ff",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          🔗 Social Link
+        </button>
+      </div>
+    )}
+  </div>
 
+  {/* 🔁 Begin rendering posts */}
+  {posts.map((post) => {
+    const safeTags = Array.isArray(post.tags)
+      ? post.tags
+      : typeof post.tags === "string"
+      ? post.tags.split(",").map((tag) => tag.trim())
+      : [];
 
-
-
-      
-      <div
-        className="hide-scrollbar"
-        style={{
-          flex: 1,
-          padding: "1rem",
-          background: "#0d0d0d",
-          position: "relative",
-          overflowY: "scroll",
-        }}
-      >
-        {posts.map((post) => {
-          const safeTags = Array.isArray(post.tags)
-            ? post.tags
-            : typeof post.tags === "string"
-            ? post.tags.split(",").map((tag) => tag.trim())
-            : [];
-
-          const comments = commentsMap[post.id] || [];
+    const comments = commentsMap[post.id] || [];
 /////////////////////////////////////////////////////////////////////
 const bg = post.background;
 if (!bg) console.warn("⚠️ Missing background for post ID:", post.id);
