@@ -1,3 +1,4 @@
+
 /* === GLOBAL RESETS === */
 * {
   box-sizing: border-box;
@@ -225,6 +226,7 @@ button.submit:hover {
 /* === POST CARD === */
 .post {
   background: url('/postcard-assets/cardbase/test0.png');
+
   border: 1px solid #00f0ff22;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
   padding: 20px;
@@ -384,6 +386,8 @@ video.auto-pause {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+/*//////////////////////////////////////////////
+/* === SESSION ID CONTAINER === */
 
 /* === SESSION ID CONTAINER === */
 .session-container {
@@ -391,84 +395,31 @@ video.auto-pause {
   top: 12px;
   right: 12px;
   z-index: 9999;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   width: 360px;
   max-width: 90vw;
   padding: 12px 16px;
+
   background-color: rgba(15, 15, 15, 0.92);
   border: 1px solid #00f0ff33;
   border-radius: 10px;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
   backdrop-filter: blur(6px);
+
   font-size: 15px;
   font-weight: bold;
   color: var(--text-dark);
 }
 
-/* === MOBILE RESPONSIVE === */
-@media (max-width: 768px) {
-  .app-wrapper {
-    flex-direction: column;
-    overflow-y: auto;
-    height: auto;
-  }
-
-  .left-panel {
-    width: 100%;
-    max-width: 100%;
-    border-right: none;
-    border-top: 1px solid #00f0ff33;
-    box-shadow: none;
-    padding: 16px;
-    order: 2;
-  }
-
-  .right-panel {
-    width: 100%;
-    order: 1;
-  }
-
-  .tabs {
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 10px 16px;
-  }
-
-  .tab {
-    flex: 1 1 auto;
-    text-align: center;
-  }
-
-  .settings-drawer {
-    width: 100vw;
-    right: 0;
-    border-left: none;
-    border-top: 2px solid #00f0ff33;
-  }
-
-  .session-container {
-    width: auto;
-    max-width: 92vw;
-    top: 8px;
-    right: 12px;
-    left: auto;
-    transform: none;
-    font-size: 13px;
-    padding: 10px 12px;
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: flex-end;
-    text-align: right;
-  }
-
-  .feed-scroll {
-    padding: 16px;
-  }
-
-  .post {
-    max-width: 100%;
-    padding: 16px;
-  }
+/*floating create button*/
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* === MOBILE RESPONSIVE === */
