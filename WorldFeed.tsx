@@ -230,31 +230,35 @@ const handleCloseOverlay = () => {
     overflowY: "scroll",
   }}
 >
- {/* 🔘 Floating CREATE Button + Dropdown */}
+ 
+  
+  
+  {/* 🔘 Floating CREATE Button + Dropdown */}
 <div
   style={{
     position: "fixed",
-    top: "1rem",
-    left: "50%",
-    transform: "translateX(-50%)",
-    zIndex: 9999,
+    bottom: "1.5rem",
+    left: "1.5rem", // ✅ Switched from right to left
+    zIndex: 99999,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    gap: "0.5rem",
+    alignItems: "flex-start", // ✅ Adjusted for left-side alignment
+    gap: "0.75rem",
   }}
 >
   <button
     onClick={() => setShowCreateMenu((prev) => !prev)}
     style={{
-      background: "#00f0ff",
+      background: "linear-gradient(135deg, #00f0ff, #00bfff)",
       color: "#000",
-      padding: "10px 24px",
+      padding: "12px 24px",
       borderRadius: "999px",
       fontWeight: "bold",
       cursor: "pointer",
       border: "none",
       boxShadow: "0 0 15px #00f0ff88",
+      backdropFilter: "blur(6px)",
+      WebkitBackdropFilter: "blur(6px)",
       transition: "all 0.2s ease-in-out",
     }}
   >
@@ -264,48 +268,57 @@ const handleCloseOverlay = () => {
   {showCreateMenu && (
     <div
       style={{
-        background: "#111",
-        border: "1px solid #00f0ff44",
-        borderRadius: "12px",
-        padding: "0.75rem",
+        background: "rgba(16, 16, 16, 0.65)",
+        border: "1px solid #00f0ff33",
+        borderRadius: "14px",
+        padding: "1rem",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        gap: "10px",
-        width: "220px",
-        boxShadow: "0 0 12px #00f0ff33",
+        alignItems: "flex-start",
+        gap: "12px",
+        width: "240px",
+        boxShadow: "0 0 20px #00f0ff55",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
         animation: "fadeIn 0.2s ease-in-out",
       }}
     >
       {[
-        { label: "📷 Image Post", type: "image" },
-        { label: "🎬 Video Post", type: "video" },
-        { label: "🔗 Social Link", type: "link" },
-      ].map(({ label, type }) => (
+        { label: "Image Post", icon: "📷", type: "image" },
+        { label: "Video Post", icon: "🎬", type: "video" },
+        { label: "Social Link", icon: "🔗", type: "link" },
+      ].map(({ label, icon, type }) => (
         <button
           key={type}
           onClick={() => handleCreate(type)}
           style={{
             width: "100%",
-            padding: "10px",
-            borderRadius: "8px",
-            border: "1px solid #00f0ff33",
+            padding: "10px 12px",
+            borderRadius: "10px",
+            border: "1px solid #00f0ff22",
             background: "#181818",
             color: "#00f0ff",
             fontWeight: "600",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
             cursor: "pointer",
-            transition: "background 0.2s",
+            transition: "all 0.2s ease",
           }}
           onMouseOver={(e) => (e.currentTarget.style.background = "#00f0ff22")}
           onMouseOut={(e) => (e.currentTarget.style.background = "#181818")}
         >
-          {label}
+          <span style={{ fontSize: "1.2rem" }}>{icon}</span>
+          <span style={{ flexGrow: 1 }}>{label}</span>
         </button>
       ))}
     </div>
   )}
 </div>
 
+
+
+  
 
   {/* 🔁 Begin rendering posts */}
   {posts.map((post) => {
