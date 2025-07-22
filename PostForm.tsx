@@ -142,7 +142,7 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
   };
 
   return (
-    <div className="space-y-4 text-center">
+    <div className="space-y-4 text-center relative">
       {overlayType && (
         <button
           onClick={closeOverlay}
@@ -159,6 +159,39 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
           {overlayType === "social" && "🌐 Share Social Link"}
         </h2>
       )}
+
+      {/* 📦 TCG Media Slot */}
+      <div
+        className="w-full h-48 rounded-xl border border-cyan-500 bg-[#00182099] hover:bg-cyan-900/10 flex items-center justify-center text-cyan-400 text-sm cursor-pointer transition"
+        onClick={() => {
+          if (!image && !video) {
+            imageInputRef.current.click();
+          } else if (image) {
+            imageInputRef.current.click();
+          } else {
+            videoInputRef.current.click();
+          }
+        }}
+      >
+        {image && (
+          <img
+            src={URL.createObjectURL(image)}
+            alt="Selected"
+            className="object-contain max-h-full rounded"
+          />
+        )}
+        {video && (
+          <video
+            src={URL.createObjectURL(video)}
+            className="object-contain max-h-full rounded"
+            controls
+          />
+        )}
+        {!image && !video && <span>🖼 Click to Add Media</span>}
+      </div>
+
+      <input type="file" accept="image/*" ref={imageInputRef} onChange={handleImageChange} style={{ display: "none" }} />
+      <input type="file" accept="video/*" ref={videoInputRef} onChange={handleVideoChange} style={{ display: "none" }} />
 
       <input
         type="text"
@@ -190,36 +223,6 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
         onChange={(e) => setTags(e.target.value)}
         className="w-full"
         style={tcgInputStyle}
-      />
-
-      <button
-        type="button"
-        onClick={() => imageInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-      >
-        🖼 Add Image
-      </button>
-      <input
-        type="file"
-        accept="image/*"
-        ref={imageInputRef}
-        onChange={handleImageChange}
-        style={{ display: "none" }}
-      />
-
-      <button
-        type="button"
-        onClick={() => videoInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-      >
-        🎬 Add Video
-      </button>
-      <input
-        type="file"
-        accept="video/*"
-        ref={videoInputRef}
-        onChange={handleVideoChange}
-        style={{ display: "none" }}
       />
 
       <button
