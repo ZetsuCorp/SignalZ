@@ -168,94 +168,115 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
         {overlayType === "social" && "🌐 Share Social Link"}
       </h2>
 
-      <input
-        type="text"
-        placeholder="Brand Name / Headline"
-        value={headline}
-        onChange={(e) => setHeadline(e.target.value)}
-        className="w-full"
-        style={tcgInputStyle}
-      />
-      <textarea
-        placeholder="What's meaningful about it?"
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        className="w-full resize-none"
-        style={{ ...tcgInputStyle, height: "6rem" }}
-      />
-      <input
-        type="text"
-        placeholder="Link (optional)"
-        value={ctaUrl}
-        onChange={(e) => setCtaUrl(e.target.value)}
-        className="w-full"
-        style={tcgInputStyle}
-      />
-      <input
-        type="text"
-        placeholder="Tags (comma separated)"
-        value={tags}
-        onChange={(e) => setTags(e.target.value)}
-        className="w-full"
-        style={tcgInputStyle}
-      />
+      {/* HEADLINE / CAPTION / URL / TAGS */}
+      {overlayType !== "social" && (
+        <>
+          <input
+            type="text"
+            placeholder="Brand Name / Headline"
+            value={headline}
+            onChange={(e) => setHeadline(e.target.value)}
+            className="w-full"
+            style={tcgInputStyle}
+          />
+          <textarea
+            placeholder="What's meaningful about it?"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            className="w-full resize-none"
+            style={{ ...tcgInputStyle, height: "6rem" }}
+          />
+          <input
+            type="text"
+            placeholder="Link (optional)"
+            value={ctaUrl}
+            onChange={(e) => setCtaUrl(e.target.value)}
+            className="w-full"
+            style={tcgInputStyle}
+          />
+          <input
+            type="text"
+            placeholder="Tags (comma separated)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            className="w-full"
+            style={tcgInputStyle}
+          />
+        </>
+      )}
 
-      <button
-        type="button"
-        onClick={() => imageInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-      >
-        🖼 Add Image
-      </button>
-      <input
-        type="file"
-        accept="image/*"
-        ref={imageInputRef}
-        onChange={handleImageChange}
-        style={{ display: "none" }}
-      />
+      {/* IMAGE UPLOAD */}
+      {overlayType === "image" && (
+        <>
+          <button
+            type="button"
+            onClick={() => imageInputRef.current.click()}
+            className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+          >
+            🖼 Add Image
+          </button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={imageInputRef}
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+          />
+        </>
+      )}
 
-      <button
-        type="button"
-        onClick={() => videoInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-      >
-        🎬 Add Video
-      </button>
-      <input
-        type="file"
-        accept="video/*"
-        ref={videoInputRef}
-        onChange={handleVideoChange}
-        style={{ display: "none" }}
-      />
+      {/* VIDEO UPLOAD */}
+      {overlayType === "video" && (
+        <>
+          <button
+            type="button"
+            onClick={() => videoInputRef.current.click()}
+            className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+          >
+            🎬 Add Video
+          </button>
+          <input
+            type="file"
+            accept="video/*"
+            ref={videoInputRef}
+            onChange={handleVideoChange}
+            style={{ display: "none" }}
+          />
+        </>
+      )}
 
-      <button
-        onClick={handlePost}
-        className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md"
-      >
-        🚀 Post to {wallType.toUpperCase()} Wall
-      </button>
-
-      <div className="space-y-2">
-        <h3 className="text-cyan-300 font-semibold">
-          🌐 Submit a Social Link to SignalZ
-        </h3>
-        <input
-          type="text"
-          placeholder="Paste any video or social link"
-          value={linkInput}
-          onChange={(e) => setLinkInput(e.target.value)}
-          className="w-full"
-          style={tcgInputStyle}
-        />
+      {/* POST BUTTON */}
+      {overlayType !== "social" && (
         <button
-          onClick={handleSubmitLink}
-          className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
+          onClick={handlePost}
+          className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md"
         >
-          🔗 Submit Link
+          🚀 Post to {wallType.toUpperCase()} Wall
         </button>
-      </div>
+      )}
+
+      {/* SOCIAL LINK SUBMIT */}
+      {overlayType === "social" && (
+        <div className="space-y-2">
+          <h3 className="text-cyan-300 font-semibold">
+            🌐 Submit a Social Link to SignalZ
+          </h3>
+          <input
+            type="text"
+            placeholder="Paste any video or social link"
+            value={linkInput}
+            onChange={(e) => setLinkInput(e.target.value)}
+            className="w-full"
+            style={tcgInputStyle}
+          />
+          <button
+            onClick={handleSubmitLink}
+            className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
+          >
+            🔗 Submit Link
+          </button>
+        </div>
+      )}
     </div>
   );
 }
