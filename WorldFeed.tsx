@@ -249,7 +249,7 @@ const handleCloseOverlay = () => {
 
 
 
-/////////////////////////////////
+
       
 <div
   className="hide-scrollbar"
