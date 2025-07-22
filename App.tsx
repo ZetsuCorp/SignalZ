@@ -38,10 +38,10 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
-      {/* 🔹 Session Floating Tag */}
+      {/* 🔹 Session Floating ID */}
       <SessionContainer />
 
-      {/* 🔹 Sidebar with TCG Styling */}
+      {/* 🔹 Left Panel as Card */}
       <aside className="left-panel">
         <div
           className="tcg-post-card relative w-full rounded-2xl border border-cyan-600 shadow-lg text-center overflow-hidden"
@@ -50,32 +50,31 @@ export default function App() {
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            backdropFilter: "blur(6px)",
             padding: "1.5rem",
             color: "#00f0ff",
           }}
         >
-          {/* Top-left sigicon */}
-          <div className="absolute top-2 left-2 text-2xl z-10">
-            <img src={sessionIcon} alt="icon" className="w-10 h-10" />
+          {/* 🔹 Icon */}
+          <div className="absolute top-2 left-2 z-10">
+            <img src={sessionIcon} alt="sigicon" className="w-10 h-10" />
           </div>
 
-          {/* Display Name */}
-          <div className="border border-cyan-400 rounded-md px-2 py-1 text-xs font-bold mb-4 inline-block">
+          {/* 🔹 Name */}
+          <div className="border border-cyan-400 rounded px-3 py-1 text-sm font-bold mb-4 inline-block">
             {sessionDisplayName}
           </div>
 
-          {/* Form Inside Card */}
-          <div className="bg-[#00000088] rounded-lg p-3 shadow-inner space-y-3 backdrop-blur-sm border border-cyan-800">
+          {/* 🔹 Form */}
+          <div className="bg-[#000000aa] rounded-lg p-3 shadow-inner backdrop-blur-sm border border-cyan-800">
             <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
           </div>
 
-          {/* Footer and Options */}
+          {/* 🔹 Sidebar Footer */}
           <div className="mt-6 text-xs text-cyan-400 italic">
             Viewer Mode — Preview your card post in real-time
           </div>
 
-          <div className="mt-6 text-center space-y-2">
+          <div className="mt-4 text-center space-y-2">
             <h3 className="text-sm font-semibold">Signal Source</h3>
             <div className="source-pill mb-2">{wallType.toUpperCase()}</div>
             <p className="text-xs text-cyan-300">
@@ -103,7 +102,7 @@ export default function App() {
         </div>
       </aside>
 
-      {/* 🔹 Main Feed */}
+      {/* 🔹 Main Panel */}
       <main className="right-panel">
         <header className="text-center py-4 border-b border-cyan-800 relative">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
@@ -137,7 +136,7 @@ export default function App() {
         </div>
       </main>
 
-      {/* 🔹 Settings Panel */}
+      {/* 🔹 Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
