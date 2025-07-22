@@ -230,79 +230,82 @@ const handleCloseOverlay = () => {
     overflowY: "scroll",
   }}
 >
-  {/* 🔘 Floating CREATE Button + Dropdown */}
-  <div style={{
-    position: "fixed", // This keeps it pinned visually
+ {/* 🔘 Floating CREATE Button + Dropdown */}
+<div
+  style={{
+    position: "fixed",
     top: "1rem",
     left: "50%",
     transform: "translateX(-50%)",
     zIndex: 9999,
-  }}>
-    <button
-      onClick={() => setShowCreateMenu((prev) => !prev)}
-      style={{
-        background: "#00f0ff",
-        color: "#000",
-        padding: "8px 16px",
-        borderRadius: "999px",
-        fontWeight: "bold",
-        cursor: "pointer",
-        border: "none",
-        boxShadow: "0 0 10px #00f0ff88",
-      }}
-    >
-      ＋ Create
-    </button>
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "0.5rem",
+  }}
+>
+  <button
+    onClick={() => setShowCreateMenu((prev) => !prev)}
+    style={{
+      background: "#00f0ff",
+      color: "#000",
+      padding: "10px 24px",
+      borderRadius: "999px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      border: "none",
+      boxShadow: "0 0 15px #00f0ff88",
+      transition: "all 0.2s ease-in-out",
+    }}
+  >
+    ＋ Create
+  </button>
 
-    {showCreateMenu && (
-      <div style={{
-        marginTop: "0.5rem",
+  {showCreateMenu && (
+    <div
+      style={{
         background: "#111",
         border: "1px solid #00f0ff44",
-        borderRadius: "10px",
-        padding: "0.5rem",
+        borderRadius: "12px",
+        padding: "0.75rem",
         display: "flex",
         flexDirection: "column",
-        gap: "6px",
-        width: "200px",
-        textAlign: "left",
-      }}>
+        alignItems: "center",
+        gap: "10px",
+        width: "220px",
+        boxShadow: "0 0 12px #00f0ff33",
+        animation: "fadeIn 0.2s ease-in-out",
+      }}
+    >
+      {[
+        { label: "📷 Image Post", type: "image" },
+        { label: "🎬 Video Post", type: "video" },
+        { label: "🔗 Social Link", type: "link" },
+      ].map(({ label, type }) => (
         <button
-          onClick={() => handleCreate("image")}
+          key={type}
+          onClick={() => handleCreate(type)}
           style={{
+            width: "100%",
+            padding: "10px",
+            borderRadius: "8px",
+            border: "1px solid #00f0ff33",
+            background: "#181818",
             color: "#00f0ff",
-            background: "transparent",
-            border: "none",
+            fontWeight: "600",
             cursor: "pointer",
+            transition: "background 0.2s",
           }}
+          onMouseOver={(e) => (e.currentTarget.style.background = "#00f0ff22")}
+          onMouseOut={(e) => (e.currentTarget.style.background = "#181818")}
         >
-          📷 Image Post
+          {label}
         </button>
-        <button
-          onClick={() => handleCreate("video")}
-          style={{
-            color: "#00f0ff",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          🎬 Video Post
-        </button>
-        <button
-          onClick={() => handleCreate("link")}
-          style={{
-            color: "#00f0ff",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          🔗 Social Link
-        </button>
-      </div>
-    )}
-  </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
   {/* 🔁 Begin rendering posts */}
   {posts.map((post) => {
