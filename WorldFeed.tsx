@@ -240,7 +240,8 @@ const handleCloseOverlay = () => {
       </h2>
 
       {/* ✅ PostForm */}
-      <PostForm wallType={wallType} onMediaPreview={() => {}} />
+      <PostForm wallType={wallType} onMediaPreview={() => {}} createMode={createMode} />
+
     </div>
   </div>
 )}
