@@ -260,4 +260,8 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
   );
 }
 
-export default PostForm;
+function PostForm({ wallType, onMediaPreview, createMode }) {
+  // ...component logic here
+}
+
+export default PostForm; // ✅ semicolon here
