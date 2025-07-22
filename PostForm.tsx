@@ -8,13 +8,16 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
   const [caption, setCaption] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
   const [tags, setTags] = useState("");
+  const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
+  const [linkInput, setLinkInput] = useState("");
 
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [backgroundImage, setBackgroundImage] = useState("");
 
+  const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
   useEffect(() => {
@@ -29,6 +32,27 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
     setBackgroundImage(sessionStorage.getItem("session_bg") || "");
   }, []);
 
+  const tcgInputStyle = {
+    background: "rgba(0, 10, 20, 0.65)",
+    border: "1px solid #00f0ff44",
+    borderRadius: "10px",
+    color: "#e0fefe",
+    boxShadow: "inset 0 0 10px rgba(0, 255, 255, 0.1)",
+    backdropFilter: "blur(6px)",
+    padding: "12px 16px",
+    lineHeight: "1.4",
+    textAlign: "center",
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const previewUrl = URL.createObjectURL(file);
+      onMediaPreview?.("image", previewUrl);
+    }
+  };
+
   const handleVideoChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -36,6 +60,17 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
       const previewUrl = URL.createObjectURL(file);
       onMediaPreview?.("video", previewUrl);
     }
+  };
+
+  const uploadImage = async () => {
+    if (!image) return "";
+    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
+    const { error } = await supabase.storage.from("images").upload(filePath, image);
+    if (error) {
+      alert("Image upload failed");
+      return "";
+    }
+    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
@@ -51,6 +86,7 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
 
   const handlePost = async () => {
     if (!headline || !caption) return alert("Headline and caption required");
+    const imageUrl = await uploadImage();
     const videoUrl = await uploadVideo();
     await fetch("/.netlify/functions/create-posts", {
       method: "POST",
@@ -59,6 +95,7 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
         headline,
         caption,
         cta_url: ctaUrl,
+        image_url: imageUrl,
         video_url: videoUrl,
         tags: tags.split(",").map((t) => t.trim()),
         session_id: sessionId,
@@ -68,82 +105,87 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
         background: backgroundImage,
       }),
     });
-    setHeadline(""); setCaption(""); setCtaUrl(""); setTags(""); setVideo(null);
+    setHeadline(""); setCaption(""); setCtaUrl(""); setTags("");
+    setImage(null); setVideo(null);
     alert("Posted!");
   };
 
+  const handleSubmitLink = async () => {
+    if (!linkInput.trim()) return alert("Please enter a link");
+    try {
+      const domain = new URL(linkInput).hostname.replace("www.", "");
+      const background = backgroundImage || getBackgroundFromSession(sessionId);
+      const res = await fetch("/.netlify/functions/create-link-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: linkInput,
+          session_id: sessionId,
+          sigicon_url: sigIcon,
+          wall_type: wallType,
+          tags: ["link"],
+          link_title: "Shared via SignalZ",
+          link_image: null,
+          image_url: null,
+          video_url: null,
+          cta_link_url: domain,
+          background,
+        }),
+      });
+      if (!res.ok) throw new Error("Link submission failed");
+      setLinkInput("");
+      alert("Link submitted to SignalZ!");
+    } catch (err) {
+      console.error("Submit link error:", err);
+      alert("Invalid link or submission error");
+    }
+  };
+
   return (
-    <div
-      className="w-full max-w-sm p-4 rounded-xl border-4 border-cyan-400 shadow-xl mx-auto text-center space-y-4"
+    <div className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 space-y-4 relative text-center"
       style={{
-        backgroundImage: backgroundImage
-          ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
-          : undefined,
+        backgroundImage: backgroundImage ? `url(/postcard-assets/cardbase/${backgroundImage}.png)` : undefined,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backdropFilter: "blur(4px)",
         color: "#00f0ff",
-      }}
-    >
-      <div className="flex justify-between items-center text-xs">
-        <span className="font-mono">{sessionId}</span>
+      }}>
+
+      <div className="flex justify-between text-sm mb-2">
+        <span>{sessionId}</span>
         <span>{sigIcon}</span>
       </div>
 
-      <div className="border border-cyan-400 rounded p-1 font-bold">
+      <div className="border border-cyan-400 rounded-md p-1 font-bold mb-4">
         {displayName || "NAME PLATE"}
       </div>
 
-      <div
-        onClick={() => videoInputRef.current.click()}
-        className="border border-cyan-300 rounded-lg p-8 cursor-pointer hover:bg-cyan-900/10"
-      >
+      <div onClick={() => videoInputRef.current.click()} className="border border-cyan-300 rounded-lg py-8 mb-4 cursor-pointer hover:bg-cyan-900/10">
         {video ? "✅ Video Selected" : "🎬 Click to Add Video"}
-        <input
-          type="file"
-          accept="video/*"
-          ref={videoInputRef}
-          onChange={handleVideoChange}
-          style={{ display: "none" }}
-        />
       </div>
+      <input type="file" accept="video/*" ref={videoInputRef} onChange={handleVideoChange} style={{ display: "none" }} />
 
       <div className="border border-cyan-500 rounded p-3 space-y-2">
-        <input
-          type="text"
-          placeholder="Headline"
-          value={headline}
-          onChange={(e) => setHeadline(e.target.value)}
-          className="w-full bg-transparent border border-cyan-600 rounded p-2 text-center text-sm"
-        />
-        <textarea
-          placeholder="What's meaningful about it?"
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          className="w-full bg-transparent border border-cyan-600 rounded p-2 text-sm"
-        />
+        <input type="text" placeholder="Brand Name / Headline" value={headline} onChange={(e) => setHeadline(e.target.value)} className="w-full" style={tcgInputStyle} />
+        <textarea placeholder="What's meaningful about it?" value={caption} onChange={(e) => setCaption(e.target.value)} className="w-full resize-none" style={{ ...tcgInputStyle, height: "6rem" }} />
       </div>
 
-      <input
-        type="text"
-        placeholder="Link (optional)"
-        value={ctaUrl}
-        onChange={(e) => setCtaUrl(e.target.value)}
-        className="w-full bg-transparent border border-cyan-600 rounded p-2 text-sm"
-      />
-      <input
-        type="text"
-        placeholder="Tags (comma separated)"
-        value={tags}
-        onChange={(e) => setTags(e.target.value)}
-        className="w-full bg-transparent border border-cyan-600 rounded p-2 text-sm"
-      />
+      <input type="text" placeholder="Link (optional)" value={ctaUrl} onChange={(e) => setCtaUrl(e.target.value)} className="w-full" style={tcgInputStyle} />
+      <input type="text" placeholder="Tags (comma separated)" value={tags} onChange={(e) => setTags(e.target.value)} className="w-full" style={tcgInputStyle} />
 
-      <button
-        onClick={handlePost}
-        className="w-full bg-cyan-400 text-black font-bold rounded-lg py-2 hover:bg-cyan-300 transition"
-      >
-        🚀 Post
+      <button type="button" onClick={() => imageInputRef.current.click()} className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400">🖼 Add Image</button>
+      <input type="file" accept="image/*" ref={imageInputRef} onChange={handleImageChange} style={{ display: "none" }} />
+
+      <button onClick={handlePost} className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md">
+        🚀 Post to {wallType.toUpperCase()} Wall
       </button>
+
+      <div className="space-y-2">
+        <h3 className="text-cyan-300 font-semibold">🌐 Submit a Social Link to SignalZ</h3>
+        <input type="text" placeholder="Paste any video or social link" value={linkInput} onChange={(e) => setLinkInput(e.target.value)} className="w-full" style={tcgInputStyle} />
+        <button onClick={handleSubmitLink} className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400">🔗 Submit Link</button>
+      </div>
     </div>
   );
 }
