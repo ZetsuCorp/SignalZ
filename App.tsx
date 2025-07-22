@@ -8,12 +8,9 @@ export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(true);
-
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
-  const [overlayType, setOverlayType] = useState(null);
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
@@ -35,99 +32,78 @@ export default function App() {
     setEditorSrc(null);
   };
 
+  const sessionBg = sessionStorage.getItem("session_bg") || "test0";
+  const sessionIcon = sessionStorage.getItem("session_icon") || "/sigicons/ripple.gif";
+  const sessionDisplayName = sessionStorage.getItem("session_display_name") || "TCG NAME";
+
   return (
     <div className="app-wrapper">
-      {/* 🔹 Session ID Floating Overlay */}
+      {/* 🔹 Session Floating Tag */}
       <SessionContainer />
 
-      {/* 🔹 Toggle Button to Show Sidebar */}
-      {!showSidebar && (
-        <button
-          onClick={() => setShowSidebar(true)}
-          className="fixed top-4 left-4 z-50 bg-cyan-800 text-white px-3 py-1 rounded shadow-md"
+      {/* 🔹 Sidebar with TCG Styling */}
+      <aside className="left-panel">
+        <div
+          className="tcg-post-card relative w-full rounded-2xl border border-cyan-600 shadow-lg text-center overflow-hidden"
+          style={{
+            backgroundImage: `url(/postcard-assets/cardbase/${sessionBg}.png)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backdropFilter: "blur(6px)",
+            padding: "1.5rem",
+            color: "#00f0ff",
+          }}
         >
-          → Show Panel
-        </button>
-      )}
-
-      {/* 🔹 Sidebar Panel (Retractable, TCG Style) */}
-      {showSidebar && (
-        <aside className="left-panel">
-          <div
-            className="tcg-post-card relative w-full rounded-2xl border border-cyan-600 shadow-lg text-center overflow-hidden"
-            style={{
-              backgroundImage: `url(/postcard-assets/cardbase/${sessionStorage.getItem("session_bg")}.png)`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backdropFilter: "blur(6px)",
-              padding: "1.5rem",
-              color: "#00f0ff",
-            }}
-          >
-            {/* SigIcon Top Left */}
-            <div className="absolute top-2 left-2 text-2xl z-10">
-              {sessionStorage.getItem("session_icon") || "🌐"}
-            </div>
-
-            {/* Nameplate */}
-            <div className="border border-cyan-400 rounded-md px-2 py-1 text-xs font-bold mb-4 inline-block">
-              {sessionStorage.getItem("session_display_name") || "NAME PLATE"}
-            </div>
-
-            {/* Inner Content (PostForm) */}
-            <div className="bg-[#00000088] rounded-lg p-3 shadow-inner space-y-3 backdrop-blur-sm border border-cyan-800">
-              <PostForm
-                wallType={wallType}
-                onMediaPreview={handleMediaPreview}
-                overlayType={null}
-                closeOverlay={() => {}}
-              />
-            </div>
-
-            {/* Sidebar Footer */}
-            <div className="mt-4 text-xs text-cyan-400 italic">
-              Viewer Mode — Preview your card post in real-time
-            </div>
-
-            {/* Sidebar Control Links */}
-            <div className="mt-6 text-center space-y-2">
-              <h3 className="text-sm font-semibold">Signal Source</h3>
-              <div className="source-pill mb-2">{wallType.toUpperCase()}</div>
-              <p className="text-xs text-cyan-300">
-                Posts go to the selected wall.
-              </p>
-
-              <button
-                className="mt-4 text-sm text-cyan-200 hover:underline"
-                onClick={() => setShowSettings(true)}
-              >
-                ⚙️ Settings
-              </button>
-
-              <a href="/monetize" className="monetize-link mt-2 block">
-                💸 Open Monetization
-              </a>
-
-              <a
-                href="/jessica"
-                className="mt-2 block text-sm text-cyan-300 hover:underline"
-              >
-                🧠 Run Jessica AI
-              </a>
-
-              <button
-                onClick={() => setShowSidebar(false)}
-                className="mt-4 text-xs text-cyan-500 underline"
-              >
-                ← Hide Panel
-              </button>
-            </div>
+          {/* Top-left sigicon */}
+          <div className="absolute top-2 left-2 text-2xl z-10">
+            <img src={sessionIcon} alt="icon" className="w-10 h-10" />
           </div>
-        </aside>
-      )}
 
-      {/* 🔹 Main Feed Area */}
+          {/* Display Name */}
+          <div className="border border-cyan-400 rounded-md px-2 py-1 text-xs font-bold mb-4 inline-block">
+            {sessionDisplayName}
+          </div>
+
+          {/* Form Inside Card */}
+          <div className="bg-[#00000088] rounded-lg p-3 shadow-inner space-y-3 backdrop-blur-sm border border-cyan-800">
+            <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
+          </div>
+
+          {/* Footer and Options */}
+          <div className="mt-6 text-xs text-cyan-400 italic">
+            Viewer Mode — Preview your card post in real-time
+          </div>
+
+          <div className="mt-6 text-center space-y-2">
+            <h3 className="text-sm font-semibold">Signal Source</h3>
+            <div className="source-pill mb-2">{wallType.toUpperCase()}</div>
+            <p className="text-xs text-cyan-300">
+              Posts go to the selected wall.
+            </p>
+
+            <button
+              className="mt-4 text-sm text-cyan-200 hover:underline"
+              onClick={() => setShowSettings(true)}
+            >
+              ⚙️ Settings
+            </button>
+
+            <a href="/monetize" className="monetize-link mt-2 block">
+              💸 Open Monetization
+            </a>
+
+            <a
+              href="/jessica"
+              className="mt-2 block text-sm text-cyan-300 hover:underline"
+            >
+              🧠 Run Jessica AI
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      {/* 🔹 Main Feed */}
       <main className="right-panel">
         <header className="text-center py-4 border-b border-cyan-800 relative">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
@@ -161,7 +137,7 @@ export default function App() {
         </div>
       </main>
 
-      {/* 🔹 Settings Drawer */}
+      {/* 🔹 Settings Panel */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
@@ -180,7 +156,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 🔹 Media Overlay Editor */}
+      {/* 🔹 Media Editor */}
       {editorVisible && editorSrc && (
         <MediaEditor
           type={editorType}
@@ -188,18 +164,6 @@ export default function App() {
           onClose={() => setEditorVisible(false)}
           onConfirm={handleMediaConfirm}
         />
-      )}
-
-      {/* 🔹 PostForm Fullscreen Overlay (from Create Button) */}
-      {overlayType && (
-        <div className="postform-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-[999999] flex justify-center items-center">
-          <PostForm
-            wallType={wallType}
-            overlayType={overlayType}
-            closeOverlay={() => setOverlayType(null)}
-            onMediaPreview={handleMediaPreview}
-          />
-        </div>
       )}
     </div>
   );
