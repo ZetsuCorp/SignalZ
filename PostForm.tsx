@@ -142,31 +142,23 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
   };
 
   return (
-    <div
-      className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 space-y-4 relative text-center"
-      style={{
-        backgroundImage: backgroundImage
-          ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
-          : undefined,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backdropFilter: "blur(4px)",
-        color: "#00f0ff",
-      }}
-    >
-      <button
-        onClick={closeOverlay}
-        className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
-      >
-        ✖
-      </button>
+    <div className="space-y-4 text-center">
+      {overlayType && (
+        <button
+          onClick={closeOverlay}
+          className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
+        >
+          ✖
+        </button>
+      )}
 
-      <h2 className="text-lg font-bold text-cyan-300">
-        {overlayType === "image" && "🖼 Create Image Post"}
-        {overlayType === "video" && "🎬 Create Video Post"}
-        {overlayType === "social" && "🌐 Share Social Link"}
-      </h2>
+      {overlayType && (
+        <h2 className="text-lg font-bold text-cyan-300 mb-2">
+          {overlayType === "image" && "🖼 Create Image Post"}
+          {overlayType === "video" && "🎬 Create Video Post"}
+          {overlayType === "social" && "🌐 Share Social Link"}
+        </h2>
+      )}
 
       <input
         type="text"
