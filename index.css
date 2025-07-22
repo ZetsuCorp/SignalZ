@@ -225,7 +225,6 @@ button.submit:hover {
 /* === POST CARD === */
 .post {
   background: url('/postcard-assets/cardbase/test0.png');
-
   border: 1px solid #00f0ff22;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
   padding: 20px;
@@ -385,8 +384,6 @@ video.auto-pause {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
-/*//////////////////////////////////////////////
-/* === SESSION ID CONTAINER === */
 
 /* === SESSION ID CONTAINER === */
 .session-container {
@@ -394,32 +391,21 @@ video.auto-pause {
   top: 12px;
   right: 12px;
   z-index: 9999;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   width: 360px;
   max-width: 90vw;
   padding: 12px 16px;
-
   background-color: rgba(15, 15, 15, 0.92);
   border: 1px solid #00f0ff33;
   border-radius: 10px;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
   backdrop-filter: blur(6px);
-
   font-size: 15px;
   font-weight: bold;
   color: var(--text-dark);
 }
-
-/*floating create button*/
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 
 /* === MOBILE RESPONSIVE === */
 @media (max-width: 768px) {
@@ -463,11 +449,18 @@ video.auto-pause {
   }
 
   .session-container {
-    width: 92vw;
+    width: auto;
+    max-width: 92vw;
     top: 8px;
-    right: 4%;
+    right: 12px;
+    left: auto;
+    transform: none;
     font-size: 13px;
-    padding: 10px;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+    text-align: right;
   }
 
   .feed-scroll {
@@ -479,4 +472,3 @@ video.auto-pause {
     padding: 16px;
   }
 }
-
