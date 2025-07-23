@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import NewsFeed from "./NewsFeed";
 import ChumFeedPanel from "./src/ChumFeedPanel";
 import PostForm from "./PostForm"; // ✅ keep using your working form
+import CreatePostShell from "./CreatePostShell";
+
 
 /////////////////////////////////////////////////////
 // ✅ Helpers
@@ -233,16 +235,16 @@ const handleCloseOverlay = () => {
  
   
   
-  {/* 🔘 Floating CREATE Button + Dropdown */}
+  {/* 🚀 Floating CREATE Button + Mode Selector */}
 <div
   style={{
     position: "fixed",
     bottom: "1.5rem",
-    left: "1.5rem", // ✅ Switched from right to left
+    left: "1.5rem",
     zIndex: 99999,
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start", // ✅ Adjusted for left-side alignment
+    alignItems: "flex-start",
     gap: "0.75rem",
   }}
 >
@@ -290,7 +292,11 @@ const handleCloseOverlay = () => {
       ].map(({ label, icon, type }) => (
         <button
           key={type}
-          onClick={() => handleCreate(type)}
+          onClick={() => {
+            setCreateMode(type);
+            setShowCreateOverlay(true);
+            setShowCreateMenu(false);
+          }}
           style={{
             width: "100%",
             padding: "10px 12px",
