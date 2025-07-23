@@ -11,6 +11,7 @@ export default function App() {
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
+  const [sessionDisplayName, setSessionDisplayName] = useState("");
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
@@ -34,12 +35,11 @@ export default function App() {
 
   const sessionBg = sessionStorage.getItem("session_bg") || "test0";
   const sessionIcon = sessionStorage.getItem("session_icon") || "/sigicons/ripple.gif";
-  const sessionDisplayName = sessionStorage.getItem("session_display_name") || "TCG NAME";
 
   return (
     <div className="app-wrapper">
       {/* 🔹 Session Floating ID */}
-      <SessionContainer />
+      <SessionContainer onNameGenerated={setSessionDisplayName} />
 
       {/* 🔹 Left Panel as Card */}
       <aside className="left-panel">
@@ -61,7 +61,7 @@ export default function App() {
 
           {/* 🔹 Name */}
           <div className="border border-cyan-400 rounded px-3 py-1 text-sm font-bold mb-4 inline-block">
-            {sessionDisplayName}
+            {sessionDisplayName || "Loading..."}
           </div>
 
           {/* 🔹 Form */}
