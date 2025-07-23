@@ -142,56 +142,31 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
   };
 
   return (
-    <div className="space-y-4 text-center relative">
-      {overlayType && (
-        <button
-          onClick={closeOverlay}
-          className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
-        >
-          ✖
-        </button>
-      )}
-
-      {overlayType && (
-        <h2 className="text-lg font-bold text-cyan-300 mb-2">
-          {overlayType === "image" && "🖼 Create Image Post"}
-          {overlayType === "video" && "🎬 Create Video Post"}
-          {overlayType === "social" && "🌐 Share Social Link"}
-        </h2>
-      )}
-
-      {/* 📦 TCG Media Slot */}
-      <div
-        className="w-full h-48 rounded-xl border border-cyan-500 bg-[#00182099] hover:bg-cyan-900/10 flex items-center justify-center text-cyan-400 text-sm cursor-pointer transition"
-        onClick={() => {
-          if (!image && !video) {
-            imageInputRef.current.click();
-          } else if (image) {
-            imageInputRef.current.click();
-          } else {
-            videoInputRef.current.click();
-          }
-        }}
+    <div
+      className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 space-y-4 relative text-center"
+      style={{
+        backgroundImage: backgroundImage
+          ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
+          : undefined,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backdropFilter: "blur(4px)",
+        color: "#00f0ff",
+      }}
+    >
+      <button
+        onClick={closeOverlay}
+        className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
       >
-        {image && (
-          <img
-            src={URL.createObjectURL(image)}
-            alt="Selected"
-            className="object-contain max-h-full rounded"
-          />
-        )}
-        {video && (
-          <video
-            src={URL.createObjectURL(video)}
-            className="object-contain max-h-full rounded"
-            controls
-          />
-        )}
-        {!image && !video && <span>🖼 Click to Add Media</span>}
-      </div>
+        ✖
+      </button>
 
-      <input type="file" accept="image/*" ref={imageInputRef} onChange={handleImageChange} style={{ display: "none" }} />
-      <input type="file" accept="video/*" ref={videoInputRef} onChange={handleVideoChange} style={{ display: "none" }} />
+      <h2 className="text-lg font-bold text-cyan-300">
+        {overlayType === "image" && "🖼 Create Image Post"}
+        {overlayType === "video" && "🎬 Create Video Post"}
+        {overlayType === "social" && "🌐 Share Social Link"}
+      </h2>
 
       <input
         type="text"
@@ -223,6 +198,36 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
         onChange={(e) => setTags(e.target.value)}
         className="w-full"
         style={tcgInputStyle}
+      />
+
+      <button
+        type="button"
+        onClick={() => imageInputRef.current.click()}
+        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+      >
+        🖼 Add Image
+      </button>
+      <input
+        type="file"
+        accept="image/*"
+        ref={imageInputRef}
+        onChange={handleImageChange}
+        style={{ display: "none" }}
+      />
+
+      <button
+        type="button"
+        onClick={() => videoInputRef.current.click()}
+        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+      >
+        🎬 Add Video
+      </button>
+      <input
+        type="file"
+        accept="video/*"
+        ref={videoInputRef}
+        onChange={handleVideoChange}
+        style={{ display: "none" }}
       />
 
       <button
