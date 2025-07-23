@@ -4,7 +4,6 @@ import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
 
 export default function App() {
-  const [dropOpen, setDropOpen] = useState(false); // ▼ toggle
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -34,28 +33,11 @@ export default function App() {
   };
 
   return (
-    <div className="app-wrapper relative w-full h-full overflow-hidden">
-
-      {/* ✅ FLOATING DROP-DOWN ARROW BUTTON */}
-      <button
-        onClick={() => setDropOpen(!dropOpen)}
-        className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-cyan-600 hover:bg-cyan-400 text-white px-4 py-2 rounded-full shadow-md"
-      >
-        {dropOpen ? "▲" : "▼"}
-      </button>
-
-      {/* ✅ DROP-DOWN CONTAINER (TOP ONLY) */}
-      <div
-        className={`fixed top-0 left-0 w-full z-40 bg-[#111] text-white border-b border-cyan-500 transition-all duration-300 overflow-hidden ${
-          dropOpen ? "h-28" : "h-0"
-        }`}
-      >
-        <div className="p-4 text-center">🔲 POSTCARD VIEWER SLOT</div>
-      </div>
-
-      {/* MAIN SIGNALZ CONTENT */}
+    <div className="app-wrapper">
+      {/* 🔹 Session ID Floating Overlay */}
       <SessionContainer />
 
+      {/* 🔹 Main Feed Area */}
       <main className="right-panel">
         <header className="text-center py-4 border-b border-cyan-800 relative">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
@@ -77,7 +59,7 @@ export default function App() {
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={`tab ${wallType === id ? "active" : ""}`}
+              className={tab ${wallType === id ? "active" : ""}}
             >
               {id.toUpperCase()}
             </button>
@@ -89,6 +71,7 @@ export default function App() {
         </div>
       </main>
 
+      {/* 🔹 Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
@@ -107,6 +90,7 @@ export default function App() {
         </div>
       )}
 
+      {/* 🔹 Media Overlay Editor */}
       {editorVisible && editorSrc && (
         <MediaEditor
           type={editorType}
