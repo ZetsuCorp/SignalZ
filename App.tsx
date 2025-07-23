@@ -8,6 +8,7 @@ export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
@@ -32,77 +33,41 @@ export default function App() {
     setEditorSrc(null);
   };
 
-  const sessionBg = sessionStorage.getItem("session_bg") || "test0";
-  const sessionIcon = sessionStorage.getItem("session_icon") || "/sigicons/ripple.gif";
-  const sessionDisplayName = sessionStorage.getItem("session_display_name") || "TCG NAME";
-
   return (
     <div className="app-wrapper">
-      {/* 🔹 Session Floating ID */}
+      {/* 🔹 Session ID Floating Overlay */}
       <SessionContainer />
 
-      {/* 🔹 Left Panel as Card */}
+      {/* 🔹 Sidebar Panel */}
       <aside className="left-panel">
-        <div
-          className="tcg-post-card relative w-full rounded-2xl border border-cyan-600 shadow-lg text-center overflow-hidden"
-          style={{
-            backgroundImage: url(/postcard-assets/cardbase/${sessionBg}.png),
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            padding: "1.5rem",
-            color: "#00f0ff",
-          }}
-        >
-          {/* 🔹 Icon */}
-          <div className="absolute top-2 left-2 z-10">
-            <img src={sessionIcon} alt="sigicon" className="w-10 h-10" />
-          </div>
-
-          {/* 🔹 Name */}
-          <div className="border border-cyan-400 rounded px-3 py-1 text-sm font-bold mb-4 inline-block">
-            {sessionDisplayName}
-          </div>
-
-          {/* 🔹 Form */}
-          <div className="bg-[#000000aa] rounded-lg p-3 shadow-inner backdrop-blur-sm border border-cyan-800">
-            <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
-          </div>
-
-          {/* 🔹 Sidebar Footer */}
-          <div className="mt-6 text-xs text-cyan-400 italic">
-            Viewer Mode — Preview your card post in real-time
-          </div>
-
-          <div className="mt-4 text-center space-y-2">
+        <div className="sidebar-content">
+          <h2 className="sidebar-title">Create</h2>
+          <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
+          <div className="mt-6">
             <h3 className="text-sm font-semibold">Signal Source</h3>
             <div className="source-pill mb-2">{wallType.toUpperCase()}</div>
             <p className="text-xs text-cyan-300">
               Posts go to the selected wall.
             </p>
-
-            <button
-              className="mt-4 text-sm text-cyan-200 hover:underline"
-              onClick={() => setShowSettings(true)}
-            >
-              ⚙️ Settings
-            </button>
-
-            <a href="/monetize" className="monetize-link mt-2 block">
-              💸 Open Monetization
-            </a>
-
-            <a
-              href="/jessica"
-              className="mt-2 block text-sm text-cyan-300 hover:underline"
-            >
-              🧠 Run Jessica AI
-            </a>
           </div>
+          <button
+            className="mt-4 text-sm text-cyan-200 hover:underline"
+            onClick={() => setShowSettings(true)}
+          >
+            ⚙️ Settings
+          </button>
+
+          <a href="/monetize" className="monetize-link mt-4 block">
+            💸 Open Monetization
+          </a>
+
+          <a href="/jessica" className="mt-2 block text-sm text-cyan-300 hover:underline">
+            🧠 Run Jessica AI
+          </a>
         </div>
       </aside>
 
-      {/* 🔹 Main Panel */}
+      {/* 🔹 Main Feed Area */}
       <main className="right-panel">
         <header className="text-center py-4 border-b border-cyan-800 relative">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
@@ -124,7 +89,7 @@ export default function App() {
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={tab ${wallType === id ? "active" : ""}}
+              className={`tab ${wallType === id ? "active" : ""}`}
             >
               {id.toUpperCase()}
             </button>
@@ -155,7 +120,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 🔹 Media Editor */}
+      {/* 🔹 Media Overlay Editor */}
       {editorVisible && editorSrc && (
         <MediaEditor
           type={editorType}
