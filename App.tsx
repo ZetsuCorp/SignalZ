@@ -4,6 +4,7 @@ import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
 
 export default function App() {
+  const [dropOpen, setDropOpen] = useState(false); // ▼ toggle
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -11,8 +12,6 @@ export default function App() {
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
-
-  const [dropOpen, setDropOpen] = useState(false); // 🔽 Drop-down toggle
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
@@ -37,28 +36,26 @@ export default function App() {
   return (
     <div className="app-wrapper relative w-full h-full overflow-hidden">
 
-      {/* 🔽 Floating Drop-Down Toggle Button */}
+      {/* ✅ FLOATING DROP-DOWN ARROW BUTTON */}
       <button
         onClick={() => setDropOpen(!dropOpen)}
-        className="absolute top-2 left-1/2 transform -translate-x-1/2 z-50 bg-cyan-600 hover:bg-cyan-400 text-white p-2 rounded-full shadow-md transition-all"
+        className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-cyan-600 hover:bg-cyan-400 text-white px-4 py-2 rounded-full shadow-md"
       >
         {dropOpen ? "▲" : "▼"}
       </button>
 
-      {/* 📥 Drop-Down Viewer Panel */}
+      {/* ✅ DROP-DOWN CONTAINER (TOP ONLY) */}
       <div
-        className={`absolute top-0 left-0 w-full z-40 bg-[#111] border-b-2 border-cyan-500 shadow-lg transition-transform duration-300 ${
-          dropOpen ? "translate-y-0" : "-translate-y-full"
+        className={`fixed top-0 left-0 w-full z-40 bg-[#111] text-white border-b border-cyan-500 transition-all duration-300 overflow-hidden ${
+          dropOpen ? "h-28" : "h-0"
         }`}
-        style={{ height: "300px", overflow: "auto" }}
       >
-        <div className="p-6 text-center text-white">🔲 Postcard Viewer Area</div>
+        <div className="p-4 text-center">🔲 POSTCARD VIEWER SLOT</div>
       </div>
 
-      {/* 🔹 Session ID Floating Overlay */}
+      {/* MAIN SIGNALZ CONTENT */}
       <SessionContainer />
 
-      {/* 🔹 Main Feed Area */}
       <main className="right-panel">
         <header className="text-center py-4 border-b border-cyan-800 relative">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
@@ -92,7 +89,6 @@ export default function App() {
         </div>
       </main>
 
-      {/* 🔹 Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
@@ -111,7 +107,6 @@ export default function App() {
         </div>
       )}
 
-      {/* 🔹 Media Overlay Editor */}
       {editorVisible && editorSrc && (
         <MediaEditor
           type={editorType}
