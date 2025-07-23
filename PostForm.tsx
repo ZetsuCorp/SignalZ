@@ -1,39 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect, useState } from "react";
 
-function PostForm() {
-  const [headline, setHeadline] = useState("");
-  const [caption, setCaption] = useState("");
-  const [ctaUrl, setCtaUrl] = useState("");
-  const [tags, setTags] = useState("");
+function PostcardViewer() {
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [backgroundImage, setBackgroundImage] = useState("");
 
   useEffect(() => {
-    let existing = localStorage.getItem("session_id");
-    if (!existing) {
-      existing = uuidv4();
-      localStorage.setItem("session_id", existing);
-    }
-    setSessionId(existing);
+    setSessionId(localStorage.getItem("session_id") || "");
     setSigIcon(sessionStorage.getItem("session_icon") || "");
     setDisplayName(sessionStorage.getItem("session_display_name") || "");
     setBackgroundImage(sessionStorage.getItem("session_bg") || "");
   }, []);
-
-  const tcgInputStyle = {
-    background: "rgba(0, 10, 20, 0.65)",
-    border: "1px solid #00f0ff44",
-    borderRadius: "10px",
-    color: "#e0fefe",
-    boxShadow: "inset 0 0 10px rgba(0, 255, 255, 0.1)",
-    backdropFilter: "blur(6px)",
-    padding: "12px 16px",
-    lineHeight: "1.4",
-    textAlign: "center",
-  };
 
   return (
     <div
@@ -49,44 +27,48 @@ function PostForm() {
         color: "#00f0ff",
       }}
     >
-      <div className="text-cyan-300 text-sm font-mono tracking-wide">{sessionId}</div>
-      <div className="text-2xl font-bold">{sigIcon} {displayName}</div>
+      {/* 🔰 Header */}
+      <h2 className="text-2xl font-bold">{displayName || "Jessica AI"}</h2>
+      <p className="text-cyan-200">📛 — Jessica on scene at News</p>
+      <p className="text-sm text-cyan-300">📂 Type — SIGZICON</p>
+      <p className="text-lg">{sigIcon || "🔰"}</p>
 
-      <input
-        type="text"
-        placeholder="Post Title"
-        value={headline}
-        onChange={(e) => setHeadline(e.target.value)}
-        style={tcgInputStyle}
-        className="w-full"
-      />
-      <textarea
-        placeholder="What do you want to say?"
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        style={{ ...tcgInputStyle, height: "6rem" }}
-        className="w-full resize-none"
-      />
-      <input
-        type="text"
-        placeholder="Optional Link"
-        value={ctaUrl}
-        onChange={(e) => setCtaUrl(e.target.value)}
-        style={tcgInputStyle}
-        className="w-full"
-      />
-      <input
-        type="text"
-        placeholder="Tags (comma-separated)"
-        value={tags}
-        onChange={(e) => setTags(e.target.value)}
-        style={tcgInputStyle}
-        className="w-full"
-      />
+      {/* 🖼 Image Preview Box */}
+      <div
+        className="w-full h-64 border border-cyan-400 rounded-lg flex items-center justify-center bg-black bg-opacity-30 cursor-pointer hover:bg-opacity-50"
+        style={{ boxShadow: "inset 0 0 10px #00f0ff44" }}
+      >
+        <p className="text-cyan-200">Click to add image</p>
+      </div>
 
-      <div className="text-sm text-cyan-400 italic pt-4">This is a static post preview. No uploads or backend actions.</div>
+      {/* 📝 Description Box */}
+      <div className="text-left p-4 rounded bg-black bg-opacity-30 space-y-2">
+        <h3 className="font-semibold text-cyan-300">
+          — Jessica on scene at News
+        </h3>
+        <p className="text-sm text-cyan-100 italic">
+          2 days ago ... July 20, 2025 / 12:33 PM EDT / CBS News ...
+        </p>
+        <p className="text-xs text-cyan-400">
+          Get browser notifications for breaking news, live events, and
+          exclusive reporting.
+        </p>
+      </div>
+
+      {/* 🕓 Timestamp + CTA */}
+      <div className="flex justify-between text-sm text-cyan-400">
+        <p>7/22/2025, 4:25:55 PM</p>
+        <p>CTA: <span className="italic text-cyan-100">[Empty]</span></p>
+      </div>
+
+      {/* ❤️ Stats */}
+      <div className="flex justify-around text-sm text-cyan-300 border-t border-cyan-700 pt-2">
+        <span>❤️ Likes: 0</span>
+        <span>💬 Comments: 0</span>
+        <span>👁️ Views and Shares</span>
+      </div>
     </div>
   );
 }
 
-export default PostForm;
+export default PostcardViewer;
