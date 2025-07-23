@@ -3,6 +3,8 @@ import NewsFeed from "./NewsFeed";
 import ChumFeedPanel from "./src/ChumFeedPanel";
 import PostForm from "./PostForm"; // ✅ keep using your working form
 import CreatePostShell from "./CreatePostShell";
+import PostcardViewer from "./tcg-template/PostcardViewer";
+
 
 
 /////////////////////////////////////////////////////
@@ -173,30 +175,15 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 /////////////////////////////////////////////////////////////////
   return (
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
-      <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
-        <ChumFeedPanel />
-      </div>
+  <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
+    <PostcardViewer />
+    <ChumFeedPanel />
+  </div>
+  ...
+</div>
 
-      {/* 🚪 Postcard Viewer Button */}
-<button
-  onClick={() => setShowPostcardViewer((prev) => !prev)}
-  style={{
-    background: "linear-gradient(135deg, #00f0ff, #007f7f)",
-    color: "#000",
-    padding: "12px",
-    borderRadius: "50%",
-    fontWeight: "bold",
-    cursor: "pointer",
-    border: "none",
-    boxShadow: "0 0 15px #00f0ff88",
-    backdropFilter: "blur(6px)",
-    WebkitBackdropFilter: "blur(6px)",
-    transition: "all 0.2s ease-in-out",
-  }}
->
-  {showPostcardViewer ? "➡" : "⬅"}
-</button>
 
+    
       
 {showCreateOverlay && (
   <div
