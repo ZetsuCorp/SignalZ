@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
 import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
@@ -37,35 +36,6 @@ export default function App() {
     <div className="app-wrapper">
       {/* 🔹 Session ID Floating Overlay */}
       <SessionContainer />
-
-      {/* 🔹 Sidebar Panel */}
-      <aside className="left-panel">
-        <div className="sidebar-content">
-          <h2 className="sidebar-title">Create</h2>
-          <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
-          <div className="mt-6">
-            <h3 className="text-sm font-semibold">Signal Source</h3>
-            <div className="source-pill mb-2">{wallType.toUpperCase()}</div>
-            <p className="text-xs text-cyan-300">
-              Posts go to the selected wall.
-            </p>
-          </div>
-          <button
-            className="mt-4 text-sm text-cyan-200 hover:underline"
-            onClick={() => setShowSettings(true)}
-          >
-            ⚙️ Settings
-          </button>
-
-          <a href="/monetize" className="monetize-link mt-4 block">
-            💸 Open Monetization
-          </a>
-
-          <a href="/jessica" className="mt-2 block text-sm text-cyan-300 hover:underline">
-            🧠 Run Jessica AI
-          </a>
-        </div>
-      </aside>
 
       {/* 🔹 Main Feed Area */}
       <main className="right-panel">
