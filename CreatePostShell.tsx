@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
 import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
 
-export default function CreatePostShell({ mode, onClose }) {
+export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview }) {
   const [headline, setHeadline] = useState("");
   const [caption, setCaption] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
@@ -50,6 +50,7 @@ export default function CreatePostShell({ mode, onClose }) {
     if (file) {
       setImage(file);
       const previewUrl = URL.createObjectURL(file);
+      onMediaPreview?.("image", previewUrl);
     }
   };
 
@@ -58,6 +59,7 @@ export default function CreatePostShell({ mode, onClose }) {
     if (file) {
       setVideo(file);
       const previewUrl = URL.createObjectURL(file);
+      onMediaPreview?.("video", previewUrl);
     }
   };
 
@@ -100,14 +102,13 @@ export default function CreatePostShell({ mode, onClose }) {
         session_id: sessionId,
         sigicon_url: sigIcon,
         display_name: displayName,
-        wall_type: "main",
+        wall_type: wallType,
         background: backgroundImage,
       }),
     });
     setHeadline(""); setCaption(""); setCtaUrl(""); setTags("");
     setImage(null); setVideo(null);
     alert("Posted!");
-    onClose();
   };
 
   const handleSubmitLink = async () => {
@@ -122,7 +123,7 @@ export default function CreatePostShell({ mode, onClose }) {
           url: linkInput,
           session_id: sessionId,
           sigicon_url: sigIcon,
-          wall_type: "main",
+          wall_type: wallType,
           tags: ["link"],
           link_title: "Shared via SignalZ",
           link_image: null,
@@ -135,7 +136,6 @@ export default function CreatePostShell({ mode, onClose }) {
       if (!res.ok) throw new Error("Link submission failed");
       setLinkInput("");
       alert("Link submitted to SignalZ!");
-      onClose();
     } catch (err) {
       console.error("Submit link error:", err);
       alert("Invalid link or submission error");
@@ -144,12 +144,12 @@ export default function CreatePostShell({ mode, onClose }) {
 
   const modeLabel =
     mode === "image"
-      ? "📷 Image Post"
+      ? "🖼 Create Image Post"
       : mode === "video"
-      ? "🎬 Video Post"
+      ? "🎬 Create Video Post"
       : mode === "link"
-      ? "🔗 Social Link"
-      : "📝 New Post";
+      ? "🌐 Share Social Link"
+      : "📝 Create New Post";
 
   return (
     <div className="fixed inset-0 z-[99999] bg-black bg-opacity-80 flex items-center justify-center p-4">
@@ -241,7 +241,7 @@ export default function CreatePostShell({ mode, onClose }) {
           onClick={handlePost}
           className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md"
         >
-          🚀 Post to MAIN Wall
+          🚀 Post to {wallType.toUpperCase()} Wall
         </button>
 
         <div className="space-y-2">
@@ -267,5 +267,3 @@ export default function CreatePostShell({ mode, onClose }) {
     </div>
   );
 }
-
-
