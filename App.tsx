@@ -12,6 +12,8 @@ export default function App() {
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
 
+  const [dropOpen, setDropOpen] = useState(false); // 🔽 Drop-down toggle
+
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
   }, [isDarkMode]);
@@ -33,7 +35,26 @@ export default function App() {
   };
 
   return (
-    <div className="app-wrapper">
+    <div className="app-wrapper relative w-full h-full overflow-hidden">
+
+      {/* 🔽 Floating Drop-Down Toggle Button */}
+      <button
+        onClick={() => setDropOpen(!dropOpen)}
+        className="absolute top-2 left-1/2 transform -translate-x-1/2 z-50 bg-cyan-600 hover:bg-cyan-400 text-white p-2 rounded-full shadow-md transition-all"
+      >
+        {dropOpen ? "▲" : "▼"}
+      </button>
+
+      {/* 📥 Drop-Down Viewer Panel */}
+      <div
+        className={`absolute top-0 left-0 w-full z-40 bg-[#111] border-b-2 border-cyan-500 shadow-lg transition-transform duration-300 ${
+          dropOpen ? "translate-y-0" : "-translate-y-full"
+        }`}
+        style={{ height: "300px", overflow: "auto" }}
+      >
+        <div className="p-6 text-center text-white">🔲 Postcard Viewer Area</div>
+      </div>
+
       {/* 🔹 Session ID Floating Overlay */}
       <SessionContainer />
 
