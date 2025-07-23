@@ -1,23 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
 
-export default function CreatePostShell({ mode, onClose }) {
+function PostForm() {
   const [headline, setHeadline] = useState("");
   const [caption, setCaption] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
   const [tags, setTags] = useState("");
-  const [image, setImage] = useState(null);
-  const [video, setVideo] = useState(null);
-  const [linkInput, setLinkInput] = useState("");
-
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [backgroundImage, setBackgroundImage] = useState("");
-
-  const imageInputRef = useRef(null);
-  const videoInputRef = useRef(null);
 
   useEffect(() => {
     let existing = localStorage.getItem("session_id");
@@ -43,19 +35,9 @@ export default function CreatePostShell({ mode, onClose }) {
     textAlign: "center",
   };
 
-  const modeLabel =
-    mode === "image"
-      ? "📷 Image Post"
-      : mode === "video"
-      ? "🎬 Video Post"
-      : mode === "link"
-      ? "🔗 Social Link"
-      : "📝 New Post";
-
- return (
-  <div className="fixed inset-0 z-[99999] bg-black bg-opacity-80 flex items-center justify-center p-4">
+  return (
     <div
-      className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 relative"
+      className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 space-y-4 relative text-center"
       style={{
         backgroundImage: backgroundImage
           ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
@@ -64,15 +46,47 @@ export default function CreatePostShell({ mode, onClose }) {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backdropFilter: "blur(4px)",
+        color: "#00f0ff",
       }}
     >
-      <button
-        onClick={onClose}
-        className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
-      >
-        ✖
-      </button>
-    </div>
-  </div>
-);
+      <div className="text-cyan-300 text-sm font-mono tracking-wide">{sessionId}</div>
+      <div className="text-2xl font-bold">{sigIcon} {displayName}</div>
 
+      <input
+        type="text"
+        placeholder="Post Title"
+        value={headline}
+        onChange={(e) => setHeadline(e.target.value)}
+        style={tcgInputStyle}
+        className="w-full"
+      />
+      <textarea
+        placeholder="What do you want to say?"
+        value={caption}
+        onChange={(e) => setCaption(e.target.value)}
+        style={{ ...tcgInputStyle, height: "6rem" }}
+        className="w-full resize-none"
+      />
+      <input
+        type="text"
+        placeholder="Optional Link"
+        value={ctaUrl}
+        onChange={(e) => setCtaUrl(e.target.value)}
+        style={tcgInputStyle}
+        className="w-full"
+      />
+      <input
+        type="text"
+        placeholder="Tags (comma-separated)"
+        value={tags}
+        onChange={(e) => setTags(e.target.value)}
+        style={tcgInputStyle}
+        className="w-full"
+      />
+
+      <div className="text-sm text-cyan-400 italic pt-4">This is a static post preview. No uploads or backend actions.</div>
+    </div>
+  );
+}
+
+export default PostForm;
