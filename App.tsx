@@ -11,7 +11,6 @@ export default function App() {
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
-  const [sessionDisplayName, setSessionDisplayName] = useState("");
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
@@ -35,18 +34,19 @@ export default function App() {
 
   const sessionBg = sessionStorage.getItem("session_bg") || "test0";
   const sessionIcon = sessionStorage.getItem("session_icon") || "/sigicons/ripple.gif";
+  const sessionDisplayName = sessionStorage.getItem("session_display_name") || "TCG NAME";
 
   return (
     <div className="app-wrapper">
       {/* 🔹 Session Floating ID */}
-      <SessionContainer onNameGenerated={setSessionDisplayName} />
+      <SessionContainer />
 
       {/* 🔹 Left Panel as Card */}
       <aside className="left-panel">
         <div
           className="tcg-post-card relative w-full rounded-2xl border border-cyan-600 shadow-lg text-center overflow-hidden"
           style={{
-            backgroundImage: `url(/postcard-assets/cardbase/${sessionBg}.png)`,
+            backgroundImage: url(/postcard-assets/cardbase/${sessionBg}.png),
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -61,7 +61,7 @@ export default function App() {
 
           {/* 🔹 Name */}
           <div className="border border-cyan-400 rounded px-3 py-1 text-sm font-bold mb-4 inline-block">
-            {sessionDisplayName || "Loading..."}
+            {sessionDisplayName}
           </div>
 
           {/* 🔹 Form */}
@@ -124,7 +124,7 @@ export default function App() {
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={`tab ${wallType === id ? "active" : ""}`}
+              className={tab ${wallType === id ? "active" : ""}}
             >
               {id.toUpperCase()}
             </button>
