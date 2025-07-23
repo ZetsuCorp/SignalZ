@@ -179,8 +179,6 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     <PostcardViewer />
     <ChumFeedPanel />
   </div>
-  ...
-</div>
 
 
     
