@@ -227,7 +227,7 @@ button.submit:hover {
 .post {
   background: url('/postcard-assets/cardbase/test0.png');
 
-  border: 1px solid #00f0ff22;
+  border: 5px solid #00f0ff22;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
   padding: 20px;
   border-radius: 10px;
