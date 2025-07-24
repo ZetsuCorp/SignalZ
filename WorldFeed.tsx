@@ -206,7 +206,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
         padding: "2rem",
         borderRadius: "16px",
         background: "linear-gradient(145deg, #0d0d0d, #060c0d)",
-        border: "2px solid rgba(0, 255, 255, 0.4)",
+        border: "5px solid rgba(0, 255, 255, 0.4)",
         boxShadow:
           "inset 0 0 30px rgba(0,255,255,0.08), 0 0 12px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.1)",
         backdropFilter: "blur(6px)",
@@ -310,7 +310,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
             width: "100%",
             padding: "10px 12px",
             borderRadius: "10px",
-            border: "1px solid #00f0ff22",
+            border: "5px solid #00f0ff22",
             background: "#181818",
             color: "#00f0ff",
             fontWeight: "600",
@@ -361,7 +361,7 @@ return (
       backgroundSize: "cover",
       backgroundPosition: "center",
       borderRadius: "16px",
-      border: "4px solid rgba(0, 255, 255, 0.5)",
+      border: "15px solid rgba(0, 255, 255, 0.5)",
       boxShadow: "0 0 15px #00f0ff55",
       padding: "1.5rem",
       position: "relative",
@@ -423,7 +423,7 @@ return (
       <div
   style={{
     background: "linear-gradient(145deg, #0ff, #033)",
-    border: "2px solid #00f0ff88",
+    border: "5px solid #00f0ff88",
     borderRadius: "10px",
     padding: "8px 16px",
     textAlign: "center",
@@ -460,7 +460,7 @@ return (
                     width: "100%",
                     height: "auto",
                     borderRadius: "8px",
-                    border: "1px solid #ccc",
+                    border: "5px solid #ccc",
                     marginBottom: "0.5rem",
                   }}
                 />
@@ -513,7 +513,7 @@ return (
 <div
   style={{
     background: "rgba(0, 10, 20, 0.65)",
-    border: "1px solid #00f0ff44",
+    border: "5px solid #00f0ff44",
     borderRadius: "10px",
     padding: "12px 16px",
     color: "#e0fefe",
@@ -571,7 +571,7 @@ return (
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      border: "1px solid #00f0ff44",
+                      border: "5px solid #00f0ff44",
                       borderRadius: "12px",
                       padding: "1rem",
                       backgroundColor: "#0f0f0f",
@@ -734,7 +734,7 @@ return (
                     width: "100%",
                     background: "#0d0d0d",
                     color: "white",
-                    border: "1px solid #00f0ff55",
+                    border: "5px solid #00f0ff55",
                     borderRadius: "6px",
                     padding: "8px",
                     fontSize: "0.85rem",
