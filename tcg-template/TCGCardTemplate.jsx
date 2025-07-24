@@ -130,15 +130,19 @@ export default function TCGCardTemplate({
 
         {/* 🖼️ Art Frame (media box) */}
         <div
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
-            border: "2px solid #00f0ff44",
-            borderRadius: "10px",
-            padding: "0.75rem",
-            marginBottom: "1rem",
-            boxShadow: "inset 0 0 12px #00f0ff22",
-          }}
-        >
+  style={{
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    border: "2px solid #00f0ff44",
+    borderRadius: "10px",
+    padding: "0.75rem",
+    marginBottom: "1rem",
+    boxShadow: "inset 0 0 12px #00f0ff22",
+    minHeight: "240px", // 👈 NEW
+    display: "flex",         // center align media
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
           {video_url ? (
             <video
               controls
