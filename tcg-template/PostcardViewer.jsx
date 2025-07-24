@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase/client";
 import TCGCardTemplate from "./TCGCardTemplate";
 import EmptyCard from "./EmptyCard";
-import { getOrCreateSessionId } from "../utils/getOrCreateSessionId";
-import { getOrCreateSessionBackground } from "../utils/getOrCreateSessionBackground";
 
 export default function PostcardViewer() {
   const [post, setPost] = useState(null);
@@ -11,10 +9,15 @@ export default function PostcardViewer() {
   const [bgImage, setBgImage] = useState("");
 
   useEffect(() => {
-    // ✅ Use inside effect to avoid SSR crash
-    const sessionId = getOrCreateSessionId();
-    const backgroundKey = getOrCreateSessionBackground();
-    setBgImage(`/postcard-assets/cardbase/${backgroundKey}.png`);
+    const sessionId = sessionStorage.getItem("session_id");
+    const sessionBg = sessionStorage.getItem("session_bg");
+    setBgImage(`/postcard-assets/cardbase/${sessionBg || "test0"}.png`);
+
+    if (!sessionId) {
+      console.warn("No session ID found.");
+      setLoading(false);
+      return;
+    }
 
     const fetchLastPost = async () => {
       const { data, error } = await supabase
@@ -44,14 +47,14 @@ export default function PostcardViewer() {
         width: "100%",
         padding: "1rem",
         background: "#0a0a0a",
-        borderBottom: "1px solid #222",
-        position: "relative",
-        zIndex: 5,
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        borderBottom: "1px solid #222",
         borderTopLeftRadius: "12px",
         borderTopRightRadius: "12px",
+        position: "relative",
+        zIndex: 5,
       }}
     >
       <h2
