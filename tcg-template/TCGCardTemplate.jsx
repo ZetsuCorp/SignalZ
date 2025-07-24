@@ -9,6 +9,9 @@ export default function TCGCardTemplate({
   display_name,
   created_at,
   background,
+  cta_url,
+  likes = 0,
+  comments = [],
 }) {
   return (
     <div
@@ -197,6 +200,60 @@ export default function TCGCardTemplate({
               {new Date(created_at).toLocaleString()}
             </div>
           )}
+        </div>
+
+        {/* 🔗 CTA Button */}
+        {cta_url && (
+          <a
+            href={cta_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              background: "linear-gradient(to right, #ff4136, #ffdc00)",
+              color: "white",
+              padding: "0.4rem 0.75rem",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: "bold",
+              textDecoration: "none",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Visit Link
+          </a>
+        )}
+
+        {/* ❤️ Likes / 💬 Comments */}
+        <div
+          style={{
+            marginTop: "1rem",
+            display: "flex",
+            justifyContent: "space-between",
+            fontSize: "0.9rem",
+            color: "white",
+            background: "rgba(0,0,0,0.3)",
+            padding: "6px 10px",
+            borderRadius: "10px",
+          }}
+        >
+          <div>❤️ Likes: {likes}</div>
+          <div>💬 Comments: {comments.length}</div>
+        </div>
+
+        {/* 👁️ Views and Shares Footer */}
+        <div
+          style={{
+            marginTop: "0.4rem",
+            fontSize: "0.85rem",
+            color: "#aaa",
+            background: "rgba(0,0,0,0.25)",
+            padding: "4px 10px",
+            borderRadius: "10px",
+            textAlign: "center",
+          }}
+        >
+          👁️ Views and Shares
         </div>
       </div>
     </div>
