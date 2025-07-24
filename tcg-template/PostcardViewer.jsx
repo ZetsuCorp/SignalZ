@@ -11,9 +11,10 @@ export default function PostcardViewer() {
   const [bgImage, setBgImage] = useState("");
 
   useEffect(() => {
+    // ✅ Use inside effect to avoid SSR crash
     const sessionId = getOrCreateSessionId();
-    const bg = getOrCreateSessionBackground();
-    setBgImage(`/postcard-assets/cardbase/${bg}.png`);
+    const backgroundKey = getOrCreateSessionBackground();
+    setBgImage(`/postcard-assets/cardbase/${backgroundKey}.png`);
 
     const fetchLastPost = async () => {
       const { data, error } = await supabase
