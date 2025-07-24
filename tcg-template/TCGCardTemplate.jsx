@@ -47,6 +47,36 @@ export default function TCGCardTemplate({
       />
 
       <div style={{ position: "relative", zIndex: 2 }}>
+        {/* ☄️ Sigicon */}
+        {sigicon_url && (
+          <div
+            style={{
+              position: "absolute",
+              top: "0.5rem",
+              left: "0.5rem",
+              width: "40px",
+              height: "40px",
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "3px",
+            }}
+          >
+            <img
+              src={sigicon_url}
+              alt="sigicon"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                borderRadius: "50%",
+              }}
+            />
+          </div>
+        )}
+
         {/* 🔹 Display Name */}
         {display_name && (
           <div style={{ width: "100%", textAlign: "center", marginBottom: "0.5rem" }}>
@@ -98,62 +128,51 @@ export default function TCGCardTemplate({
           📂 Type — SIGZICON
         </div>
 
-        {/* 🎥 Media */}
-        {video_url ? (
-          <video
-            controls
-            src={video_url}
-            style={{
-              width: "100%",
-              height: "auto",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              marginBottom: "0.5rem",
-            }}
-          />
-        ) : image_url ? (
-          <img
-            src={image_url}
-            alt="preview"
-            style={{
-              width: "100%",
-              height: "auto",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              marginBottom: "0.5rem",
-            }}
-          />
-        ) : null}
-
-        {/* ☄️ Sigicon */}
-        {sigicon_url && (
-          <div
-            style={{
-              position: "absolute",
-              top: "0.5rem",
-              left: "0.5rem",
-              width: "40px",
-              height: "40px",
-              backgroundColor: "rgba(0, 0, 0, 0.6)",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "3px",
-            }}
-          >
-            <img
-              src={sigicon_url}
-              alt="sigicon"
+        {/* 🖼️ Art Frame (media box) */}
+        <div
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            border: "2px solid #00f0ff44",
+            borderRadius: "10px",
+            padding: "0.75rem",
+            marginBottom: "1rem",
+            boxShadow: "inset 0 0 12px #00f0ff22",
+          }}
+        >
+          {video_url ? (
+            <video
+              controls
+              src={video_url}
               style={{
                 width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                borderRadius: "50%",
+                height: "auto",
+                borderRadius: "8px",
+                border: "1px solid #ccc",
               }}
             />
-          </div>
-        )}
+          ) : image_url ? (
+            <img
+              src={image_url}
+              alt="preview"
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "8px",
+                border: "1px solid #ccc",
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                color: "#888",
+                fontSize: "0.9rem",
+              }}
+            >
+              No media
+            </div>
+          )}
+        </div>
 
         {/* 📦 Description */}
         <div
@@ -170,19 +189,6 @@ export default function TCGCardTemplate({
             marginBottom: "0.75rem",
           }}
         >
-          {headline && (
-            <div
-              style={{
-                fontSize: "1rem",
-                fontWeight: "bold",
-                color: "white",
-                marginBottom: "0.25rem",
-              }}
-            >
-              {headline}
-            </div>
-          )}
-
           {caption && (
             <p
               style={{
