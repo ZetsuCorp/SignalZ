@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase/client";
 import TCGCardTemplate from "./TCGCardTemplate";
 import EmptyCard from "./EmptyCard";
+import { getOrCreateSessionId } from "../utils/getOrCreateSessionId";
+import { getOrCreateSessionBackground } from "../utils/getOrCreateSessionBackground";
 
 export default function PostcardViewer() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bgImage, setBgImage] = useState("");
 
   useEffect(() => {
-    const sessionId = sessionStorage.getItem("session_id");
-    if (!sessionId) {
-      setLoading(false);
-      return;
-    }
+    const sessionId = getOrCreateSessionId();
+    const bg = getOrCreateSessionBackground();
+    setBgImage(`/postcard-assets/cardbase/${bg}.png`);
 
     const fetchLastPost = async () => {
       const { data, error } = await supabase
@@ -45,6 +46,11 @@ export default function PostcardViewer() {
         borderBottom: "1px solid #222",
         position: "relative",
         zIndex: 5,
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        borderTopLeftRadius: "12px",
+        borderTopRightRadius: "12px",
       }}
     >
       <h2
