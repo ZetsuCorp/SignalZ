@@ -4,7 +4,7 @@ import ChumFeedPanel from "./src/ChumFeedPanel";
 import PostForm from "./PostForm"; // ✅ keep using your working form
 import CreatePostShell from "./CreatePostShell";
 import PostcardViewer from "./tcg-template/PostcardViewer";
-import PostStatsViewer from "./src/PostStatsViewer";
+import PostStatsViewer from "./src/PostStatsView";
 
 
 /////////////////////////////////////////////////////
@@ -177,7 +177,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
   <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
     <PostcardViewer />
-    <PostStatsViewer />
+    <PostStatsView />
     <ChumFeedPanel />
   </div>
 
