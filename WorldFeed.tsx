@@ -206,7 +206,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
         padding: "2rem",
         borderRadius: "16px",
         background: "linear-gradient(145deg, #0d0d0d, #060c0d)",
-        border: "2px solid rgba(0, 255, 255, 0.4)",
+        border: "16px solid rgba(0, 255, 255, 0.4)",
         boxShadow:
           "inset 0 0 30px rgba(0,255,255,0.08), 0 0 12px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.1)",
         backdropFilter: "blur(6px)",
