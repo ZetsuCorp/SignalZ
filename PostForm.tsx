@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
@@ -29,7 +30,7 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
     setSessionId(existing);
     setSigIcon(sessionStorage.getItem("session_icon") || "");
     setDisplayName(sessionStorage.getItem("session_display_name") || "");
-    setBackgroundImage(sessionStorage.getItem("session_bg") || "test0");
+    setBackgroundImage(sessionStorage.getItem("session_bg") || "");
   }, []);
 
   const tcgInputStyle = {
@@ -64,24 +65,24 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
 
   const uploadImage = async () => {
     if (!image) return "";
-    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
+    const filePath = ${sessionId}/${Date.now()}_${image.name};
     const { error } = await supabase.storage.from("images").upload(filePath, image);
     if (error) {
       alert("Image upload failed");
       return "";
     }
-    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath}`;
+    return ${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath};
   };
 
   const uploadVideo = async () => {
     if (!video) return "";
-    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
+    const filePath = ${sessionId}/${Date.now()}_${video.name};
     const { error } = await supabase.storage.from("videos").upload(filePath, video);
     if (error) {
       alert("Video upload failed");
       return "";
     }
-    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${filePath}`;
+    return ${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${filePath};
   };
 
   const handlePost = async () => {
@@ -143,127 +144,118 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
 
   return (
     <div
-      className="card-outer relative w-full max-w-2xl rounded-xl overflow-hidden border border-cyan-600 shadow-lg"
+      className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 space-y-4 relative text-center"
       style={{
-        backgroundColor: "#000",
+        backgroundImage: backgroundImage
+          ? url(/postcard-assets/cardbase/${backgroundImage}.png)
+          : undefined,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backdropFilter: "blur(4px)",
         color: "#00f0ff",
       }}
     >
-      {/* 🔲 Background layer */}
-      <div
-        className="card-bg absolute inset-0"
-        style={{
-          backgroundImage: `url(/postcard-assets/cardbase/${backgroundImage}.png)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "brightness(1.1)",
-          zIndex: 0,
-        }}
+      <button
+        onClick={closeOverlay}
+        className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
+      >
+        ✖
+      </button>
+
+      <h2 className="text-lg font-bold text-cyan-300">
+        {overlayType === "image" && "🖼 Create Image Post"}
+        {overlayType === "video" && "🎬 Create Video Post"}
+        {overlayType === "social" && "🌐 Share Social Link"}
+      </h2>
+
+      <input
+        type="text"
+        placeholder="Brand Name / Headline"
+        value={headline}
+        onChange={(e) => setHeadline(e.target.value)}
+        className="w-full"
+        style={tcgInputStyle}
+      />
+      <textarea
+        placeholder="What's meaningful about it?"
+        value={caption}
+        onChange={(e) => setCaption(e.target.value)}
+        className="w-full resize-none"
+        style={{ ...tcgInputStyle, height: "6rem" }}
+      />
+      <input
+        type="text"
+        placeholder="Link (optional)"
+        value={ctaUrl}
+        onChange={(e) => setCtaUrl(e.target.value)}
+        className="w-full"
+        style={tcgInputStyle}
+      />
+      <input
+        type="text"
+        placeholder="Tags (comma separated)"
+        value={tags}
+        onChange={(e) => setTags(e.target.value)}
+        className="w-full"
+        style={tcgInputStyle}
       />
 
-      {/* 🧩 Inner content */}
-      <div className="card-inner relative z-10 p-6 space-y-4 text-center bg-black/60 backdrop-blur-md">
-        <button
-          onClick={closeOverlay}
-          className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
-        >
-          ✖
-        </button>
+      <button
+        type="button"
+        onClick={() => imageInputRef.current.click()}
+        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+      >
+        🖼 Add Image
+      </button>
+      <input
+        type="file"
+        accept="image/*"
+        ref={imageInputRef}
+        onChange={handleImageChange}
+        style={{ display: "none" }}
+      />
 
-        <h2 className="text-lg font-bold text-cyan-300">
-          {overlayType === "image" && "🖼 Create Image Post"}
-          {overlayType === "video" && "🎬 Create Video Post"}
-          {overlayType === "social" && "🌐 Share Social Link"}
-        </h2>
+      <button
+        type="button"
+        onClick={() => videoInputRef.current.click()}
+        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+      >
+        🎬 Add Video
+      </button>
+      <input
+        type="file"
+        accept="video/*"
+        ref={videoInputRef}
+        onChange={handleVideoChange}
+        style={{ display: "none" }}
+      />
 
+      <button
+        onClick={handlePost}
+        className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md"
+      >
+        🚀 Post to {wallType.toUpperCase()} Wall
+      </button>
+
+      <div className="space-y-2">
+        <h3 className="text-cyan-300 font-semibold">
+          🌐 Submit a Social Link to SignalZ
+        </h3>
         <input
           type="text"
-          placeholder="Brand Name / Headline"
-          value={headline}
-          onChange={(e) => setHeadline(e.target.value)}
+          placeholder="Paste any video or social link"
+          value={linkInput}
+          onChange={(e) => setLinkInput(e.target.value)}
           className="w-full"
           style={tcgInputStyle}
         />
-        <textarea
-          placeholder="What's meaningful about it?"
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          className="w-full resize-none"
-          style={{ ...tcgInputStyle, height: "6rem" }}
-        />
-        <input
-          type="text"
-          placeholder="Link (optional)"
-          value={ctaUrl}
-          onChange={(e) => setCtaUrl(e.target.value)}
-          className="w-full"
-          style={tcgInputStyle}
-        />
-        <input
-          type="text"
-          placeholder="Tags (comma separated)"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-          className="w-full"
-          style={tcgInputStyle}
-        />
-
         <button
-          type="button"
-          onClick={() => imageInputRef.current.click()}
-          className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+          onClick={handleSubmitLink}
+          className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
         >
-          🖼 Add Image
+          🔗 Submit Link
         </button>
-        <input
-          type="file"
-          accept="image/*"
-          ref={imageInputRef}
-          onChange={handleImageChange}
-          style={{ display: "none" }}
-        />
-
-        <button
-          type="button"
-          onClick={() => videoInputRef.current.click()}
-          className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-        >
-          🎬 Add Video
-        </button>
-        <input
-          type="file"
-          accept="video/*"
-          ref={videoInputRef}
-          onChange={handleVideoChange}
-          style={{ display: "none" }}
-        />
-
-        <button
-          onClick={handlePost}
-          className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md"
-        >
-          🚀 Post to {wallType.toUpperCase()} Wall
-        </button>
-
-        <div className="space-y-2">
-          <h3 className="text-cyan-300 font-semibold">
-            🌐 Submit a Social Link to SignalZ
-          </h3>
-          <input
-            type="text"
-            placeholder="Paste any video or social link"
-            value={linkInput}
-            onChange={(e) => setLinkInput(e.target.value)}
-            className="w-full"
-            style={tcgInputStyle}
-          />
-          <button
-            onClick={handleSubmitLink}
-            className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
-          >
-            🔗 Submit Link
-          </button>
-        </div>
       </div>
     </div>
   );
