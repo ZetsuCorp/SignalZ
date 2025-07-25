@@ -46,47 +46,53 @@ export default function PostcardViewer() {
       style={{
         width: "100%",
         padding: "1rem",
+        background: "#000",
         borderBottom: "1px solid #222",
-        borderTopLeftRadius: "12px",
-        borderTopRightRadius: "12px",
-        overflow: "hidden", // ✅ important
+        borderTopLeftRadius: "16px",
+        borderTopRightRadius: "16px",
         position: "relative",
         zIndex: 5,
       }}
     >
-      {/* ✅ Inner background layer */}
       <div
         style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          zIndex: 0,
+          border: "8px solid cyan",
+          borderRadius: "20px",
+          padding: "8px",
+          backgroundColor: "#111",
+          overflow: "hidden",
         }}
-      />
-
-      {/* ✅ Foreground content */}
-      <div style={{ position: "relative", zIndex: 2 }}>
-        <h2
+      >
+        <div
           style={{
-            color: "#00f0ff",
-            fontSize: "1rem",
-            marginBottom: "0.5rem",
-            textAlign: "center",
-            textShadow: "0 0 4px #00f0ff66",
+            position: "relative",
+            borderRadius: "12px",
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "1.5rem",
           }}
         >
-          🧵 Session Postcard Preview
-        </h2>
+          <h2
+            style={{
+              color: "#00f0ff",
+              fontSize: "1rem",
+              marginBottom: "0.5rem",
+              textAlign: "center",
+              textShadow: "0 0 4px #00f0ff66",
+            }}
+          >
+            🧵 Session Postcard Preview
+          </h2>
 
-        {loading ? (
-          <div style={{ color: "#888", textAlign: "center" }}>Loading...</div>
-        ) : post ? (
-          <TCGCardTemplate {...post} />
-        ) : (
-          <EmptyCard />
-        )}
+          {loading ? (
+            <div style={{ color: "#888", textAlign: "center" }}>Loading...</div>
+          ) : post ? (
+            <TCGCardTemplate {...post} />
+          ) : (
+            <EmptyCard />
+          )}
+        </div>
       </div>
     </div>
   );
