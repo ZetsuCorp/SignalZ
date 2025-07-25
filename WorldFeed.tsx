@@ -184,38 +184,51 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
 
     
-{showCreateOverlay && (
-  <div
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(10,10,10,0.95)",
-      zIndex: 999999,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "2rem",
-    }}
-  >
+  {showCreateMenu && (
     <div
       style={{
-        maxWidth: "800px",
-        width: "100%",
-        padding: "2rem",
-        borderRadius: "16px",
-        background: "linear-gradient(145deg, #0d0d0d, #060c0d)",
-        border: "5px solid rgba(0, 255, 255, 0.4)",
-        boxShadow:
-          "inset 0 0 30px rgba(0,255,255,0.08), 0 0 12px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.1)",
-        backdropFilter: "blur(6px)",
-        position: "relative",
-        overflow: "hidden",
+        background: "rgba(16, 16, 16, 0.65)",
+        border: "1px solid #00f0ff33",
+        borderRadius: "14px",
+        padding: "1rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: "12px",
+        width: "240px",
+        boxShadow: "0 0 20px #00f0ff55",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        animation: "fadeIn 0.2s ease-in-out",
       }}
     >
-      onMouseOver={(e) => (e.currentTarget.style.background = "#00f0ff22")}
+      {[
+        { label: "Image Post", icon: "📷", type: "image" },
+        { label: "Video Post", icon: "🎬", type: "video" },
+        { label: "Social Link", icon: "🔗", type: "link" },
+      ].map(({ label, icon, type }) => (
+        <button
+          key={type}
+          onClick={() => {
+            setCreateMode(type);
+            setShowCreateOverlay(true);
+            setShowCreateMenu(false);
+          }}
+          style={{
+            width: "100%",
+            padding: "10px 12px",
+            borderRadius: "10px",
+            border: "5px solid #00f0ff22",
+            background: "#181818",
+            color: "#00f0ff",
+            fontWeight: "600",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.background = "#00f0ff22")}
           onMouseOut={(e) => (e.currentTarget.style.background = "#181818")}
         >
           <span style={{ fontSize: "1.2rem" }}>{icon}</span>
