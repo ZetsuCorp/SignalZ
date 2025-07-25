@@ -184,7 +184,6 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
 
     
-      
 {showCreateOverlay && (
   <div
     style={{
@@ -220,8 +219,8 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
       <PostForm
         wallType={wallType}
         onMediaPreview={() => {}}
-        createMode={createMode}
-        closeOverlay={() => setShowCreateOverlay(false)} // ✅ pass down
+        overlayType={createMode}
+        closeOverlay={() => setShowCreateOverlay(false)}
       />
     </div>
   </div>
