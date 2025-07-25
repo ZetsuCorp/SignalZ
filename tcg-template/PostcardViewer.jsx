@@ -7,7 +7,6 @@ export default function PostcardViewer() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bgImage, setBgImage] = useState("");
-
   const [commentCount, setCommentCount] = useState(0);
   const [viewCount, setViewCount] = useState(0);
 
@@ -44,12 +43,10 @@ export default function PostcardViewer() {
     fetchLastPost();
   }, []);
 
-  // 👇 Fetch views + comments once post is loaded
   useEffect(() => {
     if (!post || !post.id) return;
 
     const fetchStats = async () => {
-      // Fetch view count
       const { count: views } = await supabase
         .from("views")
         .select("*", { count: "exact", head: true })
@@ -57,7 +54,6 @@ export default function PostcardViewer() {
 
       setViewCount(views || 0);
 
-      // Fetch comments
       try {
         const res = await fetch(`/.netlify/functions/get-comments?post_id=${post.id}`);
         const comments = res.ok ? await res.json() : [];
@@ -69,6 +65,12 @@ export default function PostcardViewer() {
 
     fetchStats();
   }, [post]);
+
+  // Utility for bar widths
+  const getBarWidth = (value, max = 100) => {
+    const width = Math.min((value / max) * 100, 100);
+    return `${width}%`;
+  };
 
   return (
     <div
@@ -120,24 +122,93 @@ export default function PostcardViewer() {
             <>
               <TCGCardTemplate {...post} />
 
-              {/* 📊 Post Stats Viewer */}
+              {/* 📊 Visual Statistics Viewer */}
               <div
                 style={{
-                  marginTop: "1rem",
-                  background: "rgba(0, 10, 20, 0.65)",
-                  border: "2px solid #00f0ff33",
-                  borderRadius: "12px",
-                  padding: "0.75rem 1rem",
+                  marginTop: "1.25rem",
+                  background: "rgba(0, 0, 20, 0.6)",
+                  border: "2px solid #00f0ff44",
+                  borderRadius: "14px",
+                  padding: "1rem",
+                  boxShadow: "0 0 12px rgba(0, 255, 255, 0.15)",
+                  backdropFilter: "blur(8px)",
                   color: "#00f0ff",
-                  fontSize: "0.9rem",
-                  display: "flex",
-                  justifyContent: "space-around",
-                  gap: "1rem",
+                  fontFamily: "monospace",
                 }}
               >
-                <div>❤️ Likes: {post.likes || 0}</div>
-                <div>💬 Comments: {commentCount}</div>
-                <div>👁️ Views: {viewCount}</div>
+                <h3 style={{ fontSize: "0.95rem", marginBottom: "1rem", textAlign: "center" }}>
+                  📊 Post Statistics
+                </h3>
+
+                <div style={{ marginBottom: "0.75rem" }}>
+                  👁️ Views: {viewCount}
+                  <div
+                    style={{
+                      height: "8px",
+                      borderRadius: "6px",
+                      background: "#002233",
+                      overflow: "hidden",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: getBarWidth(viewCount),
+                        height: "100%",
+                        background: "linear-gradient(90deg, #00f0ff, #0044ff)",
+                        transition: "width 0.5s ease-out",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: "0.75rem" }}>
+                  💬 Comments: {commentCount}
+                  <div
+                    style={{
+                      height: "8px",
+                      borderRadius: "6px",
+                      background: "#002233",
+                      overflow: "hidden",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: getBarWidth(commentCount),
+                        height: "100%",
+                        background: "linear-gradient(90deg, #00ffcc, #0099cc)",
+                        transition: "width 0.5s ease-out",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: "0.75rem" }}>
+                  ❤️ Likes: {post.likes || 0}
+                  <div
+                    style={{
+                      height: "8px",
+                      borderRadius: "6px",
+                      background: "#002233",
+                      overflow: "hidden",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: getBarWidth(post.likes || 0),
+                        height: "100%",
+                        background: "linear-gradient(90deg, #ff00cc, #ff6600)",
+                        transition: "width 0.5s ease-out",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ marginTop: "1rem", textAlign: "center", fontSize: "0.85rem" }}>
+                  ⚡ Engagement Score: <strong>72%</strong> {/* placeholder */}
+                </div>
               </div>
             </>
           ) : (
