@@ -177,7 +177,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
   <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
     <PostcardViewer />
-    <PostStatViewer />
+    <PostStatsViewer />
     <ChumFeedPanel />
   </div>
 
