@@ -4,7 +4,6 @@ import ChumFeedPanel from "./src/ChumFeedPanel";
 import PostForm from "./PostForm"; // ✅ keep using your working form
 import CreatePostShell from "./CreatePostShell";
 import PostcardViewer from "./tcg-template/PostcardViewer";
-import PostStatsView from "./src/PostStatsView";
 
 
 
@@ -178,13 +177,11 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
   <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
     <PostcardViewer />
-<PostStatsView /> {/* ✅ THIS IS THE NEW VISUALIZATION */}
     <ChumFeedPanel />
   </div>
 
 
     
- 
       
 {showCreateOverlay && (
   <div
@@ -230,6 +227,9 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
 
 
+
+
+
       
 <div
   className="hide-scrollbar"
@@ -242,7 +242,9 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   }}
 >
  
-   {/* 🚀 Floating CREATE Button + Mode Selector */}
+  
+  
+  {/* 🚀 Floating CREATE Button + Mode Selector */}
 <div
   style={{
     position: "fixed",
@@ -274,65 +276,26 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     ＋ Create
   </button>
 
-  
-  {/* 🚀 Mode Selector */}
-{showCreateMenu && (
-  <div
-    style={{
-      position: "absolute",
-      top: "60px",
-      right: "20px",
-      zIndex: 9999,
-      width: "320px",
-      border: "4px solid rgba(0,255,255,0.3)",
-      borderRadius: "18px",
-      boxShadow: "0 0 25px rgba(0, 255, 255, 0.2)",
-      overflow: "hidden",
-      background: "#0a0a0a",
-    }}
-  >
-    {/* Background image from session */}
+  {showCreateMenu && (
     <div
       style={{
-        position: "absolute",
-        inset: 0,
-        backgroundImage: `url("/postcard-assets/cardbase/${sessionStorage.getItem("session_bg")}.png")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        opacity: 0.2,
-        zIndex: 0,
-      }}
-    />
-
-    {/* Card content */}
-    <div
-      style={{
-        position: "relative",
-        padding: "1.25rem",
+        background: "rgba(16, 16, 16, 0.65)",
+        border: "1px solid #00f0ff33",
+        borderRadius: "14px",
+        padding: "1rem",
         display: "flex",
         flexDirection: "column",
+        alignItems: "flex-start",
         gap: "12px",
-        backdropFilter: "blur(8px)",
-        WebkitBackdropFilter: "blur(8px)",
-        color: "#00f0ff",
-        zIndex: 2,
+        width: "240px",
+        boxShadow: "0 0 20px #00f0ff55",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        animation: "fadeIn 0.2s ease-in-out",
       }}
     >
-      <div
-        style={{
-          fontSize: "1.1rem",
-          fontWeight: "bold",
-          color: "#00f0ff",
-          textAlign: "center",
-          borderBottom: "1px solid #00f0ff55",
-          paddingBottom: "6px",
-        }}
-      >
-        🧵 Create a TCG Post
-      </div>
-
       {[
-        { label: "Image Post", icon: "🖼️", type: "image" },
+        { label: "Image Post", icon: "📷", type: "image" },
         { label: "Video Post", icon: "🎬", type: "video" },
         { label: "Social Link", icon: "🔗", type: "link" },
       ].map(({ label, icon, type }) => (
@@ -345,33 +308,28 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
           }}
           style={{
             width: "100%",
-            padding: "12px",
+            padding: "10px 12px",
             borderRadius: "10px",
-            border: "2px solid #00f0ff33",
-            background: "#0f0f0f",
+            border: "1px solid #00f0ff22",
+            background: "#181818",
             color: "#00f0ff",
             fontWeight: "600",
-            fontSize: "1rem",
             display: "flex",
             alignItems: "center",
             gap: "10px",
             cursor: "pointer",
             transition: "all 0.2s ease",
           }}
-          onMouseOver={(e) =>
-            (e.currentTarget.style.background = "#00f0ff22")
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.background = "#0f0f0f")
-          }
+          onMouseOver={(e) => (e.currentTarget.style.background = "#00f0ff22")}
+          onMouseOut={(e) => (e.currentTarget.style.background = "#181818")}
         >
-          <span style={{ fontSize: "1.3rem" }}>{icon}</span>
+          <span style={{ fontSize: "1.2rem" }}>{icon}</span>
           <span style={{ flexGrow: 1 }}>{label}</span>
         </button>
       ))}
     </div>
-  </div>
-)}
+  )}
+</div>
 
 
 
@@ -403,7 +361,7 @@ return (
       backgroundSize: "cover",
       backgroundPosition: "center",
       borderRadius: "16px",
-      border: "15px solid rgba(0, 255, 255, 0.5)",
+      border: "4px solid rgba(0, 255, 255, 0.5)",
       boxShadow: "0 0 15px #00f0ff55",
       padding: "1.5rem",
       position: "relative",
@@ -465,7 +423,7 @@ return (
       <div
   style={{
     background: "linear-gradient(145deg, #0ff, #033)",
-    border: "5px solid #00f0ff88",
+    border: "2px solid #00f0ff88",
     borderRadius: "10px",
     padding: "8px 16px",
     textAlign: "center",
@@ -502,7 +460,7 @@ return (
                     width: "100%",
                     height: "auto",
                     borderRadius: "8px",
-                    border: "5px solid #ccc",
+                    border: "1px solid #ccc",
                     marginBottom: "0.5rem",
                   }}
                 />
@@ -555,7 +513,7 @@ return (
 <div
   style={{
     background: "rgba(0, 10, 20, 0.65)",
-    border: "5px solid #00f0ff44",
+    border: "1px solid #00f0ff44",
     borderRadius: "10px",
     padding: "12px 16px",
     color: "#e0fefe",
@@ -613,7 +571,7 @@ return (
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      border: "5px solid #00f0ff44",
+                      border: "1px solid #00f0ff44",
                       borderRadius: "12px",
                       padding: "1rem",
                       backgroundColor: "#0f0f0f",
@@ -776,7 +734,7 @@ return (
                     width: "100%",
                     background: "#0d0d0d",
                     color: "white",
-                    border: "5px solid #00f0ff55",
+                    border: "1px solid #00f0ff55",
                     borderRadius: "6px",
                     padding: "8px",
                     fontSize: "0.85rem",
