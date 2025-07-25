@@ -215,18 +215,16 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
         overflow: "hidden",
       }}
     >
-      {/* ✅ Let PostForm handle title and ✖ logic */}
-      <PostForm
-        wallType={wallType}
-        onMediaPreview={() => {}}
-        overlayType={createMode}
-        closeOverlay={() => setShowCreateOverlay(false)}
-      />
+      onMouseOver={(e) => (e.currentTarget.style.background = "#00f0ff22")}
+          onMouseOut={(e) => (e.currentTarget.style.background = "#181818")}
+        >
+          <span style={{ fontSize: "1.2rem" }}>{icon}</span>
+          <span style={{ flexGrow: 1 }}>{label}</span>
+        </button>
+      ))}
     </div>
-  </div>
-)}
-
-
+  )}
+</div>
 
 
 
