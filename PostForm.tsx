@@ -17,8 +17,7 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
   const [displayName, setDisplayName] = useState("");
   const [backgroundImage, setBackgroundImage] = useState("");
 
-  const imageInputRef = useRef(null);
-  const videoInputRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     let existing = localStorage.getItem("session_id");
@@ -44,21 +43,19 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
     textAlign: "center",
   };
 
-  const handleImageChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files?.[0];
-    if (file) {
+    if (!file) return;
+    const isImage = file.type.startsWith("image/");
+    const isVideo = file.type.startsWith("video/");
+    if (isImage) {
       setImage(file);
-      const previewUrl = URL.createObjectURL(file);
-      onMediaPreview?.("image", previewUrl);
-    }
-  };
-
-  const handleVideoChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
+      setVideo(null);
+      onMediaPreview?.("image", URL.createObjectURL(file));
+    } else if (isVideo) {
       setVideo(file);
-      const previewUrl = URL.createObjectURL(file);
-      onMediaPreview?.("video", previewUrl);
+      setImage(null);
+      onMediaPreview?.("video", URL.createObjectURL(file));
     }
   };
 
@@ -176,6 +173,53 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
         className="w-full"
         style={tcgInputStyle}
       />
+
+      {/* 🧩 Single Media Upload Box */}
+      <div
+        onClick={() => fileInputRef.current.click()}
+        style={{
+          width: "100%",
+          height: "280px",
+          border: "2px dashed #00f0ff88",
+          borderRadius: "14px",
+          background: "rgba(0,10,20,0.4)",
+          backdropFilter: "blur(6px)",
+          cursor: "pointer",
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#00f0ff88",
+          overflow: "hidden",
+          boxShadow: "0 0 20px #00f0ff22 inset",
+        }}
+      >
+        {image && (
+          <img
+            src={URL.createObjectURL(image)}
+            alt="preview"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        )}
+        {video && (
+          <video
+            src={URL.createObjectURL(video)}
+            controls
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        )}
+        {!image && !video && <span>📷 Click to upload image or video</span>}
+      </div>
+
+      <input
+        type="file"
+        accept="image/*,video/*"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
+
+      {/* Text Fields */}
       <textarea
         placeholder="What's meaningful about it?"
         value={caption}
@@ -201,42 +245,13 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
       />
 
       <button
-        type="button"
-        onClick={() => imageInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-      >
-        🖼 Add Image
-      </button>
-      <input
-        type="file"
-        accept="image/*"
-        ref={imageInputRef}
-        onChange={handleImageChange}
-        style={{ display: "none" }}
-      />
-
-      <button
-        type="button"
-        onClick={() => videoInputRef.current.click()}
-        className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-      >
-        🎬 Add Video
-      </button>
-      <input
-        type="file"
-        accept="video/*"
-        ref={videoInputRef}
-        onChange={handleVideoChange}
-        style={{ display: "none" }}
-      />
-
-      <button
         onClick={handlePost}
         className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md"
       >
         🚀 Post to {wallType.toUpperCase()} Wall
       </button>
 
+      {/* Link Submission */}
       <div className="space-y-2">
         <h3 className="text-cyan-300 font-semibold">
           🌐 Submit a Social Link to SignalZ
