@@ -66,7 +66,6 @@ export default function PostcardViewer() {
     fetchStats();
   }, [post]);
 
-  // Utility for bar widths
   const getBarWidth = (value, max = 100) => {
     const width = Math.min((value / max) * 100, 100);
     return `${width}%`;
@@ -83,6 +82,9 @@ export default function PostcardViewer() {
         borderTopRightRadius: "16px",
         position: "relative",
         zIndex: 5,
+        overflowY: "auto",           // ✅ allows stats panel to scroll if tall
+        maxHeight: "100vh",          // ✅ prevents cutoff in column
+        minHeight: "600px",          // ✅ ensures it's not squashed short
       }}
     >
       <div
@@ -142,67 +144,22 @@ export default function PostcardViewer() {
 
                 <div style={{ marginBottom: "0.75rem" }}>
                   👁️ Views: {viewCount}
-                  <div
-                    style={{
-                      height: "8px",
-                      borderRadius: "6px",
-                      background: "#002233",
-                      overflow: "hidden",
-                      marginTop: "4px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: getBarWidth(viewCount),
-                        height: "100%",
-                        background: "linear-gradient(90deg, #00f0ff, #0044ff)",
-                        transition: "width 0.5s ease-out",
-                      }}
-                    />
+                  <div style={{ height: "8px", borderRadius: "6px", background: "#002233", overflow: "hidden", marginTop: "4px" }}>
+                    <div style={{ width: getBarWidth(viewCount), height: "100%", background: "linear-gradient(90deg, #00f0ff, #0044ff)", transition: "width 0.5s ease-out" }} />
                   </div>
                 </div>
 
                 <div style={{ marginBottom: "0.75rem" }}>
                   💬 Comments: {commentCount}
-                  <div
-                    style={{
-                      height: "8px",
-                      borderRadius: "6px",
-                      background: "#002233",
-                      overflow: "hidden",
-                      marginTop: "4px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: getBarWidth(commentCount),
-                        height: "100%",
-                        background: "linear-gradient(90deg, #00ffcc, #0099cc)",
-                        transition: "width 0.5s ease-out",
-                      }}
-                    />
+                  <div style={{ height: "8px", borderRadius: "6px", background: "#002233", overflow: "hidden", marginTop: "4px" }}>
+                    <div style={{ width: getBarWidth(commentCount), height: "100%", background: "linear-gradient(90deg, #00ffcc, #0099cc)", transition: "width 0.5s ease-out" }} />
                   </div>
                 </div>
 
                 <div style={{ marginBottom: "0.75rem" }}>
                   ❤️ Likes: {post.likes || 0}
-                  <div
-                    style={{
-                      height: "8px",
-                      borderRadius: "6px",
-                      background: "#002233",
-                      overflow: "hidden",
-                      marginTop: "4px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: getBarWidth(post.likes || 0),
-                        height: "100%",
-                        background: "linear-gradient(90deg, #ff00cc, #ff6600)",
-                        transition: "width 0.5s ease-out",
-                      }}
-                    />
+                  <div style={{ height: "8px", borderRadius: "6px", background: "#002233", overflow: "hidden", marginTop: "4px" }}>
+                    <div style={{ width: getBarWidth(post.likes || 0), height: "100%", background: "linear-gradient(90deg, #ff00cc, #ff6600)", transition: "width 0.5s ease-out" }} />
                   </div>
                 </div>
 
