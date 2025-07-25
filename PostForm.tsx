@@ -29,7 +29,7 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
     setSessionId(existing);
     setSigIcon(sessionStorage.getItem("session_icon") || "");
     setDisplayName(sessionStorage.getItem("session_display_name") || "");
-    setBackgroundImage(sessionStorage.getItem("session_bg") || "");
+    setBackgroundImage(sessionStorage.getItem("session_bg") || "test0");
   }, []);
 
   const tcgInputStyle = {
@@ -42,6 +42,24 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
     padding: "12px 16px",
     lineHeight: "1.4",
     textAlign: "center",
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const previewUrl = URL.createObjectURL(file);
+      onMediaPreview?.("image", previewUrl);
+    }
+  };
+
+  const handleVideoChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setVideo(file);
+      const previewUrl = URL.createObjectURL(file);
+      onMediaPreview?.("video", previewUrl);
+    }
   };
 
   const uploadImage = async () => {
@@ -64,24 +82,6 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
       return "";
     }
     return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${filePath}`;
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-      const previewUrl = URL.createObjectURL(file);
-      onMediaPreview?.("image", previewUrl);
-    }
-  };
-
-  const handleVideoChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setVideo(file);
-      const previewUrl = URL.createObjectURL(file);
-      onMediaPreview?.("video", previewUrl);
-    }
   };
 
   const handlePost = async () => {
@@ -143,29 +143,26 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
 
   return (
     <div
-      className="tcg-post-form relative w-full max-w-3xl mx-auto overflow-hidden rounded-xl border-[4px] border-cyan-400 shadow-xl"
+      className="card-outer relative w-full max-w-2xl rounded-xl overflow-hidden border border-cyan-600 shadow-lg"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000",
         color: "#00f0ff",
-        borderRadius: "20px",
-        overflow: "hidden",
       }}
     >
-      {/* 🔹 Background Layer */}
+      {/* 🔲 Background layer */}
       <div
-        className="absolute inset-0 z-0"
+        className="card-bg absolute inset-0"
         style={{
-          backgroundImage: backgroundImage
-            ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
-            : "none",
+          backgroundImage: `url(/postcard-assets/cardbase/${backgroundImage}.png)`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.9,
+          filter: "brightness(1.1)",
+          zIndex: 0,
         }}
       />
-      
-      {/* 🔹 Content Layer */}
-      <div className="relative z-10 p-6 space-y-4 backdrop-blur-[2px] bg-black/40 rounded-xl">
+
+      {/* 🧩 Inner content */}
+      <div className="card-inner relative z-10 p-6 space-y-4 text-center bg-black/60 backdrop-blur-md">
         <button
           onClick={closeOverlay}
           className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
@@ -179,23 +176,93 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
           {overlayType === "social" && "🌐 Share Social Link"}
         </h2>
 
-        <input type="text" placeholder="Brand Name / Headline" value={headline} onChange={(e) => setHeadline(e.target.value)} className="w-full" style={tcgInputStyle} />
-        <textarea placeholder="What's meaningful about it?" value={caption} onChange={(e) => setCaption(e.target.value)} className="w-full resize-none" style={{ ...tcgInputStyle, height: "6rem" }} />
-        <input type="text" placeholder="Link (optional)" value={ctaUrl} onChange={(e) => setCtaUrl(e.target.value)} className="w-full" style={tcgInputStyle} />
-        <input type="text" placeholder="Tags (comma separated)" value={tags} onChange={(e) => setTags(e.target.value)} className="w-full" style={tcgInputStyle} />
+        <input
+          type="text"
+          placeholder="Brand Name / Headline"
+          value={headline}
+          onChange={(e) => setHeadline(e.target.value)}
+          className="w-full"
+          style={tcgInputStyle}
+        />
+        <textarea
+          placeholder="What's meaningful about it?"
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          className="w-full resize-none"
+          style={{ ...tcgInputStyle, height: "6rem" }}
+        />
+        <input
+          type="text"
+          placeholder="Link (optional)"
+          value={ctaUrl}
+          onChange={(e) => setCtaUrl(e.target.value)}
+          className="w-full"
+          style={tcgInputStyle}
+        />
+        <input
+          type="text"
+          placeholder="Tags (comma separated)"
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+          className="w-full"
+          style={tcgInputStyle}
+        />
 
-        <button onClick={() => imageInputRef.current.click()} className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400">🖼 Add Image</button>
-        <input type="file" accept="image/*" ref={imageInputRef} onChange={handleImageChange} style={{ display: "none" }} />
+        <button
+          type="button"
+          onClick={() => imageInputRef.current.click()}
+          className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+        >
+          🖼 Add Image
+        </button>
+        <input
+          type="file"
+          accept="image/*"
+          ref={imageInputRef}
+          onChange={handleImageChange}
+          style={{ display: "none" }}
+        />
 
-        <button onClick={() => videoInputRef.current.click()} className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400">🎬 Add Video</button>
-        <input type="file" accept="video/*" ref={videoInputRef} onChange={handleVideoChange} style={{ display: "none" }} />
+        <button
+          type="button"
+          onClick={() => videoInputRef.current.click()}
+          className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+        >
+          🎬 Add Video
+        </button>
+        <input
+          type="file"
+          accept="video/*"
+          ref={videoInputRef}
+          onChange={handleVideoChange}
+          style={{ display: "none" }}
+        />
 
-        <button onClick={handlePost} className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md">🚀 Post to {wallType.toUpperCase()} Wall</button>
+        <button
+          onClick={handlePost}
+          className="bg-[#00ff99] hover:bg-[#00ffaa] text-black font-bold px-4 py-2 rounded w-full shadow-md"
+        >
+          🚀 Post to {wallType.toUpperCase()} Wall
+        </button>
 
         <div className="space-y-2">
-          <h3 className="text-cyan-300 font-semibold">🌐 Submit a Social Link to SignalZ</h3>
-          <input type="text" placeholder="Paste any video or social link" value={linkInput} onChange={(e) => setLinkInput(e.target.value)} className="w-full" style={tcgInputStyle} />
-          <button onClick={handleSubmitLink} className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400">🔗 Submit Link</button>
+          <h3 className="text-cyan-300 font-semibold">
+            🌐 Submit a Social Link to SignalZ
+          </h3>
+          <input
+            type="text"
+            placeholder="Paste any video or social link"
+            value={linkInput}
+            onChange={(e) => setLinkInput(e.target.value)}
+            className="w-full"
+            style={tcgInputStyle}
+          />
+          <button
+            onClick={handleSubmitLink}
+            className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
+          >
+            🔗 Submit Link
+          </button>
         </div>
       </div>
     </div>
