@@ -242,9 +242,40 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   }}
 >
  
+   {/* 🚀 Floating CREATE Button + Mode Selector */}
+<div
+  style={{
+    position: "fixed",
+    bottom: "1.5rem",
+    left: "1.5rem",
+    zIndex: 99999,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "0.75rem",
+  }}
+>
+  <button
+    onClick={() => setShowCreateMenu((prev) => !prev)}
+    style={{
+      background: "linear-gradient(135deg, #00f0ff, #00bfff)",
+      color: "#000",
+      padding: "12px 24px",
+      borderRadius: "999px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      border: "none",
+      boxShadow: "0 0 15px #00f0ff88",
+      backdropFilter: "blur(6px)",
+      WebkitBackdropFilter: "blur(6px)",
+      transition: "all 0.2s ease-in-out",
+    }}
+  >
+    ＋ Create
+  </button>
+
   
-  
-  {/* 🚀 Floating CREATE Button + Mode Selector */}
+  {/* 🚀 Mode Selector */}
 {showCreateMenu && (
   <div
     style={{
