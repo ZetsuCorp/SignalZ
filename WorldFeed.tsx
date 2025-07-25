@@ -243,27 +243,22 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 >
  
   
-  
-  {/* 🚀 Floating CREATE Button + Mode Selector */}
+{/* 🚀 Floating CREATE Button + Single Toggle Box */}
 <div
   style={{
     position: "fixed",
     bottom: "1.5rem",
     left: "1.5rem",
     zIndex: 99999,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: "0.75rem",
   }}
 >
-  <button
+  <div
     onClick={() => setShowCreateMenu((prev) => !prev)}
     style={{
       background: "linear-gradient(135deg, #00f0ff, #00bfff)",
       color: "#000",
-      padding: "12px 24px",
-      borderRadius: "999px",
+      padding: "14px 28px",
+      borderRadius: "16px",
       fontWeight: "bold",
       cursor: "pointer",
       border: "none",
@@ -271,64 +266,51 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
       backdropFilter: "blur(6px)",
       WebkitBackdropFilter: "blur(6px)",
       transition: "all 0.2s ease-in-out",
+      width: "160px",
+      textAlign: "center",
+      userSelect: "none",
     }}
   >
-    ＋ Create
-  </button>
+    {!showCreateMenu && "＋ Create"}
 
-  {showCreateMenu && (
-    <div
-      style={{
-        background: "rgba(16, 16, 16, 0.65)",
-        border: "1px solid #00f0ff33",
-        borderRadius: "14px",
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        gap: "12px",
-        width: "240px",
-        boxShadow: "0 0 20px #00f0ff55",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        animation: "fadeIn 0.2s ease-in-out",
-      }}
-    >
-      {[
-        { label: "Image Post", icon: "📷", type: "image" },
-        { label: "Video Post", icon: "🎬", type: "video" },
-        { label: "Social Link", icon: "🔗", type: "link" },
-      ].map(({ label, icon, type }) => (
-        <button
-          key={type}
-          onClick={() => {
-            setCreateMode(type);
+    {showCreateMenu && (
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "20px" }}>
+        <span
+          style={{ cursor: "pointer" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setCreateMode("image");
             setShowCreateOverlay(true);
             setShowCreateMenu(false);
           }}
-          style={{
-            width: "100%",
-            padding: "10px 12px",
-            borderRadius: "10px",
-            border: "1px solid #00f0ff22",
-            background: "#181818",
-            color: "#00f0ff",
-            fontWeight: "600",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.background = "#00f0ff22")}
-          onMouseOut={(e) => (e.currentTarget.style.background = "#181818")}
         >
-          <span style={{ fontSize: "1.2rem" }}>{icon}</span>
-          <span style={{ flexGrow: 1 }}>{label}</span>
-        </button>
-      ))}
-    </div>
-  )}
+          📷
+        </span>
+        <span
+          style={{ cursor: "pointer" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setCreateMode("video");
+            setShowCreateOverlay(true);
+            setShowCreateMenu(false);
+          }}
+        >
+          🎬
+        </span>
+        <span
+          style={{ cursor: "pointer" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setCreateMode("link");
+            setShowCreateOverlay(true);
+            setShowCreateMenu(false);
+          }}
+        >
+          🔗
+        </span>
+      </div>
+    )}
+  </div>
 </div>
 
 
