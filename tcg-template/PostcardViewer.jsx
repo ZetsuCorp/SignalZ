@@ -46,36 +46,48 @@ export default function PostcardViewer() {
       style={{
         width: "100%",
         padding: "1rem",
-        background: "#0a0a0a",
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
         borderBottom: "1px solid #222",
         borderTopLeftRadius: "12px",
         borderTopRightRadius: "12px",
+        overflow: "hidden", // ✅ important
         position: "relative",
         zIndex: 5,
       }}
     >
-      <h2
+      {/* ✅ Inner background layer */}
+      <div
         style={{
-          color: "#00f0ff",
-          fontSize: "1rem",
-          marginBottom: "0.5rem",
-          textAlign: "center",
-          textShadow: "0 0 4px #00f0ff66",
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          zIndex: 0,
         }}
-      >
-        🧵 Session Postcard Preview
-      </h2>
+      />
 
-      {loading ? (
-        <div style={{ color: "#888", textAlign: "center" }}>Loading...</div>
-      ) : post ? (
-        <TCGCardTemplate {...post} />
-      ) : (
-        <EmptyCard />
-      )}
+      {/* ✅ Foreground content */}
+      <div style={{ position: "relative", zIndex: 2 }}>
+        <h2
+          style={{
+            color: "#00f0ff",
+            fontSize: "1rem",
+            marginBottom: "0.5rem",
+            textAlign: "center",
+            textShadow: "0 0 4px #00f0ff66",
+          }}
+        >
+          🧵 Session Postcard Preview
+        </h2>
+
+        {loading ? (
+          <div style={{ color: "#888", textAlign: "center" }}>Loading...</div>
+        ) : post ? (
+          <TCGCardTemplate {...post} />
+        ) : (
+          <EmptyCard />
+        )}
+      </div>
     </div>
   );
 }
