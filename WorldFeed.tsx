@@ -279,25 +279,62 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   </button>
 
   {showCreateMenu && (
+  <div
+    style={{
+      position: "absolute",
+      top: "60px",
+      right: "20px",
+      zIndex: 9999,
+      width: "320px",
+      border: "4px solid rgba(0,255,255,0.3)",
+      borderRadius: "18px",
+      boxShadow: "0 0 25px rgba(0, 255, 255, 0.2)",
+      overflow: "hidden",
+      background: "#0a0a0a",
+    }}
+  >
+    {/* Background image from session */}
     <div
       style={{
-        background: "rgba(16, 16, 16, 0.65)",
-        border: "1px solid #00f0ff33",
-        borderRadius: "14px",
-        padding: "1rem",
+        position: "absolute",
+        inset: 0,
+        backgroundImage: `url("/postcard-assets/cardbase/${sessionStorage.getItem("session_bg")}.png")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        opacity: 0.2,
+        zIndex: 0,
+      }}
+    />
+
+    {/* Card content */}
+    <div
+      style={{
+        position: "relative",
+        padding: "1.25rem",
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
         gap: "12px",
-        width: "240px",
-        boxShadow: "0 0 20px #00f0ff55",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        animation: "fadeIn 0.2s ease-in-out",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        color: "#00f0ff",
+        zIndex: 2,
       }}
     >
+      <div
+        style={{
+          fontSize: "1.1rem",
+          fontWeight: "bold",
+          color: "#00f0ff",
+          textAlign: "center",
+          borderBottom: "1px solid #00f0ff55",
+          paddingBottom: "6px",
+        }}
+      >
+        🧵 Create a TCG Post
+      </div>
+
       {[
-        { label: "Image Post", icon: "📷", type: "image" },
+        { label: "Image Post", icon: "🖼️", type: "image" },
         { label: "Video Post", icon: "🎬", type: "video" },
         { label: "Social Link", icon: "🔗", type: "link" },
       ].map(({ label, icon, type }) => (
@@ -310,20 +347,25 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
           }}
           style={{
             width: "100%",
-            padding: "10px 12px",
+            padding: "12px",
             borderRadius: "10px",
-            border: "5px solid #00f0ff22",
-            background: "#181818",
+            border: "2px solid #00f0ff33",
+            background: "#0f0f0f",
             color: "#00f0ff",
             fontWeight: "600",
+            fontSize: "1rem",
             display: "flex",
             alignItems: "center",
             gap: "10px",
             cursor: "pointer",
             transition: "all 0.2s ease",
           }}
-          onMouseOver={(e) => (e.currentTarget.style.background = "#00f0ff22")}
-          onMouseOut={(e) => (e.currentTarget.style.background = "#181818")}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.background = "#00f0ff22")
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.background = "#0f0f0f")
+          }
         >
           <span style={{ fontSize: "1.2rem" }}>{icon}</span>
           <span style={{ flexGrow: 1 }}>{label}</span>
