@@ -70,7 +70,7 @@ const filePath = `${sessionId}/${Date.now()}_${image.name}`;
       alert("Image upload failed");
       return "";
     }
-    return ${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath};
+return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
