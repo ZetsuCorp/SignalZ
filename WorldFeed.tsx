@@ -4,7 +4,7 @@ import ChumFeedPanel from "./src/ChumFeedPanel";
 import PostForm from "./PostForm"; // ✅ keep using your working form
 import CreatePostShell from "./CreatePostShell";
 import PostcardViewer from "./tcg-template/PostcardViewer";
-import PostStatsView from "./PostStatsView";
+import PostStatsView from "./src/PostStatsView";
 
 
 
