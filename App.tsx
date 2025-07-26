@@ -53,7 +53,7 @@ export default function App() {
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
 
-        {/* 🔹 Dropdown Tab Row (above main tabs) */}
+        {/* 🔹 Dropdown Tab Row (styled like MAIN tabs) */}
         <div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
           {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
             <button
@@ -61,10 +61,8 @@ export default function App() {
               onClick={() =>
                 setOpenDropdown(openDropdown === tabName ? null : tabName)
               }
-              className={`px-4 py-2 border rounded text-sm font-bold transition-all duration-150 ${
-                openDropdown === tabName
-                  ? "border-cyan-400 bg-[#0e2d3b] text-white shadow-[0_0_12px_#00f0ffaa]"
-                  : "border-cyan-700 text-cyan-300 bg-[#06161e] hover:border-cyan-400 hover:bg-cyan-900 hover:text-white"
+              className={`px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
+                openDropdown === tabName ? "border-b-2 border-cyan-300 text-white" : ""
               }`}
             >
               {tabName}
