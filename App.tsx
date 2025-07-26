@@ -27,7 +27,7 @@ export default function App() {
     setEditorVisible(true);
   };
 
-  const handleMediaConfirm = (editedSrc: string) => {
+  const handleMediaConfirm = (editedSrc) => {
     setEditorVisible(false);
     setEditorType(null);
     setEditorSrc(null);
@@ -61,7 +61,11 @@ export default function App() {
               onClick={() =>
                 setOpenDropdown(openDropdown === tabName ? null : tabName)
               }
-              className="px-4 py-2 border border-cyan-600 rounded text-cyan-300 text-sm hover:bg-cyan-800"
+              className={`group relative px-5 py-2 rounded-md text-sm font-bold
+                ${openDropdown === tabName
+                  ? "text-white border-cyan-400 bg-[#0f2934] shadow-[0_0_16px_#00f0ffaa]"
+                  : "text-cyan-300 bg-[#0b1d24] border-cyan-600 shadow-[0_0_8px_#00f0ff44] hover:shadow-[0_0_12px_#00f0ffaa] hover:bg-cyan-900"}
+                transition-all duration-150`}
             >
               {tabName}
             </button>
