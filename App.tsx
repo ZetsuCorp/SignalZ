@@ -59,7 +59,7 @@ export default function App() {
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={tab ${wallType === id ? "active" : ""}}
+              className={`tab ${wallType === id ? "active" : ""}`}
             >
               {id.toUpperCase()}
             </button>
