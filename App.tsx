@@ -44,7 +44,8 @@ export default function App() {
 
       {/* 🔹 Main Feed Area */}
       <main className="right-panel">
-        <header className="text-center py-4 border-b border-cyan-800 relative">
+        {/* SIGNALZ Header */}
+        <header className="text-center py-4 border-b border-cyan-800 relative bg-[#0a0a0a] z-50">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
             <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">
               🌐
@@ -60,12 +61,12 @@ export default function App() {
         </header>
 
         {/* Wall Selector Tabs */}
-        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
+        <div className="sticky top-0 bg-[#0a0a0a] z-40 flex justify-center gap-2 py-4 border-b border-cyan-800">
           {["main", "alt", "zetsu"].map((id) => (
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={`tab px-4 py-2 rounded border border-cyan-700 text-cyan-300 transition hover:bg-cyan-900 ${
+              className={`px-4 py-2 rounded border border-cyan-700 text-cyan-300 transition hover:bg-cyan-900 ${
                 wallType === id ? "bg-cyan-800 text-white" : ""
               }`}
             >
@@ -74,18 +75,13 @@ export default function App() {
           ))}
         </div>
 
-        {/* Feed */}
-        <div className="feed-scroll">
-          <WorldFeed wallType={wallType} />
-        </div>
-
-        {/* Dropdown Tabs */}
-        <div className="flex justify-center gap-6 py-4 border-b border-cyan-800 relative z-10">
+        {/* Sticky Dropdown Tabs */}
+        <div className="sticky top-[85px] bg-[#0a0a0a] z-30 flex justify-center gap-6 py-4 border-b border-cyan-800">
           {["about", "sources", "tools"].map((id) => (
-            <div key={id} className="relative">
+            <div key={id} className="relative flex flex-col items-center">
               <button
                 onClick={() => toggleDropdown(id)}
-                className={`px-4 py-2 rounded border border-cyan-700 text-cyan-300 transition duration-200 hover:bg-cyan-900 ${
+                className={`px-4 py-2 rounded border border-cyan-700 text-cyan-300 transition hover:bg-cyan-900 ${
                   activeDropdown === id ? "bg-cyan-800 text-white" : ""
                 }`}
               >
@@ -93,15 +89,20 @@ export default function App() {
               </button>
 
               {activeDropdown === id && (
-                <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-[#101820] border border-cyan-700 shadow-xl p-4 rounded z-50 text-center">
+                <div className="mt-2 w-64 bg-[#101820] border border-cyan-700 shadow-xl p-4 rounded z-50 text-center">
                   <h3 className="text-cyan-200 text-lg font-semibold mb-2">{id.toUpperCase()}</h3>
                   <p className="text-cyan-400 text-sm">
-                    This is the content for <strong>{id}</strong>. Add your info here.
+                    This is the content for <strong>{id}</strong>. Add anything here.
                   </p>
                 </div>
               )}
             </div>
           ))}
+        </div>
+
+        {/* Feed Scroll Area */}
+        <div className="feed-scroll">
+          <WorldFeed wallType={wallType} />
         </div>
       </main>
 
