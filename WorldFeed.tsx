@@ -182,9 +182,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   <ChumFeedPanel />
 </div>
 
-/////////////////////////////////////////////////////////////////
 {/* 📝 Create Post Overlay */}
-   
 {showCreateOverlay && (
   <div
     style={{
@@ -216,16 +214,16 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
         overflow: "hidden",
       }}
     >
-      {/* ✅ Let PostForm handle title and ✖ logic */}
       <PostForm
         wallType={wallType}
         onMediaPreview={() => {}}
         createMode={createMode}
-        closeOverlay={() => setShowCreateOverlay(false)} // ✅ pass down
+        closeOverlay={() => setShowCreateOverlay(false)}
       />
     </div>
   </div>
-)}
+)}  {/* ✅ CLOSE this whole block properly */}
+
 
 
 //////////////
