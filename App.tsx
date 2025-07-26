@@ -7,12 +7,11 @@ export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
-
-  const [openDropdown, setOpenDropdown] = useState(null);
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
@@ -36,16 +35,14 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
-      {/* Session ID Floating Overlay */}
+      {/* 🔹 Session Overlay */}
       <SessionContainer />
 
-      {/* Main Feed Area */}
       <main className="right-panel">
+        {/* 🔹 Header Logo */}
         <header className="text-center py-4 border-b border-cyan-800 relative">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
-            <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">
-              🌐
-            </span>
+            <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">🌐</span>
             <img
               src="/sigicons/ripple.gif"
               alt="Ripple"
@@ -56,48 +53,55 @@ export default function App() {
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
 
-        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800 relative">
+        {/* 🔹 Dropdown Tab Row (above main tabs) */}
+        <div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
+          {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
+            <button
+              key={tabName}
+              onClick={() =>
+                setOpenDropdown(openDropdown === tabName ? null : tabName)
+              }
+              className={`px-4 py-2 border rounded text-sm font-bold transition-all duration-150 ${
+                openDropdown === tabName
+                  ? "border-cyan-400 bg-[#0e2d3b] text-white shadow-[0_0_12px_#00f0ffaa]"
+                  : "border-cyan-700 text-cyan-300 bg-[#06161e] hover:border-cyan-400 hover:bg-cyan-900 hover:text-white"
+              }`}
+            >
+              {tabName}
+            </button>
+          ))}
+        </div>
+
+        {/* 🔹 Dropdown Container Panel */}
+        {openDropdown && (
+          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+            <h2 className="text-xl font-bold">{openDropdown} Panel</h2>
+            <p className="text-sm opacity-60 mt-2">(You can customize this container)</p>
+          </div>
+        )}
+
+        {/* 🔹 Wall Type Tabs */}
+        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
           {["main", "alt", "zetsu"].map((id) => (
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={`tab ${wallType === id ? "active" : ""}`}
+              className={`tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
+                wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
+              }`}
             >
               {id.toUpperCase()}
             </button>
           ))}
-
-          {["Filters", "Tools", "Extras", "Modes"].map((tabName) => (
-            <div className="relative" key={tabName}>
-              <button
-                onClick={() =>
-                  setOpenDropdown(openDropdown === tabName ? null : tabName)
-                }
-                className="ml-4 px-3 py-1 border border-cyan-700 rounded hover:bg-cyan-800 text-cyan-300 text-sm"
-              >
-                {tabName} ▼
-              </button>
-
-              {openDropdown === tabName && (
-                <div className="absolute top-full mt-1 left-0 bg-[#081c24] text-cyan-200 border border-cyan-700 rounded shadow-xl z-50 w-48 p-3">
-                  <p className="text-sm font-bold mb-2">{tabName} Panel</p>
-                  <ul className="space-y-2 text-sm">
-                    <li className="hover:underline cursor-pointer">Option A</li>
-                    <li className="hover:underline cursor-pointer">Option B</li>
-                    <li className="hover:underline cursor-pointer">Option C</li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          ))}
         </div>
 
+        {/* 🔹 Feed Content */}
         <div className="feed-scroll">
           <WorldFeed wallType={wallType} />
         </div>
       </main>
 
-      {/* Settings Drawer */}
+      {/* ⚙️ Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
@@ -116,7 +120,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Media Overlay Editor */}
+      {/* 🖼️ Media Editor */}
       {editorVisible && editorSrc && (
         <MediaEditor
           type={editorType}
