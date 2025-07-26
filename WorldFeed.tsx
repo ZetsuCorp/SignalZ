@@ -173,17 +173,18 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 /////////////////////////////////////////////////////////////////
+/////////Left-panel
+  ////////////////////////
   return (
-    <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
-  <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
-    <PostcardViewer />
-    <PostStatsView />
-    <ChumFeedPanel />
-  </div>
+ <div className="left-panel">
+  <PostcardViewer />
+  <PostStatsView />
+  <ChumFeedPanel />
+</div>
 
-
-    
-      
+/////////////////////////////////////////////////////////////////
+/////////-create post overlay
+////////////////////////
 {showCreateOverlay && (
   <div
     style={{
@@ -226,12 +227,9 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   </div>
 )}
 
-
-
-
-
-
-      
+//////////////
+///scroll-bar for old post form i think
+//////////      
 <div
   className="hide-scrollbar"
   style={{
@@ -242,9 +240,8 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     overflowY: "scroll",
   }}
 >
- 
   
-{/* 🚀 Floating CREATE Button + Single Toggle Box */}
+{/* 🚀 Floating CREATE Button + Single Toggle Box  new post form overlay */}
 <div
   style={{
     position: "fixed",
@@ -316,6 +313,11 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
 
 
+
+
+
+
+  <div className="main-panel hide-scrollbar">
   
 
   {/* 🔁 Begin rendering posts */}
@@ -746,7 +748,9 @@ return (
                 
               </div>
             </div>
-            //////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ /////////////World-feeds-scroll
+ //////////////////////////////////////////////
           );
         })}
 
@@ -778,6 +782,11 @@ return (
           overflowY: "scroll",
         }}
       >
+</div>
+
+
+  
+
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
 
         <iframe
