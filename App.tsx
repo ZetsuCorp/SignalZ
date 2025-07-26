@@ -55,7 +55,7 @@ export default function App() {
 
         {/* 🔹 Dropdown Tab Row (above main tabs) */}
         <div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
-          {["Filters", "Tools", "Extras", "Modes"].map((tabName) => (
+          {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
             <button
               key={tabName}
               onClick={() =>
