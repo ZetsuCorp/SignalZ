@@ -38,7 +38,7 @@ export default function App() {
   };
 
   return (
-    <div className="app-wrapper">
+    <div className="app-wrapper relative min-h-screen pb-24">
       {/* Session ID Floating Overlay */}
       <SessionContainer />
 
@@ -75,36 +75,38 @@ export default function App() {
           ))}
         </div>
 
-        {/* Sticky Dropdown Tabs */}
-        <div className="sticky top-[85px] bg-[#0a0a0a] z-30 flex justify-center gap-6 py-4 border-b border-cyan-800">
-          {["about", "sources", "tools"].map((id) => (
-            <div key={id} className="relative flex flex-col items-center">
-              <button
-                onClick={() => toggleDropdown(id)}
-                className={`px-4 py-2 rounded border border-cyan-700 text-cyan-300 transition hover:bg-cyan-900 ${
-                  activeDropdown === id ? "bg-cyan-800 text-white" : ""
-                }`}
-              >
-                {id.toUpperCase()}
-              </button>
-
-              {activeDropdown === id && (
-                <div className="mt-2 w-64 bg-[#101820] border border-cyan-700 shadow-xl p-4 rounded z-50 text-center">
-                  <h3 className="text-cyan-200 text-lg font-semibold mb-2">{id.toUpperCase()}</h3>
-                  <p className="text-cyan-400 text-sm">
-                    This is the content for <strong>{id}</strong>. Add anything here.
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
         {/* Feed Scroll Area */}
         <div className="feed-scroll">
           <WorldFeed wallType={wallType} />
         </div>
       </main>
+
+      {/* ⬇ Bottom-Centered Sticky Tab Row */}
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 bg-[#0a0a0a] z-50 w-full max-w-screen flex justify-center gap-6 py-3 border-t border-cyan-800">
+        {["about", "sources", "tools"].map((id) => (
+          <div key={id} className="relative flex flex-col items-center">
+            {/* Dropdown above the tab */}
+            {activeDropdown === id && (
+              <div className="mb-2 w-64 bg-[#101820] border border-cyan-700 shadow-xl p-4 rounded z-50 text-center absolute bottom-full">
+                <h3 className="text-cyan-200 text-lg font-semibold mb-2">
+                  {id.toUpperCase()}
+                </h3>
+                <p className="text-cyan-400 text-sm">
+                  This is the content for <strong>{id}</strong>. Add anything here.
+                </p>
+              </div>
+            )}
+            <button
+              onClick={() => toggleDropdown(id)}
+              className={`px-4 py-2 rounded border border-cyan-700 text-cyan-300 transition hover:bg-cyan-900 ${
+                activeDropdown === id ? "bg-cyan-800 text-white" : ""
+              }`}
+            >
+              {id.toUpperCase()}
+            </button>
+          </div>
+        ))}
+      </div>
 
       {/* Settings Drawer */}
       {showSettings && (
