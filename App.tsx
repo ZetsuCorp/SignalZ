@@ -4,40 +4,42 @@ import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
 
 export default function App() {
-  const [wallType, setWallType] = useState("main");
-  const [showSettings, setShowSettings] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [wallType, setWallType] = useState("main");
+  const [showSettings, setShowSettings] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const [editorVisible, setEditorVisible] = useState(false);
-  const [editorType, setEditorType] = useState(null);
-  const [editorSrc, setEditorSrc] = useState(null);
+  const [editorVisible, setEditorVisible] = useState(false);
+  const [editorType, setEditorType] = useState(null);
+  const [editorSrc, setEditorSrc] = useState(null);
 
-  useEffect(() => {
-    document.body.classList.toggle("dark-mode", isDarkMode);
-  }, [isDarkMode]);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
-  useEffect(() => {
-    document.body.classList.toggle("modal-open", editorVisible);
-  }, [editorVisible]);
+  useEffect(() => {
+    document.body.classList.toggle("dark-mode", isDarkMode);
+  }, [isDarkMode]);
 
-  const handleMediaPreview = (type, src) => {
-    setEditorType(type);
-    setEditorSrc(src);
-    setEditorVisible(true);
-  };
+  useEffect(() => {
+    document.body.classList.toggle("modal-open", editorVisible);
+  }, [editorVisible]);
 
-  const handleMediaConfirm = (editedSrc: string) => {
-    setEditorVisible(false);
-    setEditorType(null);
-    setEditorSrc(null);
-  };
+  const handleMediaPreview = (type, src) => {
+    setEditorType(type);
+    setEditorSrc(src);
+    setEditorVisible(true);
+  };
 
-  return (
-    <div className="app-wrapper">
-      {/* Session ID Floating Overlay */}
-      <SessionContainer />
+  const handleMediaConfirm = (editedSrc) => {
+    setEditorVisible(false);
+    setEditorType(null);
+    setEditorSrc(null);
+  };
 
-     {/* 🔹 Main Feed Area */}
+  return (
+    <div className="app-wrapper">
+      {/* Session ID Floating Overlay */}
+      <SessionContainer />
+
+      {/* Main Feed Area */}
       <main className="right-panel">
         <header className="text-center py-4 border-b border-cyan-800 relative">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
@@ -54,51 +56,75 @@ export default function App() {
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
 
-        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
-          {["main", "alt", "zetsu"].map((id) => (
-            <button
-              key={id}
-              onClick={() => setWallType(id)}
-              className={`tab ${wallType === id ? "active" : ""}`}
-            >
-              {id.toUpperCase()}
-            </button>
-          ))}
-        </div>
+        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800 relative">
+          {["main", "alt", "zetsu"].map((id) => (
+            <button
+              key={id}
+              onClick={() => setWallType(id)}
+              className={`tab ${wallType === id ? "active" : ""}`}
+            >
+              {id.toUpperCase()}
+            </button>
+          ))}
 
-        <div className="feed-scroll">
-          <WorldFeed wallType={wallType} />
-        </div>
-      </main>
+          {["Filters", "Tools", "Extras", "Modes"].map((tabName) => (
+            <div className="relative" key={tabName}>
+              <button
+                onClick={() =>
+                  setOpenDropdown(openDropdown === tabName ? null : tabName)
+                }
+                className="ml-4 px-3 py-1 border border-cyan-700 rounded hover:bg-cyan-800 text-cyan-300 text-sm"
+              >
+                {tabName} ▼
+              </button>
 
-      {/* Settings Drawer */}
-      {showSettings && (
-        <div className="settings-drawer">
-          <h3>Settings</h3>
-          <div className="toggle-row mt-3">
-            <input
-              type="checkbox"
-              id="darkmode"
-              checked={isDarkMode}
-              onChange={(e) => setIsDarkMode(e.target.checked)}
-            />
-            <label htmlFor="darkmode">Dark Mode</label>
-          </div>
-          <button className="mt-4" onClick={() => setShowSettings(false)}>
-            Close
-          </button>
-        </div>
-      )}
+              {openDropdown === tabName && (
+                <div className="absolute top-full mt-1 left-0 bg-[#081c24] text-cyan-200 border border-cyan-700 rounded shadow-xl z-50 w-48 p-3">
+                  <p className="text-sm font-bold mb-2">{tabName} Panel</p>
+                  <ul className="space-y-2 text-sm">
+                    <li className="hover:underline cursor-pointer">Option A</li>
+                    <li className="hover:underline cursor-pointer">Option B</li>
+                    <li className="hover:underline cursor-pointer">Option C</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
 
-      {/* Media Overlay Editor */}
-      {editorVisible && editorSrc && (
-        <MediaEditor
-          type={editorType}
-          src={editorSrc}
-          onClose={() => setEditorVisible(false)}
-          onConfirm={handleMediaConfirm}
-        />
-      )}
-    </div>
-  );
+        <div className="feed-scroll">
+          <WorldFeed wallType={wallType} />
+        </div>
+      </main>
+
+      {/* Settings Drawer */}
+      {showSettings && (
+        <div className="settings-drawer">
+          <h3>Settings</h3>
+          <div className="toggle-row mt-3">
+            <input
+              type="checkbox"
+              id="darkmode"
+              checked={isDarkMode}
+              onChange={(e) => setIsDarkMode(e.target.checked)}
+            />
+            <label htmlFor="darkmode">Dark Mode</label>
+          </div>
+          <button className="mt-4" onClick={() => setShowSettings(false)}>
+            Close
+          </button>
+        </div>
+      )}
+
+      {/* Media Overlay Editor */}
+      {editorVisible && editorSrc && (
+        <MediaEditor
+          type={editorType}
+          src={editorSrc}
+          onClose={() => setEditorVisible(false)}
+          onConfirm={handleMediaConfirm}
+        />
+      )}
+    </div>
+  );
 }
