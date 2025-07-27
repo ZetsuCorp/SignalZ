@@ -26,19 +26,18 @@ function getEmbedUrl(url) {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     const id = match ? match[1] : "";
     return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
-
   }
   if (url.includes("tiktok.com")) {
     const match = url.match(/\/video\/(\d+)/);
-    return match ? https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1 : null;
-  
+    return match ? `https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1` : null;
+  }
   return null;
 }
 /////////////////////////////////////////////////////////////
 // ✅ Fetch comments
 async function fetchComments(postId) {
   try {
-    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
+    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -66,7 +65,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
+        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
@@ -173,12 +172,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   if (posts.length === 0) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
-
-
-
-
-
- return (
+  return (
   <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
     {/* 🟥 Left Panel */}
     <div className="left-panel" style={{ width: "20%", borderRight: "1px solid #222" }}>
@@ -189,13 +183,13 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
     {/* ⚫ Main Panel */}
     <div className="main-panel" style={{ width: "60%" }}>
-      {/* ✅ next steps: add post loop, create trigger, and overlay logic */}
+      {/* placeholder for post stream + create overlay */}
     </div>
 
     {/* 🟦 Right Panel */}
     <div className="news-panel" style={{ width: "20%", borderLeft: "1px solid #222" }}>
-      {/* ✅ iframe + <NewsFeed /> go here */}
-   </div>
+      {/* placeholder for iframe + NewsFeed */}
+      </div>
     </div>
   );
 }
