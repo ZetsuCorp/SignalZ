@@ -181,10 +181,9 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
       <ChumFeedPanel />
     </div>
 
- 
-
-
-
+    {/* ⚫ Main Panel */}
+    <div className="main-panel" style={{ width: "60%" }}>
+          {/* placeholder for iframe + NewsFeed */}
 
 
     {/* 🟦 Right Panel */}
