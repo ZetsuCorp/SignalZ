@@ -790,11 +790,11 @@ return (
         }}
       >
     </div>
-
+      }
     {/* 🟦 Right Panel */}
     <div className="news-panel" style={{ width: "20%", borderLeft: "1px solid #222" }}>
       {/* placeholder for iframe + NewsFeed */}
       </div>
     </div>
   );
-}}
+}
