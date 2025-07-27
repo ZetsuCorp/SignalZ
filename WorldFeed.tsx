@@ -264,9 +264,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
 
 
-//////////////
-///scroll-bar for old post form i think
-//////////      
+    
 <div
   className="hide-scrollbar"
   style={{
