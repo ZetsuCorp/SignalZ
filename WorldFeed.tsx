@@ -172,16 +172,54 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   if (posts.length === 0) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
-/////////////////////////////////////////////////////////////////
-/////////Left-panel
-  ////////////////////////
-  return (
- <div className="left-panel">
-  <PostcardViewer />
-  <PostStatsView />
-  <ChumFeedPanel />
-</div>
 
+
+
+
+  return (
+    <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+      {/* 🟥 Left Panel */}
+      <div
+        className="left-panel"
+        style={{ width: "20%", borderRight: "1px solid #222", padding: "1rem" }}
+      >
+        <PostcardViewer />
+        <PostStatsView />
+        <ChumFeedPanel />
+      </div>
+  
+      {/* ⚫ Main Panel */}
+      <div
+        className="main-panel"
+        style={{
+          width: "60%",
+          padding: "1rem",
+          borderRight: "1px solid #222",
+          minHeight: "100vh",
+        }}
+      >
+        {/* 🔘 Create Overlay Mount */}
+        {showCreateOverlay && (
+          <CreatePostShell
+            closeOverlay={handleCloseOverlay}
+            overlayType={createMode}
+            wallType={wallType}
+          />
+        )}
+  
+        {/* 📝 PostForm Always Visible */}
+        <PostForm
+          wallType={wallType}
+          onMediaPreview={() => {}}
+          overlayType={createMode}
+          closeOverlay={handleCloseOverlay}
+        />
+  
+        {/* 🧱 world feed */}
+        {posts.map((post) => (
+          <div key={post.id} style={{ marginTop: "2rem" }}>
+            {/* Add your post render logic here */}
+            
 {/* 📝 Create Post Overlay */}
 {showCreateOverlay && (
   <div
@@ -783,26 +821,42 @@ return (
       >
 </div>
 
-
-  
-
-        <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
-
-        <iframe
-          width="100%"
-          height="100%"
-          src="https://abcnews.go.com/video/embed?id=abc_live11"
-          allowFullScreen
-          frameBorder="0"
-          style={{
-            borderRadius: "10px",
-            border: "1px solid #00f0ff44",
-            objectFit: "cover",
-          }}
-        />
-
-        <NewsFeed />
+          </div>
+        ))}
       </div>
+  
+      {/* 🟦 Right Panel */}
+      {showRightPanel && (
+        <div
+          className="news-panel"
+          style={{
+            width: "20%",
+            borderLeft: "1px solid #222",
+            padding: "1rem",
+            background: "#0a0a0a",
+          }}
+        >
+          <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>
+            🗞️ News Feed
+          </h2>
+  
+          <iframe
+            width="100%"
+            height="200"
+            src="https://abcnews.go.com/video/embed?id=abc_live11"
+            allowFullScreen
+            frameBorder="0"
+            style={{
+              borderRadius: "10px",
+              border: "1px solid #00f0ff44",
+              objectFit: "cover",
+              marginBottom: "1rem",
+            }}
+          />
+  
+          <NewsFeed />
+        </div>
+      )}
     </div>
   );
-}
+  
