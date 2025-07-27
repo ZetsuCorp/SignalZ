@@ -195,6 +195,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     {/* 🟦 Right Panel */}
     <div className="news-panel" style={{ width: "20%", borderLeft: "1px solid #222" }}>
       {/* ✅ iframe + <NewsFeed /> go here */}
+   </div>
     </div>
-  </div>
-);
+  );
+}
