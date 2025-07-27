@@ -25,11 +25,11 @@ function getEmbedUrl(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     const id = match ? match[1] : "";
-    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
+    return https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0;
   }
   if (url.includes("tiktok.com")) {
     const match = url.match(/\/video\/(\d+)/);
-    return match ? `https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1` : null;
+    return match ? https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1 : null;
   }
   return null;
 }
@@ -37,7 +37,7 @@ function getEmbedUrl(url) {
 // ✅ Fetch comments
 async function fetchComments(postId) {
   try {
-    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
+    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -65,7 +65,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
+        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
@@ -176,51 +176,20 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
 
 
+
   return (
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
       {/* 🟥 Left Panel */}
-      <div
-        className="left-panel"
-        style={{ width: "20%", borderRight: "1px solid #222", padding: "1rem" }}
-      >
+      <div className="left-panel" style={{ width: "20%", borderRight: "1px solid #222" }}>
         <PostcardViewer />
         <PostStatsView />
         <ChumFeedPanel />
       </div>
   
       {/* ⚫ Main Panel */}
-      <div
-        className="main-panel"
-        style={{
-          width: "60%",
-          padding: "1rem",
-          borderRight: "1px solid #222",
-          minHeight: "100vh",
-        }}
-      >
-        {/* 🔘 Create Overlay Mount */}
-        {showCreateOverlay && (
-          <CreatePostShell
-            closeOverlay={handleCloseOverlay}
-            overlayType={createMode}
-            wallType={wallType}
-          />
-        )}
-  
-        {/* 📝 PostForm Always Visible */}
-        <PostForm
-          wallType={wallType}
-          onMediaPreview={() => {}}
-          overlayType={createMode}
-          closeOverlay={handleCloseOverlay}
-        />
-  
-        {/* 🧱 world feed */}
-        {posts.map((post) => (
-          <div key={post.id} style={{ marginTop: "2rem" }}>
-            {/* Add your post render logic here */}
-            
-{/* 📝 Create Post Overlay */}
+      <div className="main-panel" style={{ width: "60%" }}>
+        {/* placeholder for post stream + create overlay */}
+        {/* 📝 Create Post Overlay */}
 {showCreateOverlay && (
   <div
     style={{
@@ -264,7 +233,9 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
 
 
-    
+//////////////
+///scroll-bar for old post form i think
+//////////      
 <div
   className="hide-scrollbar"
   style={{
@@ -353,7 +324,8 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
 
   <div className="main-panel hide-scrollbar">
-  
+  const [showRightPanel, setShowRightPanel] = useState(true);
+
 
   {/* 🔁 Begin rendering posts */}
   {posts.map((post) => {
@@ -375,7 +347,7 @@ return (
     style={{
       marginBottom: "2rem",
       backgroundImage: bg
-        ? `url('/postcard-assets/cardbase/${bg}.png')`
+        ? url('/postcard-assets/cardbase/${bg}.png')
 
         : "repeating-linear-gradient(45deg, #222, #111 10px)", // ⛔ fallback pattern
       backgroundSize: "cover",
@@ -819,43 +791,62 @@ return (
       >
 </div>
 
-          </div>
-        ))}
       </div>
-  )
-      {/* 🟦 Right Panel */}
-      {showRightPanel && (
-        <div
-          className="news-panel"
-          style={{
-            width: "20%",
-            borderLeft: "1px solid #222",
-            padding: "1rem",
-            background: "#0a0a0a",
-          }}
-        >
-          <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>
-            🗞️ News Feed
-          </h2>
   
-          <iframe
-            width="100%"
-            height="200"
-            src="https://abcnews.go.com/video/embed?id=abc_live11"
-            allowFullScreen
-            frameBorder="0"
-            style={{
-              borderRadius: "10px",
-              border: "1px solid #00f0ff44",
-              objectFit: "cover",
-              marginBottom: "1rem",
-            }}
-          />
-  
-          <NewsFeed />
-        </div>
-      )}
-    </div>
-  );
-  )
-        );
+     {/* 🟦 Right Panel Toggle for Small Screens */}
+<button
+  onClick={() => setShowRightPanel(!showRightPanel)}
+  style={{
+    position: "fixed",
+    top: "1rem",
+    right: "1rem",
+    zIndex: 100000,
+    background: "#00f0ff",
+    color: "#000",
+    border: "none",
+    borderRadius: "8px",
+    padding: "0.5rem 1rem",
+    fontWeight: "bold",
+    cursor: "pointer",
+    display: "none", // ⬅️ this becomes visible via media query below
+  }}
+  className="toggle-news-btn"
+>
+  {showRightPanel ? "➖ News" : "📰 News"}
+</button>
+
+{/* 🟦 Right Panel Content */}
+{showRightPanel && (
+  <div
+    className="news-panel"
+    style={{
+      width: "20%",
+      borderLeft: "1px solid #222",
+      padding: "1rem",
+      background: "#0a0a0a",
+      overflowY: "auto",
+    }}
+  >
+    <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>
+      🗞️ News Feed
+    </h2>
+
+    <iframe
+      width="100%"
+      height="200"
+      src="https://abcnews.go.com/video/embed?id=abc_live11"
+      allowFullScreen
+      frameBorder="0"
+      style={{
+        borderRadius: "10px",
+        border: "1px solid #00f0ff44",
+        objectFit: "cover",
+        marginBottom: "1rem",
+      }}
+    />
+
+    <NewsFeed />
+  </div>
+)}
+
+
