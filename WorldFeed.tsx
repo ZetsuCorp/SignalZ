@@ -233,18 +233,6 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
       })}
     </div>
 
-    {/* 🔸 Right Panel (News) */}
-    <div
-      className="hide-scrollbar"
-      style={{
-        background: "#0a0a0a",
-        padding: "1rem",
-        borderLeft: "1px solid #222",
-        color: "white",
-        overflowY: "scroll",
-        maxHeight: "100vh",
-      }}
-    >
       <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
 
       <iframe
