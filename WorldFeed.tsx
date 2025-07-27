@@ -25,7 +25,7 @@ function getEmbedUrl(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     const id = match ? match[1] : "";
-  return https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0;
+    return https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0;
   }
   if (url.includes("tiktok.com")) {
     const match = url.match(/\/video\/(\d+)/);
@@ -172,7 +172,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   if (posts.length === 0) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
-  return (
+return (
   <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
     {/* 🟥 Left Panel */}
     <div className="left-panel" style={{ width: "20%", borderRight: "1px solid #222" }}>
@@ -183,13 +183,12 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
 
     {/* ⚫ Main Panel */}
     <div className="main-panel" style={{ width: "60%" }}>
-          {/* placeholder for iframe + NewsFeed */}
-
+      {/* placeholder for post stream + create overlay */}
+    </div>
 
     {/* 🟦 Right Panel */}
     <div className="news-panel" style={{ width: "20%", borderLeft: "1px solid #222" }}>
       {/* placeholder for iframe + NewsFeed */}
-      </div>
     </div>
-  );
-}
+  </div>
+);
