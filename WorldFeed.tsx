@@ -182,49 +182,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     </div>
 
     {/* ⚫ Main Panel */}
-    <div className="main-panel" style={{ width: "60%" }}>
-          
-{showCreateOverlay && (
-  <div
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(10,10,10,0.95)",
-      zIndex: 999999,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "2rem",
-    }}
-  >
-    <div
-      style={{
-        maxWidth: "800px",
-        width: "100%",
-        padding: "2rem",
-        borderRadius: "16px",
-        background: "linear-gradient(145deg, #0d0d0d, #060c0d)",
-        border: "16px solid rgba(0, 255, 255, 0.4)",
-        boxShadow:
-          "inset 0 0 30px rgba(0,255,255,0.08), 0 0 12px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.1)",
-        backdropFilter: "blur(6px)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* ✅ Let PostForm handle title and ✖ logic */}
-      <PostForm
-        wallType={wallType}
-        onMediaPreview={() => {}}
-        createMode={createMode}
-        closeOverlay={() => setShowCreateOverlay(false)} // ✅ pass down
-      />
-    </div>
-  </div>
-)}
+ 
 
 
 
