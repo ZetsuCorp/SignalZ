@@ -174,80 +174,16 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   }
 /////////////////////////////////////////////////////////////////
  return (
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "20% 1fr 22%",
-      width: "100%",
-      minHeight: "100vh",
-      background: "#0d0d0d",
-    }}
-  >
-    {/* 🔹 Left Panel */}
-    <div
-      style={{
-        background: "#0a0a0a",
-        borderRight: "1px solid #222",
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-      }}
-    >
-      <PostcardViewer />
-      <PostStatsView />
-      <ChumFeedPanel />
-    </div>
+  <div className="left-panel">
+  <PostcardViewer />
+  <PostStatsView />
+  <ChumFeedPanel />
+</div>
 
-    {/* 🔸 Center Feed */}
-    <div
-      className="hide-scrollbar"
-      style={{
-        padding: "1rem",
-        borderRight: "1px solid #222",
-        overflowY: "scroll",
-        maxHeight: "100vh",
-      }}
-    >
-      {/* ⚡ Floating Create Button */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: "1.5rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 99999,
-        }}
-      >
-        {/* Replace with your current create button */}
-      </div>
+  <div className="main-panel hide-scrollbar">
+  {/* All central content */}
+</div>
 
-      {/* 🔁 Loop over posts */}
-      {posts.map((post) => {
-        // your map/render logic stays the same...
-        return (
-          <div key={post.id}>
-            {/* Your styled post card block */}
-          </div>
-        );
-      })}
-    </div>
-
-      <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
-
-      <iframe
-        width="100%"
-        height="200"
-        src="https://abcnews.go.com/video/embed?id=abc_live11"
-        allowFullScreen
-        frameBorder="0"
-        style={{
-          borderRadius: "10px",
-          border: "1px solid #00f0ff44",
-          objectFit: "cover",
-          marginBottom: "1rem",
-        }}
-      />
 
       <NewsFeed />
     </div>
