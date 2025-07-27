@@ -184,7 +184,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
     {/* ⚫ Main Panel */}
     <div className="main-panel" style={{ width: "60%" }}>
       {/* placeholder for post stream + create overlay */}
-       return (
+       
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
   <div style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
     <PostcardViewer />
@@ -790,7 +790,7 @@ return (
         }}
       >
     </div>
-      }
+      
     {/* 🟦 Right Panel */}
     <div className="news-panel" style={{ width: "20%", borderLeft: "1px solid #222" }}>
       {/* placeholder for iframe + NewsFeed */}
