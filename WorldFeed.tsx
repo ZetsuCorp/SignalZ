@@ -822,7 +822,7 @@ return (
           </div>
         ))}
       </div>
-  
+  )
       {/* 🟦 Right Panel */}
       {showRightPanel && (
         <div
