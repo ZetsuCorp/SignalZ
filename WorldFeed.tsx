@@ -157,37 +157,203 @@ export default function WorldFeed({ wallType }) {
   }
 
   // ✅ FINAL RETURN LAYOUT
-  return (
+// ✅ FINAL RETURN LAYOUT
+return (
+  <div
+    className="page-container"
+    style={{
+      display: "flex",
+      flexDirection: "row",
+      height: "100vh",
+      overflow: "hidden",
+      width: "100vw",
+    }}
+  >
+    {/* 🟥 LeftFeed (always visible) */}
     <div
-      className="page-container"
+      className="left-feed"
       style={{
-        display: "flex",
-        flexDirection: "row",
-        height: "100vh",
-        overflow: "hidden",
-        width: "100vw",
+        width: "20%",
+        background: "#0a0a0a",
+        borderRight: "1px solid #222",
       }}
     >
-      {/* 🟥 LeftFeed */}
-      <div className="left-feed" style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
-        <PostcardViewer />
-        <PostStatsView />
-        <ChumFeedPanel />
-      </div>
+      <PostcardViewer />
+      <PostStatsView />
+      <ChumFeedPanel />
+    </div>
 
-      {/* ⚫ MiddleFeed */}
-      <div className="middle-feed" style={{ width: "60%", padding: "1rem" }}>
+    {/* 🔀 Responsive middle + right logic */}
+    <div style={{ width: "80%", display: "flex", flexDirection: "row" }}>
+      {/* ⚫ MiddleFeed (hide on ≤500px, show tab instead) */}
+      <div
+        className="middle-feed"
+        style={{
+          width: "60%",
+          padding: "1rem",
+          display:
+            window.innerWidth <= 500
+              ? "none"
+              : window.innerWidth <= 768
+              ? "100%"
+              : "block",
+        }}
+      >
         {posts.map((post) => (
-          <div key={post.id} style={{ marginTop: "2rem", borderBottom: "1px solid #222", paddingBottom: "1.5rem" }}>
-            <div style={{ fontWeight: "bold", fontSize: "1.2rem", color: "#00ffff" }}>{post.headline}</div>
-            {/* Add caption, media, comments, etc. */}
+          <div
+            key={post.id}
+            style={{
+              marginTop: "2rem",
+              borderBottom: "1px solid #222",
+              paddingBottom: "1.5rem",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                color: "#00ffff",
+              }}
+            >
+              {post.headline}
+            </div>
           </div>
         ))}
       </div>
 
-      {/* 🟦 RightFeed */}
-      <div className="right-feed" style={{ width: "20%", borderLeft: "1px solid #222", padding: "1rem" }}>
-        <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
+      {/* 🟦 RightFeed (hide if ≤768px) */}
+      {window.innerWidth > 768 && (
+        <div
+          className="right-feed"
+          style={{
+            width: "20%",
+            borderLeft: "1px solid #222",
+            padding: "1rem",
+          }}
+        >
+          <h2
+            style={{
+              marginBottom: "1rem",
+              fontSize: "1rem",
+              color: "#00f0ff",
+            }}
+          >
+            🗞️ News Feed
+          </h2>
+          <iframe
+            width="100%"
+            height="240"
+            src="https://abcnews.go.com/video/embed?id=abc_live11"
+            allowFullScreen
+            frameBorder="0"
+            style={{
+              borderRadius: "10px",
+              border: "1px solid #00f0ff44",
+              objectFit: "cover",
+              marginBottom: "1rem",
+            }}
+          ></iframe>
+          <NewsFeed />
+        </div>
+      )}
+    </div>
+
+    {/* 📱 Mobile Tabs (≤500px) */}
+    {window.innerWidth <= 500 && (
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          background: "#000",
+          borderTop: "1px solid #222",
+          display: "flex",
+          justifyContent: "space-around",
+          padding: "0.5rem",
+        }}
+      >
+        <button
+          onClick={() => setActiveTab("middle")}
+          style={{
+            color: activeTab === "middle" ? "#00ffff" : "#888",
+            fontWeight: "bold",
+            background: "none",
+            border: "none",
+          }}
+        >
+          Main
+        </button>
+        <button
+          onClick={() => setActiveTab("right")}
+          style={{
+            color: activeTab === "right" ? "#00ffff" : "#888",
+            fontWeight: "bold",
+            background: "none",
+            border: "none",
+          }}
+        >
+          Feed
+        </button>
+      </div>
+    )}
+
+    {/* 📲 Mobile Tab Content */}
+    {window.innerWidth <= 500 && activeTab === "middle" && (
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: "20%",
+          width: "80%",
+          padding: "1rem",
+          overflowY: "auto",
+          height: "100vh",
+        }}
+      >
+        {posts.map((post) => (
+          <div
+            key={post.id}
+            style={{
+              marginTop: "2rem",
+              borderBottom: "1px solid #222",
+              paddingBottom: "1.5rem",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                color: "#00ffff",
+              }}
+            >
+              {post.headline}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {window.innerWidth <= 500 && activeTab === "right" && (
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: "20%",
+          width: "80%",
+          padding: "1rem",
+          overflowY: "auto",
+          height: "100vh",
+        }}
+      >
+        <h2
+          style={{
+            marginBottom: "1rem",
+            fontSize: "1rem",
+            color: "#00f0ff",
+          }}
+        >
+          🗞️ News Feed
+        </h2>
         <iframe
           width="100%"
           height="240"
@@ -203,6 +369,6 @@ export default function WorldFeed({ wallType }) {
         ></iframe>
         <NewsFeed />
       </div>
-    </div>
-  );
-}
+    )}
+  </div>
+);
