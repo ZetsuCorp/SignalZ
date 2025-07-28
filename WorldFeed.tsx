@@ -156,98 +156,93 @@ export default function WorldFeed({ wallType }) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ✅ Render Feed Layout
-
-// ✅ Render Feed Layout
-return (
-  <div
-    className="page-container"
-    style={{
-      display: "flex",
-      flexDirection: "row",
-      width: "300vw",
-      height: "100vh",
-      overflowX: "auto",
-      scrollSnapType: "x mandatory",
-    }}
-  >
-    {/* 👇 Flex wrapper holding all 3 panels */}
-    <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
-      
-      {/* 🟥 LeftFeed */}
-      <div
-        className="left-feed"
-        style={{
-          width: "20%",
-          background: "#0a0a0a",
-          borderRight: "1px solid #222",
-        }}
-      >
-        <PostcardViewer />
-        <PostStatsView />
-        <ChumFeedPanel />
-      </div>
-
-      {/* ⚫ MiddleFeed */}
-      <div className="middle-feed" style={{ width: "60%", padding: "1rem" }}>
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            style={{
-              marginTop: "2rem",
-              borderBottom: "1px solid #222",
-              paddingBottom: "1.5rem",
-            }}
-          >
-            <div
-              style={{
-                fontWeight: "bold",
-                fontSize: "1.2rem",
-                color: "#00ffff",
-              }}
-            >
-              {post.headline}
-            </div>
-            {/* Add caption, media, comments, etc. */}
-          </div>
-        ))}
-      </div>
-
-      {/* 🟦 RightFeed */}
-      <div
-        className="right-feed"
-        style={{
-          width: "20%",
-          borderLeft: "1px solid #222",
-          padding: "1rem",
-        }}
-      >
-        <h2
+  // ✅ Render Feed Layout
+  return (
+    <div
+      className="page-container"
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        width: "300vw",
+        height: "100vh",
+        overflowX: "auto",
+        scrollSnapType: "x mandatory",
+      }}
+    >
+      <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+        {/* 🟥 LeftFeed */}
+        <div
+          className="left-feed"
           style={{
-            marginBottom: "1rem",
-            fontSize: "1rem",
-            color: "#00f0ff",
+            width: "20%",
+            background: "#0a0a0a",
+            borderRight: "1px solid #222",
           }}
         >
-          🗞️ News Feed
-        </h2>
-        <iframe
-          width="100%"
-          height="240"
-          src="https://abcnews.go.com/video/embed?id=abc_live11"
-          allowFullScreen
-          frameBorder="0"
+          <PostcardViewer />
+          <PostStatsView />
+          <ChumFeedPanel />
+        </div>
+
+        {/* ⚫ MiddleFeed */}
+        <div className="middle-feed" style={{ width: "60%", padding: "1rem" }}>
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              style={{
+                marginTop: "2rem",
+                borderBottom: "1px solid #222",
+                paddingBottom: "1.5rem",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                  color: "#00ffff",
+                }}
+              >
+                {post.headline}
+              </div>
+              {/* Add caption, media, comments, etc. */}
+            </div>
+          ))}
+        </div>
+
+        {/* 🟦 RightFeed */}
+        <div
+          className="right-feed"
           style={{
-            borderRadius: "10px",
-            border: "1px solid #00f0ff44",
-            objectFit: "cover",
-            marginBottom: "1rem",
+            width: "20%",
+            borderLeft: "1px solid #222",
+            padding: "1rem",
           }}
-        ></iframe>
-        <NewsFeed />
-      </div> {/* End right-feed */}
-    </div> {/* End flex wrapper */}
-  </div> /* End page-container */
-);
+        >
+          <h2
+            style={{
+              marginBottom: "1rem",
+              fontSize: "1rem",
+              color: "#00f0ff",
+            }}
+          >
+            🗞️ News Feed
+          </h2>
+          <iframe
+            width="100%"
+            height="240"
+            src="https://abcnews.go.com/video/embed?id=abc_live11"
+            allowFullScreen
+            frameBorder="0"
+            style={{
+              borderRadius: "10px",
+              border: "1px solid #00f0ff44",
+              objectFit: "cover",
+              marginBottom: "1rem",
+            }}
+          ></iframe>
+          <NewsFeed />
+        </div>
+      </div>
+    </div>
+  );
+}
