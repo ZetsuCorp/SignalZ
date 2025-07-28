@@ -213,5 +213,5 @@ export default function WorldFeed({ wallType }) {
     </div> {/* right-feed */}
     </div> {/* flex row wrapper */}
   </div> {/* page-container */}
-  );
-}
+  ); // ✅ RETURN closes here
+
