@@ -17,9 +17,11 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-dark);
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden; /* hide horizontal only */
+  overflow-y: auto;    /* allow vertical scrolling */
 }
+
 
 /* Auto-adjust text color for theme */
 @media (prefers-color-scheme: light) {
@@ -65,7 +67,7 @@ body {
 /* === middle-feed HEADER === */
 
 
-/* === TABS === */
+/* === WALL FEED TABS === */
 .tabs {
   display: flex;
   justify-content: center;
@@ -89,7 +91,7 @@ body {
   color: black;
 }
 
-/* === FORM INPUTS === */
+/* === POST CARD FORM INPUTS === */
 input,
 textarea,
 select {
