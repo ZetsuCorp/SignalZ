@@ -33,9 +33,9 @@ function getEmbedUrl(url) {
 }
 
 // ✅ Fetch comments
-async function fetchComments(postId) {
+async function fetchComments(postId, wallType) {
   try {
-    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
+    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}&wall_type=${wallType}`);
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -54,6 +54,8 @@ async function submitComment(postId, content, wallType) {
 }
 
 export default function WorldFeed({ wallType }) {
+  const safeWall = (wallType || "main").toLowerCase();
+
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [commentsMap, setCommentsMap] = useState({});
@@ -66,7 +68,6 @@ export default function WorldFeed({ wallType }) {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const safeWall = (wallType || "main").toLowerCase();
         const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
@@ -77,14 +78,14 @@ export default function WorldFeed({ wallType }) {
       }
     };
     fetchPosts();
-  }, [wallType]);
+  }, [safeWall]);
 
   useEffect(() => {
     posts.forEach(async (post) => {
-      const comments = await fetchComments(post.id);
+      const comments = await fetchComments(post.id, safeWall);
       setCommentsMap((prev) => ({ ...prev, [post.id]: comments }));
     });
-  }, [posts]);
+  }, [posts, safeWall]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -129,9 +130,9 @@ export default function WorldFeed({ wallType }) {
     const content = inputMap[postId];
     if (!content || !content.trim()) return;
 
-    const ok = await submitComment(postId, content, wallType);
+    const ok = await submitComment(postId, content, safeWall);
     if (ok) {
-      const updated = await fetchComments(postId);
+      const updated = await fetchComments(postId, safeWall);
       setCommentsMap((prev) => ({ ...prev, [postId]: updated }));
       setInputMap((prev) => ({ ...prev, [postId]: "" }));
     }
@@ -156,7 +157,6 @@ export default function WorldFeed({ wallType }) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
-  // ✅ Render Feed Layout
   return (
     <div
       className="page-container"
