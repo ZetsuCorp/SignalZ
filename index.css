@@ -60,11 +60,7 @@ body {
 /* === MAIN PANEL === */
 
 /* === FEED SCROLL CONTAINER === */
-.feed-scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-}
+
 
 /* === middle-feed HEADER === */
 
