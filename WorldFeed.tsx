@@ -157,30 +157,28 @@ export default function WorldFeed({ wallType }) {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // ✅ Render Feed Layout
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ✅ Render Feed Layout
 return (
   <div
     className="page-container"
     style={{
       display: "flex",
       flexDirection: "row",
-      width: "300vw", // 3 full-width pages
+      width: "300vw",
       height: "100vh",
       overflowX: "auto",
       scrollSnapType: "x mandatory",
     }}
   >
-    {/* 🟥 LeftFeed - Page 1 */}
+    {/* 🟥 LeftFeed */}
     <div
-      className="page left-feed"
+      className="left-feed"
       style={{
         width: "100vw",
-        height: "100vh",
-        scrollSnapAlign: "start",
         background: "#0a0a0a",
         borderRight: "1px solid #222",
+        scrollSnapAlign: "start",
         padding: "1rem",
         boxSizing: "border-box",
       }}
@@ -190,18 +188,17 @@ return (
       <ChumFeedPanel />
     </div>
 
-    {/* ⚫ MiddleFeed - Page 2 */}
+    {/* ⚫ MiddleFeed */}
     <div
-      className="page middle-feed"
+      className="middle-feed"
       style={{
         width: "100vw",
-        height: "100vh",
-        scrollSnapAlign: "start",
         padding: "1rem",
+        scrollSnapAlign: "start",
         boxSizing: "border-box",
-        overflowY: "auto",
       }}
     >
+      {/* 🧱 World Feed */}
       {posts.map((post) => (
         <div
           key={post.id}
@@ -220,21 +217,20 @@ return (
           >
             {post.headline}
           </div>
+          {/* Add caption, media, comments, etc. */}
         </div>
       ))}
     </div>
 
-    {/* 🟦 RightFeed - Page 3 */}
+    {/* 🟦 RightFeed */}
     <div
-      className="page right-feed"
+      className="right-feed"
       style={{
         width: "100vw",
-        height: "100vh",
-        scrollSnapAlign: "start",
         borderLeft: "1px solid #222",
         padding: "1rem",
+        scrollSnapAlign: "start",
         boxSizing: "border-box",
-        overflowY: "auto",
       }}
     >
       <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>
