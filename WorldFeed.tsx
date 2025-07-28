@@ -162,6 +162,18 @@ export default function WorldFeed({ wallType }) {
 /////////////////////////////////////////////
   // ✅ Render Feed Layout
   return (
+      <div
+    className="page-container"
+    style={{
+      display: "flex",
+      flexDirection: "row",
+      width: "300vw",
+      height: "100vh",
+      overflowX: "auto",
+      scrollSnapType: "x mandatory",
+    }}
+  >
+
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
       {/* 🟥 LeftFeed */}
       <div className="left-feed" style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
