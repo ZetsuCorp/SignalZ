@@ -159,10 +159,9 @@ export default function WorldFeed({ wallType }) {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ✅ Render Feed Layout
-/////////////////////////////////////////////
-  // ✅ Render Feed Layout
-  return (
-      <div
+
+return (
+  <div
     className="page-container"
     style={{
       display: "flex",
@@ -173,10 +172,12 @@ export default function WorldFeed({ wallType }) {
       scrollSnapType: "x mandatory",
     }}
   >
-
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
       {/* 🟥 LeftFeed */}
-      <div className="left-feed" style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
+      <div
+        className="left-feed"
+        style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}
+      >
         <PostcardViewer />
         <PostStatsView />
         <ChumFeedPanel />
@@ -186,16 +187,42 @@ export default function WorldFeed({ wallType }) {
       <div className="middle-feed" style={{ width: "60%", padding: "1rem" }}>
         {/* 🧱 World Feed */}
         {posts.map((post) => (
-          <div key={post.id} style={{ marginTop: "2rem", borderBottom: "1px solid #222", paddingBottom: "1.5rem" }}>
-            <div style={{ fontWeight: "bold", fontSize: "1.2rem", color: "#00ffff" }}>{post.headline}</div>
+          <div
+            key={post.id}
+            style={{
+              marginTop: "2rem",
+              borderBottom: "1px solid #222",
+              paddingBottom: "1.5rem",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                color: "#00ffff",
+              }}
+            >
+              {post.headline}
+            </div>
             {/* Add caption, media, comments, etc. */}
           </div>
         ))}
       </div>
 
       {/* 🟦 RightFeed */}
-      <div className="right-feed" style={{ width: "20%", borderLeft: "1px solid #222", padding: "1rem" }}>
-        <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
+      <div
+        className="right-feed"
+        style={{ width: "20%", borderLeft: "1px solid #222", padding: "1rem" }}
+      >
+        <h2
+          style={{
+            marginBottom: "1rem",
+            fontSize: "1rem",
+            color: "#00f0ff",
+          }}
+        >
+          🗞️ News Feed
+        </h2>
         <iframe
           width="100%"
           height="240"
@@ -210,8 +237,8 @@ export default function WorldFeed({ wallType }) {
           }}
         />
         <NewsFeed />
-    </div> {/* right-feed */}
+      </div> {/* right-feed */}
     </div> {/* flex row wrapper */}
-  </div> {/* page-container */}
-  ); // ✅ RETURN closes here
+  </div> /* page-container */
+);
 
