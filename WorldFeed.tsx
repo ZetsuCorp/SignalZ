@@ -180,7 +180,7 @@ const [showPostcardViewer, setShowPostcardViewer] = useState(false);
   <ChumFeedPanel />
 </div>
 
-  <div className="main-panel hide-scrollbar">
+ <div className="main-panel hide-scrollbar">
   {/* All central content */}
 </div>
 
