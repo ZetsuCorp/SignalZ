@@ -159,97 +159,46 @@ export default function WorldFeed({ wallType }) {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ✅ Render Feed Layout
-return (
-  <div
-    className="page-container"
-    style={{
-      display: "flex",
-      flexDirection: "row",
-      width: "300vw",
-      height: "100vh",
-      overflowX: "auto",
-      scrollSnapType: "x mandatory",
-    }}
-  >
-    {/* 🟥 LeftFeed */}
-    <div
-      className="left-feed"
-      style={{
-        width: "100vw",
-        background: "#0a0a0a",
-        borderRight: "1px solid #222",
-        scrollSnapAlign: "start",
-        padding: "1rem",
-        boxSizing: "border-box",
-      }}
-    >
-      <PostcardViewer />
-      <PostStatsView />
-      <ChumFeedPanel />
-    </div>
+/////////////////////////////////////////////
+  // ✅ Render Feed Layout
+  return (
+    <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+      {/* 🟥 LeftFeed */}
+      <div className="left-feed" style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
+        <PostcardViewer />
+        <PostStatsView />
+        <ChumFeedPanel />
+      </div>
 
-    {/* ⚫ MiddleFeed */}
-    <div
-      className="middle-feed"
-      style={{
-        width: "100vw",
-        padding: "1rem",
-        scrollSnapAlign: "start",
-        boxSizing: "border-box",
-      }}
-    >
-      {/* 🧱 World Feed */}
-      {posts.map((post) => (
-        <div
-          key={post.id}
-          style={{
-            marginTop: "2rem",
-            borderBottom: "1px solid #222",
-            paddingBottom: "1.5rem",
-          }}
-        >
-          <div
-            style={{
-              fontWeight: "bold",
-              fontSize: "1.2rem",
-              color: "#00ffff",
-            }}
-          >
-            {post.headline}
+      {/* ⚫ MiddleFeed */}
+      <div className="middle-feed" style={{ width: "60%", padding: "1rem" }}>
+        {/* 🧱 World Feed */}
+        {posts.map((post) => (
+          <div key={post.id} style={{ marginTop: "2rem", borderBottom: "1px solid #222", paddingBottom: "1.5rem" }}>
+            <div style={{ fontWeight: "bold", fontSize: "1.2rem", color: "#00ffff" }}>{post.headline}</div>
+            {/* Add caption, media, comments, etc. */}
           </div>
-          {/* Add caption, media, comments, etc. */}
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
 
-    {/* 🟦 RightFeed */}
-    <div
-      className="right-feed"
-      style={{
-        width: "100vw",
-        borderLeft: "1px solid #222",
-        padding: "1rem",
-        scrollSnapAlign: "start",
-        boxSizing: "border-box",
-      }}
-    >
-      <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>
-        🗞️ News Feed
-      </h2>
-      <iframe
-        width="100%"
-        height="240"
-        src="https://abcnews.go.com/video/embed?id=abc_live11"
-        allowFullScreen
-        frameBorder="0"
-        style={{
-          borderRadius: "10px",
-          border: "1px solid #00f0ff44",
-          objectFit: "cover",
-          marginBottom: "1rem",
-        }}
-      />
-      <NewsFeed />
+      {/* 🟦 RightFeed */}
+      <div className="right-feed" style={{ width: "20%", borderLeft: "1px solid #222", padding: "1rem" }}>
+        <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
+        <iframe
+          width="100%"
+          height="240"
+          src="https://abcnews.go.com/video/embed?id=abc_live11"
+          allowFullScreen
+          frameBorder="0"
+          style={{
+            borderRadius: "10px",
+            border: "1px solid #00f0ff44",
+            objectFit: "cover",
+            marginBottom: "1rem",
+          }}
+        />
+        <NewsFeed />
+      </div>
     </div>
-  </div>
-);
+  );
+}
