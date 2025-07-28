@@ -379,3 +379,10 @@ video.auto-pause {
 
 
 /* === MOBILE RESPONSIVE === */
+@media (max-width: 768px) {
+  .right-feed,
+  .news-panel {
+    display: none !important;
+  }
+}
+
