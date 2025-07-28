@@ -210,7 +210,8 @@ export default function WorldFeed({ wallType }) {
           }}
         />
         <NewsFeed />
-      </div>
-    </div>
+    </div> {/* right-feed */}
+    </div> {/* flex row wrapper */}
+  </div> {/* page-container */}
   );
 }
