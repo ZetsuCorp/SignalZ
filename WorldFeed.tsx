@@ -156,40 +156,37 @@ export default function WorldFeed({ wallType }) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
-  // ✅ FINAL RETURN LAYOUT
 // ✅ FINAL RETURN LAYOUT
-return (
-  <div
-    className="page-container"
-    style={{
-      display: "flex",
-      flexDirection: "row",
-      height: "100vh",
-      overflow: "hidden",
-      width: "100vw",
-    }}
-  >
-    {/* 🟥 LeftFeed */}
-    <div className="left-feed" style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
-      <PostcardViewer />
-      <PostStatsView />
-      <ChumFeedPanel />
-    </div>
+  return (
+    <div
+      className="page-container"
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        height: "100vh",
+        overflow: "hidden",
+        width: "100vw",
+      }}
+    >
+      {/* 🟥 LeftFeed */}
+      <div className="left-feed" style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
+        <PostcardViewer />
+        <PostStatsView />
+        <ChumFeedPanel />
+      </div>
 
-    {/* ⚫ MiddleFeed (only show if width > 500 OR activeTab is middle) */}
-    {(width > 500 || activeTab === "middle") && width <= 768 && (
-      <div className="middle-feed" style={{ width: "80%", padding: "1rem" }}>
+      {/* ⚫ MiddleFeed */}
+      <div className="middle-feed" style={{ width: "60%", padding: "1rem" }}>
         {posts.map((post) => (
           <div key={post.id} style={{ marginTop: "2rem", borderBottom: "1px solid #222", paddingBottom: "1.5rem" }}>
             <div style={{ fontWeight: "bold", fontSize: "1.2rem", color: "#00ffff" }}>{post.headline}</div>
+            {/* Add caption, media, comments, etc. */}
           </div>
         ))}
       </div>
-    )}
 
-    {/* 🟦 RightFeed (only show if width > 768 OR activeTab is right) */}
-    {(width > 768 || (width <= 500 && activeTab === "right")) && (
-      <div className="right-feed" style={{ width: width > 768 ? "20%" : "80%", borderLeft: "1px solid #222", padding: "1rem" }}>
+      {/* 🟦 RightFeed */}
+      <div className="right-feed" style={{ width: "20%", borderLeft: "1px solid #222", padding: "1rem" }}>
         <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
         <iframe
           width="100%"
@@ -206,18 +203,8 @@ return (
         ></iframe>
         <NewsFeed />
       </div>
-    )}
+    </div>
+  );
+}
 
-    {/* 📱 Mobile Tab Switcher (≤ 500px only) */}
-    {width <= 500 && (
-      <div style={{ position: "absolute", bottom: 0, width: "100%", display: "flex", justifyContent: "space-around", background: "#000", borderTop: "1px solid #222" }}>
-        <button onClick={() => setActiveTab("middle")} style={{ flex: 1, padding: "0.5rem", color: activeTab === "middle" ? "#00ffff" : "#999", background: "none", border: "none" }}>
-          Main
-        </button>
-        <button onClick={() => setActiveTab("right")} style={{ flex: 1, padding: "0.5rem", color: activeTab === "right" ? "#00ffff" : "#999", background: "none", border: "none" }}>
-          Feed
-        </button>
-      </div>
-    )}
-  </div>
-);
+
