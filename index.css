@@ -56,48 +56,6 @@ body {
   overflow: hidden;
 }
 
-/* === LEFT PANEL === */
-.left-panel {
-  width: 280px;
-  min-width: 260px;
-  max-width: 320px;
-  background: linear-gradient(145deg, #0a0a0a, #111);
-  color: #00f0ff;
-  border-right: 2px solid #00f0ff33;
-  box-shadow: inset -2px 0 10px rgba(0, 255, 255, 0.1);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
-.sidebar-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.sidebar-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.left-panel button {
-  background-color: rgba(0, 255, 255, 0.08);
-  border: 1px solid #00f0ff44;
-  color: #00f0ff;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 8px;
-  transition: 0.2s ease;
-  width: 100%;
-}
-
-.left-panel button:hover {
-  background-color: rgba(0, 255, 255, 0.15);
-  box-shadow: 0 0 8px #00f0ff99;
-}
 
 /* === MAIN PANEL === */
 .right-panel {
