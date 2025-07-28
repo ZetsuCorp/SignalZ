@@ -52,10 +52,11 @@ body {
 /* === APP WRAPPER === */
 .app-wrapper {
   display: flex;
-  height: 100vh;
-  width: 100vw;
-  background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
-  overflow: auto;
+  min-height: 100vh; /* ✅ allow more height if needed */
+  flex-direction: row; /* just being explicit */
+  overflow-x: hidden;
+  overflow-y: auto; /* ✅ just in case */
+   background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
 }
 
 
