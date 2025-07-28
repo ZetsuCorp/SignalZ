@@ -160,6 +160,7 @@ export default function WorldFeed({ wallType }) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ✅ Render Feed Layout
 
+// ✅ Render Feed Layout
 return (
   <div
     className="page-container"
@@ -172,11 +173,17 @@ return (
       scrollSnapType: "x mandatory",
     }}
   >
+    {/* 👇 Flex wrapper holding all 3 panels */}
     <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+      
       {/* 🟥 LeftFeed */}
       <div
         className="left-feed"
-        style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}
+        style={{
+          width: "20%",
+          background: "#0a0a0a",
+          borderRight: "1px solid #222",
+        }}
       >
         <PostcardViewer />
         <PostStatsView />
@@ -185,7 +192,6 @@ return (
 
       {/* ⚫ MiddleFeed */}
       <div className="middle-feed" style={{ width: "60%", padding: "1rem" }}>
-        {/* 🧱 World Feed */}
         {posts.map((post) => (
           <div
             key={post.id}
@@ -212,7 +218,11 @@ return (
       {/* 🟦 RightFeed */}
       <div
         className="right-feed"
-        style={{ width: "20%", borderLeft: "1px solid #222", padding: "1rem" }}
+        style={{
+          width: "20%",
+          borderLeft: "1px solid #222",
+          padding: "1rem",
+        }}
       >
         <h2
           style={{
@@ -235,10 +245,9 @@ return (
             objectFit: "cover",
             marginBottom: "1rem",
           }}
-        />
+        ></iframe>
         <NewsFeed />
-      </div> {/* right-feed */}
-    </div> {/* flex row wrapper */}
-  </div> /* page-container */
+      </div> {/* End right-feed */}
+    </div> {/* End flex wrapper */}
+  </div> /* End page-container */
 );
-
