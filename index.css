@@ -49,19 +49,33 @@ body {
   }
 }
 
+
 /* === APP WRAPPER === */
 .app-wrapper {
   display: flex;
-  min-height: 100vh; /* ✅ allow more height if needed */
-  flex-direction: row; /* just being explicit */
-  overflow-x: hidden;
-  overflow-y: auto; /* ✅ just in case */
-   background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
+  height: 100vh;
+  width: 100vw;
+  background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
+  overflow: auto;
+}
+
+
+.left-panel,
+.news-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 
 
 /* === MAIN PANEL === */
+.middle-feed {
+  overflow-y: auto;
+  height: 100vh;
+  flex: 1;
+}
 
 /* === FEED SCROLL CONTAINER === */
 
