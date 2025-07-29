@@ -32,6 +32,7 @@ export default function App() {
     setEditorType(null);
     setEditorSrc(null);
   };
+const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="app-wrapper">
@@ -114,10 +115,29 @@ export default function App() {
 </div>
 
         {/* 🔹 Feed Content */}
-        <div className="feed-scroll">
-          <WorldFeed wallType={wallType} />
-        </div>
-      </main>
+       {/* 🔹 Mobile Dropdown for View Panel */}
+<div className="sigz-mobile-dropdown">
+  <button
+    className="dropdown-toggle"
+    onClick={() => setShowDropdown((prev) => !prev)}
+  >
+    Post View ▾
+  </button>
+
+  {showDropdown && (
+    <div className="dropdown-panel">
+      <button className="dropdown-item">Post View</button>
+      <button className="dropdown-item">Feed</button>
+      <button className="dropdown-item">News</button>
+    </div>
+  )}
+</div>
+
+{/* 🔹 Feed Content */}
+<div className="feed-scroll">
+  <WorldFeed wallType={wallType} />
+</div>
+
 
       {/* ⚙️ Settings Drawer */}
       {showSettings && (
