@@ -259,22 +259,6 @@ button.submit:hover {
 }
 
 
-@media (max-width: 768px) {
-  .session-container {
-    width: 280px;
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-
-  .session-id {
-    font-size: 0.95rem;
-  }
-
-  .session-bg-preview {
-    width: 140px;
-    height: 80px;
-  }
-}
 
 
 
