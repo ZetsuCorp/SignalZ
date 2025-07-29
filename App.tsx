@@ -1,152 +1,192 @@
-import React, { useState, useEffect } from "react";
-import WorldFeed from "./WorldFeed";
-import MediaEditor from "./MediaEditor";
-import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
+import React, { useEffect, useState } from "react";
+import NewsFeed from "./NewsFeed";
+import ChumFeedPanel from "./src/ChumFeedPanel";
+import PostForm from "./PostForm";
+import CreatePostShell from "./CreatePostShell";
+import PostcardViewer from "./tcg-template/PostcardViewer";
+import PostStatsView from "./src/PostStatsView";
 
-export default function App() {
-  const [wallType, setWallType] = useState("main");
-  const [showSettings, setShowSettings] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
+import PanelPostView from "./components/PanelPostView";
+import PanelFeed from "./components/PanelFeed";
+import PanelNews from "./components/PanelNews";
 
-  const [editorVisible, setEditorVisible] = useState(false);
-  const [editorType, setEditorType] = useState(null);
-  const [editorSrc, setEditorSrc] = useState(null);
+// ✅ Helpers
+function extractDomain(url) {
+  try {
+    return new URL(url).hostname.replace("www.", "");
+  } catch {
+    return "";
+  }
+}
+
+function isYouTubeOrTikTok(url) {
+  return /youtube\.com|youtu\.be|tiktok\.com/.test(url);
+}
+
+function getEmbedUrl(url) {
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+    const id = match ? match[1] : "";
+    return https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0;
+  }
+  if (url.includes("tiktok.com")) {
+    const match = url.match(/\/video\/(\d+)/);
+    return match ? https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1 : null;
+  }
+  return null;
+}
+
+async function fetchComments(postId) {
+  try {
+    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
+    if (!res.ok) throw new Error("Failed to fetch comments");
+    return await res.json();
+  } catch (err) {
+    console.error("Error fetching comments:", err);
+    return [];
+  }
+}
+
+async function submitComment(postId, content, wallType) {
+  const res = await fetch("/.netlify/functions/create-comment", {
+    method: "POST",
+    body: JSON.stringify({ post_id: postId, content, wall_type: wallType }),
+  });
+  return res.ok;
+}
+
+export default function WorldFeed({ wallType }) {
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
+  const [commentsMap, setCommentsMap] = useState({});
+  const [inputMap, setInputMap] = useState({});
+  const [showCreateOverlay, setShowCreateOverlay] = useState(false);
+  const [createMode, setCreateMode] = useState("");
+  const [activePanel, setActivePanel] = useState("middle");
 
   useEffect(() => {
-    document.body.classList.toggle("dark-mode", isDarkMode);
-  }, [isDarkMode]);
+    const fetchPosts = async () => {
+      try {
+        const safeWall = (wallType || "main").toLowerCase();
+        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
+        if (!res.ok) throw new Error("Failed to fetch posts");
+        const data = await res.json();
+        setPosts(data || []);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+        setError("Failed to load posts.");
+      }
+    };
+    fetchPosts();
+  }, [wallType]);
 
   useEffect(() => {
-    document.body.classList.toggle("modal-open", editorVisible);
-  }, [editorVisible]);
+    posts.forEach(async (post) => {
+      const comments = await fetchComments(post.id);
+      setCommentsMap((prev) => ({ ...prev, [post.id]: comments }));
+    });
+  }, [posts]);
 
-  const handleMediaPreview = (type, src) => {
-    setEditorType(type);
-    setEditorSrc(src);
-    setEditorVisible(true);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target;
+          const isVisible = entry.isIntersecting;
+
+          if (el.tagName === "VIDEO") {
+            if (isVisible) el.play().catch(() => {});
+            else el.pause();
+          }
+
+          if (el.tagName === "IFRAME") {
+            if (el.src.includes("youtube") || el.src.includes("tiktok")) {
+              if (!isVisible && el.dataset.src) {
+                el.src = "";
+              } else if (isVisible && el.dataset.src && el.src === "") {
+                el.src = el.dataset.src;
+              }
+            }
+          }
+        });
+      },
+      { root: null, rootMargin: "0px", threshold: 0.6 }
+    );
+
+    const allMedia = document.querySelectorAll("video, iframe");
+    allMedia.forEach((el) => {
+      if (el.tagName === "IFRAME") el.dataset.src = el.src;
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [posts]);
+
+  const handleCommentSubmit = async (postId) => {
+    const content = inputMap[postId];
+    if (!content || !content.trim()) return;
+
+    const ok = await submitComment(postId, content, wallType);
+    if (ok) {
+      const updated = await fetchComments(postId);
+      setCommentsMap((prev) => ({ ...prev, [postId]: updated }));
+      setInputMap((prev) => ({ ...prev, [postId]: "" }));
+    }
   };
 
-  const handleMediaConfirm = () => {
-    setEditorVisible(false);
-    setEditorType(null);
-    setEditorSrc(null);
+  const handleCreateClick = () => {
+    setCreateMode("post");
+    setShowCreateOverlay(true);
   };
+
+  const handleCloseOverlay = () => {
+    setShowCreateOverlay(false);
+    setCreateMode("");
+  };
+
+  // ✅ UI
+  if (error) {
+    return <div style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</div>;
+  }
+
+  if (posts.length === 0) {
+    return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
+  }
 
   return (
-    <div className="app-wrapper">
-      {/* 🔹 Session Overlay */}
-      <SessionContainer />
-
-      <main className="right-panel">
-        {/* 🔹 Header Logo */}
-        <header className="text-center py-4 border-b border-cyan-800 relative">
-          <div className="sigz-icon-stack relative inline-block w-14 h-14">
-            <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">🌐</span>
-            <img
-              src="/sigicons/ripple.gif"
-              alt="Ripple"
-              className="ripple-overlay absolute top-1/2 left-1/2 w-14 h-14 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
-            />
-          </div>
-          <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
-          <p className="text-sm text-cyan-400">What the internet is talking about.</p>
-        </header>
-
-        {/* 🔹 Dropdown Tab Row (clean + fixed) */}
-        <div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
-          {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
-            <button
-              key={tabName}
-              onClick={() =>
-                setOpenDropdown(openDropdown === tabName ? null : tabName)
-              }
-              className={`px-3 py-1 text-cyan-300 hover:text-white ${
-                openDropdown === tabName ? "border-b-2 border-cyan-300" : ""
-              }`}
-            >
-              {tabName}
-            </button>
-          ))}
-        </div>
-
-        {/* 🔹 Dedicated Container for Each Tab */}
-        {openDropdown === "ViewZ" && (
-          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">ViewZ</h2>
-            <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
-          </div>
-        )}
-
-        {openDropdown === "HotFeed" && (
-          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">HotFeed</h2>
-            <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
-          </div>
-        )}
-
-        {openDropdown === "Brand-Signal" && (
-          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
-            <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
-          </div>
-        )}
-
-        {openDropdown === "SignalZ TCG" && (
-          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
-            <p className="text-sm opacity-60">Card decks, rarity, battles, leaderboard, etc.</p>
-          </div>
-        )}
-
-        {/* 🔹 Wall Type Tabs */}
-        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
-          {["main", "alt", "zetsu"].map((id) => (
-            <button
-              key={id}
-              onClick={() => setWallType(id)}
-              className={`tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
-                wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
-              }`}
-            >
-              {id.toUpperCase()}
-            </button>
-          ))}
-        </div>
-
-        {/* 🔹 Feed Content */}
-        <div className="feed-scroll">
-          <WorldFeed wallType={wallType} />
-        </div>
-      </main>
-
-      {/* ⚙️ Settings Drawer */}
-      {showSettings && (
-        <div className="settings-drawer">
-          <h3>Settings</h3>
-          <div className="toggle-row mt-3">
-            <input
-              type="checkbox"
-              id="darkmode"
-              checked={isDarkMode}
-              onChange={(e) => setIsDarkMode(e.target.checked)}
-            />
-            <label htmlFor="darkmode">Dark Mode</label>
-          </div>
-          <button className="mt-4" onClick={() => setShowSettings(false)}>
-            Close
+    <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+      {/* 🔹 Tab Switcher */}
+      <div className="panel-tabs">
+        {[
+          { name: "Post View", value: "left" },
+          { name: "Feed", value: "middle" },
+          { name: "News", value: "right" },
+        ].map(({ name, value }) => (
+          <button
+            key={value}
+            onClick={() => setActivePanel(value)}
+            className={panel-tab ${activePanel === value ? "active" : ""}}
+          >
+            {name}
           </button>
-        </div>
-      )}
+        ))}
+      </div>
 
-      {/* 🖼️ Media Editor */}
-      {editorVisible && editorSrc && (
-        <MediaEditor
-          type={editorType}
-          src={editorSrc}
-          onClose={() => setEditorVisible(false)}
-          onConfirm={handleMediaConfirm}
-        />
+      {/* 🔸 Active Panel */}
+      <div className="panel-view" style={{ background: "#0c0c0c" }}>
+        {activePanel === "left" && <PanelPostView />}
+        {activePanel === "middle" && <PanelFeed posts={posts} />}
+        {activePanel === "right" && <PanelNews />}
+      </div>
+
+      {/* ✅ Floating Create Button */}
+      <button className="floating-create-btn" onClick={handleCreateClick}>
+        +
+      </button>
+
+      {/* ✅ Create Overlay */}
+      {showCreateOverlay && (
+        <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
       )}
     </div>
   );
