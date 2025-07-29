@@ -285,6 +285,15 @@ button.submit:hover {
   }
 }
 
+.btn-signalz-switch {
+  @apply flex flex-col items-center justify-center px-5 py-2.5 mx-auto 
+         bg-gradient-to-br from-cyan-900 via-[#0f2d3d] to-cyan-800 
+         border border-cyan-400/30 text-cyan-200 
+         hover:text-white hover:border-cyan-200
+         rounded-2xl shadow-md hover:shadow-lg 
+         transition-all duration-200 backdrop-blur-sm;
+}
+
 
 /* === SHARED BUTTON STYLE === */
 .sigz-tab-btn {
