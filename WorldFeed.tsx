@@ -142,6 +142,7 @@ export default function WorldFeed({ wallType }) {
     setShowCreateOverlay(false);
     setCreateMode("");
   };
+  
 
   if (error) {
     return <div style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</div>;
@@ -203,6 +204,14 @@ export default function WorldFeed({ wallType }) {
                 </div>
               </div>
             ))}
+            {/* 🔹 Floating Create Button */}
+<button
+  className="floating-create-btn"
+  onClick={handleCreateClick}
+>
+  +
+</button>
+
           </div>
         )}
 
