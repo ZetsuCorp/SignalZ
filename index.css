@@ -260,23 +260,33 @@ button.submit:hover {
 
 @media (max-width: 768px) {
   .session-container {
-    transform: scale(0.75);
-    transform-origin: top right;
-    width: fit-content !important;
-    max-width: 95vw !important;
-    padding: 0.5em 1em !important;
-    margin-left: auto;
+    width: 90vw !important;
+    max-width: 90vw !important;
+    padding: 0.75em 1em !important;
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+  }
+
+  .session-container > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    text-align: center;
+    width: 100%;
   }
 
   .session-container img {
-    width: 1.75em !important;
-    height: 3.2em !important;
+    width: 3em;
+    height: auto;
   }
 
-  .session-container div {
-    font-size: 0.7rem !important;
-    max-width: 80vw;
+  .session-container div div {
+    font-size: 0.85rem;
     word-break: break-word;
+    max-width: 100%;
   }
 }
 
