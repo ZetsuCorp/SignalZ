@@ -110,26 +110,58 @@ export default function App() {
           ))}
         </div>
 
-        {/* 🔹 Feed Content */}
+             {/* 🔹 Feed Content */}
         <div className="feed-scroll">
           <WorldFeed wallType={wallType} />
+        </div>
+
+        {/* 🔻 Mobile Dropdown Toggle */}
+        <div className="sigz-mobile-dropdown">
+          <button
+            className="dropdown-toggle"
+            onClick={() =>
+              setOpenDropdown(openDropdown === "mobile" ? null : "mobile")
+            }
+          >
+            {openDropdown === "mobile" ? "▲ Tabs" : "▼ Tabs"}
+          </button>
+
+          {openDropdown === "mobile" && (
+            <div className="dropdown-panel">
+              {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tab) => (
+                <div
+                  key={tab}
+                  className="dropdown-item"
+                  onClick={() => setOpenDropdown(tab)}
+                >
+                  {tab}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </main>
 
       {/* ⚙️ Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
-          <h3>Settings</h3>
-          <div className="toggle-row mt-3">
+          <h3 className="text-lg font-bold mb-2">Settings</h3>
+          <div className="toggle-row mt-3 flex items-center gap-2">
             <input
               type="checkbox"
               id="darkmode"
               checked={isDarkMode}
               onChange={(e) => setIsDarkMode(e.target.checked)}
+              className="cursor-pointer"
             />
-            <label htmlFor="darkmode">Dark Mode</label>
+            <label htmlFor="darkmode" className="text-sm">
+              Dark Mode
+            </label>
           </div>
-          <button className="mt-4" onClick={() => setShowSettings(false)}>
+          <button
+            className="mt-4 px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-black font-semibold rounded"
+            onClick={() => setShowSettings(false)}
+          >
             Close
           </button>
         </div>
