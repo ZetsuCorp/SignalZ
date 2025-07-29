@@ -189,8 +189,8 @@ export default function WorldFeed({ wallType }) {
   <span className={activePanel === "right" ? "text-cyan-300 glow-dot" : "text-cyan-500"}>
     {activePanel === "right" ? "●" : "○"} News
   </span>
-</div>
-
+   </div>
+  </div>
 
 
 
