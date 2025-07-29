@@ -153,46 +153,24 @@ export default function WorldFeed({ wallType }) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
-  const panelLabelMap = {
-  left: "Post View",
-  middle: "Feed",
-  right: "News",
-};
-const [panelDropdownOpen, setPanelDropdownOpen] = useState(false);
-
-
   return (
     <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
       {/* 🔹 Tab Switcher */}
-      {/* 🔻 Dropdown View Panel Selector */}
-<div className="flex justify-center py-2">
-  <div className="relative">
-    <button
-      className="px-4 py-2 bg-[#012a30] text-cyan-200 border border-cyan-600 rounded-md"
-      onClick={() => setPanelDropdownOpen(!panelDropdownOpen)}
-    >
-      ▼ {panelLabelMap[activePanel]}
-    </button>
-
-    {panelDropdownOpen && (
-      <div className="absolute left-0 w-full mt-1 bg-[#081c24] border border-cyan-800 rounded shadow-md z-50">
-        {Object.entries(panelLabelMap).map(([key, label]) => (
-          <div
-            key={key}
-            className="px-4 py-2 hover:bg-cyan-700 text-sm text-cyan-100 cursor-pointer"
-            onClick={() => {
-              setActivePanel(key);
-              setPanelDropdownOpen(false);
-            }}
+      <div className="panel-tabs">
+        {[
+          { name: "Post View", value: "left" },
+          { name: "Feed", value: "middle" },
+          { name: "News", value: "right" },
+        ].map(({ name, value }) => (
+          <button
+            key={value}
+            onClick={() => setActivePanel(value)}
+            className={`panel-tab ${activePanel === value ? "active" : ""}`}
           >
-            {label}
-          </div>
+            {name}
+          </button>
         ))}
       </div>
-    )}
-  </div>
-</div>
-
 
       {/* 🔸 Active Panel */}
       <div className="panel-view" style={{ background: "#0c0c0c" }}>
