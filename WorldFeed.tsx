@@ -204,15 +204,7 @@ export default function WorldFeed({ wallType }) {
                 </div>
               </div>
             ))}
-            {/* 🔹 Floating Create Button */}
-<button
-  className="floating-create-btn"
-  onClick={handleCreateClick}
->
-  +
-</button>
-
-          </div>
+           </div>
         )}
 
         {activePanel === "right" && (
@@ -244,5 +236,13 @@ export default function WorldFeed({ wallType }) {
         )}
       </div>
     </div>
+    You said:
+           {/* 🔹 Floating Create Button */}
+<button
+  className="floating-create-btn"
+  onClick={handleCreateClick}
+>
+  +
+</button>
   );
 }
