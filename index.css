@@ -319,6 +319,12 @@ button.submit:hover {
   text-shadow: 0 0 4px #00ffff, 0 0 8px #00ffff;
   font-weight: bold;
 }
+.feed-scroll {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ this centers horizontal children */
+}
 
 
 /* === SHARED BUTTON STYLE === */
