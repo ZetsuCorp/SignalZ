@@ -158,7 +158,7 @@ export default function WorldFeed({ wallType }) {
   return (
 <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
   {/* 🔹 Auto Next Page Button */}
-  <div className="z-50 px-4 py-2">
+  <div className="z-50 px-4 py-2 text-center">
     <button
       onClick={() => {
         const panelOrder = ["left", "middle", "right"];
@@ -166,14 +166,25 @@ export default function WorldFeed({ wallType }) {
         const nextIndex = (currentIndex + 1) % panelOrder.length;
         setActivePanel(panelOrder[nextIndex]);
       }}
-      className="flex items-center gap-2 px-3 py-1 border border-cyan-700 bg-[#081d1e] text-cyan-300 hover:text-white rounded"
+      className="flex items-center justify-center gap-2 px-3 py-1 mx-auto border border-cyan-700 bg-[#081d1e] text-cyan-300 hover:text-white rounded"
     >
       {activePanel === "left" && "Post View"}
       {activePanel === "middle" && "Feed"}
       {activePanel === "right" && "News"}
       <span className="transform transition-transform">⏭</span>
     </button>
+
+    {/* 🧠 Subtext */}
+    <div className="text-xs text-cyan-400 mt-1">Click to switch panels</div>
+
+    {/* 🖍 Dot Nav */}
+    <div className="mt-1 text-sm text-cyan-300 flex justify-center gap-2">
+      <span>{activePanel === "left" ? "●" : "○"} Post View</span>
+      <span>{activePanel === "middle" ? "●" : "○"} Feed</span>
+      <span>{activePanel === "right" ? "●" : "○"} News</span>
+    </div>
   </div>
+
 
       {/* 🔸 Active Panel */}
       <div className="panel-view" style={{ background: "#0c0c0c" }}>
