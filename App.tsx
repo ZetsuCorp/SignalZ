@@ -69,52 +69,52 @@ export default function App() {
 
 {/* 🔹 Dedicated Container for Each */}
 {openDropdown === "ViewZ" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    {/* 🧠 Drop your ViewZ panel content here */}
-    <h2 className="text-xl font-bold mb-2">ViewZ</h2>
-    <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 py-8 flex flex-col items-center justify-center text-center">
+    <button className="btn-signalz-switch mb-4">ViewZ – click to switch ⏭</button>
+    <h2 className="text-xl font-bold mb-1">ViewZ</h2>
+    <p className="text-sm text-cyan-400 opacity-70">User post metrics, engagement, reach, or analytics.</p>
   </div>
 )}
 
 {openDropdown === "HotFeed" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    {/* 🔥 HotFeed panel */}
-    <h2 className="text-xl font-bold mb-2">HotFeed</h2>
-    <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 py-8 flex flex-col items-center justify-center text-center">
+    <button className="btn-signalz-switch mb-4">HotFeed – click to switch ⏭</button>
+    <h2 className="text-xl font-bold mb-1">HotFeed</h2>
+    <p className="text-sm text-cyan-400 opacity-70">Trending post selector or custom feed injection.</p>
   </div>
 )}
 
 {openDropdown === "Brand-Signal" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    {/* 🧪 Branding stuff lives here */}
-    <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
-    <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 py-8 flex flex-col items-center justify-center text-center">
+    <button className="btn-signalz-switch mb-4">Brand-Signal – click to switch ⏭</button>
+    <h2 className="text-xl font-bold mb-1">Brand-Signal</h2>
+    <p className="text-sm text-cyan-400 opacity-70">Bot-injected brand mentions, logo tools, etc.</p>
   </div>
 )}
 
 {openDropdown === "SignalZ TCG" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    {/* 🎴 TCG Panel */}
-    <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
-    <p className="text-sm opacity-60">This is where we show card decks, rarity, battles, leaderboard, whatever.</p>
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 py-8 flex flex-col items-center justify-center text-center">
+    <button className="btn-signalz-switch mb-4">SignalZ TCG – click to switch ⏭</button>
+    <h2 className="text-xl font-bold mb-1">SignalZ TCG</h2>
+    <p className="text-sm text-cyan-400 opacity-70">Card decks, rarity, battles, leaderboard, etc.</p>
   </div>
 )}
 
+{/* 🔹 Wall Type Tabs */}
+<div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800 bg-[#071a1e]">
+  {["main", "alt", "zetsu"].map((id) => (
+    <button
+      key={id}
+      onClick={() => setWallType(id)}
+      className={`btn-signalz-switch px-4 py-2 ${
+        wallType === id ? "border-cyan-300 text-white" : "text-cyan-300"
+      }`}
+    >
+      {id.toUpperCase()}
+    </button>
+  ))}
+</div>
 
-        {/* 🔹 Wall Type Tabs */}
-        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
-          {["main", "alt", "zetsu"].map((id) => (
-            <button
-              key={id}
-              onClick={() => setWallType(id)}
-              className={`tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
-                wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
-              }`}
-            >
-              {id.toUpperCase()}
-            </button>
-          ))}
-        </div>
 
         {/* 🔹 Feed Content */}
         <div className="feed-scroll">
