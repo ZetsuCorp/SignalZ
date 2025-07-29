@@ -60,8 +60,7 @@ export default function App() {
       onClick={() =>
         setOpenDropdown(openDropdown === tabName ? null : tabName)
       }
-className={tab + (openDropdown === tabName ? "active" : "")}
-
+      className={`tab ${openDropdown === tabName ? "active" : ""}`}
     >
       {tabName}
     </button>
@@ -108,10 +107,9 @@ className={tab + (openDropdown === tabName ? "active" : "")}
             <button
               key={id}
               onClick={() => setWallType(id)}
-className={`tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
-
+              className={`tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
                 wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
-              }}
+              }`}
             >
               {id.toUpperCase()}
             </button>
