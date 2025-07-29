@@ -257,31 +257,22 @@ button.submit:hover {
   font-weight: bold;
   color: var(--text-dark);
 }
-/* 🔹 MOBILE FIX */
+
+
 @media (max-width: 768px) {
   .session-container {
-    position: relative !important;
-    top: auto;
-    right: auto;
-    width: 100% !important;
-    max-width: 100vw;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    box-sizing: border-box;
+    width: 280px;
+    padding: 8px 12px;
+    font-size: 13px;
   }
 
   .session-id {
-    font-size: 1rem;
-    max-width: 90vw;
+    font-size: 0.95rem;
   }
 
   .session-bg-preview {
-    width: 100%;
-    max-width: 280px;
-    height: auto;
-    aspect-ratio: 16 / 9;
+    width: 140px;
+    height: 80px;
   }
 }
 
