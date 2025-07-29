@@ -166,16 +166,16 @@ export default function WorldFeed({ wallType }) {
         const nextIndex = (currentIndex + 1) % panelOrder.length;
         setActivePanel(panelOrder[nextIndex]);
       }}
-      className="flex items-center justify-center gap-2 px-3 py-1 mx-auto border border-cyan-700 bg-[#081d1e] text-cyan-300 hover:text-white rounded"
+      className="flex flex-col items-center justify-center px-3 py-1 mx-auto border border-cyan-700 bg-[#081d1e] text-cyan-300 hover:text-white rounded"
     >
-      {activePanel === "left" && "Post View"}
-      {activePanel === "middle" && "Feed"}
-      {activePanel === "right" && "News"}
-      <span className="transform transition-transform">⏭</span>
+      <span className="text-base">
+        {activePanel === "left" && "Post View"}
+        {activePanel === "middle" && "Feed"}
+        {activePanel === "right" && "News"}
+      </span>
+      <span className="text-[10px] text-cyan-400 mt-[1px]">click to switch</span>
+      <span className="text-lg mt-[1px]">⏭</span>
     </button>
-
-    {/* 🧠 Subtext */}
-    <div className="text-xs text-cyan-400 mt-1">Click to switch panels</div>
 
     {/* 🖍 Dot Nav */}
     <div className="mt-1 text-sm text-cyan-300 flex justify-center gap-2">
@@ -184,6 +184,7 @@ export default function WorldFeed({ wallType }) {
       <span>{activePanel === "right" ? "●" : "○"} News</span>
     </div>
   </div>
+
 
 
       {/* 🔸 Active Panel */}
