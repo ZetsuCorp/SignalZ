@@ -290,21 +290,27 @@ button.submit:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px;
+  padding: 4px 10px;
   margin: 0 auto;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   color: #a0f0ff;
-  background: linear-gradient(to bottom right, #083344, #0f2d3d, #095166);
-  border: 1px solid rgba(102, 255, 255, 0.3);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 4px 8px rgba(0, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  background: linear-gradient(to bottom right, #07252e, #0f2d3d, #09344f);
+  border: 1px solid rgba(102, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 4px rgba(0, 255, 255, 0.08);
+  transition: all 0.2s ease;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.btn-signalz-switch span {
+  margin-top: 1px;
 }
 
 .btn-signalz-switch:hover {
   color: white;
-  border-color: #b6f4ff;
-  box-shadow: 0 6px 12px rgba(0, 255, 255, 0.2);
+  border-color: #aaf5ff;
+  box-shadow: 0 3px 6px rgba(0, 255, 255, 0.15);
 }
 
 
