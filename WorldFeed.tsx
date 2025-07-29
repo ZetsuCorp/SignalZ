@@ -156,45 +156,24 @@ export default function WorldFeed({ wallType }) {
   }
 
   return (
-    <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
-     {/* 🔹 Dropdown Trigger */}
-<div className="relative inline-block text-left z-50 px-4 py-2">
-  <button
-    onClick={() => setOpenDropdown((prev) => !prev)}
-    className="flex items-center gap-2 px-3 py-1 border border-cyan-700 bg-[#081d1e] text-cyan-300 hover:text-white rounded"
-  >
-    {activePanel === "left" && "Post View"}
-    {activePanel === "middle" && "Feed"}
-    {activePanel === "right" && "News"}
-    <span className="transform transition-transform">
-      ▼
-    </span>
-  </button>
-
-  {/* 🔻 Dropdown Panel */}
-  {openDropdown && (
-    <div className="absolute mt-2 w-40 rounded-md shadow-lg bg-[#0e2c2d] ring-1 ring-cyan-800">
-      {[
-        { name: "Post View", value: "left" },
-        { name: "Feed", value: "middle" },
-        { name: "News", value: "right" },
-      ].map(({ name, value }) => (
-        <button
-          key={value}
-          onClick={() => {
-            setActivePanel(value);
-            setOpenDropdown(false);
-          }}
-          className={`block w-full text-left px-4 py-2 text-cyan-300 hover:bg-cyan-800 ${
-            activePanel === value ? "bg-cyan-900 text-white" : ""
-          }`}
-        >
-          {name}
-        </button>
-      ))}
-    </div>
-  )}
-</div>
+<div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+  {/* 🔹 Auto Next Page Button */}
+  <div className="z-50 px-4 py-2">
+    <button
+      onClick={() => {
+        const panelOrder = ["left", "middle", "right"];
+        const currentIndex = panelOrder.indexOf(activePanel);
+        const nextIndex = (currentIndex + 1) % panelOrder.length;
+        setActivePanel(panelOrder[nextIndex]);
+      }}
+      className="flex items-center gap-2 px-3 py-1 border border-cyan-700 bg-[#081d1e] text-cyan-300 hover:text-white rounded"
+    >
+      {activePanel === "left" && "Post View"}
+      {activePanel === "middle" && "Feed"}
+      {activePanel === "right" && "News"}
+      <span className="transform transition-transform">⏭</span>
+    </button>
+  </div>
 
       {/* 🔸 Active Panel */}
       <div className="panel-view" style={{ background: "#0c0c0c" }}>
