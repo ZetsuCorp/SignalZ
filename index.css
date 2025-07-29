@@ -257,6 +257,31 @@ button.submit:hover {
   font-weight: bold;
   color: var(--text-dark);
 }
+/* cheate floating button */
+.floating-create-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(to right, #00ff99, #00f0ff);
+  color: black;
+  font-size: 28px;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+  cursor: pointer;
+  z-index: 1000;
+  animation: fadeIn 0.4s ease;
+  transition: transform 0.2s ease;
+}
+
+.floating-create-btn:hover {
+  transform: scale(1.08);
+}
+
+
 
 /* === MOBILE OVERRIDE === */
 @media (max-width: 768px) {
