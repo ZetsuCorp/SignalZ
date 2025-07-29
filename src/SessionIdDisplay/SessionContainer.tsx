@@ -61,7 +61,6 @@ function getOrCreateSessionId(): string {
   const iconPath = `/sigicons/${Sicon}`;
   sessionStorage.setItem("session_icon", iconPath);
 
-  // ✅ NEW: Save display_name
   const displayName = id.replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif#/, '');
   sessionStorage.setItem("session_display_name", displayName);
 
@@ -80,10 +79,25 @@ function getOrCreateSessionBackground(): string {
   return bg;
 }
 
+// 🔹 Mobile hook
+function useIsMobile(threshold = 768): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= threshold);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [threshold]);
+
+  return isMobile;
+}
+
 export default function SessionContainer() {
   const [sessionId, setSessionId] = useState("");
   const [bgImage, setBgImage] = useState("");
   const [animationClass, setAnimationClass] = useState("");
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const id = getOrCreateSessionId();
@@ -111,6 +125,8 @@ export default function SessionContainer() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         padding: "1em",
+        transform: isMobile ? "scale(0.8)" : undefined,
+        transformOrigin: isMobile ? "top right" : undefined,
       }}
     >
       <div
