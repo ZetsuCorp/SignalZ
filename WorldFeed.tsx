@@ -178,13 +178,19 @@ export default function WorldFeed({ wallType }) {
 </button>
 
 
-    {/* 🖍 Dot Nav */}
-    <div className="mt-1 text-sm text-cyan-300 flex justify-center gap-2">
-      <span>{activePanel === "left" ? "●" : "○"} Post View</span>
-      <span>{activePanel === "middle" ? "●" : "○"} Feed</span>
-      <span>{activePanel === "right" ? "●" : "○"} News</span>
-    </div>
-  </div>
+{/* 🖍 Dot Nav */}
+<div className="mt-1 flex justify-center gap-4 text-[13px] font-mono">
+  <span className={activePanel === "left" ? "text-cyan-300 glow-dot" : "text-cyan-500"}>
+    {activePanel === "left" ? "●" : "○"} Post View
+  </span>
+  <span className={activePanel === "middle" ? "text-cyan-300 glow-dot" : "text-cyan-500"}>
+    {activePanel === "middle" ? "●" : "○"} Feed
+  </span>
+  <span className={activePanel === "right" ? "text-cyan-300 glow-dot" : "text-cyan-500"}>
+    {activePanel === "right" ? "●" : "○"} News
+  </span>
+</div>
+
 
 
 
