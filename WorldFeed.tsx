@@ -156,55 +156,73 @@ export default function WorldFeed({ wallType }) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
+const [activePanel, setActivePanel] = useState<"left" | "middle" | "right">("middle");
+
 // ✅ FINAL RETURN LAYOUT
-  return (
-    <div
-      className="page-container"
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        height: "100vh",
-        overflow: "hidden",
-        width: "100vw",
-      }}
-    >
-      {/* 🟥 LeftFeed */}
-      <div className="left-feed" style={{ width: "20%", background: "#0a0a0a", borderRight: "1px solid #222" }}>
-        <PostcardViewer />
-        <PostStatsView />
-        <ChumFeedPanel />
-      </div>
-
-      {/* ⚫ MiddleFeed */}
-      <div className="middle-feed" style={{ width: "60%", padding: "1rem" }}>
-        {posts.map((post) => (
-          <div key={post.id} style={{ marginTop: "2rem", borderBottom: "1px solid #222", paddingBottom: "1.5rem" }}>
-            <div style={{ fontWeight: "bold", fontSize: "1.2rem", color: "#00ffff" }}>{post.headline}</div>
-            {/* Add caption, media, comments, etc. */}
-          </div>
-        ))}
-      </div>
-
-      {/* 🟦 RightFeed */}
-      <div className="right-feed" style={{ width: "20%", borderLeft: "1px solid #222", padding: "1rem" }}>
-        <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
-        <iframe
-          width="100%"
-          height="240"
-          src="https://abcnews.go.com/video/embed?id=abc_live11"
-          allowFullScreen
-          frameBorder="0"
-          style={{
-            borderRadius: "10px",
-            border: "1px solid #00f0ff44",
-            objectFit: "cover",
-            marginBottom: "1rem",
-          }}
-        ></iframe>
-        <NewsFeed />
-      </div>
+return (
+  <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+    {/* 🔹 Tab Switcher */}
+    <div className="flex justify-center gap-4 p-2 border-b border-cyan-800 bg-[#071a1e]">
+      {[
+        { name: "Post View", value: "left" },
+        { name: "Feed", value: "middle" },
+        { name: "News", value: "right" },
+      ].map(({ name, value }) => (
+        <button
+          key={value}
+          onClick={() => setActivePanel(value)}
+          className={`px-4 py-1 rounded ${
+            activePanel === value ? "bg-cyan-700 text-white" : "text-cyan-300 hover:text-white"
+          }`}
+        >
+          {name}
+        </button>
+      ))}
     </div>
-  );
-}
 
+    {/* 🔸 Main Panel Area */}
+    <div className="page-container" style={{ flex: 1, overflow: "auto" }}>
+      {activePanel === "left" && (
+        <div className="left-feed" style={{ padding: "1rem", background: "#0a0a0a" }}>
+          <PostcardViewer />
+          <PostStatsView />
+          <ChumFeedPanel />
+        </div>
+      )}
 
+      {activePanel === "middle" && (
+        <div className="middle-feed" style={{ padding: "1rem" }}>
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              style={{ marginTop: "2rem", borderBottom: "1px solid #222", paddingBottom: "1.5rem" }}
+            >
+              <div style={{ fontWeight: "bold", fontSize: "1.2rem", color: "#00ffff" }}>{post.headline}</div>
+              {/* Add caption, media, comments, etc. */}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {activePanel === "right" && (
+        <div className="right-feed" style={{ padding: "1rem" }}>
+          <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
+          <iframe
+            width="100%"
+            height="240"
+            src="https://abcnews.go.com/video/embed?id=abc_live11"
+            allowFullScreen
+            frameBorder="0"
+            style={{
+              borderRadius: "10px",
+              border: "1px solid #00f0ff44",
+              objectFit: "cover",
+              marginBottom: "1rem",
+            }}
+          ></iframe>
+          <NewsFeed />
+        </div>
+      )}
+    </div>
+  </div>
+);
