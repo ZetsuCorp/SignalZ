@@ -53,19 +53,18 @@ export default function App() {
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
 {/* 🔹 Dropdown Tab Row (styled like MAIN tabs) */}
-<div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
+<div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e] sigz-tab-row">
   {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
     <button
       key={tabName}
-      onClick={() =>
-        setOpenDropdown(openDropdown === tabName ? null : tabName)
-      }
-      className={`tab ${openDropdown === tabName ? "active" : ""}`}
+      onClick={() => setOpenDropdown(openDropdown === tabName ? null : tabName)}
+      className={`sigz-tab-btn ${openDropdown === tabName ? "active" : ""}`}
     >
       {tabName}
     </button>
   ))}
 </div>
+
 
 {/* 🔹 Dedicated Container for Each */}
 {openDropdown === "ViewZ" && (
@@ -102,19 +101,17 @@ export default function App() {
 
 
         {/* 🔹 Wall Type Tabs */}
-        <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
-          {["main", "alt", "zetsu"].map((id) => (
-            <button
-              key={id}
-              onClick={() => setWallType(id)}
-              className={`tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
-                wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
-              }`}
-            >
-              {id.toUpperCase()}
-            </button>
-          ))}
-        </div>
+       <div className="flex justify-center gap-2 py-4 border-b border-cyan-800 sigz-tab-row">
+  {["main", "alt", "zetsu"].map((id) => (
+    <button
+      key={id}
+      onClick={() => setWallType(id)}
+      className={`sigz-tab-btn ${wallType === id ? "active" : ""}`}
+    >
+      {id.toUpperCase()}
+    </button>
+  ))}
+</div>
 
         {/* 🔹 Feed Content */}
         <div className="feed-scroll">
