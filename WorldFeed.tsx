@@ -154,42 +154,51 @@ export default function WorldFeed({ wallType }) {
   if (posts.length === 0) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
-
-  return (
-<div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
-  {/* 🔹 Auto Next Page Button */}
- <div className="z-50 px-4 py-2 flex flex-col items-center justify-center">
-  <button
-    onClick={() => {
-      const panelOrder = ["left", "middle", "right"];
-      const currentIndex = panelOrder.indexOf(activePanel);
-      const nextIndex = (currentIndex + 1) % panelOrder.length;
-      setActivePanel(panelOrder[nextIndex]);
+return (
+  <div
+    style={{
+      height: "100vh",
+      width: "100vw",
+      display: "flex",
+      flexDirection: "column",
     }}
-    className="btn-signalz-switch"
   >
-    <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-      {activePanel === "left" && "Post View"}
-      {activePanel === "middle" && "Feed"}
-      {activePanel === "right" && "News"}
-      <span style={{ fontSize: "10px", color: "#77ddee" }}>– click to switch</span>
-      <span style={{ fontSize: "16px" }}>⏭</span>
-    </span>
-  </button>
+    {/* 🔹 Auto Next Page Button + Dot Nav */}
+    <div className="z-50 px-4 py-2 flex flex-col items-center justify-center w-full">
+      <button
+        onClick={() => {
+          const panelOrder = ["left", "middle", "right"];
+          const currentIndex = panelOrder.indexOf(activePanel);
+          const nextIndex = (currentIndex + 1) % panelOrder.length;
+          setActivePanel(panelOrder[nextIndex]);
+        }}
+        className="btn-signalz-switch"
+      >
+        <span className="flex items-center gap-2">
+          {activePanel === "left" && "Post View"}
+          {activePanel === "middle" && "Feed"}
+          {activePanel === "right" && "News"}
+          <span className="text-[10px] text-cyan-400">– click to switch</span>
+          <span className="text-lg">⏭</span>
+        </span>
+      </button>
 
-<div className="mt-1 flex justify-center gap-4 text-[13px] font-mono text-center w-full">
-  <div className="flex gap-4">
-    <span className={activePanel === "left" ? "text-cyan-300 glow-dot" : "text-cyan-500"}>
-      {activePanel === "left" ? "●" : "○"} Post View
-    </span>
-    <span className={activePanel === "middle" ? "text-cyan-300 glow-dot" : "text-cyan-500"}>
-      {activePanel === "middle" ? "●" : "○"} Feed
-    </span>
-    <span className={activePanel === "right" ? "text-cyan-300 glow-dot" : "text-cyan-500"}>
-      {activePanel === "right" ? "●" : "○"} News
-    </span>
-  </div>
-</div>
+      {/* 🖍 Dot Nav */}
+      <div className="mt-1 w-full flex justify-center">
+        <div className="flex gap-4 text-[13px] font-mono text-cyan-300">
+          <span className={activePanel === "left" ? "glow-dot" : "text-cyan-500"}>
+            {activePanel === "left" ? "●" : "○"} Post View
+          </span>
+          <span className={activePanel === "middle" ? "glow-dot" : "text-cyan-500"}>
+            {activePanel === "middle" ? "●" : "○"} Feed
+          </span>
+          <span className={activePanel === "right" ? "glow-dot" : "text-cyan-500"}>
+            {activePanel === "right" ? "●" : "○"} News
+          </span>
+        </div>
+      </div>
+    </div>
+
 
 
 
