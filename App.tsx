@@ -33,7 +33,7 @@ export default function App() {
     setEditorSrc(null);
   };
 const [showDropdown, setShowDropdown] = useState(false);
-
+ };
   return (
     <div className="app-wrapper">
       {/* 🔹 Session Overlay */}
