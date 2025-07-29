@@ -286,13 +286,27 @@ button.submit:hover {
 }
 
 .btn-signalz-switch {
-  @apply flex flex-col items-center justify-center px-5 py-2.5 mx-auto 
-         bg-gradient-to-br from-cyan-900 via-[#0f2d3d] to-cyan-800 
-         border border-cyan-400/30 text-cyan-200 
-         hover:text-white hover:border-cyan-200
-         rounded-2xl shadow-md hover:shadow-lg 
-         transition-all duration-200 backdrop-blur-sm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  margin: 0 auto;
+  border-radius: 1rem;
+  color: #a0f0ff;
+  background: linear-gradient(to bottom right, #083344, #0f2d3d, #095166);
+  border: 1px solid rgba(102, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 8px rgba(0, 255, 255, 0.1);
+  transition: all 0.3s ease;
 }
+
+.btn-signalz-switch:hover {
+  color: white;
+  border-color: #b6f4ff;
+  box-shadow: 0 6px 12px rgba(0, 255, 255, 0.2);
+}
+
 
 
 /* === SHARED BUTTON STYLE === */
