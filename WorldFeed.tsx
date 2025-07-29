@@ -166,22 +166,16 @@ export default function WorldFeed({ wallType }) {
         const nextIndex = (currentIndex + 1) % panelOrder.length;
         setActivePanel(panelOrder[nextIndex]);
       }}
-      className="flex flex-col items-center justify-center px-5 py-2.5 mx-auto 
-                 bg-gradient-to-br from-cyan-900 via-[#0f2d3d] to-cyan-800 
-                 border border-cyan-400/30 text-cyan-200 
-                 hover:text-white hover:border-cyan-200
-                 rounded-2xl shadow-md hover:shadow-lg 
-                 transition-all duration-200 backdrop-blur-sm"
+      className="flex flex-col items-center justify-center px-3 py-1 mx-auto border border-cyan-700 bg-[#081d1e] text-cyan-300 hover:text-white rounded"
     >
-      <span className="text-base tracking-wide drop-shadow-sm">
+      <span className="text-base">
         {activePanel === "left" && "Post View"}
         {activePanel === "middle" && "Feed"}
         {activePanel === "right" && "News"}
       </span>
       <span className="text-[10px] text-cyan-400 mt-[1px]">click to switch</span>
-      <span className="text-lg mt-[2px] drop-shadow-sm">⏭</span>
+      <span className="text-lg mt-[1px]">⏭</span>
     </button>
-
 
     {/* 🖍 Dot Nav */}
     <div className="mt-1 text-sm text-cyan-300 flex justify-center gap-2">
