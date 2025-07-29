@@ -257,43 +257,19 @@ button.submit:hover {
   font-weight: bold;
   color: var(--text-dark);
 }
-
-/* === Session Container === */
-.session-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  text-align: center;
-  padding: 1rem;
-  gap: 1rem;
-  background: #021217;
-  border-bottom: 1px solid #00ffff33;
-  box-sizing: border-box;
-}
-
-.session-id {
-  font-size: 1.25rem;
-  color: #00ffff;
-  word-break: break-word;
-}
-
-.session-bg-preview {
-  width: 160px;
-  height: 90px;
-  border-radius: 8px;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid #00ffff55;
-}
-
 /* 🔹 MOBILE FIX */
 @media (max-width: 768px) {
   .session-container {
+    position: relative !important;
+    top: auto;
+    right: auto;
+    width: 100% !important;
+    max-width: 100vw;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem;
+    box-sizing: border-box;
   }
 
   .session-id {
@@ -303,11 +279,12 @@ button.submit:hover {
 
   .session-bg-preview {
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
     height: auto;
     aspect-ratio: 16 / 9;
   }
 }
+
 
 
 
