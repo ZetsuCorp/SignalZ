@@ -8,7 +8,6 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [showViewOptions, setShowViewOptions] = useState(false); // ← for ▼ dropdown
 
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
@@ -53,74 +52,64 @@ export default function App() {
           <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
+{/* 🔹 Dropdown Tab Row (styled like MAIN tabs) */}
+<div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
+  {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
+    <button
+      key={tabName}
+      onClick={() =>
+        setOpenDropdown(openDropdown === tabName ? null : tabName)
+      }
+      className={tab ${openDropdown === tabName ? "active" : ""}}
+    >
+      {tabName}
+    </button>
+  ))}
+</div>
 
-        {/* 🔹 Dropdown Tabs */}
-        <div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
-          {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
-            <button
-              key={tabName}
-              onClick={() => setOpenDropdown(openDropdown === tabName ? null : tabName)}
-              className={`tab ${openDropdown === tabName ? "active" : ""}`}
-            >
-              {tabName}
-            </button>
-          ))}
+{/* 🔹 Dedicated Container for Each */}
+{openDropdown === "ViewZ" && (
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+    {/* 🧠 Drop your ViewZ panel content here */}
+    <h2 className="text-xl font-bold mb-2">ViewZ</h2>
+    <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
+  </div>
+)}
 
-          {/* ▼ Dropdown Menu */}
-          <div className="relative">
-            <button
-              className="tab"
-              onClick={() => setShowViewOptions(!showViewOptions)}
-            >
-              ▼
-            </button>
-            {showViewOptions && (
-              <div className="absolute bg-[#081c24] text-cyan-200 shadow-lg rounded px-4 py-2 right-0 z-20">
-                {["Post View", "Feed", "News"].map((item) => (
-                  <div key={item} className="py-1 px-2 hover:bg-cyan-800 rounded cursor-pointer">
-                    {item}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+{openDropdown === "HotFeed" && (
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+    {/* 🔥 HotFeed panel */}
+    <h2 className="text-xl font-bold mb-2">HotFeed</h2>
+    <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
+  </div>
+)}
 
-        {/* 🔹 Active Panel Display */}
-        {openDropdown === "ViewZ" && (
-          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">ViewZ</h2>
-            <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
-          </div>
-        )}
-        {openDropdown === "HotFeed" && (
-          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">HotFeed</h2>
-            <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
-          </div>
-        )}
-        {openDropdown === "Brand-Signal" && (
-          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
-            <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
-          </div>
-        )}
-        {openDropdown === "SignalZ TCG" && (
-          <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
-            <p className="text-sm opacity-60">This is where we show card decks, rarity, battles, leaderboard, whatever.</p>
-          </div>
-        )}
+{openDropdown === "Brand-Signal" && (
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+    {/* 🧪 Branding stuff lives here */}
+    <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
+    <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
+  </div>
+)}
 
-        {/* 🔹 Wall Tabs */}
+{openDropdown === "SignalZ TCG" && (
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+    {/* 🎴 TCG Panel */}
+    <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
+    <p className="text-sm opacity-60">This is where we show card decks, rarity, battles, leaderboard, whatever.</p>
+  </div>
+)}
+
+
+        {/* 🔹 Wall Type Tabs */}
         <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
           {["main", "alt", "zetsu"].map((id) => (
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={`tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
+              className={tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
                 wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
-              }`}
+              }}
             >
               {id.toUpperCase()}
             </button>
