@@ -258,6 +258,25 @@ button.submit:hover {
   color: var(--text-dark);
 }
 
+@media (max-width: 768px) {
+  .session-container {
+    transform: scale(0.75);
+    transform-origin: top right;
+    width: auto !important;
+    max-width: 100% !important;
+    padding: 0.5em !important;
+  }
+
+  .session-container img {
+    width: 1.8em !important;
+    height: 3.6em !important;
+  }
+
+  .session-container div {
+    font-size: 0.75rem !important;
+  }
+}
+
 
 
 /* cheate floating button */
