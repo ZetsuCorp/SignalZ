@@ -55,12 +55,13 @@ function getOrCreateSessionId(): string {
   const flairEmojis = ["🔥", "💀", "✨", "🌀", "🚀", "🎯", "🤖", "💎", "👾", "🌈"];
   const flair = pick(flairEmojis);
 
-  const id = `sigicons/${Sicon}#${part1}${part2}${part3}${finalThing}${matchedEmoji}${flair}`;
+  const id = sigicons/${Sicon}#${part1}${part2}${part3}${finalThing}${matchedEmoji}${flair};
   sessionStorage.setItem("session_id", id);
 
-  const iconPath = `/sigicons/${Sicon}`;
+  const iconPath = /sigicons/${Sicon};
   sessionStorage.setItem("session_icon", iconPath);
 
+  // ✅ NEW: Save display_name
   const displayName = id.replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif#/, '');
   sessionStorage.setItem("session_display_name", displayName);
 
@@ -74,36 +75,21 @@ function getOrCreateSessionBackground(): string {
 
   const totalImages = 4;
   const randomIndex = Math.floor(Math.random() * totalImages);
-  const bg = `test${randomIndex}`;
+  const bg = test${randomIndex};
   sessionStorage.setItem("session_bg", bg);
   return bg;
-}
-
-// 🔹 Mobile hook
-function useIsMobile(threshold = 768): boolean {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= threshold);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [threshold]);
-
-  return isMobile;
 }
 
 export default function SessionContainer() {
   const [sessionId, setSessionId] = useState("");
   const [bgImage, setBgImage] = useState("");
   const [animationClass, setAnimationClass] = useState("");
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const id = getOrCreateSessionId();
     const bg = getOrCreateSessionBackground();
     setSessionId(id);
-    setBgImage(`/postcard-assets/cardbase/${bg}.png`);
+    setBgImage(/postcard-assets/cardbase/${bg}.png);
 
     const animations = [
       "swoosh", "burst", "burn", "ripple", "slide-down", "zap", "spin"
@@ -113,20 +99,18 @@ export default function SessionContainer() {
   }, []);
 
   const imgMatch = sessionId.match(/^sigicons\/([a-zA-Z0-9\-]+\.gif)/);
-  const imgPath = imgMatch ? `/sigicons/${imgMatch[1]}` : null;
+  const imgPath = imgMatch ? /sigicons/${imgMatch[1]} : null;
   const cleanName = sessionId.replace(/^sigicons\/[a-zA-Z0-9\-]+\.gif#/, '');
 
   return (
     <div
-      className={`session-container ${animationClass}`}
+      className={session-container ${animationClass}}
       style={{
-        backgroundImage: `url(${bgImage})`,
+        backgroundImage: url(${bgImage}),
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         padding: "1em",
-        transform: isMobile ? "scale(0.8)" : undefined,
-        transformOrigin: isMobile ? "top right" : undefined,
       }}
     >
       <div
