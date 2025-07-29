@@ -361,6 +361,47 @@ button.submit:hover {
 }
 
 
+/* Desktop: regular layout */
+.sigz-mobile-dropdown {
+  display: none;
+}
+
+/* Mobile only: dropdown */
+@media (max-width: 768px) {
+  .sigz-mobile-dropdown {
+    display: block;
+    margin: 0.5rem auto;
+    text-align: center;
+  }
+
+  .dropdown-toggle {
+    font-size: 0.85rem;
+    background: #012a30;
+    color: #00ffff;
+    padding: 0.5rem 1rem;
+    border: 1px solid #00ffff55;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .dropdown-panel {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .dropdown-item {
+    background: #022f3b;
+    padding: 0.4rem 0.8rem;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    border: 1px solid #00ffff22;
+  }
+}
+
+
 
 /* === MOBILE OVERRIDE === */
 @media (max-width: 768px) {
