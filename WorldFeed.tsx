@@ -32,7 +32,6 @@ function getEmbedUrl(url) {
   return null;
 }
 
-// ✅ Fetch comments
 async function fetchComments(postId) {
   try {
     const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
@@ -44,7 +43,6 @@ async function fetchComments(postId) {
   }
 }
 
-// ✅ Submit a comment
 async function submitComment(postId, content, wallType) {
   const res = await fetch("/.netlify/functions/create-comment", {
     method: "POST",
@@ -62,6 +60,7 @@ export default function WorldFeed({ wallType }) {
   const [showCreateOverlay, setShowCreateOverlay] = useState(false);
   const [createMode, setCreateMode] = useState("");
   const [showPostcardViewer, setShowPostcardViewer] = useState(false);
+  const [activePanel, setActivePanel] = useState("middle");
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -109,11 +108,7 @@ export default function WorldFeed({ wallType }) {
           }
         });
       },
-      {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.6,
-      }
+      { root: null, rootMargin: "0px", threshold: 0.6 }
     );
 
     const allMedia = document.querySelectorAll("video, iframe");
@@ -156,92 +151,89 @@ export default function WorldFeed({ wallType }) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
-const [activePanel, setActivePanel] = useState<"left" | "middle" | "right">("middle");
+  // ✅ FINAL RETURN LAYOUT
+  return (
+    <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+      {/* 🔹 Tab Switcher */}
+      <div className="panel-tabs">
+        {[
+          { name: "Post View", value: "left" },
+          { name: "Feed", value: "middle" },
+          { name: "News", value: "right" },
+        ].map(({ name, value }) => (
+          <button
+            key={value}
+            onClick={() => setActivePanel(value)}
+            className={`panel-tab ${activePanel === value ? "active" : ""}`}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
 
-// ✅ FINAL RETURN LAYOUT
-return (
-  <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
-    {/* 🔹 Tab Switcher */}
-    <div className="panel-tabs">
-      {[
-        { name: "Post View", value: "left" },
-        { name: "Feed", value: "middle" },
-        { name: "News", value: "right" },
-      ].map(({ name, value }) => (
-        <button
-          key={value}
-          onClick={() => setActivePanel(value)}
-          className={`panel-tab ${activePanel === value ? "active" : ""}`}
-        >
-          {name}
-        </button>
-      ))}
-    </div>
+      {/* 🔸 Active Panel */}
+      <div className="panel-view" style={{ background: "#0c0c0c" }}>
+        {activePanel === "left" && (
+          <div className="left-feed">
+            <PostcardViewer />
+            <PostStatsView />
+            <ChumFeedPanel />
+          </div>
+        )}
 
-    {/* 🔸 Active Panel */}
-    <div className="panel-view" style={{ background: "#0c0c0c" }}>
-      {activePanel === "left" && (
-        <div className="left-feed">
-          <PostcardViewer />
-          <PostStatsView />
-          <ChumFeedPanel />
-        </div>
-      )}
-
-      {activePanel === "middle" && (
-        <div className="middle-feed">
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              style={{
-                marginTop: "2rem",
-                borderBottom: "1px solid #222",
-                paddingBottom: "1.5rem",
-              }}
-            >
+        {activePanel === "middle" && (
+          <div className="middle-feed">
+            {posts.map((post) => (
               <div
+                key={post.id}
                 style={{
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  color: "#00ffff",
+                  marginTop: "2rem",
+                  borderBottom: "1px solid #222",
+                  paddingBottom: "1.5rem",
                 }}
               >
-                {post.headline}
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    color: "#00ffff",
+                  }}
+                >
+                  {post.headline}
+                </div>
               </div>
-              {/* Add caption, media, comments, etc. */}
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
 
-      {activePanel === "right" && (
-        <div className="right-feed">
-          <h2
-            style={{
-              marginBottom: "1rem",
-              fontSize: "1rem",
-              color: "#00f0ff",
-            }}
-          >
-            🗞️ News Feed
-          </h2>
-          <iframe
-            width="100%"
-            height="240"
-            src="https://abcnews.go.com/video/embed?id=abc_live11"
-            allowFullScreen
-            frameBorder="0"
-            style={{
-              borderRadius: "10px",
-              border: "1px solid #00f0ff44",
-              objectFit: "cover",
-              marginBottom: "1rem",
-            }}
-          ></iframe>
-          <NewsFeed />
-        </div>
-      )}
+        {activePanel === "right" && (
+          <div className="right-feed">
+            <h2
+              style={{
+                marginBottom: "1rem",
+                fontSize: "1rem",
+                color: "#00f0ff",
+              }}
+            >
+              🗞️ News Feed
+            </h2>
+            <iframe
+              width="100%"
+              height="240"
+              src="https://abcnews.go.com/video/embed?id=abc_live11"
+              allowFullScreen
+              frameBorder="0"
+              style={{
+                borderRadius: "10px",
+                border: "1px solid #00f0ff44",
+                objectFit: "cover",
+                marginBottom: "1rem",
+              }}
+            ></iframe>
+            <NewsFeed />
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
-
+  );
+}
