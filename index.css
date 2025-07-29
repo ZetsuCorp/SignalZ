@@ -360,6 +360,22 @@ button.submit:hover {
   transform: scale(1.08);
 }
 
+<div className="sigz-mobile-dropdown">
+  <button
+    className="dropdown-toggle"
+    onClick={() => setShowDropdown((prev) => !prev)}
+  >
+    Post View ▾
+  </button>
+
+  {showDropdown && (
+    <div className="dropdown-panel">
+      <button className="dropdown-item">Post View</button>
+      <button className="dropdown-item">Feed</button>
+      <button className="dropdown-item">News</button>
+    </div>
+  )}
+</div>
 
 
 /* === MOBILE OVERRIDE === */
