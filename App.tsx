@@ -60,7 +60,8 @@ export default function App() {
       onClick={() =>
         setOpenDropdown(openDropdown === tabName ? null : tabName)
       }
-      className={tab ${openDropdown === tabName ? "active" : ""}}
+className={tab + (openDropdown === tabName ? "active" : "")}
+
     >
       {tabName}
     </button>
