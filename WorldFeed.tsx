@@ -236,8 +236,8 @@ export default function WorldFeed({ wallType }) {
         )}
       </div>
     </div>
-    You said:
-           {/* 🔹 Floating Create Button */}
+   
+          {/* 🔹 Floating Create Button */}
 <button
   className="floating-create-btn"
   onClick={handleCreateClick}
