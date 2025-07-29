@@ -132,6 +132,11 @@ export default function WorldFeed({ wallType }) {
     }
   };
 
+  const handleCreateClick = () => {
+    setCreateMode("post");
+    setShowCreateOverlay(true);
+  };
+
   const handleCreate = (mode) => {
     setCreateMode(mode);
     setShowCreateOverlay(true);
@@ -150,98 +155,98 @@ export default function WorldFeed({ wallType }) {
   if (posts.length === 0) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
-  
-// ✅ FINAL RETURN LAYOUT
-return (
-  <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
-    {/* 🔹 Tab Switcher */}
-    <div className="panel-tabs">
-      {[
-        { name: "Post View", value: "left" },
-        { name: "Feed", value: "middle" },
-        { name: "News", value: "right" },
-      ].map(({ name, value }) => (
-        <button
-          key={value}
-          onClick={() => setActivePanel(value)}
-          className={`panel-tab ${activePanel === value ? "active" : ""}`}
-        >
-          {name}
-        </button>
-      ))}
-    </div>
 
-    {/* 🔸 Active Panel */}
-    <div className="panel-view" style={{ background: "#0c0c0c" }}>
-      {activePanel === "left" && (
-        <div className="left-feed">
-          <PostcardViewer />
-          <PostStatsView />
-          <ChumFeedPanel />
-        </div>
-      )}
+  // ✅ FINAL RETURN LAYOUT
+  return (
+    <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+      {/* 🔹 Tab Switcher */}
+      <div className="panel-tabs">
+        {[
+          { name: "Post View", value: "left" },
+          { name: "Feed", value: "middle" },
+          { name: "News", value: "right" },
+        ].map(({ name, value }) => (
+          <button
+            key={value}
+            onClick={() => setActivePanel(value)}
+            className={`panel-tab ${activePanel === value ? "active" : ""}`}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
 
-      {activePanel === "middle" && (
-        <div className="middle-feed">
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              style={{
-                marginTop: "2rem",
-                borderBottom: "1px solid #222",
-                paddingBottom: "1.5rem",
-              }}
-            >
+      {/* 🔸 Active Panel */}
+      <div className="panel-view" style={{ background: "#0c0c0c" }}>
+        {activePanel === "left" && (
+          <div className="left-feed">
+            <PostcardViewer />
+            <PostStatsView />
+            <ChumFeedPanel />
+          </div>
+        )}
+
+        {activePanel === "middle" && (
+          <div className="middle-feed">
+            {posts.map((post) => (
               <div
+                key={post.id}
                 style={{
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  color: "#00ffff",
+                  marginTop: "2rem",
+                  borderBottom: "1px solid #222",
+                  paddingBottom: "1.5rem",
                 }}
               >
-                {post.headline}
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    color: "#00ffff",
+                  }}
+                >
+                  {post.headline}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
 
-      {activePanel === "right" && (
-        <div className="right-feed">
-          <h2
-            style={{
-              marginBottom: "1rem",
-              fontSize: "1rem",
-              color: "#00f0ff",
-            }}
-          >
-            🗞️ News Feed
-          </h2>
-          <iframe
-            width="100%"
-            height="240"
-            src="https://abcnews.go.com/video/embed?id=abc_live11"
-            allowFullScreen
-            frameBorder="0"
-            style={{
-              borderRadius: "10px",
-              border: "1px solid #00f0ff44",
-              objectFit: "cover",
-              marginBottom: "1rem",
-            }}
-          ></iframe>
-          <NewsFeed />
-        </div>
-      )}
+        {activePanel === "right" && (
+          <div className="right-feed">
+            <h2
+              style={{
+                marginBottom: "1rem",
+                fontSize: "1rem",
+                color: "#00f0ff",
+              }}
+            >
+              🗞️ News Feed
+            </h2>
+            <iframe
+              width="100%"
+              height="240"
+              src="https://abcnews.go.com/video/embed?id=abc_live11"
+              allowFullScreen
+              frameBorder="0"
+              style={{
+                borderRadius: "10px",
+                border: "1px solid #00f0ff44",
+                objectFit: "cover",
+                marginBottom: "1rem",
+              }}
+            ></iframe>
+            <NewsFeed />
+          </div>
+        )}
+      </div>
+
+      {/* ✅ Floating Create Button */}
+      <button
+        className="floating-create-btn"
+        onClick={handleCreateClick}
+      >
+        +
+      </button>
     </div>
-
-    {/* ✅ Floating Create Button */}
-    <button
-      className="floating-create-btn"
-      onClick={handleCreateClick}
-    >
-      +
-    </button>
-  </div>
-);
+  );
 }
