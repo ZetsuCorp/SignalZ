@@ -152,7 +152,7 @@ export default function WorldFeed({ wallType }) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
-  // ✅ FINAL RETURN LAYOUT
+// ✅ FINAL RETURN LAYOUT
 return (
   <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
     {/* 🔹 Tab Switcher */}
@@ -245,3 +245,5 @@ return (
     </button>
   </div>
 );
+}
+
