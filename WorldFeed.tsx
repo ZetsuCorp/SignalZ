@@ -159,7 +159,7 @@ export default function WorldFeed({ wallType }) {
 <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
   {/* 🔹 Auto Next Page Button */}
   <div className="z-50 px-4 py-2 text-center">
-  <button
+<button
   onClick={() => {
     const panelOrder = ["left", "middle", "right"];
     const currentIndex = panelOrder.indexOf(activePanel);
@@ -168,14 +168,15 @@ export default function WorldFeed({ wallType }) {
   }}
   className="btn-signalz-switch"
 >
-  <span className="text-base">
+  <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
     {activePanel === "left" && "Post View"}
     {activePanel === "middle" && "Feed"}
     {activePanel === "right" && "News"}
+    <span style={{ fontSize: "10px", color: "#77ddee" }}>– click to switch</span>
+    <span style={{ fontSize: "16px" }}>⏭</span>
   </span>
-  <span className="text-[10px] text-cyan-400 mt-[1px]">click to switch</span>
-  <span className="text-lg mt-[1px]">⏭</span>
 </button>
+
 
     {/* 🖍 Dot Nav */}
     <div className="mt-1 text-sm text-cyan-300 flex justify-center gap-2">
