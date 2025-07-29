@@ -177,8 +177,8 @@ export default function WorldFeed({ wallType }) {
     </span>
   </button>
 
-  {/* 🖍 Dot Nav */}
-  <div className="mt-1 flex justify-center gap-4 text-[13px] font-mono text-center w-full">
+<div className="mt-1 flex justify-center gap-4 text-[13px] font-mono text-center w-full">
+  <div className="flex gap-4">
     <span className={activePanel === "left" ? "text-cyan-300 glow-dot" : "text-cyan-500"}>
       {activePanel === "left" ? "●" : "○"} Post View
     </span>
@@ -190,7 +190,6 @@ export default function WorldFeed({ wallType }) {
     </span>
   </div>
 </div>
-
 
 
 
