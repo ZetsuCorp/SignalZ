@@ -12,6 +12,7 @@ export default function App() {
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false); // 🔹 <== THIS LINE
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
@@ -32,8 +33,7 @@ export default function App() {
     setEditorType(null);
     setEditorSrc(null);
   };
-const [showDropdown, setShowDropdown] = useState(false);
- };
+
   return (
     <div className="app-wrapper">
       {/* 🔹 Session Overlay */}
