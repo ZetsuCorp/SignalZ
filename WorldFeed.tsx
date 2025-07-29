@@ -162,7 +162,7 @@ const [activePanel, setActivePanel] = useState<"left" | "middle" | "right">("mid
 return (
   <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
     {/* 🔹 Tab Switcher */}
-    <div className="flex justify-center gap-4 p-2 border-b border-cyan-800 bg-[#071a1e]">
+    <div className="panel-tabs">
       {[
         { name: "Post View", value: "left" },
         { name: "Feed", value: "middle" },
@@ -171,19 +171,17 @@ return (
         <button
           key={value}
           onClick={() => setActivePanel(value)}
-          className={`px-4 py-1 rounded ${
-            activePanel === value ? "bg-cyan-700 text-white" : "text-cyan-300 hover:text-white"
-          }`}
+          className={`panel-tab ${activePanel === value ? "active" : ""}`}
         >
           {name}
         </button>
       ))}
     </div>
 
-    {/* 🔸 Main Panel Area */}
-    <div className="page-container" style={{ flex: 1, overflow: "auto" }}>
+    {/* 🔸 Active Panel */}
+    <div className="panel-view" style={{ background: "#0c0c0c" }}>
       {activePanel === "left" && (
-        <div className="left-feed" style={{ padding: "1rem", background: "#0a0a0a" }}>
+        <div className="left-feed">
           <PostcardViewer />
           <PostStatsView />
           <ChumFeedPanel />
@@ -191,13 +189,25 @@ return (
       )}
 
       {activePanel === "middle" && (
-        <div className="middle-feed" style={{ padding: "1rem" }}>
+        <div className="middle-feed">
           {posts.map((post) => (
             <div
               key={post.id}
-              style={{ marginTop: "2rem", borderBottom: "1px solid #222", paddingBottom: "1.5rem" }}
+              style={{
+                marginTop: "2rem",
+                borderBottom: "1px solid #222",
+                paddingBottom: "1.5rem",
+              }}
             >
-              <div style={{ fontWeight: "bold", fontSize: "1.2rem", color: "#00ffff" }}>{post.headline}</div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                  color: "#00ffff",
+                }}
+              >
+                {post.headline}
+              </div>
               {/* Add caption, media, comments, etc. */}
             </div>
           ))}
@@ -205,8 +215,16 @@ return (
       )}
 
       {activePanel === "right" && (
-        <div className="right-feed" style={{ padding: "1rem" }}>
-          <h2 style={{ marginBottom: "1rem", fontSize: "1rem", color: "#00f0ff" }}>🗞️ News Feed</h2>
+        <div className="right-feed">
+          <h2
+            style={{
+              marginBottom: "1rem",
+              fontSize: "1rem",
+              color: "#00f0ff",
+            }}
+          >
+            🗞️ News Feed
+          </h2>
           <iframe
             width="100%"
             height="240"
@@ -226,4 +244,4 @@ return (
     </div>
   </div>
 );
-}
+)
