@@ -260,7 +260,7 @@ button.submit:hover {
 
 @media (max-width: 768px) {
   .session-container {
-    transform: scale(0.75);
+    transform: scale(0.50);
     transform-origin: top right;
     width: auto !important;
     max-width: 100% !important;
