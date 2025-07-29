@@ -288,7 +288,8 @@ button.submit:hover {
 /* === SHARED BUTTON STYLE === */
 
 .btn-signalz-switch {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 4px 10px;
@@ -302,8 +303,8 @@ button.submit:hover {
   transition: all 0.2s ease;
   font-size: 13px;
   line-height: 1.2;
-  gap: 0.5rem;
 }
+
 
 .btn-signalz-switch span {
   margin-top: 1px;
