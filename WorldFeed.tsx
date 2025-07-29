@@ -159,23 +159,23 @@ export default function WorldFeed({ wallType }) {
 <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
   {/* 🔹 Auto Next Page Button */}
   <div className="z-50 px-4 py-2 text-center">
-    <button
-      onClick={() => {
-        const panelOrder = ["left", "middle", "right"];
-        const currentIndex = panelOrder.indexOf(activePanel);
-        const nextIndex = (currentIndex + 1) % panelOrder.length;
-        setActivePanel(panelOrder[nextIndex]);
-      }}
-      className="flex flex-col items-center justify-center px-3 py-1 mx-auto border border-cyan-700 bg-[#081d1e] text-cyan-300 hover:text-white rounded"
-    >
-      <span className="text-base">
-        {activePanel === "left" && "Post View"}
-        {activePanel === "middle" && "Feed"}
-        {activePanel === "right" && "News"}
-      </span>
-      <span className="text-[10px] text-cyan-400 mt-[1px]">click to switch</span>
-      <span className="text-lg mt-[1px]">⏭</span>
-    </button>
+  <button
+  onClick={() => {
+    const panelOrder = ["left", "middle", "right"];
+    const currentIndex = panelOrder.indexOf(activePanel);
+    const nextIndex = (currentIndex + 1) % panelOrder.length;
+    setActivePanel(panelOrder[nextIndex]);
+  }}
+  className="btn-signalz-switch"
+>
+  <span className="text-base">
+    {activePanel === "left" && "Post View"}
+    {activePanel === "middle" && "Feed"}
+    {activePanel === "right" && "News"}
+  </span>
+  <span className="text-[10px] text-cyan-400 mt-[1px]">click to switch</span>
+  <span className="text-lg mt-[1px]">⏭</span>
+</button>
 
     {/* 🖍 Dot Nav */}
     <div className="mt-1 text-sm text-cyan-300 flex justify-center gap-2">
