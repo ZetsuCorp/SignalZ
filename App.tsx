@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PostForm from "./PostForm";
 import WorldFeed from "./WorldFeed";
 import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
@@ -8,6 +7,7 @@ export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
@@ -27,7 +27,7 @@ export default function App() {
     setEditorVisible(true);
   };
 
-  const handleMediaConfirm = (editedSrc: string) => {
+  const handleMediaConfirm = (editedSrc) => {
     setEditorVisible(false);
     setEditorType(null);
     setEditorSrc(null);
@@ -35,45 +35,14 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
-      {/* 🔹 Session ID Floating Overlay */}
+      {/* 🔹 Session Overlay */}
       <SessionContainer />
 
-      {/* 🔹 Sidebar Panel */}
-      <aside className="left-panel">
-        <div className="sidebar-content">
-          <h2 className="sidebar-title">Create</h2>
-          <PostForm wallType={wallType} onMediaPreview={handleMediaPreview} />
-          <div className="mt-6">
-            <h3 className="text-sm font-semibold">Signal Source</h3>
-            <div className="source-pill mb-2">{wallType.toUpperCase()}</div>
-            <p className="text-xs text-cyan-300">
-              Posts go to the selected wall.
-            </p>
-          </div>
-          <button
-            className="mt-4 text-sm text-cyan-200 hover:underline"
-            onClick={() => setShowSettings(true)}
-          >
-            ⚙️ Settings
-          </button>
-
-          <a href="/monetize" className="monetize-link mt-4 block">
-            💸 Open Monetization
-          </a>
-
-          <a href="/jessica" className="mt-2 block text-sm text-cyan-300 hover:underline">
-            🧠 Run Jessica AI
-          </a>
-        </div>
-      </aside>
-
-      {/* 🔹 Main Feed Area */}
       <main className="right-panel">
+        {/* 🔹 Header Logo */}
         <header className="text-center py-4 border-b border-cyan-800 relative">
           <div className="sigz-icon-stack relative inline-block w-14 h-14">
-            <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">
-              🌐
-            </span>
+            <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">🌐</span>
             <img
               src="/sigicons/ripple.gif"
               alt="Ripple"
@@ -83,25 +52,77 @@ export default function App() {
           <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
+{/* 🔹 Dropdown Tab Row (styled like MAIN tabs) */}
+<div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
+  {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
+    <button
+      key={tabName}
+      onClick={() =>
+        setOpenDropdown(openDropdown === tabName ? null : tabName)
+      }
+      className={`tab ${openDropdown === tabName ? "active" : ""}`}
+    >
+      {tabName}
+    </button>
+  ))}
+</div>
 
+{/* 🔹 Dedicated Container for Each */}
+{openDropdown === "ViewZ" && (
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+    {/* 🧠 Drop your ViewZ panel content here */}
+    <h2 className="text-xl font-bold mb-2">ViewZ</h2>
+    <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
+  </div>
+)}
+
+{openDropdown === "HotFeed" && (
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+    {/* 🔥 HotFeed panel */}
+    <h2 className="text-xl font-bold mb-2">HotFeed</h2>
+    <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
+  </div>
+)}
+
+{openDropdown === "Brand-Signal" && (
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+    {/* 🧪 Branding stuff lives here */}
+    <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
+    <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
+  </div>
+)}
+
+{openDropdown === "SignalZ TCG" && (
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+    {/* 🎴 TCG Panel */}
+    <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
+    <p className="text-sm opacity-60">This is where we show card decks, rarity, battles, leaderboard, whatever.</p>
+  </div>
+)}
+
+
+        {/* 🔹 Wall Type Tabs */}
         <div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800">
           {["main", "alt", "zetsu"].map((id) => (
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={`tab ${wallType === id ? "active" : ""}`}
+              className={`tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
+                wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
+              }`}
             >
               {id.toUpperCase()}
             </button>
           ))}
         </div>
 
+        {/* 🔹 Feed Content */}
         <div className="feed-scroll">
           <WorldFeed wallType={wallType} />
         </div>
       </main>
 
-      {/* 🔹 Settings Drawer */}
+      {/* ⚙️ Settings Drawer */}
       {showSettings && (
         <div className="settings-drawer">
           <h3>Settings</h3>
@@ -120,7 +141,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 🔹 Media Overlay Editor */}
+      {/* 🖼️ Media Editor */}
       {editorVisible && editorSrc && (
         <MediaEditor
           type={editorType}
