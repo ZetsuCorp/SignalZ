@@ -67,41 +67,37 @@ export default function App() {
   ))}
 </div>
 
-{/* 🔹 Dedicated Container for Each */}
+{/* 🔹 Dropdown Panels - SAME LAYOUT, fixed centering + styles */}
 {openDropdown === "ViewZ" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 py-8 flex flex-col items-center justify-center text-center">
-    <button className="btn-signalz-switch mb-4">ViewZ – click to switch ⏭</button>
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center">
     <h2 className="text-xl font-bold mb-1">ViewZ</h2>
     <p className="text-sm text-cyan-400 opacity-70">User post metrics, engagement, reach, or analytics.</p>
   </div>
 )}
 
 {openDropdown === "HotFeed" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 py-8 flex flex-col items-center justify-center text-center">
-    <button className="btn-signalz-switch mb-4">HotFeed – click to switch ⏭</button>
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center">
     <h2 className="text-xl font-bold mb-1">HotFeed</h2>
     <p className="text-sm text-cyan-400 opacity-70">Trending post selector or custom feed injection.</p>
   </div>
 )}
 
 {openDropdown === "Brand-Signal" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 py-8 flex flex-col items-center justify-center text-center">
-    <button className="btn-signalz-switch mb-4">Brand-Signal – click to switch ⏭</button>
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center">
     <h2 className="text-xl font-bold mb-1">Brand-Signal</h2>
     <p className="text-sm text-cyan-400 opacity-70">Bot-injected brand mentions, logo tools, etc.</p>
   </div>
 )}
 
 {openDropdown === "SignalZ TCG" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 py-8 flex flex-col items-center justify-center text-center">
-    <button className="btn-signalz-switch mb-4">SignalZ TCG – click to switch ⏭</button>
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center">
     <h2 className="text-xl font-bold mb-1">SignalZ TCG</h2>
     <p className="text-sm text-cyan-400 opacity-70">Card decks, rarity, battles, leaderboard, etc.</p>
   </div>
 )}
 
-{/* 🔹 Wall Type Tabs */}
-<div className="tabs flex justify-center gap-2 py-4 border-b border-cyan-800 bg-[#071a1e]">
+        {/* 🔹 Wall Type Tabs — HORIZONTAL, CENTERED, NOT STACKED */}
+<div className="tabs flex justify-center gap-3 py-4 border-b border-cyan-800 bg-[#071a1e]">
   {["main", "alt", "zetsu"].map((id) => (
     <button
       key={id}
@@ -114,6 +110,7 @@ export default function App() {
     </button>
   ))}
 </div>
+
 
 
         {/* 🔹 Feed Content */}
