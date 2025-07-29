@@ -260,15 +260,6 @@ button.submit:hover {
 
 
 
-@media (max-width: 768px) {
-  .session-container {
-    transform: scale(0.8);
-    transform-origin: top right;
-  }
-}
-
-
-
 /* cheate floating button */
 .floating-create-btn {
   position: fixed;
