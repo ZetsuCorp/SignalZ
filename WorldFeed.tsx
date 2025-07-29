@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import PanelPostView from "./panels/PanelPostView";
-import PanelFeed from "./panels/PanelFeed";
-import PanelNews from "./panels/PanelNews";
 
-// Main WorldFeed component
+// ✅ Correct Panel Imports
+import PanelPostView from "@/components/PanelPostView";
+import PanelFeed from "@/components/PanelFeed";
+import PanelNews from "@/components/PanelNews";
+
+// ✅ Main Component
 export default function WorldFeed({ wallType }) {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
@@ -52,7 +54,7 @@ export default function WorldFeed({ wallType }) {
         ))}
       </div>
 
-      {/* 🔸 Active Panel */}
+      {/* 🔸 Panel Switch */}
       <div className="panel-view" style={{ background: "#0c0c0c" }}>
         {activePanel === "left" && <PanelPostView />}
         {activePanel === "middle" && <PanelFeed posts={posts} />}
