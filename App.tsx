@@ -52,20 +52,7 @@ export default function App() {
           <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
-{/* 🔹 Dropdown Tab Row (styled like MAIN tabs) */}
-<div className="flex justify-center gap-4 py-2 border-b border-cyan-800 bg-[#071a1e]">
-  {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
-    <button
-      key={tabName}
-      onClick={() =>
-        setOpenDropdown(openDropdown === tabName ? null : tabName)
-      }
-      className={tab ${openDropdown === tabName ? "active" : ""}}
-    >
-      {tabName}
-    </button>
-  ))}
-</div>
+
 
 {/* 🔹 Dedicated Container for Each */}
 {openDropdown === "ViewZ" && (
