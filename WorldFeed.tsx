@@ -161,12 +161,10 @@ return (
       width: "100vw",
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",     // ✅ centers everything
-      justifyContent: "flex-start", // or "center" if you want vertical center
     }}
   >
-    {/* 🔹 Switch Button + Dot Nav */}
-    <div className="z-50 flex flex-col items-center justify-center mt-4">
+    {/* 🔹 Auto Next Page Button + Dot Nav */}
+    <div className="z-50 px-4 py-2 flex flex-col items-center justify-center w-full">
       <button
         onClick={() => {
           const panelOrder = ["left", "middle", "right"];
@@ -176,29 +174,30 @@ return (
         }}
         className="btn-signalz-switch"
       >
-        {activePanel === "left" && "Post View"}
-        {activePanel === "middle" && "Feed"}
-        {activePanel === "right" && "News"}
-        <span className="text-[10px] text-cyan-400 mx-2">– click to switch</span>
-        <span className="text-lg">⏭</span>
+        <span className="flex items-center gap-2">
+          {activePanel === "left" && "Post View"}
+          {activePanel === "middle" && "Feed"}
+          {activePanel === "right" && "News"}
+          <span className="text-[10px] text-cyan-400">– click to switch</span>
+          <span className="text-lg">⏭</span>
+        </span>
       </button>
 
       {/* 🖍 Dot Nav */}
-      <div className="mt-2 flex gap-4 text-[13px] font-mono text-cyan-300">
-        <span className={activePanel === "left" ? "glow-dot" : "text-cyan-500"}>
-          {activePanel === "left" ? "●" : "○"} Post View
-        </span>
-        <span className={activePanel === "middle" ? "glow-dot" : "text-cyan-500"}>
-          {activePanel === "middle" ? "●" : "○"} Feed
-        </span>
-        <span className={activePanel === "right" ? "glow-dot" : "text-cyan-500"}>
-          {activePanel === "right" ? "●" : "○"} News
-        </span>
+      <div className="mt-1 w-full flex justify-center">
+        <div className="flex gap-4 text-[13px] font-mono text-cyan-300">
+          <span className={activePanel === "left" ? "glow-dot" : "text-cyan-500"}>
+            {activePanel === "left" ? "●" : "○"} Post View
+          </span>
+          <span className={activePanel === "middle" ? "glow-dot" : "text-cyan-500"}>
+            {activePanel === "middle" ? "●" : "○"} Feed
+          </span>
+          <span className={activePanel === "right" ? "glow-dot" : "text-cyan-500"}>
+            {activePanel === "right" ? "●" : "○"} News
+          </span>
+        </div>
       </div>
     </div>
-
-
-
 
 
       {/* 🔸 Active Panel */}
