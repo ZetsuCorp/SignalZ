@@ -285,6 +285,8 @@ button.submit:hover {
   }
 }
 
+/* === SHARED BUTTON STYLE === */
+
 .btn-signalz-switch {
   display: flex;
   flex-direction: column;
@@ -312,7 +314,11 @@ button.submit:hover {
   border-color: #aaf5ff;
   box-shadow: 0 3px 6px rgba(0, 255, 255, 0.15);
 }
-
+/* == dotnav glow == */
+.glow-dot {
+  text-shadow: 0 0 4px #00ffff, 0 0 8px #00ffff;
+  font-weight: bold;
+}
 
 
 /* === SHARED BUTTON STYLE === */
