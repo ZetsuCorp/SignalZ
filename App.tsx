@@ -68,6 +68,7 @@ export default function App() {
   ))}
 </div>
 
+
 {/* 🔹 Dedicated Panel Per Dropdown */}
 {openDropdown && (
   <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
