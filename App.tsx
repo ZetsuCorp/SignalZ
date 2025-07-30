@@ -101,20 +101,17 @@ export default function App() {
 )}
 
 {/* 🔹 Centered Wall Type Tabs */}
-<div className="w-full flex justify-center items-center gap-6 py-4 border-b border-cyan-800">
+<div className="panel-tabs">
   {["main", "alt", "zetsu"].map((id) => (
     <button
       key={id}
       onClick={() => setWallType(id)}
-      className={`px-4 py-2 text-cyan-300 font-semibold uppercase hover:text-white transition-all duration-150 ${
-        wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
-      }`}
+      className={`panel-tab ${wallType === id ? "active" : ""}`}
     >
       {id.toUpperCase()}
     </button>
   ))}
 </div>
-
 
         {/* 🔹 Feed Content */}
         <div className="feed-scroll">
