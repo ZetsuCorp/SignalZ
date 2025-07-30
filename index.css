@@ -360,7 +360,30 @@ button.submit:hover {
   box-shadow: 0 0 12px #00f0ff88, inset 0 0 6px #00f0ff44;
 }
 
-/* === Responsive stack for mobile === */
+
+.floating-create-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #00f0ff;
+  color: black;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.75rem 1.2rem;
+  border-radius: 999px;
+  border: none;
+  box-shadow: 0 0 10px #00f0ff88;
+  z-index: 9999;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.floating-create-btn:hover {
+  background: #00ddee;
+  box-shadow: 0 0 12px #00f0ffaa;
+}
+
+
+/* === Responsive stack for mobile ======================================================================================================================================== */
 @media (max-width: 768px) {
   .sigz-tab-row {
     flex-wrap: wrap;
