@@ -382,11 +382,15 @@ button.submit:hover {
 }
 
 
-/* cheate floating button */
-.floating-create-btn {
-  position: fixed;
-  bottom: 20px;
+/* 🔼 Top-right Create Button */
+.create-btn-container {
+  position: absolute;
+  top: 20px;
   right: 20px;
+  z-index: 1000;
+}
+
+.create-btn-top-right {
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -397,15 +401,13 @@ button.submit:hover {
   border: none;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
   cursor: pointer;
-  z-index: 1000;
   animation: fadeIn 0.4s ease;
   transition: transform 0.2s ease;
 }
 
-.floating-create-btn:hover {
+.create-btn-top-right:hover {
   transform: scale(1.08);
 }
-
 
 /* === CREATE OVERLAY === */
 .create-post-overlay {
@@ -414,14 +416,16 @@ button.submit:hover {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 99999; /* Must be above floating-create-btn (z-index: 1000) */
+  z-index: 99999;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.7); /* Optional backdrop */
-  backdrop-filter: blur(6px);     /* Optional blur */
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
   padding: 2rem;
 }
+
+
 
 
 /* === Mobile Dropdown Only === */
