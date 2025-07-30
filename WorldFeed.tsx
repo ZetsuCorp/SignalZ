@@ -153,50 +153,48 @@ export default function WorldFeed({ wallType }) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
 
-  return (
-    <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
-      {/* 🔹 Tab Switcher */}
-      <div className="panel-tabs">
-        {[
-          { name: "Post View", value: "left" },
-          { name: "Feed", value: "middle" },
-          { name: "News", value: "right" },
-        ].map(({ name, value }) => (
-          <button
-            key={value}
-            onClick={() => setActivePanel(value)}
-            className={`panel-tab ${activePanel === value ? "active" : ""}`}
-          >
-            {name}
-          </button>
-        ))}
-      </div>
-
-      {/* 🔸 Active Panel */}
-      <div className="panel-view" style={{ background: "#0c0c0c" }}>
-        {activePanel === "left" && <PanelPostView />}
-       {activePanel === "middle" && (
-  <PanelFeed
-    posts={posts}
-    commentsMap={commentsMap}
-    inputMap={inputMap}
-    setInputMap={setInputMap}
-    handleCommentSubmit={handleCommentSubmit}
-  />
-)}
-
-        {activePanel === "right" && <PanelNews />}
-      </div>
-
-      {/* ✅ Floating Create Button */}
-      <button className="floating-create-btn" onClick={handleCreateClick}>
-        +
-      </button>
-
-      {/* ✅ Create Overlay */}
-      {showCreateOverlay && (
-        <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
-      )}
+ return (
+  <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+    {/* 🔹 Tab Switcher */}
+    <div className="panel-tabs">
+      {[
+        { name: "Post View", value: "left" },
+        { name: "Feed", value: "middle" },
+        { name: "News", value: "right" },
+      ].map(({ name, value }) => (
+        <button
+          key={value}
+          onClick={() => setActivePanel(value)}
+          className={`panel-tab ${activePanel === value ? "active" : ""}`}
+        >
+          {name}
+        </button>
+      ))}
     </div>
-  );
-}
+
+    {/* ✅ Floating Create Button (moved here) */}
+    <button className="floating-create-btn" onClick={handleCreateClick}>
+      +
+    </button>
+
+    {/* ✅ Create Overlay */}
+    {showCreateOverlay && (
+      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
+    )}
+
+    {/* 🔸 Active Panel */}
+    <div className="panel-view" style={{ background: "#0c0c0c" }}>
+      {activePanel === "left" && <PanelPostView />}
+      {activePanel === "middle" && (
+        <PanelFeed
+          posts={posts}
+          commentsMap={commentsMap}
+          inputMap={inputMap}
+          setInputMap={setInputMap}
+          handleCommentSubmit={handleCommentSubmit}
+        />
+      )}
+      {activePanel === "right" && <PanelNews />}
+    </div>
+  </div>
+);
