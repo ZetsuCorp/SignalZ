@@ -328,6 +328,42 @@ button.submit:hover {
 }
 
 
+
+/* Optional: Enhance the dropdown buttons */
+button.tab,
+button.dropdown-tab {
+  transition: all 0.2s ease-in-out;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+
+/* Optional: Hover and active enhancements */
+button.tab:hover,
+button.dropdown-tab:hover {
+  background-color: rgba(0, 255, 255, 0.05);
+}
+
+button.tab.active,
+button.dropdown-tab.active {
+  color: white;
+  border-bottom: 2px solid #22d3ee; /* Tailwind cyan-300 */
+}
+
+/* Optional: Alignment fixes for mobile responsiveness */
+@media (max-width: 640px) {
+  .tab-row,
+  .dropdown-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+
+
+
+
 /* === SHARED BUTTON STYLE === */
 .sigz-tab-btn {
   padding: 0.5rem 1rem;
