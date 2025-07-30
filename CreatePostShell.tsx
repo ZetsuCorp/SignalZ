@@ -152,7 +152,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       : "📝 Create New Post";
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black bg-opacity-80 flex items-center justify-center p-4">
+<div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/70 backdrop-blur">
       <div
         className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 space-y-4 relative text-center"
         style={{
