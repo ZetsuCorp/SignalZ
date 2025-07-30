@@ -54,14 +54,12 @@ export default function App() {
         </header>
 
    {/* 🔹 Centered Dropdown Tab Row */}
-<div className="w-full flex justify-center items-center gap-6 py-4 border-b border-cyan-800 bg-[#071a1e]">
+<div className="panel-tabs">
   {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
     <button
       key={tabName}
       onClick={() => setOpenDropdown(openDropdown === tabName ? null : tabName)}
-      className={`px-4 py-2 text-cyan-300 font-medium hover:text-white transition-all duration-150 ${
-        openDropdown === tabName ? "border-b-2 border-cyan-300 text-white" : ""
-      }`}
+      className={`panel-tab ${openDropdown === tabName ? "active" : ""}`}
     >
       {tabName}
     </button>
