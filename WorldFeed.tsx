@@ -27,18 +27,18 @@ function getEmbedUrl(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     const id = match ? match[1] : "";
-    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
+    return https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0;
   }
   if (url.includes("tiktok.com")) {
     const match = url.match(/\/video\/(\d+)/);
-    return match ? `https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1` : null;
+    return match ? https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1 : null;
   }
   return null;
 }
 
 async function fetchComments(postId) {
   try {
-    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
+    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -70,7 +70,7 @@ export default function WorldFeed({ wallType }) {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
+        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
@@ -161,7 +161,6 @@ return (
       width: "100vw",
       display: "flex",
       flexDirection: "column",
-      position: "relative", // Needed for absolute elements
     }}
   >
     {/* 🔹 Auto Next Page Button + Dot Nav */}
@@ -200,16 +199,6 @@ return (
       </div>
     </div>
 
-    {/* ✅ Create Button in Top-Right */}
-    <div className="create-btn-container">
-      <button className="create-btn-top-right" onClick={handleCreateClick}>+</button>
-    </div>
-
-    {/* ✅ Create Overlay */}
-    {showCreateOverlay && (
-      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
-    )}
-
     {/* 🔸 Active Panel */}
     <div className="panel-view" style={{ background: "#0c0c0c" }}>
       {activePanel === "left" && <PanelPostView />}
@@ -236,5 +225,19 @@ return (
       )}
       {activePanel === "right" && <PanelNews />}
     </div>
+
+ {/* ✅ Create Overlay — move this UP */}
+{showCreateOverlay && (
+  <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
+)}
+
+{/* ✅ Floating Create Button */}
+<button className="floating-create-btn" onClick={handleCreateClick}>
+  +
+</button>
+
   </div>
 );
+}
+
+
