@@ -22,19 +22,18 @@ function extractDomain(url) {
 function isYouTubeOrTikTok(url) {
   return /youtube\.com|youtu\.be|tiktok\.com/.test(url);
 }
-
 function getEmbedUrl(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     const id = match ? match[1] : "";
-return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
-  }
-  if (url.includes("tiktok.com")) {
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
+  } else if (url.includes("tiktok.com")) {
     const match = url.match(/\/video\/(\d+)/);
-    return match ? https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1 : null;
+    return match ? `https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1` : null;
   }
   return null;
 }
+
 
 async function fetchComments(postId) {
   try {
