@@ -199,23 +199,41 @@ return (
       </div>
     </div>
 
-
-      {/* 🔸 Active Panel */}
-      <div className="panel-view" style={{ background: "#0c0c0c" }}>
-        {activePanel === "left" && <PanelPostView />}
-        {activePanel === "middle" && <PanelFeed posts={posts} />}
-        {activePanel === "right" && <PanelNews />}
-      </div>
-
-      {/* ✅ Floating Create Button */}
-      <button className="floating-create-btn" onClick={handleCreateClick}>
-        +
-      </button>
-
-      {/* ✅ Create Overlay */}
-      {showCreateOverlay && (
-        <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
+    {/* 🔸 Active Panel */}
+    <div className="panel-view" style={{ background: "#0c0c0c" }}>
+      {activePanel === "left" && <PanelPostView />}
+      {activePanel === "middle" && (
+        <PanelFeed
+          posts={posts}
+          commentsMap={commentsMap}
+          inputMap={inputMap}
+          setInputMap={setInputMap}
+          handleCommentSubmit={(postId) => {
+            const content = inputMap[postId]?.trim();
+            if (!content) return;
+            submitComment(postId, content, wallType).then((ok) => {
+              if (ok) {
+                setCommentsMap((prev) => ({
+                  ...prev,
+                  [postId]: [...(prev[postId] || []), { content }],
+                }));
+                setInputMap((prev) => ({ ...prev, [postId]: "" }));
+              }
+            });
+          }}
+        />
       )}
+      {activePanel === "right" && <PanelNews />}
     </div>
-  );
-}
+
+    {/* ✅ Floating Create Button */}
+    <button className="floating-create-btn" onClick={handleCreateClick}>
+      +
+    </button>
+
+    {/* ✅ Create Overlay */}
+    {showCreateOverlay && (
+      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
+    )}
+  </div>
+);
