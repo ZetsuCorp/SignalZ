@@ -67,36 +67,36 @@ export default function App() {
   ))}
 </div>
 
-{/* 🔹 Dropdown Panels - SAME LAYOUT, fixed centering + styles */}
+{/* 🔹 Dedicated Container for Each */}
 {openDropdown === "ViewZ" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center">
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center justify-center">
     <h2 className="text-xl font-bold mb-1">ViewZ</h2>
-    <p className="text-sm text-cyan-400 opacity-70">User post metrics, engagement, reach, or analytics.</p>
+    <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
   </div>
 )}
 
 {openDropdown === "HotFeed" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center">
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center justify-center">
     <h2 className="text-xl font-bold mb-1">HotFeed</h2>
-    <p className="text-sm text-cyan-400 opacity-70">Trending post selector or custom feed injection.</p>
+    <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
   </div>
 )}
 
 {openDropdown === "Brand-Signal" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center">
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center justify-center">
     <h2 className="text-xl font-bold mb-1">Brand-Signal</h2>
-    <p className="text-sm text-cyan-400 opacity-70">Bot-injected brand mentions, logo tools, etc.</p>
+    <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
   </div>
 )}
 
 {openDropdown === "SignalZ TCG" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center">
+  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 px-6 py-4 text-center flex flex-col items-center justify-center">
     <h2 className="text-xl font-bold mb-1">SignalZ TCG</h2>
-    <p className="text-sm text-cyan-400 opacity-70">Card decks, rarity, battles, leaderboard, etc.</p>
+    <p className="text-sm opacity-60">This is where we show card decks, rarity, battles, leaderboard, whatever.</p>
   </div>
 )}
 
-        {/* 🔹 Wall Type Tabs — HORIZONTAL, CENTERED, NOT STACKED */}
+{/* 🔹 Wall Type Tabs */}
 <div className="tabs flex justify-center gap-3 py-4 border-b border-cyan-800 bg-[#071a1e]">
   {["main", "alt", "zetsu"].map((id) => (
     <button
@@ -110,6 +110,7 @@ export default function App() {
     </button>
   ))}
 </div>
+
 
 
 
