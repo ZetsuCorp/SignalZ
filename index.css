@@ -469,37 +469,38 @@ button.submit:hover {
   }
 }
 
-/* 🔹 Style for the mobile toggle wrapper */
+
+
+
+
 .sigz-mobile-tab-toggle {
   text-align: center;
   margin: 0.5rem auto;
   z-index: 10;
 }
 
-/* 🔹 Styled glowing button */
 .sigz-mobile-tab-toggle button {
   background: linear-gradient(to right, #012a30, #02343c);
   color: #00f0ff;
-  padding: 0.6rem 1.5rem;
+  padding: 0.3rem 0.75rem; /* ⬅️ smaller padding */
   border: 1px solid #00f0ff55;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.85rem;
+  border-radius: 6px; /* ⬅️ smaller radius */
+  font-weight: 500;
+  font-size: 0.75rem; /* ⬅️ smaller text */
   cursor: pointer;
-  text-shadow: 0 0 4px rgba(0, 255, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.15), inset 0 0 4px rgba(0, 255, 255, 0.1);
+  text-shadow: 0 0 3px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 6px rgba(0, 255, 255, 0.12), inset 0 0 3px rgba(0, 255, 255, 0.08);
   font-family: 'Orbitron', sans-serif;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   transition: all 0.2s ease;
 }
 
 .sigz-mobile-tab-toggle button:hover {
   background: #014049;
   border-color: #00f0ff88;
-  box-shadow: 0 0 12px #00f0ff88, inset 0 0 6px #00f0ff55;
+  box-shadow: 0 0 8px #00f0ff88, inset 0 0 4px #00f0ff55;
   color: white;
 }
-
 
 
 
