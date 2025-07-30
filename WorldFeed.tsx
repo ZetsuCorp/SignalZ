@@ -198,3 +198,4 @@ export default function WorldFeed({ wallType }) {
     </div>
   </div>
 );
+}
