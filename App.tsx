@@ -53,7 +53,7 @@ export default function App() {
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
 
-       {/* 🔹 Centered Dropdown Tab Row */}
+   {/* 🔹 Centered Dropdown Tab Row */}
 <div className="w-full flex justify-center items-center gap-6 py-4 border-b border-cyan-800 bg-[#071a1e]">
   {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
     <button
@@ -69,31 +69,35 @@ export default function App() {
 </div>
 
 {/* 🔹 Dedicated Panel Per Dropdown */}
-{openDropdown === "ViewZ" && (
+{openDropdown && (
   <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    <h2 className="text-xl font-bold mb-2">ViewZ</h2>
-    <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
-  </div>
-)}
+    {openDropdown === "ViewZ" && (
+      <>
+        <h2 className="text-xl font-bold mb-2">ViewZ</h2>
+        <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
+      </>
+    )}
 
-{openDropdown === "HotFeed" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    <h2 className="text-xl font-bold mb-2">HotFeed</h2>
-    <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
-  </div>
-)}
+    {openDropdown === "HotFeed" && (
+      <>
+        <h2 className="text-xl font-bold mb-2">HotFeed</h2>
+        <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
+      </>
+    )}
 
-{openDropdown === "Brand-Signal" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
-    <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
-  </div>
-)}
+    {openDropdown === "Brand-Signal" && (
+      <>
+        <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
+        <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
+      </>
+    )}
 
-{openDropdown === "SignalZ TCG" && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
-    <p className="text-sm opacity-60">Card decks, rarity, battles, leaderboard, etc.</p>
+    {openDropdown === "SignalZ TCG" && (
+      <>
+        <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
+        <p className="text-sm opacity-60">Card decks, rarity, battles, leaderboard, etc.</p>
+      </>
+    )}
   </div>
 )}
 
