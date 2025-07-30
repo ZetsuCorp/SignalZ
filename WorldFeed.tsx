@@ -161,6 +161,7 @@ return (
       width: "100vw",
       display: "flex",
       flexDirection: "column",
+      position: "relative", // Ensure absolute positioning inside works
     }}
   >
     {/* 🔹 Auto Next Page Button + Dot Nav */}
@@ -199,12 +200,11 @@ return (
       </div>
     </div>
 
+    {/* ✅ Create Button in Top-Right */}
+    <div className="create-btn-container">
+      <button className="create-btn-top-right" onClick={handleCreateClick}>+</button>
+    </div>
 
-    {/* ✅ Moved Create Button */}
-<div className="create-btn-container">
-  <button className="create-btn-top-right" onClick={handleCreateClick}>+</button>
-</div>
-    
     {/* 🔸 Active Panel */}
     <div className="panel-view" style={{ background: "#0c0c0c" }}>
       {activePanel === "left" && <PanelPostView />}
@@ -232,13 +232,9 @@ return (
       {activePanel === "right" && <PanelNews />}
     </div>
 
-
-
-{/* ✅ Floating Create Button */}
-<button className="floating-create-btn" onClick={handleCreateClick}>
-  +
-</button>
-
+    {/* ✅ Create Overlay */}
+    {showCreateOverlay && (
+      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
+    )}
   </div>
 );
-}
