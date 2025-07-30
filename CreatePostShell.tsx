@@ -65,24 +65,24 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
 
   const uploadImage = async () => {
     if (!image) return "";
-    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
+    const filePath = ${sessionId}/${Date.now()}_${image.name};
     const { error } = await supabase.storage.from("images").upload(filePath, image);
     if (error) {
       alert("Image upload failed");
       return "";
     }
-    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath}`;
+    return ${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath};
   };
 
   const uploadVideo = async () => {
     if (!video) return "";
-    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
+    const filePath = ${sessionId}/${Date.now()}_${video.name};
     const { error } = await supabase.storage.from("videos").upload(filePath, video);
     if (error) {
       alert("Video upload failed");
       return "";
     }
-    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${filePath}`;
+    return ${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${filePath};
   };
 
   const handlePost = async () => {
@@ -152,12 +152,12 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       : "📝 Create New Post";
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black bg-opacity-80 flex items-center justify-center p-4">
+<div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/70 backdrop-blur">
       <div
         className="w-full max-w-2xl rounded-xl border border-cyan-600 shadow-lg p-6 space-y-4 relative text-center"
         style={{
           backgroundImage: backgroundImage
-            ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
+            ? url(/postcard-assets/cardbase/${backgroundImage}.png)
             : undefined,
           backgroundSize: "cover",
           backgroundPosition: "center",
