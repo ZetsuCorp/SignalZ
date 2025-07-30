@@ -12,6 +12,8 @@ export default function App() {
   const [editorVisible, setEditorVisible] = useState(false);
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
+  const [showMobileTabs, setShowMobileTabs] = useState(true);
+
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", isDarkMode);
@@ -53,65 +55,76 @@ export default function App() {
           <p className="text-sm text-cyan-400">What the internet is talking about.</p>
         </header>
 
-   {/* 🔹 Centered Dropdown Tab Row */}
-<div className="panel-tabs">
-  {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
-    <button
-      key={tabName}
-      onClick={() => setOpenDropdown(openDropdown === tabName ? null : tabName)}
-      className={`panel-tab ${openDropdown === tabName ? "active" : ""}`}
-    >
-      {tabName}
-    </button>
-  ))}
+{/* 🔹 Mobile Toggle Button */}
+<div className="sigz-mobile-tab-toggle">
+  <button onClick={() => setShowMobileTabs((prev) => !prev)}>
+    {showMobileTabs ? "Hide Tabs ▲" : "Show Tabs ▼"}
+  </button>
 </div>
 
+      {showMobileTabs && (
+  <>
+    {/* 🔹 Centered Dropdown Tab Row */}
+    <div className="panel-tabs">
+      {["ViewZ", "HotFeed", "Brand-Signal", "SignalZ TCG"].map((tabName) => (
+        <button
+          key={tabName}
+          onClick={() => setOpenDropdown(openDropdown === tabName ? null : tabName)}
+          className={`panel-tab ${openDropdown === tabName ? "active" : ""}`}
+        >
+          {tabName}
+        </button>
+      ))}
+    </div>
 
-{/* 🔹 Dedicated Panel Per Dropdown */}
-{openDropdown && (
-  <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
-    {openDropdown === "ViewZ" && (
-      <>
-        <h2 className="text-xl font-bold mb-2">ViewZ</h2>
-        <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
-      </>
+    {/* 🔹 Dedicated Panel Per Dropdown */}
+    {openDropdown && (
+      <div className="w-full bg-[#081c24] border-b border-cyan-700 text-cyan-200 p-6 text-center">
+        {openDropdown === "ViewZ" && (
+          <>
+            <h2 className="text-xl font-bold mb-2">ViewZ</h2>
+            <p className="text-sm opacity-60">This will show user post metrics, engagement, reach, or analytics.</p>
+          </>
+        )}
+
+        {openDropdown === "HotFeed" && (
+          <>
+            <h2 className="text-xl font-bold mb-2">HotFeed</h2>
+            <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
+          </>
+        )}
+
+        {openDropdown === "Brand-Signal" && (
+          <>
+            <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
+            <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
+          </>
+        )}
+
+        {openDropdown === "SignalZ TCG" && (
+          <>
+            <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
+            <p className="text-sm opacity-60">Card decks, rarity, battles, leaderboard, etc.</p>
+          </>
+        )}
+      </div>
     )}
 
-    {openDropdown === "HotFeed" && (
-      <>
-        <h2 className="text-xl font-bold mb-2">HotFeed</h2>
-        <p className="text-sm opacity-60">Trending post selector or custom feed injection.</p>
-      </>
-    )}
-
-    {openDropdown === "Brand-Signal" && (
-      <>
-        <h2 className="text-xl font-bold mb-2">Brand-Signal</h2>
-        <p className="text-sm opacity-60">Bot-injected brand mentions, logo tools, etc.</p>
-      </>
-    )}
-
-    {openDropdown === "SignalZ TCG" && (
-      <>
-        <h2 className="text-xl font-bold mb-2">SignalZ TCG</h2>
-        <p className="text-sm opacity-60">Card decks, rarity, battles, leaderboard, etc.</p>
-      </>
-    )}
-  </div>
+    {/* 🔹 Centered Wall Type Tabs */}
+    <div className="panel-tabs">
+      {["main", "alt", "zetsu"].map((id) => (
+        <button
+          key={id}
+          onClick={() => setWallType(id)}
+          className={`panel-tab ${wallType === id ? "active" : ""}`}
+        >
+          {id.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  </>
 )}
 
-{/* 🔹 Centered Wall Type Tabs */}
-<div className="panel-tabs">
-  {["main", "alt", "zetsu"].map((id) => (
-    <button
-      key={id}
-      onClick={() => setWallType(id)}
-      className={`panel-tab ${wallType === id ? "active" : ""}`}
-    >
-      {id.toUpperCase()}
-    </button>
-  ))}
-</div>
 
         {/* 🔹 Feed Content */}
         <div className="feed-scroll">
