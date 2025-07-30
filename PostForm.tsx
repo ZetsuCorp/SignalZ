@@ -107,6 +107,13 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
     alert("Posted!");
   };
 
+
+  // ✅ Call the viewer refresh
+  if (window.refreshPostcardViewer) {
+    window.refreshPostcardViewer();
+  }
+
+  
   const handleSubmitLink = async () => {
     if (!linkInput.trim()) return alert("Please enter a link");
     try {
@@ -137,6 +144,7 @@ function PostForm({ wallType, onMediaPreview, overlayType, closeOverlay }) {
       alert("Invalid link or submission error");
     }
   };
+  
 
   return (
     <div
