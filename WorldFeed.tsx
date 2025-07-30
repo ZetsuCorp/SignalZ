@@ -27,9 +27,7 @@ function getEmbedUrl(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     const id = match ? match[1] : "";
-   return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
-
-
+    return https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0;
   }
   if (url.includes("tiktok.com")) {
     const match = url.match(/\/video\/(\d+)/);
@@ -228,16 +226,15 @@ return (
       {activePanel === "right" && <PanelNews />}
     </div>
 
- {/* ✅ Create Overlay — move this UP */}
-{showCreateOverlay && (
-  <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
-)}
+    {/* ✅ Floating Create Button */}
+    <button className="floating-create-btn" onClick={handleCreateClick}>
+      +
+    </button>
 
-{/* ✅ Floating Create Button */}
-<button className="floating-create-btn" onClick={handleCreateClick}>
-  +
-</button>
-
+    {/* ✅ Create Overlay */}
+    {showCreateOverlay && (
+      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
+    )}
   </div>
 );
 }
