@@ -473,14 +473,24 @@ button.submit:hover {
 /* === MOBILE OVERRIDE === */
 @media (max-width: 768px) {
   .panel-tabs {
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap; /* ✅ allow wrapping if absolutely needed */
+    flex-direction: row; /* ✅ stay horizontal */
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
   }
 
   .panel-tab {
-    width: 100%;
-    text-align: center;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+}
+
 
   .panel-view {
     padding: 1rem 0.5rem;
