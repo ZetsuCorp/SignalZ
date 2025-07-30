@@ -161,7 +161,7 @@ return (
       width: "100vw",
       display: "flex",
       flexDirection: "column",
-      position: "relative", // Ensure absolute positioning inside works
+      position: "relative", // Needed for absolute elements
     }}
   >
     {/* 🔹 Auto Next Page Button + Dot Nav */}
@@ -204,12 +204,12 @@ return (
     <div className="create-btn-container">
       <button className="create-btn-top-right" onClick={handleCreateClick}>+</button>
     </div>
-   {/* ✅ Create Overlay */}
+
+    {/* ✅ Create Overlay */}
     {showCreateOverlay && (
       <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
     )}
-  </div>
-  
+
     {/* 🔸 Active Panel */}
     <div className="panel-view" style={{ background: "#0c0c0c" }}>
       {activePanel === "left" && <PanelPostView />}
@@ -236,7 +236,5 @@ return (
       )}
       {activePanel === "right" && <PanelNews />}
     </div>
-
- 
+  </div>
 );
-}
