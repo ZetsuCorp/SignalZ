@@ -21,29 +21,24 @@ export default function PostcardViewer() {
         .select("*")
         .eq("session_id", sessionId)
         .order("created_at", { ascending: false })
-        .limit(1)
-        .single();
+        .limit(1);
 
-      if (error || !data) {
-        console.warn("⚠️ No post found for session:", sessionId);
+      if (error) {
+        console.error("Supabase error:", error);
         setPost(null);
+      } else if (data && data.length > 0) {
+        setPost(data[0]);
       } else {
-        setPost(data);
+        setPost(null);
       }
 
       setLoading(false);
     };
 
-    // ✅ Expose to global so PostForm can call this
+    // Set global trigger so PostForm can call this
     window.refreshPostcardViewer = fetchLastPost;
 
-    // Initial fetch
-    if (!sessionId) {
-      console.warn("No session ID found.");
-      setLoading(false);
-      return;
-    }
-
+    // Always fetch
     fetchLastPost();
   }, []);
 
@@ -74,6 +69,7 @@ export default function PostcardViewer() {
     const width = Math.min((value / max) * 100, 100);
     return `${width}%`;
   };
+
 
 
   return (
