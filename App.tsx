@@ -60,7 +60,8 @@ export default function App() {
       onClick={() =>
         setOpenDropdown(openDropdown === tabName ? null : tabName)
       }
-      className={`tab ${openDropdown === tabName ? "active" : ""}`}
+className={tab + (openDropdown === tabName ? "active" : "")}
+
     >
       {tabName}
     </button>
@@ -107,7 +108,8 @@ export default function App() {
             <button
               key={id}
               onClick={() => setWallType(id)}
-              className={tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
+className={tab px-3 py-1 border border-transparent text-cyan-300 hover:border-cyan-500 ${
+
                 wallType === id ? "border-b-2 border-cyan-300 text-white" : ""
               }}
             >
@@ -115,11 +117,6 @@ export default function App() {
             </button>
           ))}
         </div>
-
-
-
-
-
 
         {/* 🔹 Feed Content */}
         <div className="feed-scroll">
