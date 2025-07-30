@@ -407,6 +407,23 @@ button.submit:hover {
 }
 
 
+/* === CREATE OVERLAY === */
+.create-post-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999; /* Must be above floating-create-btn (z-index: 1000) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.7); /* Optional backdrop */
+  backdrop-filter: blur(6px);     /* Optional blur */
+  padding: 2rem;
+}
+
+
 /* === Mobile Dropdown Only === */
 .sigz-mobile-dropdown {
   display: none;
