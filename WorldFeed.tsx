@@ -226,15 +226,16 @@ return (
       {activePanel === "right" && <PanelNews />}
     </div>
 
-    {/* ✅ Floating Create Button */}
-    <button className="floating-create-btn" onClick={handleCreateClick}>
-      +
-    </button>
+ {/* ✅ Create Overlay — move this UP */}
+{showCreateOverlay && (
+  <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
+)}
 
-    {/* ✅ Create Overlay */}
-    {showCreateOverlay && (
-      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
-    )}
+{/* ✅ Floating Create Button */}
+<button className="floating-create-btn" onClick={handleCreateClick}>
+  +
+</button>
+
   </div>
 );
 }
