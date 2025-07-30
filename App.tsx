@@ -96,8 +96,7 @@ export default function App() {
   </div>
 )}
 
-{/* 🔹 Wall Type Tabs */}
-<div className="tabs flex justify-center gap-3 py-4 border-b border-cyan-800 bg-[#071a1e]">
+<div className="w-full flex justify-center gap-4 py-4 border-b border-cyan-800 bg-[#071a1e]">
   {["main", "alt", "zetsu"].map((id) => (
     <button
       key={id}
@@ -110,6 +109,7 @@ export default function App() {
     </button>
   ))}
 </div>
+
 
 
 
