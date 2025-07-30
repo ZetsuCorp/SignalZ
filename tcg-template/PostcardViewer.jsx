@@ -61,9 +61,6 @@ export default function PostcardViewer() {
     const width = Math.min((value / max) * 100, 100);
     return `${width}%`;
   };
-}
-
-
 
   return (
     <div
@@ -76,9 +73,9 @@ export default function PostcardViewer() {
         borderTopRightRadius: "16px",
         position: "relative",
         zIndex: 5,
-        overflowY: "auto",           // ✅ allows stats panel to scroll if tall
-        maxHeight: "100vh",          // ✅ prevents cutoff in column
-        minHeight: "600px",          // ✅ ensures it's not squashed short
+        overflowY: "auto",
+        maxHeight: "100vh",
+        minHeight: "600px",
       }}
     >
       <div
@@ -117,8 +114,6 @@ export default function PostcardViewer() {
           ) : post ? (
             <>
               <TCGCardTemplate {...post} />
-
-              {/* 📊 Visual Statistics Viewer */}
               <div
                 style={{
                   marginTop: "1.25rem",
@@ -158,7 +153,7 @@ export default function PostcardViewer() {
                 </div>
 
                 <div style={{ marginTop: "1rem", textAlign: "center", fontSize: "0.85rem" }}>
-                  ⚡ Engagement Score: <strong>72%</strong> {/* placeholder */}
+                  ⚡ Engagement Score: <strong>72%</strong>
                 </div>
               </div>
             </>
