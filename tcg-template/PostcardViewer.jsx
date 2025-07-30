@@ -16,16 +16,17 @@ export default function PostcardViewer() {
 
     const fetchLastPost = async () => {
       try {
-        const res = await fetch(`/.netlify/functions/get-posts?session_id=${sessionId}`);
+        const encodedId = encodeURIComponent(sessionId);
+        const res = await fetch(`/.netlify/functions/get-posts?session_id=${encodedId}`);
         if (!res.ok) throw new Error("Fetch failed");
         const posts = await res.json();
         setPost(posts?.[0] || null);
       } catch (err) {
         console.error("❌ Failed to fetch last post:", err);
         setPost(null);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     window.refreshPostcardViewer = fetchLastPost;
@@ -60,6 +61,8 @@ export default function PostcardViewer() {
     const width = Math.min((value / max) * 100, 100);
     return `${width}%`;
   };
+}
+
 
 
   return (
