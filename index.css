@@ -469,6 +469,37 @@ button.submit:hover {
   }
 }
 
+.sigz-mobile-tab-toggle {
+  display: none;
+  text-align: center;
+  margin: 0.5rem auto;
+  z-index: 10;
+}
+
+.sigz-mobile-tab-toggle button {
+  background: linear-gradient(to right, #012a30, #02343c);
+  color: #00f0ff;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid #00f0ff55;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-shadow: 0 0 4px rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.15), inset 0 0 4px rgba(0, 255, 255, 0.1);
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.sigz-mobile-tab-toggle button:hover {
+  background: #014049;
+  border-color: #00f0ff88;
+  box-shadow: 0 0 12px #00f0ff88, inset 0 0 6px #00f0ff55;
+  color: white;
+}
+
+
 
 /* === MOBILE OVERRIDE === */
 @media (max-width: 768px) {
