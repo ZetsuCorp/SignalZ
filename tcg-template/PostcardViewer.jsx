@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { supabase } from "../supabase/client";
 import TCGCardTemplate from "./TCGCardTemplate";
 import EmptyCard from "./EmptyCard";
 
@@ -16,29 +15,20 @@ export default function PostcardViewer() {
     setBgImage(`/postcard-assets/cardbase/${sessionBg || "test0"}.png`);
 
     const fetchLastPost = async () => {
-      const { data, error } = await supabase
-        .from("posts")
-        .select("*")
-        .eq("session_id", sessionId)
-        .order("created_at", { ascending: false })
-        .limit(1);
-
-      if (error) {
-        console.error("Supabase error:", error);
-        setPost(null);
-      } else if (data && data.length > 0) {
-        setPost(data[0]);
-      } else {
+      try {
+        const res = await fetch(`/.netlify/functions/get-posts?session_id=${sessionId}`);
+        if (!res.ok) throw new Error("Fetch failed");
+        const posts = await res.json();
+        setPost(posts?.[0] || null);
+      } catch (err) {
+        console.error("❌ Failed to fetch last post:", err);
         setPost(null);
       }
 
       setLoading(false);
     };
 
-    // Set global trigger so PostForm can call this
     window.refreshPostcardViewer = fetchLastPost;
-
-    // Always fetch
     fetchLastPost();
   }, []);
 
@@ -46,19 +36,20 @@ export default function PostcardViewer() {
     if (!post || !post.id) return;
 
     const fetchStats = async () => {
-      const { count: views } = await supabase
-        .from("views")
-        .select("*", { count: "exact", head: true })
-        .eq("post_id", post.id);
-
-      setViewCount(views || 0);
-
       try {
         const res = await fetch(`/.netlify/functions/get-comments?post_id=${post.id}`);
         const comments = res.ok ? await res.json() : [];
         setCommentCount(comments.length || 0);
       } catch (err) {
         console.warn("Error loading comments:", err);
+      }
+
+      try {
+        const res = await fetch(`/.netlify/functions/get-views?post_id=${post.id}`);
+        const data = res.ok ? await res.json() : { count: 0 };
+        setViewCount(data.count || 0);
+      } catch (err) {
+        console.warn("Error loading views:", err);
       }
     };
 
@@ -69,7 +60,6 @@ export default function PostcardViewer() {
     const width = Math.min((value / max) * 100, 100);
     return `${width}%`;
   };
-
 
 
   return (
