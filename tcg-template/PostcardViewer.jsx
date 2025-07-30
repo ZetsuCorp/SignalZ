@@ -15,12 +15,6 @@ export default function PostcardViewer() {
     const sessionBg = sessionStorage.getItem("session_bg");
     setBgImage(`/postcard-assets/cardbase/${sessionBg || "test0"}.png`);
 
-    if (!sessionId) {
-      console.warn("No session ID found.");
-      setLoading(false);
-      return;
-    }
-
     const fetchLastPost = async () => {
       const { data, error } = await supabase
         .from("posts")
@@ -39,6 +33,16 @@ export default function PostcardViewer() {
 
       setLoading(false);
     };
+
+    // ✅ Expose to global so PostForm can call this
+    window.refreshPostcardViewer = fetchLastPost;
+
+    // Initial fetch
+    if (!sessionId) {
+      console.warn("No session ID found.");
+      setLoading(false);
+      return;
+    }
 
     fetchLastPost();
   }, []);
@@ -70,6 +74,7 @@ export default function PostcardViewer() {
     const width = Math.min((value / max) * 100, 100);
     return `${width}%`;
   };
+
 
   return (
     <div
