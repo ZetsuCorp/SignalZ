@@ -1,10 +1,34 @@
 import React from "react";
-import { extractDomain, isYouTubeOrTikTok, getEmbedUrl } from "./src/utils/helpers";
+
+// ✅ Embedded Helpers
+function extractDomain(url) {
+  try {
+    return new URL(url).hostname.replace("www.", "");
+  } catch {
+    return "";
+  }
+}
+
+function isYouTubeOrTikTok(url) {
+  return /youtube\.com|youtu\.be|tiktok\.com/.test(url);
+}
+
+function getEmbedUrl(url) {
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+    const id = match ? match[1] : "";
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
+  }
+  if (url.includes("tiktok.com")) {
+    const match = url.match(/\/video\/(\d+)/);
+    return match ? `https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1` : null;
+  }
+  return null;
+}
 
 export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, handleCommentSubmit }) {
   return (
     <div className="middle-feed">
-      {/* 🔁 Begin rendering posts */}
       {posts.map((post) => {
         const safeTags = Array.isArray(post.tags)
           ? post.tags
@@ -52,7 +76,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
               }}
             />
 
-            {/* TCG Content */}
+            {/* TCG Layout */}
             <div style={{ position: "relative", zIndex: 2 }}>
               {/* Display Name */}
               {post.display_name && (
@@ -74,7 +98,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                 </div>
               )}
 
-              {/* Title */}
+              {/* Headline */}
               <div
                 style={{
                   background: "linear-gradient(145deg, #0ff, #033)",
@@ -94,7 +118,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                 📛 {post.headline}
               </div>
 
-              {/* Subtype */}
+              {/* Type / Tagline */}
               <div style={{ fontSize: "0.85rem", color: "#ccc", marginBottom: "1rem" }}>
                 📂 Type — SIGZICON
               </div>
@@ -156,7 +180,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                 </div>
               )}
 
-              {/* Caption */}
+              {/* Caption / Description */}
               <div
                 style={{
                   background: "rgba(0, 10, 20, 0.65)",
@@ -181,7 +205,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                 )}
               </div>
 
-              {/* Link preview */}
+              {/* Embedded or Link */}
               {safeTags.includes("link") && post.caption?.startsWith("http") &&
                 (isYouTubeOrTikTok(post.caption) && getEmbedUrl(post.caption) ? (
                   <iframe
@@ -223,7 +247,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                   </a>
                 ))}
 
-              {/* CTA */}
+              {/* CTA Link */}
               {post.cta_url && (
                 <a
                   href={post.cta_url}
@@ -284,7 +308,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                 </div>
               )}
 
-              {/* Comments + Input */}
+              {/* Comment UI */}
               <div style={{ marginTop: "1rem" }}>
                 <h4 style={{ fontSize: "0.95rem", color: "#00f0ff", marginBottom: "0.25rem" }}>Comments</h4>
                 {comments.map((comment, i) => (
