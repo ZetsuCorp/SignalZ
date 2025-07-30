@@ -175,7 +175,16 @@ export default function WorldFeed({ wallType }) {
       {/* 🔸 Active Panel */}
       <div className="panel-view" style={{ background: "#0c0c0c" }}>
         {activePanel === "left" && <PanelPostView />}
-        {activePanel === "middle" && <PanelFeed posts={posts} />}
+       {activePanel === "middle" && (
+  <PanelFeed
+    posts={posts}
+    commentsMap={commentsMap}
+    inputMap={inputMap}
+    setInputMap={setInputMap}
+    handleCommentSubmit={handleCommentSubmit}
+  />
+)}
+
         {activePanel === "right" && <PanelNews />}
       </div>
 
