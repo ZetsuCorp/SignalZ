@@ -199,6 +199,12 @@ return (
       </div>
     </div>
 
+
+    {/* ✅ Moved Create Button */}
+<div className="create-btn-container">
+  <button className="create-btn-top-right" onClick={handleCreateClick}>+</button>
+</div>
+    
     {/* 🔸 Active Panel */}
     <div className="panel-view" style={{ background: "#0c0c0c" }}>
       {activePanel === "left" && <PanelPostView />}
@@ -226,10 +232,7 @@ return (
       {activePanel === "right" && <PanelNews />}
     </div>
 
- {/* ✅ Create Overlay — move this UP */}
-{showCreateOverlay && (
-  <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
-)}
+
 
 {/* ✅ Floating Create Button */}
 <button className="floating-create-btn" onClick={handleCreateClick}>
