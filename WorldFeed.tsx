@@ -22,22 +22,23 @@ function extractDomain(url) {
 function isYouTubeOrTikTok(url) {
   return /youtube\.com|youtu\.be|tiktok\.com/.test(url);
 }
+
 function getEmbedUrl(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
     const id = match ? match[1] : "";
     return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
-  } else if (url.includes("tiktok.com")) {
+  }
+  if (url.includes("tiktok.com")) {
     const match = url.match(/\/video\/(\d+)/);
     return match ? `https://www.tiktok.com/embed/v2/${match[1]}?autoplay=1` : null;
   }
   return null;
 }
 
-
 async function fetchComments(postId) {
   try {
-    const res = await fetch(/.netlify/functions/get-comments?post_id=${postId});
+    const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
     if (!res.ok) throw new Error("Failed to fetch comments");
     return await res.json();
   } catch (err) {
@@ -62,14 +63,12 @@ export default function WorldFeed({ wallType }) {
   const [showCreateOverlay, setShowCreateOverlay] = useState(false);
   const [createMode, setCreateMode] = useState("");
   const [activePanel, setActivePanel] = useState("middle");
-  const [openDropdown, setOpenDropdown] = useState(false);
-
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const safeWall = (wallType || "main").toLowerCase();
-        const res = await fetch(/.netlify/functions/get-posts?wall_type=${safeWall});
+        const res = await fetch(`/.netlify/functions/get-posts?wall_type=${safeWall}`);
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data = await res.json();
         setPosts(data || []);
@@ -153,87 +152,42 @@ export default function WorldFeed({ wallType }) {
   if (posts.length === 0) {
     return <div style={{ textAlign: "center", color: "#777", padding: "1rem" }}>No posts yet for this wall.</div>;
   }
-return (
-  <div
-    style={{
-      height: "100vh",
-      width: "100vw",
-      display: "flex",
-      flexDirection: "column",
-    }}
-  >
-    {/* 🔹 Auto Next Page Button + Dot Nav */}
-    <div className="z-50 px-4 py-2 flex flex-col items-center justify-center w-full">
-      <button
-        onClick={() => {
-          const panelOrder = ["left", "middle", "right"];
-          const currentIndex = panelOrder.indexOf(activePanel);
-          const nextIndex = (currentIndex + 1) % panelOrder.length;
-          setActivePanel(panelOrder[nextIndex]);
-        }}
-        className="btn-signalz-switch"
-      >
-        <span className="flex items-center gap-2">
-          {activePanel === "left" && "Post View"}
-          {activePanel === "middle" && "Feed"}
-          {activePanel === "right" && "News"}
-          <span className="text-[10px] text-cyan-400">– click to switch</span>
-          <span className="text-lg">⏭</span>
-        </span>
+
+  return (
+    <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+      {/* 🔹 Tab Switcher */}
+      <div className="panel-tabs">
+        {[
+          { name: "Post View", value: "left" },
+          { name: "Feed", value: "middle" },
+          { name: "News", value: "right" },
+        ].map(({ name, value }) => (
+          <button
+            key={value}
+            onClick={() => setActivePanel(value)}
+            className={`panel-tab ${activePanel === value ? "active" : ""}`}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
+
+      {/* 🔸 Active Panel */}
+      <div className="panel-view" style={{ background: "#0c0c0c" }}>
+        {activePanel === "left" && <PanelPostView />}
+        {activePanel === "middle" && <PanelFeed posts={posts} />}
+        {activePanel === "right" && <PanelNews />}
+      </div>
+
+      {/* ✅ Floating Create Button */}
+      <button className="floating-create-btn" onClick={handleCreateClick}>
+        +
       </button>
 
-      {/* 🖍 Dot Nav */}
-      <div className="mt-1 w-full flex justify-center">
-        <div className="flex gap-4 text-[13px] font-mono text-cyan-300">
-          <span className={activePanel === "left" ? "glow-dot" : "text-cyan-500"}>
-            {activePanel === "left" ? "●" : "○"} Post View
-          </span>
-          <span className={activePanel === "middle" ? "glow-dot" : "text-cyan-500"}>
-            {activePanel === "middle" ? "●" : "○"} Feed
-          </span>
-          <span className={activePanel === "right" ? "glow-dot" : "text-cyan-500"}>
-            {activePanel === "right" ? "●" : "○"} News
-          </span>
-        </div>
-      </div>
-    </div>
-
-    {/* 🔸 Active Panel */}
-    <div className="panel-view" style={{ background: "#0c0c0c" }}>
-      {activePanel === "left" && <PanelPostView />}
-      {activePanel === "middle" && (
-        <PanelFeed
-          posts={posts}
-          commentsMap={commentsMap}
-          inputMap={inputMap}
-          setInputMap={setInputMap}
-          handleCommentSubmit={(postId) => {
-            const content = inputMap[postId]?.trim();
-            if (!content) return;
-            submitComment(postId, content, wallType).then((ok) => {
-              if (ok) {
-                setCommentsMap((prev) => ({
-                  ...prev,
-                  [postId]: [...(prev[postId] || []), { content }],
-                }));
-                setInputMap((prev) => ({ ...prev, [postId]: "" }));
-              }
-            });
-          }}
-        />
+      {/* ✅ Create Overlay */}
+      {showCreateOverlay && (
+        <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
       )}
-      {activePanel === "right" && <PanelNews />}
     </div>
-
-    {/* ✅ Floating Create Button */}
-    <button className="floating-create-btn" onClick={handleCreateClick}>
-      +
-    </button>
-
-    {/* ✅ Create Overlay */}
-    {showCreateOverlay && (
-      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
-    )}
-  </div>
-);
+  );
 }
