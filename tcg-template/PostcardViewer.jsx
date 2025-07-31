@@ -1,5 +1,6 @@
 import React from "react";
-import TCGCardTemplate from "./tcg-template/TCGCardTemplate";
+import TCGCardTemplate from "./TCGCardTemplate";
+
 
 export default function PostViewer() {
   const displayName = sessionStorage.getItem("session_display_name") || "";
