@@ -1,5 +1,5 @@
 import React from "react";
-import TCGCardTemplate from "./TCGCardTemplate";
+import TCGCardTemplate from "./tcg-template";
 
 export default function PostcardViewer() {
   return (
