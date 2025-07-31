@@ -1,7 +1,7 @@
-// File: tcg-template/PostcardViewer.jsx
 import React, { useEffect, useState } from "react";
-import TCGCardTemplate from "./TCGCardTemplate";
-import SessionContainer from "./SessionContainer";
+import TCGCardTemplate from "../tcg-template/TCGCardTemplate";
+import SessionContainer from "../tcg-template/SessionContainer";
+import EmptyCard from "../tcg-template/EmptyCard";
 
 export default function PostcardViewer() {
   const [sessionId, setSessionId] = useState("");
@@ -18,32 +18,43 @@ export default function PostcardViewer() {
     setBackground(bg);
   }, []);
 
+  const sigiconUrl = sessionId.includes("#")
+    ? `/sigicons/${sessionId.split("/")[1]?.split("#")[0]}`
+    : "";
+
   return (
-    <div style={{ background: "#000", minHeight: "100vh", padding: "2rem" }}>
-      {/* 🔹 Shows sigicon and session name */}
+    <div
+      style={{
+        background: "#000",
+        minHeight: "100vh",
+        padding: "2rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      {/* Session badge and background */}
       <SessionContainer />
 
-      {/* 🔸 Card Preview */}
-      <div
-        style={{
-          maxWidth: "600px",
-          margin: "2rem auto 0 auto",
-          padding: "1rem",
-        }}
-      >
-        <TCGCardTemplate
-          headline="Test Headline"
-          caption="This is a test post from your session."
-          image_url=""
-          video_url=""
-          sigicon_url={`/sigicons/${sessionId.split("/")[1]?.split("#")[0]}`}
-          display_name={displayName}
-          created_at={new Date().toISOString()}
-          background={background}
-          cta_url=""
-          likes={7}
-          comments={[]}
-        />
+      {/* Post preview card */}
+      <div style={{ width: "100%", maxWidth: "600px", marginTop: "2rem" }}>
+        {sessionId ? (
+          <TCGCardTemplate
+            headline="Test Headline"
+            caption="This is a test post from your session."
+            image_url=""
+            video_url=""
+            sigicon_url={sigiconUrl}
+            display_name={displayName}
+            created_at={new Date().toISOString()}
+            background={background}
+            cta_url=""
+            likes={7}
+            comments={[]}
+          />
+        ) : (
+          <EmptyCard />
+        )}
       </div>
     </div>
   );
