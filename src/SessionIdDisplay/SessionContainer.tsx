@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import TCGCardTemplate from "./TCGCardTemplate";
+import TCGCardTemplate from "../../tcg-template/TCGCardTemplate"; // ✅ correct
+
 import SessionContainer from "./SessionContainer";
 
 export default function PostcardViewer() {
