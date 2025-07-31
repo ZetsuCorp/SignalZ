@@ -1,61 +1,22 @@
-import React, { useEffect, useState } from "react";
-import TCGCardTemplate from "../tcg-template/TCGCardTemplate";
-import EmptyCard from "../tcg-template/EmptyCard";
-import SessionContainer from "./SessionIdDisplay/SessionContainer";
+import React from "react";
+import TCGCardTemplate from "./tcg-template/TCGCardTemplate";
 
-export default function PostcardViewer() {
-  const [sessionId, setSessionId] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [background, setBackground] = useState("");
-
-  useEffect(() => {
-    const id = sessionStorage.getItem("session_id") || "";
-    const name = sessionStorage.getItem("session_display_name") || "";
-    const bg = sessionStorage.getItem("session_bg") || "test0";
-
-    setSessionId(id);
-    setDisplayName(name);
-    setBackground(bg);
-  }, []);
-
-  const sigiconUrl = sessionId.includes("#")
-    ? `/sigicons/${sessionId.split("/")[1]?.split("#")[0]}`
-    : "";
-
+export default function PostForm() {
   return (
-    <div
-      style={{
-        background: "#000",
-        minHeight: "100vh",
-        padding: "2rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      {/* 🔹 Session Info Display */}
-      <SessionContainer />
-
-      {/* 🔸 Postcard Preview */}
-      <div style={{ width: "100%", maxWidth: "600px", marginTop: "2rem" }}>
-        {sessionId ? (
-          <TCGCardTemplate
-            headline="Test Headline"
-            caption="This is a test post from your session."
-            image_url=""
-            video_url=""
-            sigicon_url={sigiconUrl}
-            display_name={displayName}
-            created_at={new Date().toISOString()}
-            background={background}
-            cta_url=""
-            likes={7}
-            comments={[]}
-          />
-        ) : (
-          <EmptyCard />
-        )}
-      </div>
+    <div className="w-full max-w-3xl mx-auto p-4">
+      <TCGCardTemplate
+        headline=""
+        caption=""
+        image_url=""
+        video_url=""
+        sigicon_url=""
+        display_name=""
+        created_at=""
+        background=""
+        cta_url=""
+        likes={0}
+        comments={[]}
+      />
     </div>
   );
 }
