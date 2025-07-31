@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import TCGCardTemplate from "../../tcg-template/TCGCardTemplate"; // ✅ correct
+import TCGCardTemplate from "./TCGCardTemplate";
+
 
 import SessionContainer from "./SessionContainer";
 
