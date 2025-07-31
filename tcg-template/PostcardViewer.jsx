@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TCGCardTemplate from "../tcg-template/TCGCardTemplate";
-import SessionContainer from "../tcg-template/SessionContainer";
 import EmptyCard from "../tcg-template/EmptyCard";
+import SessionContainer from "./SessionIdDisplay/SessionContainer";
 
 export default function PostcardViewer() {
   const [sessionId, setSessionId] = useState("");
@@ -33,10 +33,10 @@ export default function PostcardViewer() {
         alignItems: "center",
       }}
     >
-      {/* Session badge and background */}
+      {/* 🔹 Session Info Display */}
       <SessionContainer />
 
-      {/* Post preview card */}
+      {/* 🔸 Postcard Preview */}
       <div style={{ width: "100%", maxWidth: "600px", marginTop: "2rem" }}>
         {sessionId ? (
           <TCGCardTemplate
