@@ -9,11 +9,15 @@ export default function PostcardViewer() {
   const [commentCount, setCommentCount] = useState(0);
   const [viewCount, setViewCount] = useState(0);
   const [sessionId, setSessionId] = useState("");
+  const [sessionDisplayName, setSessionDisplayName] = useState("");
 
   useEffect(() => {
     const id = sessionStorage.getItem("session_id");
     const bg = sessionStorage.getItem("session_bg");
+    const display = sessionStorage.getItem("session_display_name");
+
     setSessionId(id || "");
+    setSessionDisplayName(display || "");
     setBgImage(`/postcard-assets/cardbase/${bg || "test0"}.png`);
 
     window.refreshPostcardViewer = async () => {
@@ -112,7 +116,7 @@ export default function PostcardViewer() {
             <div style={{ color: "#888", textAlign: "center" }}>Loading...</div>
           ) : post ? (
             <>
-              <TCGCardTemplate {...post} />
+              <TCGCardTemplate {...post} display_name={sessionDisplayName} />
               <div
                 style={{
                   marginTop: "1.25rem",
