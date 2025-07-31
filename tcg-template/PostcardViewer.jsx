@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import TCGCardTemplate from "./TCGCardTemplate";
+
 import EmptyCard from "./EmptyCard";
 
 export default function PostcardViewer() {
