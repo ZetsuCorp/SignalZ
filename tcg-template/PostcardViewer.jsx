@@ -14,10 +14,10 @@ export default function PostcardViewer() {
   useEffect(() => {
     const id = sessionStorage.getItem("session_id");
     const bg = sessionStorage.getItem("session_bg");
-    const display = sessionStorage.getItem("session_display_name");
+    const name = sessionStorage.getItem("session_display_name");
 
     setSessionId(id || "");
-    setSessionDisplayName(display || "");
+    setSessionDisplayName(name || "");
     setBgImage(`/postcard-assets/cardbase/${bg || "test0"}.png`);
 
     window.refreshPostcardViewer = async () => {
