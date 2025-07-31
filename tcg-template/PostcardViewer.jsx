@@ -4,58 +4,57 @@ import EmptyCard from "./EmptyCard";
 
 export default function PostcardViewer() {
   const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [bgImage, setBgImage] = useState("");
   const [commentCount, setCommentCount] = useState(0);
   const [viewCount, setViewCount] = useState(0);
+  const [sessionId, setSessionId] = useState("");
 
   useEffect(() => {
-    const sessionId = sessionStorage.getItem("session_id");
-    const sessionBg = sessionStorage.getItem("session_bg");
-    setBgImage(`/postcard-assets/cardbase/${sessionBg || "test0"}.png`);
+    const id = sessionStorage.getItem("session_id");
+    const bg = sessionStorage.getItem("session_bg");
+    setSessionId(id || "");
+    setBgImage(`/postcard-assets/cardbase/${bg || "test0"}.png`);
 
-    const fetchLastPost = async () => {
+    window.refreshPostcardViewer = async () => {
+      if (!id) return;
+      setLoading(true);
       try {
-        const encodedId = encodeURIComponent(sessionId);
+        const encodedId = encodeURIComponent(id);
         const res = await fetch(`/.netlify/functions/get-posts?session_id=${encodedId}`);
         if (!res.ok) throw new Error("Fetch failed");
         const posts = await res.json();
-        setPost(posts?.[0] || null);
+        const latest = posts?.[0] || null;
+        setPost(latest);
+        if (latest?.id) {
+          fetchStats(latest.id);
+        }
       } catch (err) {
-        console.error("❌ Failed to fetch last post:", err);
+        console.error("❌ Failed to fetch post:", err);
         setPost(null);
       } finally {
         setLoading(false);
       }
     };
-
-    window.refreshPostcardViewer = fetchLastPost;
-    fetchLastPost();
   }, []);
 
-  useEffect(() => {
-    if (!post || !post.id) return;
+  const fetchStats = async (postId) => {
+    try {
+      const res = await fetch(`/.netlify/functions/get-comments?post_id=${postId}`);
+      const comments = res.ok ? await res.json() : [];
+      setCommentCount(comments.length || 0);
+    } catch (err) {
+      console.warn("Error loading comments:", err);
+    }
 
-    const fetchStats = async () => {
-      try {
-        const res = await fetch(`/.netlify/functions/get-comments?post_id=${post.id}`);
-        const comments = res.ok ? await res.json() : [];
-        setCommentCount(comments.length || 0);
-      } catch (err) {
-        console.warn("Error loading comments:", err);
-      }
-
-      try {
-        const res = await fetch(`/.netlify/functions/get-views?post_id=${post.id}`);
-        const data = res.ok ? await res.json() : { count: 0 };
-        setViewCount(data.count || 0);
-      } catch (err) {
-        console.warn("Error loading views:", err);
-      }
-    };
-
-    fetchStats();
-  }, [post]);
+    try {
+      const res = await fetch(`/.netlify/functions/get-views?post_id=${postId}`);
+      const data = res.ok ? await res.json() : { count: 0 };
+      setViewCount(data.count || 0);
+    } catch (err) {
+      console.warn("Error loading views:", err);
+    }
+  };
 
   const getBarWidth = (value, max = 100) => {
     const width = Math.min((value / max) * 100, 100);
