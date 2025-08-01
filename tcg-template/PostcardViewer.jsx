@@ -16,7 +16,6 @@ export default function PostcardViewer() {
     const bg = sessionStorage.getItem("session_bg");
 
     if (!id || !name || !bg) {
-      // Generate new session values if missing
       const newId = uuidv4();
       const newName = "Anonymous";
       const newBg = getBackgroundFromSession(newId);
@@ -81,6 +80,25 @@ export default function PostcardViewer() {
           >
             🧵 Session Postcard Preview
           </h2>
+
+          {/* 🪪 Session ID Display Nameplate */}
+          <div
+            style={{
+              margin: "0 auto 1rem",
+              padding: "0.5rem 1rem",
+              borderRadius: "8px",
+              background: "rgba(0, 0, 0, 0.7)",
+              color: "#00f0ff",
+              fontFamily: "monospace",
+              fontSize: "0.85rem",
+              border: "1px solid #00f0ff44",
+              textAlign: "center",
+              maxWidth: "480px",
+              textShadow: "0 0 6px #00f0ff55",
+            }}
+          >
+            <strong>{displayName}</strong> — <span style={{ opacity: 0.65 }}>{sessionId}</span>
+          </div>
 
           <TCGCardTemplate />
         </div>
