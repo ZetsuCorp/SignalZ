@@ -10,38 +10,40 @@ export default function PostcardViewer() {
   const [commentCount, setCommentCount] = useState(0);
   const [viewCount, setViewCount] = useState(0);
 
-  useEffect(() => {
-    const sessionId = sessionStorage.getItem("session_id");
-    const sessionBg = sessionStorage.getItem("session_bg");
-    setBgImage(`/postcard-assets/cardbase/${sessionBg || "test0"}.png`);
+ useEffect(() => {
+  const sessionId = sessionStorage.getItem("session_id");
+  const sessionBg = sessionStorage.getItem("session_bg");
 
-    if (!sessionId) {
-      console.warn("No session ID found.");
-      setLoading(false);
-      return;
+  if (!sessionId || !sessionBg) {
+    // 🔁 Wait and retry in 100ms
+    setTimeout(() => window.location.reload(), 100);
+    return;
+  }
+
+  setBgImage(`/postcard-assets/cardbase/${sessionBg}`);
+  // Continue as normal
+  const fetchLastPost = async () => {
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .eq("session_id", sessionId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error || !data) {
+      console.warn("⚠️ No post found for session:", sessionId);
+      setPost(null);
+    } else {
+      setPost(data);
     }
 
-    const fetchLastPost = async () => {
-      const { data, error } = await supabase
-        .from("posts")
-        .select("*")
-        .eq("session_id", sessionId)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .single();
+    setLoading(false);
+  };
 
-      if (error || !data) {
-        console.warn("⚠️ No post found for session:", sessionId);
-        setPost(null);
-      } else {
-        setPost(data);
-      }
+  fetchLastPost();
+}, []);
 
-      setLoading(false);
-    };
-
-    fetchLastPost();
-  }, []);
 
   useEffect(() => {
     if (!post || !post.id) return;
