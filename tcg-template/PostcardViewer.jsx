@@ -35,12 +35,12 @@ export default function PostcardViewer() {
     setDisplayName(activeName);
     setBgImage(`/postcard-assets/cardbase/${activeBg}.png`);
 
-    // Fetch latest post for this session
+    // Initial fetch
     fetch(`/.netlify/functions/get-posts?session_id=${activeId}`)
       .then((res) => res.json())
       .then((posts) => {
         if (Array.isArray(posts) && posts.length > 0) {
-          setPost(posts[0]); // assumes newest post is first
+          setPost(posts[0]);
         }
       })
       .catch((err) => {
@@ -48,6 +48,29 @@ export default function PostcardViewer() {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  // 🔁 Auto-refresh: poll every 4 seconds
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const interval = setInterval(() => {
+      fetch(`/.netlify/functions/get-posts?session_id=${sessionId}`)
+        .then((res) => res.json())
+        .then((posts) => {
+          if (Array.isArray(posts) && posts.length > 0) {
+            const latest = posts[0];
+            if (!post || latest.id !== post.id) {
+              setPost(latest);
+            }
+          }
+        })
+        .catch((err) => {
+          console.warn("Auto-refresh fetch failed:", err);
+        });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [sessionId, post]);
 
   return (
     <div
