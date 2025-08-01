@@ -11,7 +11,6 @@ export default function PostcardViewer() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Session init and first fetch
   useEffect(() => {
     const id = sessionStorage.getItem("session_id");
     const name = sessionStorage.getItem("session_display_name");
@@ -21,6 +20,7 @@ export default function PostcardViewer() {
     let activeName = name;
     let activeBg = bg;
 
+    // If any values missing, generate new session
     if (!id || !name || !bg) {
       activeId = uuidv4();
       activeName = "Anonymous";
@@ -35,39 +35,19 @@ export default function PostcardViewer() {
     setDisplayName(activeName);
     setBgImage(`/postcard-assets/cardbase/${activeBg}.png`);
 
-    fetchLatestPost(activeId);
-  }, []);
-
-  // 🔁 Re-check for new post every 4s
-  useEffect(() => {
-    if (!sessionId) return;
-
-    const interval = setInterval(() => {
-      fetchLatestPost(sessionId, true);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [sessionId, post]);
-
-  // 🔍 Fetch most recent post
-  const fetchLatestPost = (id, isPolling = false) => {
-    fetch(`/.netlify/functions/get-posts?session_id=${id}`)
+    // Fetch latest post for this session
+    fetch(`/.netlify/functions/get-posts?session_id=${activeId}`)
       .then((res) => res.json())
       .then((posts) => {
         if (Array.isArray(posts) && posts.length > 0) {
-          const latest = posts[0];
-          if (!post || latest.id !== post.id) {
-            setPost(latest);
-          }
+          setPost(posts[0]); // assumes newest post is first
         }
       })
       .catch((err) => {
         console.warn("Error fetching posts:", err);
       })
-      .finally(() => {
-        if (!isPolling) setLoading(false);
-      });
-  };
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div
