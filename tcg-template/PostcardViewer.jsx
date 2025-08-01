@@ -1,9 +1,40 @@
 // PostcardViewer.jsx
-
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "./supabase/client";
+import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
 import TCGCardTemplate from "./TCGCardTemplate";
 
 export default function PostcardViewer() {
+  const [sessionId, setSessionId] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [bgImage, setBgImage] = useState("");
+
+  useEffect(() => {
+    const id = sessionStorage.getItem("session_id");
+    const name = sessionStorage.getItem("session_display_name");
+    const bg = sessionStorage.getItem("session_bg");
+
+    if (!id || !name || !bg) {
+      // Generate new session values if missing
+      const newId = uuidv4();
+      const newName = "Anonymous";
+      const newBg = getBackgroundFromSession(newId);
+
+      sessionStorage.setItem("session_id", newId);
+      sessionStorage.setItem("session_display_name", newName);
+      sessionStorage.setItem("session_bg", newBg);
+
+      setSessionId(newId);
+      setDisplayName(newName);
+      setBgImage(`/postcard-assets/cardbase/${newBg}.png`);
+    } else {
+      setSessionId(id);
+      setDisplayName(name);
+      setBgImage(`/postcard-assets/cardbase/${bg}.png`);
+    }
+  }, []);
+
   return (
     <div
       style={{
@@ -33,7 +64,9 @@ export default function PostcardViewer() {
           style={{
             position: "relative",
             borderRadius: "12px",
-            background: "#000",
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             padding: "1.5rem",
           }}
         >
@@ -49,7 +82,6 @@ export default function PostcardViewer() {
             🧵 Session Postcard Preview
           </h2>
 
-          {/* ✅ Just the template for now */}
           <TCGCardTemplate />
         </div>
       </div>
