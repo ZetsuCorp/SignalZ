@@ -1,6 +1,6 @@
 import React from "react";
 import PostcardViewer from "../tcg-template/PostcardViewer";
-import PostStatsView from "../src/PostStatsView";
+//import PostStatsView from "../src/PostStatsView";
 import ChumFeedPanel from "../src/ChumFeedPanel";
 
 export default function PanelPostView() {
