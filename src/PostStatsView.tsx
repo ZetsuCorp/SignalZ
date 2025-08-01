@@ -1,87 +1,108 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { supabase } from "../supabase/client";
+import TCGCardTemplate from "./TCGCardTemplate";
+import EmptyCard from "./EmptyCard";
+import PostStatsView from "./PostStatsView";
 
-export default function PostStatsView() {
+export default function PostcardViewer() {
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [bgImage, setBgImage] = useState("");
+
+  useEffect(() => {
+    const sessionId = sessionStorage.getItem("session_id");
+    const sessionBg = sessionStorage.getItem("session_bg");
+
+    // 🔁 If session is missing, wait and reload
+    if (!sessionId || !sessionBg) {
+      setTimeout(() => window.location.reload(), 100);
+      return;
+    }
+
+    setBgImage(`/postcard-assets/cardbase/${sessionBg}`);
+
+    const fetchLastPost = async () => {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("session_id", sessionId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error || !data) {
+        console.warn("⚠️ No post found for session:", sessionId);
+        setPost(null);
+      } else {
+        setPost(data);
+      }
+
+      setLoading(false);
+    };
+
+    fetchLastPost();
+  }, []);
+
   return (
     <div
       style={{
-        marginTop: "1.5rem",
+        width: "100%",
         padding: "1rem",
-        background: "linear-gradient(to bottom, #001418, #000c12)",
-        border: "2px solid #00f0ff33",
-        borderRadius: "14px",
-        boxShadow: "0 0 12px rgba(0,255,255,0.15)",
-        color: "#00f0ff",
-        fontFamily: "monospace",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
+        background: "#000",
+        borderBottom: "1px solid #222",
+        borderTopLeftRadius: "16px",
+        borderTopRightRadius: "16px",
+        position: "relative",
+        zIndex: 5,
+        overflowY: "auto",
+        maxHeight: "100vh",
+        minHeight: "600px",
       }}
     >
-      {/* Visual Meter Row */}
-      <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-        <span style={{ fontSize: "0.85rem", opacity: 0.6 }}>👁️</span>
-        <div style={{ flex: 1, background: "#002233", height: "8px", borderRadius: "4px" }}>
-          <div
-            style={{
-              width: "82%", // 💡 simulate power
-              height: "100%",
-              background: "linear-gradient(90deg, #00f0ff, #0044ff)",
-              borderRadius: "4px",
-            }}
-          />
-        </div>
-      </div>
-
-      <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-        <span style={{ fontSize: "0.85rem", opacity: 0.6 }}>💬</span>
-        <div style={{ flex: 1, background: "#002233", height: "8px", borderRadius: "4px" }}>
-          <div
-            style={{
-              width: "50%", // 💡 simulate comments
-              height: "100%",
-              background: "linear-gradient(90deg, #00ffcc, #0099cc)",
-              borderRadius: "4px",
-            }}
-          />
-        </div>
-      </div>
-
-      <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-        <span style={{ fontSize: "0.85rem", opacity: 0.6 }}>❤️</span>
-        <div style={{ flex: 1, background: "#002233", height: "8px", borderRadius: "4px" }}>
-          <div
-            style={{
-              width: "20%", // 💡 simulate likes
-              height: "100%",
-              background: "linear-gradient(90deg, #ff00cc, #ff6600)",
-              borderRadius: "4px",
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Signal Score Visual */}
       <div
         style={{
-          marginTop: "1rem",
-          textAlign: "center",
-          fontSize: "0.85rem",
-          letterSpacing: "1px",
-          opacity: 0.8,
+          border: "8px solid cyan",
+          borderRadius: "20px",
+          padding: "8px",
+          backgroundColor: "#111",
+          overflow: "hidden",
         }}
       >
-        <span style={{ opacity: 0.4 }}>Z-Charge</span>
         <div
           style={{
-            marginTop: "0.5rem",
-            height: "6px",
-            width: "80%",
-            marginInline: "auto",
-            borderRadius: "3px",
-            background: "linear-gradient(90deg, #00ffcc, #00f0ff)",
-            boxShadow: "0 0 6px #00f0ffaa",
+            position: "relative",
+            borderRadius: "12px",
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "1.5rem",
           }}
-        />
+        >
+          <h2
+            style={{
+              color: "#00f0ff",
+              fontSize: "1rem",
+              marginBottom: "0.5rem",
+              textAlign: "center",
+              textShadow: "0 0 4px #00f0ff66",
+            }}
+          >
+            🧵 Session Postcard Preview
+          </h2>
+
+          {loading ? (
+            <div style={{ color: "#888", textAlign: "center" }}>Loading...</div>
+          ) : post ? (
+            <>
+              <TCGCardTemplate {...post} />
+
+              {/* ✅ Your exact visual stats component, ADDED, not replaced */}
+              <PostStatsView />
+            </>
+          ) : (
+            <EmptyCard />
+          )}
+        </div>
       </div>
     </div>
   );
