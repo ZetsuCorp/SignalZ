@@ -81,7 +81,7 @@ export default function PostcardViewer() {
             🧵 Session Postcard Preview
           </h2>
 
-          {/* 🪪 Session ID Display Nameplate */}
+          {/* 🪪 Display Nameplate */}
           <div
             style={{
               margin: "0 auto 1rem",
@@ -97,7 +97,7 @@ export default function PostcardViewer() {
               textShadow: "0 0 6px #00f0ff55",
             }}
           >
-            <strong>{displayName}</strong> — <span style={{ opacity: 0.65 }}>{sessionId}</span>
+            <strong>{displayName}</strong>
           </div>
 
           <TCGCardTemplate />
