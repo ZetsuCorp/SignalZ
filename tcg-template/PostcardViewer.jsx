@@ -9,29 +9,45 @@ export default function PostcardViewer() {
   const [sessionId, setSessionId] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [bgImage, setBgImage] = useState("");
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const id = sessionStorage.getItem("session_id");
     const name = sessionStorage.getItem("session_display_name");
     const bg = sessionStorage.getItem("session_bg");
 
+    let activeId = id;
+    let activeName = name;
+    let activeBg = bg;
+
+    // If any values missing, generate new session
     if (!id || !name || !bg) {
-      const newId = uuidv4();
-      const newName = "Anonymous";
-      const newBg = getBackgroundFromSession(newId);
+      activeId = uuidv4();
+      activeName = "Anonymous";
+      activeBg = getBackgroundFromSession(activeId);
 
-      sessionStorage.setItem("session_id", newId);
-      sessionStorage.setItem("session_display_name", newName);
-      sessionStorage.setItem("session_bg", newBg);
-
-      setSessionId(newId);
-      setDisplayName(newName);
-      setBgImage(`/postcard-assets/cardbase/${newBg}.png`);
-    } else {
-      setSessionId(id);
-      setDisplayName(name);
-      setBgImage(`/postcard-assets/cardbase/${bg}.png`);
+      sessionStorage.setItem("session_id", activeId);
+      sessionStorage.setItem("session_display_name", activeName);
+      sessionStorage.setItem("session_bg", activeBg);
     }
+
+    setSessionId(activeId);
+    setDisplayName(activeName);
+    setBgImage(`/postcard-assets/cardbase/${activeBg}.png`);
+
+    // Fetch latest post for this session
+    fetch(`/.netlify/functions/get-posts?session_id=${activeId}`)
+      .then((res) => res.json())
+      .then((posts) => {
+        if (Array.isArray(posts) && posts.length > 0) {
+          setPost(posts[0]); // assumes newest post is first
+        }
+      })
+      .catch((err) => {
+        console.warn("Error fetching posts:", err);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -100,7 +116,16 @@ export default function PostcardViewer() {
             <strong>{displayName}</strong>
           </div>
 
-          <TCGCardTemplate />
+          {/* 🖼️ Post Display */}
+          {loading ? (
+            <div style={{ color: "#888", textAlign: "center" }}>Loading...</div>
+          ) : post ? (
+            <TCGCardTemplate {...post} />
+          ) : (
+            <div style={{ color: "#888", textAlign: "center" }}>
+              No post found for this session.
+            </div>
+          )}
         </div>
       </div>
     </div>
