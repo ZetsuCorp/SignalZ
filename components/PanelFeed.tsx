@@ -7,9 +7,11 @@ function extractDomain(url) {
     return "";
   }
 }
+
 function isYouTubeOrTikTok(url) {
   return /youtube\.com|youtu\.be|tiktok\.com/.test(url);
 }
+
 function getEmbedUrl(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const m = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
@@ -22,13 +24,7 @@ function getEmbedUrl(url) {
   return null;
 }
 
-export default function PanelFeed({
-  posts,
-  commentsMap,
-  inputMap,
-  setInputMap,
-  handleCommentSubmit,
-}) {
+export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, handleCommentSubmit }) {
   return (
     <div
       className="middle-feed"
@@ -54,7 +50,7 @@ export default function PanelFeed({
             className="frameType"
             style={{
               width: "clamp(360px, 92vw, 420px)",
-              aspectRatio: "5 / 7.2", // keeps shape consistent
+              aspectRatio: "5 / 7.2",
             }}
           >
             <div
@@ -69,7 +65,6 @@ export default function PanelFeed({
                 backgroundPosition: "center",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-between",
                 padding: "0.75rem",
               }}
             >
@@ -93,7 +88,7 @@ export default function PanelFeed({
                 )}
               </div>
 
-              {/* Artwork fixed frame */}
+              {/* Artwork — fixed frame */}
               <div
                 className="card-art"
                 style={{
@@ -104,8 +99,7 @@ export default function PanelFeed({
                   border: "3px solid #00f0ff66",
                   borderRadius: "8px",
                   overflow: "hidden",
-                  marginTop: "0.4rem",
-                  marginBottom: "0.4rem",
+                  margin: "0.4rem 0",
                 }}
               >
                 {post.video_url ? (
@@ -116,6 +110,7 @@ export default function PanelFeed({
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
+                      display: "block",
                     }}
                   />
                 ) : post.image_url ? (
@@ -183,7 +178,7 @@ export default function PanelFeed({
                 {post.caption}
               </div>
 
-              {/* Stats + Tags inline */}
+              {/* Stats */}
               <div
                 style={{
                   display: "flex",
@@ -199,7 +194,38 @@ export default function PanelFeed({
                 <span>💬 {comments.length}</span>
               </div>
 
-              {/* Footer — comment box fixed size */}
+              {/* Comments */}
+              <div
+                style={{
+                  marginTop: "0.4rem",
+                  background: "rgba(0,0,0,0.25)",
+                  border: "1px solid #00f0ff22",
+                  borderRadius: "8px",
+                  padding: "6px 8px",
+                  flex: "1 1 auto",
+                  overflowY: "auto",
+                  maxHeight: "70px",
+                }}
+              >
+                {comments.map((c, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#cfffff",
+                      marginBottom: "2px",
+                      lineHeight: "1.2",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    }}
+                  >
+                    💬 {c.content}
+                  </div>
+                ))}
+              </div>
+
+              {/* Comment box */}
               <div style={{ marginTop: "0.5rem" }}>
                 <textarea
                   placeholder="Write a comment..."
