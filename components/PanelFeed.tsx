@@ -30,7 +30,15 @@ export default function PanelFeed({
   handleCommentSubmit,
 }) {
   return (
-    <div className="middle-feed" style={{ display: "grid", placeItems: "center" }}>
+    <div
+      className="middle-feed"
+      style={{
+        display: "grid",
+        justifyContent: "center",
+        gap: "1.5rem",
+        padding: "1rem 0",
+      }}
+    >
       {posts.map((post) => {
         const safeTags = Array.isArray(post.tags)
           ? post.tags
@@ -41,205 +49,158 @@ export default function PanelFeed({
         const bg = post.background;
 
         return (
-          <div key={post.id} className="frameType" style={{ marginBottom: "1.5rem" }}>
+          <div
+            key={post.id}
+            className="frameType"
+            style={{
+              width: "clamp(360px, 92vw, 420px)",
+              aspectRatio: "5 / 7.2", // keeps shape consistent
+            }}
+          >
             <div
               className="frameType-inner"
               style={{
+                width: "100%",
+                height: "100%",
                 backgroundImage: bg
                   ? `url('/postcard-assets/cardbase/${bg}.png')`
                   : "radial-gradient(120% 100% at 50% 0%, #1a1a1a 0%, #0b0b0b 80%)",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                padding: "1rem",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                padding: "0.75rem",
               }}
             >
-              {/* display name */}
-              {post.display_name && (
-                <div style={{ textAlign: "center", marginBottom: "0.4rem" }}>
+              {/* Header */}
+              <div style={{ textAlign: "center" }}>
+                {post.display_name && (
                   <span
                     style={{
-                      fontWeight: "bold",
-                      fontSize: "0.85rem",
-                      color: "#00f0ff",
-                      background: "rgba(0,0,0,0.6)",
+                      display: "inline-block",
+                      background: "rgba(0,0,0,0.65)",
+                      border: "1px solid #00f0ff55",
                       padding: "3px 8px",
                       borderRadius: "6px",
+                      fontSize: "0.8rem",
+                      color: "#00f0ff",
                       textShadow: "0 0 6px #00f0ff",
                     }}
                   >
                     {post.display_name}
                   </span>
-                </div>
-              )}
-
-              {/* headline */}
-              <div
-                style={{
-                  textAlign: "center",
-                  fontSize: "1rem",
-                  fontWeight: "700",
-                  color: "#fff",
-                  border: "2px solid #00f0ff66",
-                  borderRadius: "8px",
-                  background: "linear-gradient(145deg, #0ff2, #033)",
-                  padding: "6px 10px",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                📛 {post.headline}
+                )}
               </div>
 
-              {/* media */}
-              {post.video_url ? (
-                <video
-                  controls
-                  src={post.video_url}
-                  style={{
-                    width: "100%",
-                    borderRadius: "8px",
-                    marginBottom: "0.6rem",
-                  }}
-                />
-              ) : post.image_url ? (
-                <img
-                  src={post.image_url}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    borderRadius: "8px",
-                    marginBottom: "0.6rem",
-                  }}
-                />
-              ) : null}
-
-              {/* caption */}
-              {post.caption && (
-                <div
-                  style={{
-                    background: "rgba(0,10,20,0.65)",
-                    border: "1px solid #00f0ff44",
-                    borderRadius: "10px",
-                    padding: "10px 12px",
-                    color: "#cfffff",
-                    fontSize: "0.85rem",
-                    lineHeight: "1.4",
-                    marginBottom: "0.6rem",
-                  }}
-                >
-                  {post.caption}
-                </div>
-              )}
-
-              {/* embedded link */}
-              {safeTags.includes("link") &&
-                post.caption?.startsWith("http") &&
-                (isYouTubeOrTikTok(post.caption) && getEmbedUrl(post.caption) ? (
-                  <iframe
-                    src={getEmbedUrl(post.caption)}
-                    allow="autoplay; encrypted-media"
-                    allowFullScreen
+              {/* Artwork fixed frame */}
+              <div
+                className="card-art"
+                style={{
+                  flex: "0 0 auto",
+                  position: "relative",
+                  width: "100%",
+                  aspectRatio: "4 / 3",
+                  border: "3px solid #00f0ff66",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  marginTop: "0.4rem",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                {post.video_url ? (
+                  <video
+                    src={post.video_url}
+                    controls
                     style={{
                       width: "100%",
-                      aspectRatio: "9/16",
-                      borderRadius: "8px",
-                      border: "1px solid #00f0ff44",
-                      marginBottom: "0.6rem",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : post.image_url ? (
+                  <img
+                    src={post.image_url}
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
                     }}
                   />
                 ) : (
-                  <a
-                    href={post.caption}
-                    target="_blank"
-                    rel="noreferrer"
+                  <div
                     style={{
-                      display: "block",
-                      border: "1px solid #00f0ff44",
-                      borderRadius: "8px",
-                      padding: "10px",
-                      background: "#0f0f0f",
-                      textDecoration: "none",
-                      color: "#fff",
-                      marginBottom: "0.6rem",
+                      width: "100%",
+                      height: "100%",
+                      background: "rgba(0,255,255,0.05)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#00f0ff88",
+                      fontSize: "0.85rem",
                     }}
                   >
-                    <div style={{ fontWeight: "700", fontSize: "0.9rem" }}>
-                      {post.headline || "Shared via SignalZ"}
-                    </div>
-                    <div style={{ fontSize: "0.75rem", color: "#ccc" }}>
-                      {extractDomain(post.caption)}
-                    </div>
-                  </a>
-                ))}
+                    No Media
+                  </div>
+                )}
+              </div>
 
-              {/* cta */}
-              {post.cta_url && (
-                <a
-                  href={post.cta_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    display: "inline-block",
-                    background: "linear-gradient(to right, #ff4136, #ffdc00)",
-                    color: "#000",
-                    fontWeight: "700",
-                    fontSize: "0.8rem",
-                    borderRadius: "999px",
-                    padding: "4px 10px",
-                    marginBottom: "0.6rem",
-                  }}
-                >
-                  Visit Link
-                </a>
-              )}
+              {/* Headline */}
+              <div
+                style={{
+                  textAlign: "center",
+                  fontWeight: "700",
+                  fontSize: "1rem",
+                  color: "#fff",
+                  border: "1px solid #00f0ff55",
+                  borderRadius: "6px",
+                  padding: "6px 10px",
+                  marginBottom: "0.4rem",
+                  background: "rgba(0,0,0,0.4)",
+                }}
+              >
+                {post.headline || "Untitled"}
+              </div>
 
-              {/* stats */}
+              {/* Caption */}
+              <div
+                style={{
+                  background: "rgba(0,10,20,0.65)",
+                  border: "1px solid #00f0ff33",
+                  borderRadius: "8px",
+                  color: "#cfffff",
+                  fontSize: "0.8rem",
+                  padding: "8px 10px",
+                  height: "3.6rem",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  lineHeight: "1.3",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                {post.caption}
+              </div>
+
+              {/* Stats + Tags inline */}
               <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  fontSize: "0.8rem",
+                  fontSize: "0.75rem",
                   background: "rgba(0,0,0,0.3)",
-                  padding: "5px 8px",
+                  padding: "4px 8px",
                   borderRadius: "8px",
                   color: "#fff",
-                  marginBottom: "0.5rem",
                 }}
               >
-                <div>❤️ {post.likes || 0}</div>
-                <div>💬 {comments.length}</div>
+                <span>❤️ {post.likes || 0}</span>
+                <span>💬 {comments.length}</span>
               </div>
 
-              {/* tags */}
-              {safeTags.length > 0 && (
-                <div style={{ marginBottom: "0.6rem" }}>
-                  {safeTags.map((t) => (
-                    <span
-                      key={t}
-                      style={{
-                        display: "inline-block",
-                        background: "#1a1a1a",
-                        border: "1px solid #00f0ff55",
-                        padding: "2px 6px",
-                        borderRadius: "999px",
-                        color: "#fff",
-                        fontSize: "0.75rem",
-                        marginRight: "0.4rem",
-                      }}
-                    >
-                      #{t}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {/* comments */}
-              <div>
-                <h4 style={{ fontSize: "0.9rem", color: "#00f0ff" }}>Comments</h4>
-                {comments.map((c, i) => (
-                  <p key={i} style={{ fontSize: "0.8rem", color: "#fff" }}>
-                    💬 {c.content}
-                  </p>
-                ))}
+              {/* Footer — comment box fixed size */}
+              <div style={{ marginTop: "0.5rem" }}>
                 <textarea
                   placeholder="Write a comment..."
                   value={inputMap[post.id] || ""}
@@ -250,23 +211,26 @@ export default function PanelFeed({
                     width: "100%",
                     background: "#0d0d0d",
                     color: "#fff",
-                    border: "1px solid #00f0ff55",
+                    border: "1px solid #00f0ff44",
                     borderRadius: "6px",
-                    padding: "8px",
-                    fontSize: "0.8rem",
-                    marginBottom: "0.4rem",
+                    fontSize: "0.75rem",
+                    padding: "6px",
+                    height: "40px",
+                    resize: "none",
+                    marginBottom: "0.3rem",
                   }}
                 />
                 <button
                   onClick={() => handleCommentSubmit(post.id)}
                   style={{
-                    padding: "8px 14px",
+                    width: "100%",
+                    padding: "6px 10px",
                     background: "linear-gradient(to right, #00ff99, #00f0ff)",
                     color: "#000",
                     border: "none",
                     borderRadius: "6px",
                     fontWeight: "700",
-                    fontSize: "0.8rem",
+                    fontSize: "0.75rem",
                     cursor: "pointer",
                   }}
                 >
