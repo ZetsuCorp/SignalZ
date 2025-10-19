@@ -155,136 +155,56 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       : "📝 Create New Post";
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black bg-opacity-80 flex items-center justify-center p-4">
-      <div className="frameType w-full max-w-[460px] relative">
-        <div
-          className="frameType-inner text-center p-4 space-y-4"
-          style={{
-            backgroundImage: backgroundImage
-              ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
-              : undefined,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          {/* Header */}
-          <div className="card-header">
-            <div className="card-id">{displayName || "SignalZ User"}</div>
-            <div className="card-name">
-              <span>{headline || "Untitled Post"}</span>
-            </div>
-            <div className="card-icon">{sigIcon ? "🌐" : "⚡"}</div>
-          </div>
+  <div className="fixed inset-0">
+    <div className="frameType">
+      <div
+        className="frameType-inner"
+        style={{
+          backgroundImage: backgroundImage
+            ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
+            : undefined,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* 📝 Title + Nameplate */}
+        <div className="card-title">📝 Create New Post</div>
+        <div className="nameplate-row">
+          <div className="label">Name Plate</div>
+          <div className="value">{displayName || "SignalZ User"}</div>
+        </div>
 
-          {/* Artwork */}
-          <div className="card-art">
-            {image ? (
-              <img src={URL.createObjectURL(image)} alt="preview" />
-            ) : video ? (
-              <video controls>
-                <source src={URL.createObjectURL(video)} />
-              </video>
-            ) : (
-              <div
-                style={{
-                  color: "#999",
-                  fontSize: ".9rem",
-                  paddingTop: "40px",
-                }}
-              >
-                🖼 No media added
-              </div>
-            )}
-          </div>
-
-          {/* Type banner */}
-          <div className="type-banner">
-            <div className="type-cell">{modeLabel}</div>
-            <div className="type-about-wrap">
-              <div className="type-about-box">
-                <span className="type-about-text">
-                  {wallType.toUpperCase()} Wall
-                </span>
-              </div>
-            </div>
-            <div className="type-cell">✨</div>
-          </div>
-
-          {/* Effect / Caption box */}
-          <div className="effect-box">
-            <div className="effect-entry">
-              <div className="effect-text">
-                {caption || "Write something meaningful..."}
-              </div>
-            </div>
-            {ctaUrl && (
-              <a
-                href={ctaUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="source-pill inline-block mt-2"
-              >
-                Visit Link
-              </a>
-            )}
-          </div>
-
-          {/* Meta block */}
-          <div className="meta-block">
-            <div className="meta-line">
-              <div className="meta-label">Tags -</div>
-              <div className="meta-value">{tags || "None"}</div>
-            </div>
-            <div className="meta-line">
-              <div className="meta-label">Wall -</div>
-              <div className="meta-value">{wallType}</div>
-            </div>
-          </div>
-
-          {/* Bottom / Actions */}
-          <div className="meta-bottom">
-            <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
-            <div className="meta-timestamp">
-              {new Date().toLocaleString()}
-            </div>
-            <div className="rarity SR">LIVE</div>
-          </div>
-
-          {/* Inputs */}
+        {/* 🔹 Header Bar (Headline Input) */}
+        <div className="card-header">
           <input
             type="text"
-            placeholder="Headline"
+            placeholder="Title of Post"
             value={headline}
             onChange={(e) => setHeadline(e.target.value)}
-            style={tcgInputStyle}
           />
-          <textarea
-            placeholder="What's meaningful about it?"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            style={{ ...tcgInputStyle, height: "5rem" }}
-          />
-          <input
-            type="text"
-            placeholder="Link (optional)"
-            value={ctaUrl}
-            onChange={(e) => setCtaUrl(e.target.value)}
-            style={tcgInputStyle}
-          />
-          <input
-            type="text"
-            placeholder="Tags (comma separated)"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            style={tcgInputStyle}
-          />
+        </div>
 
-          {/* Upload buttons */}
-          <button
-            type="button"
-            onClick={() => imageInputRef.current.click()}
-            className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-          >
+        {/* 🔸 Stat Row (Placeholder) */}
+        <div className="stat-row">N/A</div>
+
+        {/* 🖼 Artwork Area */}
+        <div className="card-art">
+          {image ? (
+            <img src={URL.createObjectURL(image)} alt="preview" />
+          ) : video ? (
+            <video controls>
+              <source src={URL.createObjectURL(video)} />
+            </video>
+          ) : (
+            <div className="placeholder">
+              🖼 No media added — Click below to add
+            </div>
+          )}
+        </div>
+
+        {/* Upload Buttons inside art section */}
+        <div className="submit-row">
+          <button type="button" onClick={() => imageInputRef.current.click()}>
             🖼 Add Image
           </button>
           <input
@@ -294,12 +214,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             onChange={handleImageChange}
             style={{ display: "none" }}
           />
-
-          <button
-            type="button"
-            onClick={() => videoInputRef.current.click()}
-            className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
-          >
+          <button type="button" onClick={() => videoInputRef.current.click()}>
             🎬 Add Video
           </button>
           <input
@@ -309,41 +224,73 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             onChange={handleVideoChange}
             style={{ display: "none" }}
           />
+        </div>
 
-          {/* Submit Buttons */}
-          <button onClick={handlePost} className="submit w-full mt-3">
-            🚀 Post to {wallType.toUpperCase()} Wall
-          </button>
-
-          {/* Social Link Submit */}
-          <div className="meta-block mt-3">
-            <div className="meta-line">
-              <div className="meta-label">🌐 Social Link</div>
+        {/* 🔷 Type Banner / Wall Selector */}
+        <div className="type-banner">
+          <div className="type-cell">{modeLabel}</div>
+          <div className="type-about-wrap">
+            <div className="type-about-box">
+              <span className="type-about-text">
+                {wallType.toUpperCase()} Wall
+              </span>
             </div>
+          </div>
+          <div className="type-cell">✨</div>
+        </div>
+
+        {/* 🧠 Effect Box (Caption + Link merged) */}
+        <div className="effect-box">
+          <textarea
+            placeholder="Write something meaningful OR paste any video or social link..."
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+          />
+        </div>
+
+        {/* 📘 Meta Section (Tags + Social Link) */}
+        <div className="meta-block">
+          <div className="meta-row">
             <input
               type="text"
-              placeholder="Paste any video or social link"
+              placeholder="Tags (comma separated)"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Social Link"
               value={linkInput}
               onChange={(e) => setLinkInput(e.target.value)}
-              style={tcgInputStyle}
             />
-            <button
-              onClick={handleSubmitLink}
-              className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
-            >
-              🔗 Submit Link
-            </button>
           </div>
+        </div>
 
-          {/* Close */}
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
-          >
-            ✖
+        {/* 🔗 Submit Row */}
+        <div className="submit-row">
+          <button onClick={handleSubmitLink}>🔗 Submit Link</button>
+          <button onClick={handlePost}>
+            🚀 Post to {wallType.toUpperCase()} Wall
           </button>
         </div>
+
+        {/* FOOTER */}
+        <div className="meta-bottom">
+          <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
+          <div className="meta-timestamp">
+            {new Date().toLocaleString()}
+          </div>
+          <div className="rarity SR">LIVE</div>
+        </div>
+
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
+        >
+          ✖
+        </button>
       </div>
     </div>
-  );
-}
+  </div>
+);
