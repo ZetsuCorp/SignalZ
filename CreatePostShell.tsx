@@ -1,15 +1,11 @@
-// ✅ Zetsu-Card Accurate CreatePostShell (fixed sizing + layout)
+
+// ✅ Full Zetsu-Card Styled CreatePostShell
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
 import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
 
-export default function CreatePostShell({
-  mode,
-  onClose,
-  wallType = "main",
-  onMediaPreview,
-}) {
+export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview }) {
   const [headline, setHeadline] = useState("");
   const [caption, setCaption] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
@@ -45,8 +41,8 @@ export default function CreatePostShell({
     color: "#e0fefe",
     boxShadow: "inset 0 0 10px rgba(0, 255, 255, 0.1)",
     backdropFilter: "blur(6px)",
-    padding: "10px 14px",
-    width: "100%",
+    padding: "12px 16px",
+    lineHeight: "1.4",
     textAlign: "center",
   };
 
@@ -54,31 +50,40 @@ export default function CreatePostShell({
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
-      onMediaPreview?.("image", URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      onMediaPreview?.("image", previewUrl);
     }
   };
+
   const handleVideoChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setVideo(file);
-      onMediaPreview?.("video", URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      onMediaPreview?.("video", previewUrl);
     }
   };
 
   const uploadImage = async () => {
     if (!image) return "";
-    const path = `${sessionId}/${Date.now()}_${image.name}`;
-    const { error } = await supabase.storage.from("images").upload(path, image);
-    if (error) return alert("Image upload failed"), "";
-    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${path}`;
+    const filePath = `${sessionId}/${Date.now()}_${image.name}`;
+    const { error } = await supabase.storage.from("images").upload(filePath, image);
+    if (error) {
+      alert("Image upload failed");
+      return "";
+    }
+    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${filePath}`;
   };
 
   const uploadVideo = async () => {
     if (!video) return "";
-    const path = `${sessionId}/${Date.now()}_${video.name}`;
-    const { error } = await supabase.storage.from("videos").upload(path, video);
-    if (error) return alert("Video upload failed"), "";
-    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${path}`;
+    const filePath = `${sessionId}/${Date.now()}_${video.name}`;
+    const { error } = await supabase.storage.from("videos").upload(filePath, video);
+    if (error) {
+      alert("Video upload failed");
+      return "";
+    }
+    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${filePath}`;
   };
 
   const handlePost = async () => {
@@ -102,7 +107,8 @@ export default function CreatePostShell({
         background: backgroundImage,
       }),
     });
-    setHeadline(""); setCaption(""); setCtaUrl(""); setTags(""); setImage(null); setVideo(null);
+    setHeadline(""); setCaption(""); setCtaUrl(""); setTags("");
+    setImage(null); setVideo(null);
     alert("Posted!");
   };
 
@@ -121,16 +127,19 @@ export default function CreatePostShell({
           wall_type: wallType,
           tags: ["link"],
           link_title: "Shared via SignalZ",
+          link_image: null,
+          image_url: null,
+          video_url: null,
           cta_link_url: domain,
           background,
         }),
       });
       if (!res.ok) throw new Error("Link submission failed");
       setLinkInput("");
-      alert("Link submitted!");
+      alert("Link submitted to SignalZ!");
     } catch (err) {
-      console.error(err);
-      alert("Invalid or failed submission");
+      console.error("Submit link error:", err);
+      alert("Invalid link or submission error");
     }
   };
 
@@ -144,10 +153,10 @@ export default function CreatePostShell({
       : "📝 Create New Post";
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black/80 flex items-center justify-center p-4">
-      <div className="frameType relative w-[clamp(360px,92vw,460px)]">
+    <div className="fixed inset-0 z-[99999] bg-black bg-opacity-80 flex items-center justify-center p-4">
+      <div className="frameType w-full max-w-[460px] relative">
         <div
-          className="frameType-inner text-center flex flex-col"
+          className="frameType-inner text-center p-4 space-y-4"
           style={{
             backgroundImage: backgroundImage
               ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
@@ -156,84 +165,181 @@ export default function CreatePostShell({
             backgroundPosition: "center",
           }}
         >
-          {/* === HEADER === */}
+          {/* Header */}
           <div className="card-header">
             <div className="card-id">{displayName || "SignalZ User"}</div>
-            <div className="card-name"><span>{headline || "Untitled Post"}</span></div>
-            <div className="card-icon">{sigIcon || "⚡"}</div>
+            <div className="card-name">
+              <span>{headline || "Untitled Post"}</span>
+            </div>
+            <div className="card-icon">{sigIcon ? "🌐" : "⚡"}</div>
           </div>
 
-          {/* === ARTWORK === */}
-          <div className="card-art" style={{ aspectRatio: "4 / 3", overflow: "hidden" }}>
+          {/* Artwork */}
+          <div className="card-art">
             {image ? (
-              <img src={URL.createObjectURL(image)} alt="preview" style={{ width:"100%",height:"100%",objectFit:"cover" }} />
+              <img src={URL.createObjectURL(image)} alt="preview" />
             ) : video ? (
-              <video controls style={{ width:"100%",height:"100%",objectFit:"cover" }}>
+              <video controls>
                 <source src={URL.createObjectURL(video)} />
               </video>
             ) : (
-              <div style={{ color:"#999",padding:"40px 0" }}>🖼 No media added</div>
+              <div
+                style={{
+                  color: "#999",
+                  fontSize: ".9rem",
+                  paddingTop: "40px",
+                }}
+              >
+                🖼 No media added
+              </div>
             )}
           </div>
 
-          {/* === TYPE BANNER === */}
+          {/* Type banner */}
           <div className="type-banner">
             <div className="type-cell">{modeLabel}</div>
             <div className="type-about-wrap">
               <div className="type-about-box">
-                <span className="type-about-text">{wallType.toUpperCase()} Wall</span>
+                <span className="type-about-text">
+                  {wallType.toUpperCase()} Wall
+                </span>
               </div>
             </div>
             <div className="type-cell">✨</div>
           </div>
 
-          {/* === CAPTION / EFFECT === */}
+          {/* Effect / Caption box */}
           <div className="effect-box">
             <div className="effect-entry">
-              <div className="effect-text">{caption || "Write something meaningful..."}</div>
+              <div className="effect-text">
+                {caption || "Write something meaningful..."}
+              </div>
             </div>
             {ctaUrl && (
-              <a href={ctaUrl} target="_blank" rel="noreferrer" className="source-pill inline-block mt-2">
+              <a
+                href={ctaUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="source-pill inline-block mt-2"
+              >
                 Visit Link
               </a>
             )}
           </div>
 
-          {/* === META === */}
+          {/* Meta block */}
           <div className="meta-block">
-            <div className="meta-line"><div className="meta-label">Tags -</div><div className="meta-value">{tags || "None"}</div></div>
-            <div className="meta-line"><div className="meta-label">Wall -</div><div className="meta-value">{wallType}</div></div>
+            <div className="meta-line">
+              <div className="meta-label">Tags -</div>
+              <div className="meta-value">{tags || "None"}</div>
+            </div>
+            <div className="meta-line">
+              <div className="meta-label">Wall -</div>
+              <div className="meta-value">{wallType}</div>
+            </div>
           </div>
 
-          {/* === BOTTOM === */}
+          {/* Bottom / Actions */}
           <div className="meta-bottom">
             <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
-            <div className="meta-timestamp">{new Date().toLocaleString()}</div>
+            <div className="meta-timestamp">
+              {new Date().toLocaleString()}
+            </div>
             <div className="rarity SR">LIVE</div>
           </div>
 
-          {/* === INPUTS / ACTIONS === */}
-          <div className="p-3 flex flex-col gap-2">
-            <input type="text" placeholder="Headline" value={headline} onChange={(e)=>setHeadline(e.target.value)} style={tcgInputStyle}/>
-            <textarea placeholder="What's meaningful about it?" value={caption} onChange={(e)=>setCaption(e.target.value)} style={{...tcgInputStyle,height:"4.5rem"}}/>
-            <input type="text" placeholder="Link (optional)" value={ctaUrl} onChange={(e)=>setCtaUrl(e.target.value)} style={tcgInputStyle}/>
-            <input type="text" placeholder="Tags (comma separated)" value={tags} onChange={(e)=>setTags(e.target.value)} style={tcgInputStyle}/>
-            <button onClick={()=>imageInputRef.current.click()} className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 border border-cyan-400 rounded py-2">🖼 Add Image</button>
-            <input type="file" accept="image/*" ref={imageInputRef} onChange={handleImageChange} style={{display:"none"}}/>
-            <button onClick={()=>videoInputRef.current.click()} className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 border border-cyan-400 rounded py-2">🎬 Add Video</button>
-            <input type="file" accept="video/*" ref={videoInputRef} onChange={handleVideoChange} style={{display:"none"}}/>
-            <button onClick={handlePost} className="submit w-full mt-2 border border-cyan-400 rounded py-2">🚀 Post</button>
+          {/* Inputs */}
+          <input
+            type="text"
+            placeholder="Headline"
+            value={headline}
+            onChange={(e) => setHeadline(e.target.value)}
+            style={tcgInputStyle}
+          />
+          <textarea
+            placeholder="What's meaningful about it?"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            style={{ ...tcgInputStyle, height: "5rem" }}
+          />
+          <input
+            type="text"
+            placeholder="Link (optional)"
+            value={ctaUrl}
+            onChange={(e) => setCtaUrl(e.target.value)}
+            style={tcgInputStyle}
+          />
+          <input
+            type="text"
+            placeholder="Tags (comma separated)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            style={tcgInputStyle}
+          />
+
+          {/* Upload buttons */}
+          <button
+            type="button"
+            onClick={() => imageInputRef.current.click()}
+            className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+          >
+            🖼 Add Image
+          </button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={imageInputRef}
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+          />
+
+          <button
+            type="button"
+            onClick={() => videoInputRef.current.click()}
+            className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+          >
+            🎬 Add Video
+          </button>
+          <input
+            type="file"
+            accept="video/*"
+            ref={videoInputRef}
+            onChange={handleVideoChange}
+            style={{ display: "none" }}
+          />
+
+          {/* Submit Buttons */}
+          <button onClick={handlePost} className="submit w-full mt-3">
+            🚀 Post to {wallType.toUpperCase()} Wall
+          </button>
+
+          {/* Social Link Submit */}
+          <div className="meta-block mt-3">
+            <div className="meta-line">
+              <div className="meta-label">🌐 Social Link</div>
+            </div>
+            <input
+              type="text"
+              placeholder="Paste any video or social link"
+              value={linkInput}
+              onChange={(e) => setLinkInput(e.target.value)}
+              style={tcgInputStyle}
+            />
+            <button
+              onClick={handleSubmitLink}
+              className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
+            >
+              🔗 Submit Link
+            </button>
           </div>
 
-          {/* === SOCIAL LINK === */}
-          <div className="meta-block mt-2">
-            <div className="meta-line"><div className="meta-label">🌐 Social Link</div></div>
-            <input type="text" placeholder="Paste any video or social link" value={linkInput} onChange={(e)=>setLinkInput(e.target.value)} style={tcgInputStyle}/>
-            <button onClick={handleSubmitLink} className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400 mt-2">🔗 Submit Link</button>
-          </div>
-
-          {/* === CLOSE === */}
-          <button onClick={onClose} className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg">✖</button>
+          {/* Close */}
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
+          >
+            ✖
+          </button>
         </div>
       </div>
     </div>
