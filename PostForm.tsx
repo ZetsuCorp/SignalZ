@@ -41,7 +41,7 @@ function PostForm({ wallType = "main", onMediaPreview, overlayType, closeOverlay
     padding: "12px 16px",
     lineHeight: "1.4",
     textAlign: "center",
-    width: "100%",
+    width: "50%",
   };
 
   const handleFileChange = (e) => {
