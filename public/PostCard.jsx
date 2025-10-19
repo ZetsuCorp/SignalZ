@@ -25,7 +25,7 @@ export default function PostCard({ post, comments }) {
             src={post.image_url}
             alt="Post media"
             style={{
-              width: "100%",
+              width: "50%",
               height: "auto",
               borderRadius: "8px",
               marginBottom: "0.75rem",
