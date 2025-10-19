@@ -5,6 +5,7 @@
 /* 🧩 Card Frame */
 .frameType {
   position: relative;
+   hieght: 600px;
   width: 100%;
   max-width: 460px;
   aspect-ratio: 460 / 640;
