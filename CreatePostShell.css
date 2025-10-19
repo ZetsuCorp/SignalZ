@@ -22,19 +22,37 @@
 }
 
 /* 🌌 Inner Layer */
-.frameType-inner {
-  position: relative;
+.frameType-inner > div {
   width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 16px;
-  background-size: cover;
-  background-position: center;
-  border-radius: inherit;
+}
+
+/* Visual separation for debugging */
+.card-header,
+.card-art,
+.type-banner,
+.effect-box,
+.meta-block,
+.meta-bottom {
+  background: rgba(0, 10, 20, 0.6);
+  border: 1px solid #00f0ff33;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 8px;
+}
+
+/* Lock image area height */
+.card-art {
+  min-height: 200px;
+}
+
+/* Keep bottom anchored visually */
+.meta-bottom {
+  margin-top: 10px;
+  border: none;
+  background: none;
+  text-align: center;
+  color: #66ccee;
+  font-size: 0.75rem;
 }
 
 /* ===========================
