@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
 import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
+import "./CreatePostShell.css";
+
 
 export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview }) {
   const [headline, setHeadline] = useState("");
