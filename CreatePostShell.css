@@ -1,21 +1,27 @@
-/* ===========================
-   ZETSU CREATE POST CARD STYLES
-   =========================== */
+/* ==========================================================
+   ⚡ ZETSU CREATE POST CARD — FINALIZED SHELL STYLES ⚡
+   ========================================================== */
 
-/* Card frame and shell */
+/* 🧩 Card Frame */
 .frameType {
   position: relative;
   width: 100%;
   max-width: 460px;
   aspect-ratio: 460 / 640;
-  border: 6px solid #00f0ff66;
-  border-radius: 16px;
+  margin: 0 auto;
+  border: 5px solid #00f0ff80;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 0 25px #00f0ff33, inset 0 0 30px #00f0ff22;
   background: rgba(0, 0, 10, 0.9);
+  box-shadow:
+    0 0 25px #00f0ff33,
+    inset 0 0 20px #00f0ff22,
+    0 0 4px #00f0ff44;
+  backdrop-filter: blur(4px);
+  transform: translateZ(0);
 }
 
-/* Inner layer */
+/* 🌌 Inner Layer */
 .frameType-inner {
   position: relative;
   width: 100%;
@@ -24,39 +30,58 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  padding: 16px;
   background-size: cover;
   background-position: center;
-  padding: 16px;
+  border-radius: inherit;
 }
 
-/* Header */
+/* ===========================
+   🪪 HEADER SECTION
+   =========================== */
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: "Orbitron", sans-serif;
-  color: #00f0ff;
-  font-size: 0.9rem;
-  text-shadow: 0 0 6px #00f0ffcc;
   width: 100%;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.9rem;
+  color: #00f0ff;
+  text-shadow: 0 0 6px #00f0ffcc;
+  letter-spacing: 0.5px;
 }
-.card-id { font-weight: 600; opacity: 0.8; }
-.card-name span { font-size: 1.1rem; font-weight: 700; }
-.card-icon { font-size: 1.2rem; }
 
-/* Art section */
+.card-id {
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.card-name span {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.card-icon {
+  font-size: 1.2rem;
+}
+
+/* ===========================
+   🎴 ARTWORK SECTION
+   =========================== */
 .card-art {
   margin-top: 8px;
   width: 100%;
-  max-height: 220px;
+  max-height: 240px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 20, 40, 0.5);
+  background: rgba(0, 20, 40, 0.55);
   border: 1px solid #00f0ff33;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
 }
+
 .card-art img,
 .card-art video {
   width: 100%;
@@ -65,22 +90,28 @@
   border-radius: inherit;
 }
 
-/* Type banner */
+/* ===========================
+   🔖 TYPE BANNER
+   =========================== */
 .type-banner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(0, 50, 80, 0.5);
-  border: 1px solid #00f0ff33;
-  border-radius: 10px;
+  width: 100%;
   margin-top: 6px;
   padding: 6px 10px;
+  border: 1px solid #00f0ff33;
+  border-radius: 10px;
+  background: rgba(0, 50, 80, 0.5);
   color: #aafaff;
   font-size: 0.8rem;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* Effect box (caption) */
+/* ===========================
+   💬 CAPTION / EFFECT BOX
+   =========================== */
 .effect-box {
   width: 100%;
   margin-top: 8px;
@@ -91,51 +122,87 @@
   color: #e0fefe;
   font-size: 0.85rem;
   text-align: left;
+  line-height: 1.4;
 }
 
-/* Meta block */
+/* ===========================
+   📊 META BLOCKS
+   =========================== */
 .meta-block {
   width: 100%;
   margin-top: 8px;
   border: 1px solid #00f0ff22;
   border-radius: 10px;
-  background: rgba(0, 15, 25, 0.5);
-  font-size: 0.75rem;
+  background: rgba(0, 15, 25, 0.55);
   color: #88ddee;
+  font-size: 0.75rem;
   padding: 6px 10px;
 }
+
 .meta-line {
   display: flex;
   justify-content: space-between;
   margin-bottom: 3px;
 }
-.meta-label { opacity: 0.6; }
-.meta-value { font-weight: 600; }
 
-/* Bottom section */
+.meta-label {
+  opacity: 0.6;
+}
+
+.meta-value {
+  font-weight: 600;
+}
+
+/* ===========================
+   🧠 BOTTOM META / FOOTER
+   =========================== */
 .meta-bottom {
   margin-top: auto;
   text-align: center;
   font-size: 0.7rem;
   color: #66ccee;
-  opacity: 0.8;
+  opacity: 0.85;
 }
+
 .meta-bottom .rarity {
   margin-top: 6px;
   font-weight: 700;
   color: #00ffff;
 }
 
-/* Close button */
+/* ===========================
+   ❌ CLOSE BUTTON
+   =========================== */
 button.absolute.top-3.right-3 {
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+button.absolute.top-3.right-3:hover {
+  transform: scale(1.15);
+  color: #fff;
 }
 
-/* Scroll handling for tall input sections */
+/* ===========================
+   🌀 SCROLLBAR
+   =========================== */
 .frameType-inner::-webkit-scrollbar {
   width: 6px;
 }
 .frameType-inner::-webkit-scrollbar-thumb {
   background: #00f0ff55;
   border-radius: 6px;
+}
+
+/* ===========================
+   🧭 CENTERING OVERLAY
+   =========================== */
+.fixed.inset-0 {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 99999;
+  padding: 1rem;
 }
