@@ -1,106 +1,128 @@
 /* ==========================================================
    ⚡ ZETSU CREATE POST CARD — FINALIZED SHELL STYLES ⚡
    ========================================================== */
+/* =======================================================
+   SIGNALZ — CREATE POST SHELL (FUNCTIONAL TCG CARD)
+   ======================================================= */
 
-/* 🧩 Card Frame */
+/* Outer modal wrapper */
+.fixed.inset-0 {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 99999;
+  padding: 1rem;
+}
+
+/* Frame container */
 .frameType {
   position: relative;
   width: 100%;
   max-width: 460px;
   aspect-ratio: 460 / 640;
   margin: 0 auto;
-  border: 5px solid #00f0ff80;
+  border: 6px solid #00f0ff66;
   border-radius: 18px;
-  overflow: hidden;
   background: rgba(0, 0, 10, 0.9);
-  box-shadow:
-    0 0 25px #00f0ff33,
-    inset 0 0 20px #00f0ff22,
-    0 0 4px #00f0ff44;
-  backdrop-filter: blur(4px);
-  transform: translateZ(0);
+  box-shadow: 0 0 25px #00f0ff33, inset 0 0 20px #00f0ff22;
+  overflow: hidden;
 }
 
-/* 🌌 Inner Layer */
-.frameType-inner > div {
-     width: 100%;
-
+/* Scroll container (still scrollable but invisible bar) */
+.frameType-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
 }
- 
-/* Visual separation for debugging */
-.card-header,
-.card-art,
-.type-banner,
-.effect-box,
-.meta-block,
-.meta-bottom {
-  background: rgba(0, 10, 20, 0.6);
-  border: 1px solid #00f0ff33;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  padding: 8px;
+.frameType-inner::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+}
+.frameType-inner::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 
-/* Lock image area height */
-.card-art {
-  min-height: 200px;
-}
-
-/* Keep bottom anchored visually */
-.meta-bottom {
-  margin-top: 10px;
-  border: none;
-  background: none;
+/* Top title */
+.card-title {
   text-align: center;
-  color: #66ccee;
-  font-size: 0.75rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  color: #00f0ff;
+  margin-bottom: 6px;
+  text-shadow: 0 0 8px #00f0ff88;
 }
 
-/* ===========================
-   🪪 HEADER SECTION
-   =========================== */
-.card-header {
+/* Nameplate */
+.nameplate-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border: 1px solid #00f0ff33;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #aafaff;
+  background: rgba(0, 10, 20, 0.5);
+}
+.nameplate-row .label {
+  opacity: 0.7;
+}
+.nameplate-row .value {
+  font-weight: 600;
+}
+
+/* Header / headline */
+.card-header {
   width: 100%;
+  border: 1px solid #00f0ff33;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(0, 15, 25, 0.6);
+  margin-bottom: 8px;
+}
+.card-header input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #e0fefe;
   font-family: "Orbitron", sans-serif;
   font-size: 0.9rem;
-  color: #00f0ff;
-  text-shadow: 0 0 6px #00f0ffcc;
-  letter-spacing: 0.5px;
+  text-align: center;
+  outline: none;
 }
 
-.card-id {
-  font-weight: 600;
-  opacity: 0.8;
+/* Stat row placeholder */
+.stat-row {
+  border: 1px dashed #00f0ff22;
+  border-radius: 8px;
+  padding: 6px;
+  text-align: center;
+  color: #0088aa;
+  font-size: 0.75rem;
+  margin-bottom: 8px;
 }
 
-.card-name span {
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.card-icon {
-  font-size: 1.2rem;
-}
-
-/* ===========================
-   🎴 ARTWORK SECTION
-   =========================== */
+/* Artwork area */
 .card-art {
-  margin-top: 8px;
   width: 100%;
-  max-height: 240px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 20, 40, 0.55);
+  min-height: 200px;
   border: 1px solid #00f0ff33;
-  border-radius: 12px;
+  border-radius: 10px;
+  background: rgba(0, 20, 40, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  margin-bottom: 8px;
 }
-
 .card-art img,
 .card-art video {
   width: 100%;
@@ -108,120 +130,108 @@
   object-fit: cover;
   border-radius: inherit;
 }
+.card-art .placeholder {
+  color: #999;
+  font-size: 0.9rem;
+}
 
-/* ===========================
-   🔖 TYPE BANNER
-   =========================== */
+/* Type banner / wall selector */
 .type-banner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  margin-top: 6px;
-  padding: 6px 10px;
   border: 1px solid #00f0ff33;
   border-radius: 10px;
   background: rgba(0, 50, 80, 0.5);
   color: #aafaff;
   font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
 }
 
-/* ===========================
-   💬 CAPTION / EFFECT BOX
-   =========================== */
+/* Big writing box */
 .effect-box {
-  width: 100%;
-  margin-top: 8px;
-  padding: 10px;
+  flex: 1;
   border: 1px solid #00f0ff33;
   border-radius: 10px;
   background: rgba(0, 10, 20, 0.6);
   color: #e0fefe;
   font-size: 0.85rem;
   text-align: left;
+  padding: 10px;
   line-height: 1.4;
+  margin-bottom: 8px;
+}
+.effect-box textarea {
+  width: 100%;
+  height: 6rem;
+  background: transparent;
+  border: none;
+  resize: none;
+  color: inherit;
+  font-family: inherit;
+  outline: none;
 }
 
-/* ===========================
-   📊 META BLOCKS
-   =========================== */
+/* Meta / tags + social link */
 .meta-block {
-  width: 100%;
-  margin-top: 8px;
   border: 1px solid #00f0ff22;
   border-radius: 10px;
   background: rgba(0, 15, 25, 0.55);
-  color: #88ddee;
-  font-size: 0.75rem;
-  padding: 6px 10px;
+  padding: 8px;
+  margin-bottom: 8px;
 }
-
-.meta-line {
+.meta-block .meta-row {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 3px;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.meta-block input {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #00f0ff33;
+  background: rgba(0, 10, 20, 0.5);
+  color: #e0fefe;
+  font-size: 0.8rem;
 }
 
-.meta-label {
-  opacity: 0.6;
+/* Submit row */
+.submit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.submit-row button {
+  width: 100%;
+  border: 1px solid #00f0ff66;
+  background: rgba(0, 50, 80, 0.5);
+  color: #aafaff;
+  padding: 8px;
+  border-radius: 8px;
+  font-family: "Orbitron", sans-serif;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.submit-row button:hover {
+  background: rgba(0, 80, 120, 0.6);
+  transform: scale(1.02);
 }
 
-.meta-value {
-  font-weight: 600;
-}
-
-/* ===========================
-   🧠 BOTTOM META / FOOTER
-   =========================== */
+/* Footer */
 .meta-bottom {
-  margin-top: auto;
   text-align: center;
   font-size: 0.7rem;
   color: #66ccee;
   opacity: 0.85;
+  border-top: 1px solid #00f0ff22;
+  padding-top: 6px;
 }
-
 .meta-bottom .rarity {
-  margin-top: 6px;
+  display: block;
   font-weight: 700;
   color: #00ffff;
-}
-
-/* ===========================
-   ❌ CLOSE BUTTON
-   =========================== */
-button.absolute.top-3.right-3 {
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-button.absolute.top-3.right-3:hover {
-  transform: scale(1.15);
-  color: #fff;
-}
-
-/* ===========================
-   🌀 SCROLLBAR
-   =========================== */
-.frameType-inner::-webkit-scrollbar {
-  width: 6px;
-}
-.frameType-inner::-webkit-scrollbar-thumb {
-  background: #00f0ff55;
-  border-radius: 6px;
-}
-
-/* ===========================
-   🧭 CENTERING OVERLAY
-   =========================== */
-.fixed.inset-0 {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 99999;
-  padding: 1rem;
+  margin-top: 4px;
 }
