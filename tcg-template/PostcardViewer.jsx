@@ -73,23 +73,21 @@ export default function PostcardViewer() {
   }, [sessionId, post]);
 
   return (
-  return (
-  <div
-    style={{
-      width: "100%",
-      padding: "1rem",
-      background: "#000",
-      borderBottom: "1px solid #222",
-      borderTopLeftRadius: "16px",
-      borderTopRightRadius: "16px",
-      position: "relative",
-      zIndex: 5,
-      overflowY: "auto",
-      maxHeight: "auto",      // let it size naturally
-      minHeight: "unset",     // remove forced min height
-    }}
-  >
-
+    <div
+      style={{
+        width: "100%",
+        padding: "1rem",
+        background: "#000",
+        borderBottom: "1px solid #222",
+        borderTopLeftRadius: "16px",
+        borderTopRightRadius: "16px",
+        position: "relative",
+        zIndex: 5,
+        overflowY: "auto",
+        maxHeight: "100vh",
+        minHeight: "600px",
+      }}
+    >
       <div
         style={{
           border: "8px solid cyan",
