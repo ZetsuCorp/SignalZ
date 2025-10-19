@@ -23,20 +23,10 @@
 
 /* 🌌 Inner Layer */
 .frameType-inner > div {
+     width: 100%;
 
-     overflow-y: scroll; /* keep it scrollable */
-  scrollbar-width: none;          /* Firefox */
-  -ms-overflow-style: none;       /* IE/Edge legacy */
 }
-
-.frameType-inner::-webkit-scrollbar {
-  width: 6px; /* required for Chrome to keep track area */
-  background: transparent; /* invisible track */
-}
-
-.frameType-inner::-webkit-scrollbar-thumb {
-  background: transparent; /* invisible thumb */
-}
+ 
 /* Visual separation for debugging */
 .card-header,
 .card-art,
