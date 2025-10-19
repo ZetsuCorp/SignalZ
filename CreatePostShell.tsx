@@ -43,9 +43,9 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
     padding: "12px 16px",
     lineHeight: "1.4",
     textAlign: "center",
+    width: "100%"
   };
-
-  const handleImageChange = (e) => {
+ const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
@@ -141,7 +141,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       alert("Invalid link or submission error");
     }
   };
-
+  
   const modeLabel =
     mode === "image"
       ? "🖼 Create Image Post"
@@ -151,11 +151,11 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       ? "🌐 Share Social Link"
       : "📝 Create New Post";
 
-  return (
+ return (
     <div className="fixed inset-0 z-[99999] bg-black bg-opacity-80 flex items-center justify-center p-4">
-      <div className="w-full max-w-[460px] aspect-[3/4]">
+      <div className="frameType w-full max-w-[460px] relative">
         <div
-          className="frameType-inner text-center p-4 space-y-4 h-full"
+          className="frameType-inner text-center p-4 space-y-4"
           style={{
             backgroundImage: backgroundImage
               ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
@@ -164,7 +164,181 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             backgroundPosition: "center",
           }}
         >
-          {/* original content unchanged, stays inside inner */}
+          {/* Header */}
+          <div className="card-header">
+            <div className="card-id">{displayName || "SignalZ User"}</div>
+            <div className="card-name">
+              <span>{headline || "Untitled Post"}</span>
+            </div>
+            <div className="card-icon">{sigIcon ? "🌐" : "⚡"}</div>
+          </div>
+
+          {/* Artwork */}
+          <div className="card-art">
+            {image ? (
+              <img src={URL.createObjectURL(image)} alt="preview" />
+            ) : video ? (
+              <video controls>
+                <source src={URL.createObjectURL(video)} />
+              </video>
+            ) : (
+              <div
+                style={{
+                  color: "#999",
+                  fontSize: ".9rem",
+                  paddingTop: "40px",
+                }}
+              >
+                🖼 No media added
+              </div>
+            )}
+          </div>
+
+          {/* Type banner */}
+          <div className="type-banner">
+            <div className="type-cell">{modeLabel}</div>
+            <div className="type-about-wrap">
+              <div className="type-about-box">
+                <span className="type-about-text">
+                  {wallType.toUpperCase()} Wall
+                </span>
+              </div>
+            </div>
+            <div className="type-cell">✨</div>
+          </div>
+
+          {/* Effect / Caption box */}
+          <div className="effect-box">
+            <div className="effect-entry">
+              <div className="effect-text">
+                {caption || "Write something meaningful..."}
+              </div>
+            </div>
+            {ctaUrl && (
+              <a
+                href={ctaUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="source-pill inline-block mt-2"
+              >
+                Visit Link
+              </a>
+            )}
+          </div>
+
+          {/* Meta block */}
+          <div className="meta-block">
+            <div className="meta-line">
+              <div className="meta-label">Tags -</div>
+              <div className="meta-value">{tags || "None"}</div>
+            </div>
+            <div className="meta-line">
+              <div className="meta-label">Wall -</div>
+              <div className="meta-value">{wallType}</div>
+            </div>
+          </div>
+
+          {/* Bottom / Actions */}
+          <div className="meta-bottom">
+            <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
+            <div className="meta-timestamp">
+              {new Date().toLocaleString()}
+            </div>
+            <div className="rarity SR">LIVE</div>
+          </div>
+
+          {/* Inputs */}
+          <input
+            type="text"
+            placeholder="Headline"
+            value={headline}
+            onChange={(e) => setHeadline(e.target.value)}
+            style={tcgInputStyle}
+          />
+          <textarea
+            placeholder="What's meaningful about it?"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            style={{ ...tcgInputStyle, height: "5rem" }}
+          />
+          <input
+            type="text"
+            placeholder="Link (optional)"
+            value={ctaUrl}
+            onChange={(e) => setCtaUrl(e.target.value)}
+            style={tcgInputStyle}
+          />
+          <input
+            type="text"
+            placeholder="Tags (comma separated)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            style={tcgInputStyle}
+          />
+
+          {/* Upload buttons */}
+          <button
+            type="button"
+            onClick={() => imageInputRef.current.click()}
+            className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+          >
+            🖼 Add Image
+          </button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={imageInputRef}
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+          />
+
+          <button
+            type="button"
+            onClick={() => videoInputRef.current.click()}
+            className="bg-[#00f0ff22] hover:bg-[#00f0ff44] text-cyan-100 px-4 py-2 rounded w-full border border-cyan-400"
+          >
+            🎬 Add Video
+          </button>
+          <input
+            type="file"
+            accept="video/*"
+            ref={videoInputRef}
+            onChange={handleVideoChange}
+            style={{ display: "none" }}
+          />
+
+          {/* Submit Buttons */}
+          <button onClick={handlePost} className="submit w-full mt-3">
+            🚀 Post to {wallType.toUpperCase()} Wall
+          </button>
+
+          {/* Social Link Submit */}
+          <div className="meta-block mt-3">
+            <div className="meta-line">
+              <div className="meta-label">🌐 Social Link</div>
+            </div>
+            <input
+              type="text"
+              placeholder="Paste any video or social link"
+              value={linkInput}
+              onChange={(e) => setLinkInput(e.target.value)}
+              style={tcgInputStyle}
+            />
+            <button
+              onClick={handleSubmitLink}
+              className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full border border-blue-400"
+            >
+              🔗 Submit Link
+            </button>
+          </div>
+
+          {/* Close */}
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
+          >
+            ✖
+          </button>
         </div>
       </div>
     </div>
