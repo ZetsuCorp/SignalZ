@@ -601,6 +601,29 @@ button:hover {
   box-shadow: 0 0 12px #00f0ff88, inset 0 0 6px #00f0ff44;
 }
 
+/* === FLOATING CREATE BUTTON === */
+.floating-create-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: linear-gradient(to right, #00ff99, #00f0ff);
+  color: black;
+  font-size: 2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  box-shadow: 0 0 12px #00f0ff88;
+  cursor: pointer;
+  z-index: 100000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.floating-create-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px #00f0ffcc;
+}
 
 
 
