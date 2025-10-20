@@ -278,18 +278,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
 <div className="meta-bottom">
   <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
   <div className="meta-timestamp">{new Date().toLocaleString()}</div>
-  <div className="rarity SR">LIVE</div>
-</div>
-
-{/* ✖ Close Button */}
-<button
-  type="button"
-  onClick={() => onClose?.()}
-  className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg cursor-pointer z-[999999]"
->
-  ✖
-</button>
-
+  <div className="rarity 
 </div> {/* end frameType-inner */}
 </div> {/* end frameType */}
 </div> {/* end fixed inset-0 */}
