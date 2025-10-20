@@ -172,6 +172,8 @@ export default function WorldFeed({ wallType }) {
       ))}
     </div>
 
+
+    
 {showCreateOverlay && (
   <div className="fixed inset-0 z-[1000000] bg-black/80 flex justify-center items-center">
     <div className="relative w-full h-full max-w-[460px]">
