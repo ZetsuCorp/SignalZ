@@ -185,20 +185,23 @@ export default function WorldFeed({ wallType }) {
 
 {/* ✅ Create Overlay (with its own ✖ always on top) */}
 {showCreateOverlay && (
-  <>
-    <div className="create-overlay-backdrop" />
-    <CreatePostShell
-      mode={createMode}
-      onClose={handleCloseOverlay}
-      wallType={wallType}
-    />
-    <button
-      onClick={handleCloseOverlay}
-      className="absolute top-4 right-4 text-cyan-300 hover:text-white text-3xl font-bold z-[1000001]"
-    >
-      ✖
-    </button>
-  </>
+  <div className="fixed inset-0 z-[1000000]">
+    <div className="absolute inset-0 bg-black/80 create-overlay-backdrop" />
+
+    <div className="relative w-full h-full flex justify-center items-center z-[1000001]">
+      <CreatePostShell
+        mode={createMode}
+        onClose={handleCloseOverlay}
+        wallType={wallType}
+      />
+      <button
+        onClick={handleCloseOverlay}
+        className="absolute top-4 right-4 text-cyan-300 hover:text-white text-3xl font-bold z-[1000002]"
+      >
+        ✖
+      </button>
+    </div>
+  </div>
 )}
 
 
