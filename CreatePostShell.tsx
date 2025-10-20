@@ -274,13 +274,24 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
           </button>
         </div>
 
-            {/* 🧩 FOOTER */}
-<div className="meta-bottom">
-  <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
-  <div className="meta-timestamp">{new Date().toLocaleString()}</div>
-  <div className="rarity 
-</div> {/* end frameType-inner */}
-</div> {/* end frameType */}
-</div> {/* end fixed inset-0 */}
+            {/* FOOTER */}
+        <div className="meta-bottom">
+          <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
+          <div className="meta-timestamp">
+            {new Date().toLocaleString()}
+          </div>
+          <div className="rarity SR">LIVE</div>
+        </div>
+
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
+        >
+          ✖
+        </button>
+      </div>
+    </div>
+  </div>
 );
-} // ✅ end of component
+}
