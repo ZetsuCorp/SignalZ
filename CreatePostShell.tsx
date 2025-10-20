@@ -163,7 +163,9 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
     >
       ✖
     </button>
+)}
 
+     
   <div className="fixed inset-0">
     <div className="frameType">
       <div
