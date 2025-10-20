@@ -283,17 +283,27 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
           <div className="rarity SR">LIVE</div>
         </div>
 
-      {/* ✖ Close Button */}
+     </div> {/* end frameType-inner */}
+
+{/* ✖ Close Button (outside scroll layer) */}
 <button
   type="button"
-  aria-label="Close"
   onClick={() => onClose?.()}
-  className="absolute top-3 right-3 px-2 py-1 text-cyan-300 hover:text-white hover:scale-110 transition-transform duration-150 text-xl font-bold cursor-pointer z-50"
+  className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg cursor-pointer z-[999999]"
+  style={{
+    background: "transparent",
+    border: "none",
+    fontWeight: "700",
+    lineHeight: 1,
+    transition: "color 0.2s ease, transform 0.2s ease",
+  }}
+  onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+  onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
 >
   ✖
 </button>
-</div>
-</div>
-</div>
+</div> {/* end frameType */}
+</div> {/* end fixed inset-0 */}
 );
+
 }
