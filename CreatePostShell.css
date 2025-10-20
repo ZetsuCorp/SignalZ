@@ -27,27 +27,25 @@
   border-radius: 18px;
   background: rgba(0, 0, 10, 0.9);
   box-shadow: 0 0 25px #00f0ff33, inset 0 0 20px #00f0ff22;
-  overflow: hidden;              /* keeps all children inside */
-  background-clip: padding-box;  /* clips glow and bg to border */
+  overflow: hidden;
 }
 
-frameType-inner {
-  position: relative;
+/* Scroll container (still scrollable but invisible bar) */
+.frameType-inner {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-
-  /* Scroll behavior */
-  overflow-y: auto;
+  overflow-y: scroll;
   scrollbar-width: none;        /* Firefox */
   -ms-overflow-style: none;     /* IE/Edge */
-  border-radius: inherit;       /* inherit curve from frameType */
-  background-clip: padding-box; /* ensures bg image clips inside */
 }
-
 .frameType-inner::-webkit-scrollbar {
-  display: none;                /* hide scrollbars in WebKit */
+  width: 6px;
+  background: transparent;
+}
+.frameType-inner::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 /* Top title */
 .card-title {
