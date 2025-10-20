@@ -155,13 +155,15 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       : "📝 Create New Post";
 
   return (
-        {/* ✅ Bottom-Right Close Button */}
+   <div className="fixed inset-0 z-[1000000]">
+    {/* ✅ Bottom-Right Close Button */}
     <button
       onClick={onClose}
       className="absolute bottom-4 right-4 text-cyan-300 hover:text-white text-3xl font-bold z-[1000001]"
     >
       ✖
     </button>
+
   <div className="fixed inset-0">
     <div className="frameType">
       <div
