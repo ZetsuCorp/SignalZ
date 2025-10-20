@@ -283,13 +283,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
           <div className="rarity SR">LIVE</div>
         </div>
 
-        {/* Close */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg"
-        >
-          ✖
-        </button>
+        
       </div>
     </div>
   </div>
