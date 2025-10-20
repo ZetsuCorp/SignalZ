@@ -274,32 +274,24 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
           </button>
         </div>
 
-             {/* 🧩 FOOTER */}
-        <div className="meta-bottom">
-          <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
-          <div className="meta-timestamp">{new Date().toLocaleString()}</div>
-          <div className="rarity SR">LIVE</div>
-        </div>
-      </div> {/* end frameType-inner */}
+            {/* 🧩 FOOTER */}
+<div className="meta-bottom">
+  <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
+  <div className="meta-timestamp">{new Date().toLocaleString()}</div>
+  <div className="rarity SR">LIVE</div>
+</div>
 
-      {/* ✖ Close Button (outside scroll layer) */}
-      <button
-        type="button"
-        onClick={() => onClose?.()}
-        className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg cursor-pointer z-[999999]"
-        style={{
-          background: "transparent",
-          border: "none",
-          fontWeight: "700",
-          lineHeight: 1,
-          transition: "color 0.2s ease, transform 0.2s ease",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
-        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-      >
-        ✖
-      </button>
-    </div> {/* end frameType */}
-  </div>   {/* end fixed inset-0 */}
-  );
-}
+{/* ✖ Close Button */}
+<button
+  type="button"
+  onClick={() => onClose?.()}
+  className="absolute top-3 right-3 text-cyan-300 hover:text-white text-lg cursor-pointer z-[999999]"
+>
+  ✖
+</button>
+
+</div> {/* end frameType-inner */}
+</div> {/* end frameType */}
+</div> {/* end fixed inset-0 */}
+);
+} // ✅ end of component
