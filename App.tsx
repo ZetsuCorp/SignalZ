@@ -43,17 +43,18 @@ export default function App() {
       <main className="right-panel">
         {/* 🔹 Header Logo */}
         <header className="text-center py-2 border-b border-cyan-800 relative">
-          <div className="sigz-icon-stack relative inline-block w-14 h-14">
-            <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-4xl">🌐</span>
-            <img
-              src="/sigicons/ripple.gif"
-              alt="Ripple"
-              className="ripple-overlay absolute top-1/2 left-1/2 w-14 h-14 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
-            />
-          </div>
-          <h1 className="text-3xl font-bold text-cyan-200 mt-2">SIGNALZ</h1>
-          <p className="text-sm text-cyan-400">What the internet is talking about.</p>
-        </header>
+  <div className="sigz-icon-stack relative inline-block w-10 h-10">
+    <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-3xl">🌐</span>
+    <img
+      src="/sigicons/ripple.gif"
+      alt="Ripple"
+      className="ripple-overlay absolute top-1/2 left-1/2 w-10 h-10 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+    />
+  </div>
+  <h1 className="text-2xl font-bold text-cyan-200">SIGNALZ</h1> {/* removed mt-2 */}
+  <p className="text-xs text-cyan-400">What the internet is talking about.</p>
+</header>
+
 
 {/* 🔹 Mobile Toggle Button */}
 <div className="sigz-mobile-tab-toggle">
