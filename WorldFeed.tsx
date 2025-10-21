@@ -154,7 +154,7 @@ export default function WorldFeed({ wallType }) {
   }
 
  return (
-  <div style={{ height: "90vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+  <div style={{ height: "50vh", width: "100vw", display: "flex", flexDirection: "column" }}>
     {/* 🔹 Tab Switcher */}
     <div className="panel-tabs">
       {[
