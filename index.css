@@ -55,6 +55,10 @@ body {
   background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
   overflow: hidden;
 }
+/* === HEADER === */
+.header {
+    padding: 6px 0;        /* ↓ smaller padding */
+ }
 
 /* === PANEL SWITCHER TABS === */
 .panel-tabs {
