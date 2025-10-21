@@ -61,7 +61,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 12px;
-  padding: 10px;
+  padding: 5px;
   background: #071a1e;
   border-bottom: 1px solid #00f0ff33;
   z-index: 100;
