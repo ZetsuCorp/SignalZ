@@ -173,15 +173,6 @@ export default function WorldFeed({ wallType }) {
     </div>
 
  
-    {/* ✅ Floating Create Button (moved here) */}
-    <button className="floating-create-btn" onClick={handleCreateClick}>
-      +
-    </button>
-
-    {/* ✅ Create Overlay */}
-    {showCreateOverlay && (
-      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
-    )}
 
     {/* 🔸 Active Panel */}
     <div className="panel-view" style={{ background: "#0c0c0c" }}>
