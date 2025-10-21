@@ -47,14 +47,6 @@ body {
 }
 
 
-:root { --panel-scale: 0.7; }
-
-.right-panel header,
-.session-container {
-  transform: scale(var(--panel-scale));
-  transform-origin: top center;
-}
-
 
 
 
