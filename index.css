@@ -47,32 +47,14 @@ body {
 }
 
 
-/* === THINNER HEADER FIX === */
-.right-panel header {
-  padding: 2px 0;              /* flatter vertical space */
-  line-height: 1;              /* collapse text height */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;                      /* no extra spacing between lines */
-  background: #001822;         /* keep dark tone */
-  border-bottom: 1px solid #00f0ff33;
+:root { --panel-scale: 0.7; }
+
+.right-panel header,
+.session-container {
+  transform: scale(var(--panel-scale));
+  transform-origin: top center;
 }
 
-.right-panel header h1 {
-  font-size: 0.6rem;           /* “SIGNALZ” */
-  margin: 0;
-}
-
-.right-panel header p {
-  font-size: 0.45rem;          /* slogan */
-  margin: 0;
-}
-
-.sigz-icon-stack {
-  transform: scale(0.7);
-  margin-bottom: 2px;
-}
 
 
 
