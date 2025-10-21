@@ -173,36 +173,16 @@ export default function WorldFeed({ wallType }) {
     </div>
 
 
-  {/* ✅ Floating Create Button */}
-{!showCreateOverlay && (
-  <button
-    className="floating-create-btn"
-    onClick={handleCreateClick}
-  >
-    +
-  </button>
-)}
-{/* ✅ Create Overlay (with circular button at bottom-right) */}
-{showCreateOverlay && (
-  <div className="fixed inset-0 z-[1000000]">
-    <div className="absolute inset-0 bg-black/80 create-overlay-backdrop" />
+ 
+    {/* ✅ Floating Create Button (moved here) */}
+    <button className="floating-create-btn" onClick={handleCreateClick}>
+      +
+    </button>
 
-    <div className="relative w-full h-full flex justify-center items-center z-[1000001]">
-      <CreatePostShell
-        mode={createMode}
-        onClose={handleCloseOverlay}
-        wallType={wallType}
-      />
-      <button
-         onClick={handleCloseOverlay}
-  className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-cyan-400 hover:bg-white text-black text-2xl font-bold flex items-center justify-center z-[1000002]"
->
-  ×
-</button>
-    </div>
-  </div>
-)}
-
+    {/* ✅ Create Overlay */}
+    {showCreateOverlay && (
+      <CreatePostShell mode={createMode} closeOverlay={handleCloseOverlay} />
+    )}
 
 
 
