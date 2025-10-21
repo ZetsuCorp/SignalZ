@@ -134,9 +134,9 @@ export default function SessionContainer() {
             src={imgPath}
             alt="sigicon"
             style={{
-              width: "2.25em",
+              width: "3.25em",
               height: "2.5em",
-              borderRadius: "6px",
+              borderRadius: "8px",
               objectFit: "contain"
             }}
           />
