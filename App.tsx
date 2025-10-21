@@ -41,7 +41,11 @@ export default function App() {
       <SessionContainer />
 
   
-
+    <main className="right-panel">
+        {/* 🔹 Header Logo */}
+        <header className="text-center py-2 border-b border-cyan-800 relative">
+  
+</header>
 
 {/* 🔹 Mobile Toggle Button */}
 <div className="sigz-mobile-tab-toggle">
