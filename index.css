@@ -64,7 +64,7 @@ body {
 .panel-tabs {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 5px;
   padding: 5px;
   background: #071a1e;
   border-bottom: 2px solid #00f0ff33;
