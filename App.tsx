@@ -48,11 +48,11 @@ export default function App() {
     <img
       src="/sigicons/ripple.gif"
       alt="Ripple"
-      className="ripple-overlay absolute top-1/2 left-1/2 w-10 h-8 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+      className="ripple-overlay absolute top-1/2 left-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
     />
   </div>
   <h1 className="text-xl font-bold text-cyan-200">SIGNALZ</h1>
-<p className="text-[10px] text-cyan-400">What the internet is talking about.</p>
+<p className="text-[5px] text-cyan-400">What the internet is talking about.</p>
 </header>
 
 
