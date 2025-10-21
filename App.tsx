@@ -51,8 +51,8 @@ export default function App() {
       className="ripple-overlay absolute top-1/2 left-1/2 w-10 h-8 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
     />
   </div>
-  <h1 className="text-2xl font-bold text-cyan-200">SIGNALZ</h1> {/* removed mt-2 */}
-  <p className="text-xs text-cyan-400">What the internet is talking about.</p>
+  <h1 className="text-xl font-bold text-cyan-200">SIGNALZ</h1>
+<p className="text-[10px] text-cyan-400">What the internet is talking about.</p>
 </header>
 
 
