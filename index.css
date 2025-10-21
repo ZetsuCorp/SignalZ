@@ -47,6 +47,61 @@ body {
 }
 
 
+.signalz-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38px;                /* thin */
+  background: rgba(0, 0, 0, 0.8);
+  border-bottom: 1px solid #00f0ff55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #00f0ff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.signalz-header.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.signalz-header.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.signalz-header .sigz-icon-stack {
+  width: 16px;
+  height: 16px;
+  position: relative;
+}
+
+.signalz-header .emoji-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.signalz-header .ripple-overlay {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
 
 
 
