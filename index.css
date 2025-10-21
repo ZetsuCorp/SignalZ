@@ -609,13 +609,9 @@ button:hover {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
+   border-radius: 50%;
   background: linear-gradient(145deg, #00f0ff, #00ff99);
-  color: #000;
-  font-family: "Orbitron", sans-serif;
-  
+  color: #000;  
 }
 
 
