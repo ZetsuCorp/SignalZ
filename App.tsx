@@ -42,7 +42,7 @@ export default function App() {
 
       <main className="right-panel">
         {/* 🔹 Header Logo */}
-        <header className="">
+        <header className="text-center py-2 border-b border-cyan-800 relative">
   <div className="sigz-icon-stack relative inline-block w-5 h-5">
     <span className="emoji-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 text-3xl">🌐</span>
     <img
