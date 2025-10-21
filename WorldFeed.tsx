@@ -196,7 +196,7 @@ export default function WorldFeed({ wallType }) {
       />
       <button
         onClick={handleCloseOverlay}
-        className="absolute top-4 right-4 text-cyan-300 hover:text-white text-3xl font-bold z-[1000002]"
+        className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-cyan-400 hover:bg-white text-black text-2xl font-bold flex items-center justify-center z-[1000002]"
       >
         ✖
       </button>
