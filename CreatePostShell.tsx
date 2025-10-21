@@ -293,6 +293,6 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
 >
   ✖
 </button>
-
+</div>
 );
 }
