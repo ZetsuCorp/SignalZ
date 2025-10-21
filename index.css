@@ -60,7 +60,7 @@ body {
 .panel-tabs {
   display: flex;
   justify-content: center;
-  gap: 5px;
+  gap: 1px;
   padding: 5px;
   background: #071a1e;
   border-bottom: 2px solid #00f0ff33;
