@@ -164,3 +164,34 @@ export default function App() {
     </div>
   );
 }
+
+
+
+
+
+function SignalzHeader() {
+  const [visible, setVisible] = React.useState(true);
+  const lastScroll = React.useRef(0);
+
+  React.useEffect(() => {
+    const onScroll = () => {
+      const curr = window.scrollY;
+      setVisible(curr < lastScroll.current || curr < 10); // show when scrolling up or near top
+      lastScroll.current = curr;
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header className={`signalz-header ${visible ? "show" : "hide"}`}>
+      <div className="sigz-icon-stack">
+        <span className="emoji-icon">🌐</span>
+        <img src="/sigicons/ripple.gif" alt="Ripple" className="ripple-overlay" />
+      </div>
+      <h1>SIGNALZ</h1>
+      <p>What the internet is talking about.</p>
+    </header>
+  );
+}
+
