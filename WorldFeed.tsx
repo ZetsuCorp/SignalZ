@@ -194,11 +194,11 @@ export default function WorldFeed({ wallType }) {
         wallType={wallType}
       />
       <button
-        onClick={handleCloseOverlay}
-        className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-cyan-400 hover:bg-white text-black text-2xl font-bold flex items-center justify-center z-[1000002]"
-      >
-        ×
-      </button>
+         onClick={handleCloseOverlay}
+  className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-cyan-400 hover:bg-white text-black text-2xl font-bold flex items-center justify-center z-[1000002]"
+>
+  ×
+</button>
     </div>
   </div>
 )}
