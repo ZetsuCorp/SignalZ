@@ -60,10 +60,10 @@ body {
 .panel-tabs {
   display: flex;
   justify-content: center;
-  gap: 1px;
-  padding: 5px;
+  gap: 3px;
+  padding: 2px;
   background: #071a1e;
-  border-bottom: 2px solid #00f0ff33;
+  border-bottom: .5px solid #00f0ff33;
   z-index: 100;
 }
 
