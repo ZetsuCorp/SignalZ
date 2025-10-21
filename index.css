@@ -604,15 +604,7 @@ button:hover {
 
 
 
-/* === FLOATING CREATE BUTTON === */
-.floating-create-btn {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-   border-radius: 50%;
-  background: linear-gradient(145deg, #00f0ff, #00ff99);
-  color: #000;  
-}
+
 
 
 
