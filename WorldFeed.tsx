@@ -182,8 +182,7 @@ export default function WorldFeed({ wallType }) {
     +
   </button>
 )}
-
-{/* ✅ Create Overlay (with its own ✖ always on top) */}
+{/* ✅ Create Overlay (with circular button at bottom-right) */}
 {showCreateOverlay && (
   <div className="fixed inset-0 z-[1000000]">
     <div className="absolute inset-0 bg-black/80 create-overlay-backdrop" />
@@ -198,11 +197,12 @@ export default function WorldFeed({ wallType }) {
         onClick={handleCloseOverlay}
         className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-cyan-400 hover:bg-white text-black text-2xl font-bold flex items-center justify-center z-[1000002]"
       >
-        ✖
+        ×
       </button>
     </div>
   </div>
 )}
+
 
 
 
