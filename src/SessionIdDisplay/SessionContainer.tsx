@@ -136,7 +136,7 @@ export default function SessionContainer() {
             style={{
               width: "3.25em",
               height: "2.5em",
-              borderRadius: "7px",
+              borderRadius: "8px",
               objectFit: "contain"
             }}
           />
