@@ -294,4 +294,15 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       </button>
     </div>
   );
+    </div>
+
+{/* ✅ Close button pinned to bottom-right */}
+<button
+  onClick={onClose}
+  className="absolute bottom-4 right-4 text-cyan-300 hover:text-white text-3xl font-bold z-[1000001]"
+>
+  ✖
+</button>
+</div>
+);
 }
