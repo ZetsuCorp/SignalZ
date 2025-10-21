@@ -16,7 +16,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-dark);
-  min-height: 90vh;
+  min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -50,7 +50,7 @@ body {
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 80vh;
   width: 100vw;
   background: radial-gradient(ellipse at top left, #001f3f 0%, #000 100%);
   overflow: hidden;
