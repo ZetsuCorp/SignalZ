@@ -180,7 +180,7 @@ export default function WorldFeed({ wallType }) {
 
     {/* ✅ Create Overlay */}
     {showCreateOverlay && (
-      <CreatePostShell mode={createMode} />
+      <CreatePostShell mode={createMode} onClose={handleCloseOverlay} />
     )}
 
     {/* 🔸 Active Panel */}

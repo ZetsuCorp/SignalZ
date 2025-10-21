@@ -155,144 +155,143 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       : "📝 Create New Post";
 
   return (
-      
-  <div className="fixed inset-0">
-    <div className="frameType">
-      <div
-        className="frameType-inner"
-        style={{
-          backgroundImage: backgroundImage
-            ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
-            : undefined,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* 📝 Title + Nameplate */}
-        <div className="card-title">📝 Create New Post</div>
-        <div className="nameplate-row">
-          <div className="label">Name Plate</div>
-          <div className="value">{displayName || "SignalZ User"}</div>
-        </div>
-
-        {/* 🔹 Header Bar (Headline Input) */}
-        <div className="card-header">
-          <input
-            type="text"
-            placeholder="Title of Post"
-            value={headline}
-            onChange={(e) => setHeadline(e.target.value)}
-          />
-        </div>
-
-        {/* 🔸 Stat Row (Placeholder) */}
-        <div className="stat-row">N/A</div>
-
-        {/* 🖼 Artwork Area */}
-        <div className="card-art">
-          {image ? (
-            <img src={URL.createObjectURL(image)} alt="preview" />
-          ) : video ? (
-            <video controls>
-              <source src={URL.createObjectURL(video)} />
-            </video>
-          ) : (
-            <div className="placeholder">
-              🖼 No media added — Click below to add
-            </div>
-          )}
-        </div>
-
-        {/* Upload Buttons inside art section */}
-        <div className="submit-row">
-          <button type="button" onClick={() => imageInputRef.current.click()}>
-            🖼 Add Image
-          </button>
-          <input
-            type="file"
-            accept="image/*"
-            ref={imageInputRef}
-            onChange={handleImageChange}
-            style={{ display: "none" }}
-          />
-          <button type="button" onClick={() => videoInputRef.current.click()}>
-            🎬 Add Video
-          </button>
-          <input
-            type="file"
-            accept="video/*"
-            ref={videoInputRef}
-            onChange={handleVideoChange}
-            style={{ display: "none" }}
-          />
-        </div>
-
-        {/* 🔷 Type Banner / Wall Selector */}
-        <div className="type-banner">
-          <div className="type-cell">{modeLabel}</div>
-          <div className="type-about-wrap">
-            <div className="type-about-box">
-              <span className="type-about-text">
-                {wallType.toUpperCase()} Wall
-              </span>
-            </div>
+    <div className="fixed inset-0">
+      <div className="frameType">
+        <div
+          className="frameType-inner"
+          style={{
+            backgroundImage: backgroundImage
+              ? `url(/postcard-assets/cardbase/${backgroundImage}.png)`
+              : undefined,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          {/* 📝 Title + Nameplate */}
+          <div className="card-title">📝 Create New Post</div>
+          <div className="nameplate-row">
+            <div className="label">Name Plate</div>
+            <div className="value">{displayName || "SignalZ User"}</div>
           </div>
-          <div className="type-cell">✨</div>
-        </div>
 
-        {/* 🧠 Effect Box (Caption + Link merged) */}
-        <div className="effect-box">
-          <textarea
-            placeholder="Write something meaningful OR paste any video or social link..."
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-          />
-        </div>
-
-        {/* 📘 Meta Section (Tags + Social Link) */}
-        <div className="meta-block">
-          <div className="meta-row">
+          {/* 🔹 Header Bar (Headline Input) */}
+          <div className="card-header">
             <input
               type="text"
-              placeholder="Tags (comma separated)"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
+              placeholder="Title of Post"
+              value={headline}
+              onChange={(e) => setHeadline(e.target.value)}
             />
+          </div>
+
+          {/* 🔸 Stat Row (Placeholder) */}
+          <div className="stat-row">N/A</div>
+
+          {/* 🖼 Artwork Area */}
+          <div className="card-art">
+            {image ? (
+              <img src={URL.createObjectURL(image)} alt="preview" />
+            ) : video ? (
+              <video controls>
+                <source src={URL.createObjectURL(video)} />
+              </video>
+            ) : (
+              <div className="placeholder">
+                🖼 No media added — Click below to add
+              </div>
+            )}
+          </div>
+
+          {/* Upload Buttons inside art section */}
+          <div className="submit-row">
+            <button type="button" onClick={() => imageInputRef.current.click()}>
+              🖼 Add Image
+            </button>
             <input
-              type="text"
-              placeholder="Social Link"
-              value={linkInput}
-              onChange={(e) => setLinkInput(e.target.value)}
+              type="file"
+              accept="image/*"
+              ref={imageInputRef}
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+            <button type="button" onClick={() => videoInputRef.current.click()}>
+              🎬 Add Video
+            </button>
+            <input
+              type="file"
+              accept="video/*"
+              ref={videoInputRef}
+              onChange={handleVideoChange}
+              style={{ display: "none" }}
             />
           </div>
-        </div>
 
-        {/* 🔗 Submit Row */}
-        <div className="submit-row">
-          <button onClick={handleSubmitLink}>🔗 Submit Link</button>
-          <button onClick={handlePost}>
-            🚀 Post to {wallType.toUpperCase()} Wall
-          </button>
-        </div>
-
-            {/* FOOTER */}
-        <div className="meta-bottom">
-          <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
-          <div className="meta-timestamp">
-            {new Date().toLocaleString()}
+          {/* 🔷 Type Banner / Wall Selector */}
+          <div className="type-banner">
+            <div className="type-cell">{modeLabel}</div>
+            <div className="type-about-wrap">
+              <div className="type-about-box">
+                <span className="type-about-text">
+                  {wallType.toUpperCase()} Wall
+                </span>
+              </div>
+            </div>
+            <div className="type-cell">✨</div>
           </div>
-          <div className="rarity SR">LIVE</div>
+
+          {/* 🧠 Effect Box (Caption + Link merged) */}
+          <div className="effect-box">
+            <textarea
+              placeholder="Write something meaningful OR paste any video or social link..."
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+            />
+          </div>
+
+          {/* 📘 Meta Section (Tags + Social Link) */}
+          <div className="meta-block">
+            <div className="meta-row">
+              <input
+                type="text"
+                placeholder="Tags (comma separated)"
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Social Link"
+                value={linkInput}
+                onChange={(e) => setLinkInput(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* 🔗 Submit Row */}
+          <div className="submit-row">
+            <button onClick={handleSubmitLink}>🔗 Submit Link</button>
+            <button onClick={handlePost}>
+              🚀 Post to {wallType.toUpperCase()} Wall
+            </button>
+          </div>
+
+          {/* FOOTER */}
+          <div className="meta-bottom">
+            <div className="meta-footer-text">SignalZ | Zetsumetsu Corp</div>
+            <div className="meta-timestamp">
+              {new Date().toLocaleString()}
+            </div>
+            <div className="rarity SR">LIVE</div>
+          </div>
         </div>
       </div>
+
+      {/* ✅ Close button pinned to bottom-right */}
+      <button
+        onClick={onClose}
+        className="absolute bottom-4 right-4 text-cyan-300 hover:text-white text-3xl font-bold z-[1000001]"
+      >
+        ✖
+      </button>
     </div>
-
-{/* ✅ Close button pinned to bottom-right */}
-<button
-  onClick={onClose}
-  className="absolute bottom-4 right-4 text-cyan-300 hover:text-white text-3xl font-bold z-[1000001]"
->
-  ✖
-</button>
-
-);
+  );
 }
