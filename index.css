@@ -46,6 +46,22 @@ body {
   }
 }
 
+
+:root {
+  --header-scale: 0.8; /* 1 = full, lower = thinner */
+}
+
+.right-panel header {
+  transform: scale(var(--header-scale));
+  transform-origin: top center;
+  padding-top: 0.1rem !important;
+  padding-bottom: 0.1rem !important;
+  line-height: 1 !important;
+}
+
+
+
+
 /* === APP LAYOUT === */
 .app-wrapper {
   display: flex;
