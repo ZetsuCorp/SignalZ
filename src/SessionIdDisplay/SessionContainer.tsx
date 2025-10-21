@@ -120,13 +120,13 @@ export default function SessionContainer() {
           gap: "0.5em",
           background: "rgba(0, 0, 0, 0.65)",
           borderRadius: "12px",
-          padding: "0.75em 1.25em",
+          padding: "0.55em 1.25em",
           boxShadow: "0 8px 20px rgba(0, 0, 0, 0.5)",
           backdropFilter: "blur(4px)",
           width: "fit-content",
         }}
       >
-        <div style={{ fontSize: "0.75rem", color: "#aaa", marginBottom: "0.25em" }}>
+        <div style={{ fontSize: "0.75rem", color: "#aaa", marginBottom: "0.15em" }}>
           SigZ Session ID:
         </div>
         {imgPath && (
@@ -136,7 +136,7 @@ export default function SessionContainer() {
             style={{
               width: "3.25em",
               height: "2.5em",
-              borderRadius: "8px",
+              borderRadius: "7px",
               objectFit: "contain"
             }}
           />
