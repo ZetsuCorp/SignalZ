@@ -15,7 +15,7 @@ export default function PanelNews() {
       </h2>
       <iframe
         width="100%"
-        height="240"
+        height="640"
         src="https://abcnews.go.com/video/embed?id=abc_live11"
         allowFullScreen
         frameBorder="0"
