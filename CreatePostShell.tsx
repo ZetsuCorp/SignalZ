@@ -7,7 +7,7 @@ import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
 import "./CreatePostShell.css";
 
 
-export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview }) {
+export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview, onPostCreated }) {
   const [headline, setHeadline] = useState("");
   const [caption, setCaption] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
@@ -111,7 +111,11 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
     });
     setHeadline(""); setCaption(""); setCtaUrl(""); setTags("");
     setImage(null); setVideo(null);
-    alert("Posted!");
+    if (onPostCreated) {
+      onPostCreated();
+    } else {
+      alert("Posted!");
+    }
   };
 
   const handleSubmitLink = async () => {
@@ -138,7 +142,11 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       });
       if (!res.ok) throw new Error("Link submission failed");
       setLinkInput("");
-      alert("Link submitted to SignalZ!");
+      if (onPostCreated) {
+        onPostCreated();
+      } else {
+        alert("Link submitted to SignalZ!");
+      }
     } catch (err) {
       console.error("Submit link error:", err);
       alert("Invalid link or submission error");
