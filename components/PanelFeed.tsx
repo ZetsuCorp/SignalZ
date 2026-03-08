@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 function extractDomain(url) {
   try {
@@ -25,6 +25,12 @@ function getEmbedUrl(url) {
 }
 
 export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, handleCommentSubmit, likesMap, handleLikeToggle }) {
+  const [pausedPosts, setPausedPosts] = useState<Record<string, boolean>>({});
+
+  const togglePause = (postId: string) => {
+    setPausedPosts((prev) => ({ ...prev, [postId]: !prev[postId] }));
+  };
+
   return (
     <>
       <style>{`
@@ -246,20 +252,46 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                   </span>
                 </div>
 
-                {/* Auto-Scrolling Comments */}
+                {/* Cascading Scrolling Comment Bars */}
                 <div
                   className="comment-scroll-wrapper"
+                  onClick={() => comments.length >= 2 && togglePause(post.id)}
                   style={{
-                    maxHeight: "80px",
+                    maxHeight: comments.length >= 2 ? "110px" : "auto",
                     overflow: "hidden",
                     position: "relative",
-                    maskImage:
-                      "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
-                    WebkitMaskImage:
-                      "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
                     marginTop: "0.4rem",
+                    cursor: comments.length >= 2 ? "pointer" : "default",
+                    ...(comments.length >= 2
+                      ? {
+                          maskImage:
+                            "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
+                          WebkitMaskImage:
+                            "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
+                        }
+                      : {}),
                   }}
                 >
+                  {comments.length >= 2 && pausedPosts[post.id] && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 2,
+                        background: "rgba(0,0,0,0.6)",
+                        color: "#00f0ff",
+                        fontSize: "0.65rem",
+                        padding: "2px 8px",
+                        borderRadius: "4px",
+                        border: "1px solid #00f0ff44",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      Tap to resume
+                    </div>
+                  )}
                   <div
                     className="comment-scroll-inner"
                     style={{
@@ -267,19 +299,27 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                       flexDirection: "column",
                       gap: "4px",
                       animation:
-                        comments.length > 5
-                          ? "scrollComments 12s linear infinite"
+                        comments.length >= 2 && !pausedPosts[post.id]
+                          ? `scrollComments ${Math.max(8, comments.length * 2)}s linear infinite`
                           : "none",
                     }}
                   >
-                    {[...comments, ...comments].map((c, i) => (
+                    {(comments.length >= 2
+                      ? [...comments, ...comments]
+                      : comments.length > 0
+                        ? [comments[0]]
+                        : []
+                    ).map((c, i) => (
                       <div
                         key={i}
                         className="comment-line"
                         style={{
-                          fontSize: "0.75rem",
+                          fontSize: "0.72rem",
                           color: "#cfffff",
-                          padding: "2px 0",
+                          padding: "3px 8px",
+                          background: "rgba(0, 240, 255, 0.06)",
+                          border: "1px solid rgba(0, 240, 255, 0.15)",
+                          borderRadius: "4px",
                           whiteSpace: "nowrap",
                           textOverflow: "ellipsis",
                           overflow: "hidden",

@@ -364,19 +364,15 @@ video.auto-pause {
   max-width: 280px;
 }
 
-/* SCROLLING COMMENTS — Preserved */
+/* CASCADING SCROLLING COMMENT BARS */
 .comment-scroll-wrapper {
-  max-height: 120px;
   overflow: hidden;
   position: relative;
-  mask-image: linear-gradient(to bottom, transparent, white 10%, white 90%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, white 10%, white 90%, transparent);
 }
 .comment-scroll-inner {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  animation: scrollComments 10s linear infinite;
+  gap: 4px;
 }
 @keyframes scrollComments {
   0% {
@@ -387,9 +383,12 @@ video.auto-pause {
   }
 }
 .comment-line {
-  font-size: 14px;
-  color: var(--text-dark);
-  padding: 4px 0;
+  font-size: 0.72rem;
+  color: #cfffff;
+  padding: 3px 8px;
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 4px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
