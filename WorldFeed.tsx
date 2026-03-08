@@ -60,10 +60,13 @@ export default function WorldFeed({ wallType }) {
   const [error, setError] = useState("");
   const [commentsMap, setCommentsMap] = useState({});
   const [inputMap, setInputMap] = useState({});
+  const [likesMap, setLikesMap] = useState({});
   const [showCreateOverlay, setShowCreateOverlay] = useState(false);
   const [createMode, setCreateMode] = useState("");
   const [activePanel, setActivePanel] = useState("middle");
   const postIdsRef = useRef("");
+
+  const getSessionId = () => localStorage.getItem("session_id") || "";
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -94,12 +97,30 @@ export default function WorldFeed({ wallType }) {
     return () => clearInterval(interval);
   }, [fetchPosts]);
 
+  const fetchLikes = useCallback(async (postIds) => {
+    if (!postIds.length) return;
+    try {
+      const sessionId = getSessionId();
+      const res = await fetch(
+        `/.netlify/functions/get-likes?post_ids=${postIds.join(",")}&session_id=${sessionId}`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setLikesMap((prev) => ({ ...prev, ...data }));
+      }
+    } catch (err) {
+      console.error("Error fetching likes:", err);
+    }
+  }, []);
+
   useEffect(() => {
+    const ids = posts.map((p) => p.id);
     posts.forEach(async (post) => {
       const comments = await fetchComments(post.id);
       setCommentsMap((prev) => ({ ...prev, [post.id]: comments }));
     });
-  }, [posts]);
+    fetchLikes(ids);
+  }, [posts, fetchLikes]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -145,6 +166,39 @@ export default function WorldFeed({ wallType }) {
       const updated = await fetchComments(postId);
       setCommentsMap((prev) => ({ ...prev, [postId]: updated }));
       setInputMap((prev) => ({ ...prev, [postId]: "" }));
+    }
+  };
+
+  const handleLikeToggle = async (postId) => {
+    const sessionId = getSessionId();
+    if (!sessionId) return;
+
+    // Optimistic update
+    setLikesMap((prev) => {
+      const current = prev[postId] || { count: 0, liked: false };
+      return {
+        ...prev,
+        [postId]: {
+          count: current.liked ? current.count - 1 : current.count + 1,
+          liked: !current.liked,
+        },
+      };
+    });
+
+    try {
+      const res = await fetch("/.netlify/functions/toggle-like", {
+        method: "POST",
+        body: JSON.stringify({ post_id: postId, session_id: sessionId }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setLikesMap((prev) => ({
+          ...prev,
+          [postId]: { count: data.likes, liked: data.liked },
+        }));
+      }
+    } catch (err) {
+      console.error("Error toggling like:", err);
     }
   };
 
@@ -213,6 +267,8 @@ export default function WorldFeed({ wallType }) {
           inputMap={inputMap}
           setInputMap={setInputMap}
           handleCommentSubmit={handleCommentSubmit}
+          likesMap={likesMap}
+          handleLikeToggle={handleLikeToggle}
         />
       )}
       {activePanel === "right" && <PanelNews />}
