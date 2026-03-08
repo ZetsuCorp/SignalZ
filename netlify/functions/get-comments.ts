@@ -29,7 +29,7 @@ const handler: Handler = async (event) => {
       .from("comments")
       .select("id, content, created_at")
       .eq("post_id", post_id)
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Supabase query error:", error);
