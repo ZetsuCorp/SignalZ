@@ -24,7 +24,7 @@ function getEmbedUrl(url) {
   return null;
 }
 
-export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, handleCommentSubmit }) {
+export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, handleCommentSubmit, likesMap, handleLikeToggle }) {
   return (
     <>
       <style>{`
@@ -51,6 +51,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
             : [];
           const comments = commentsMap[post.id] || [];
           const bg = post.background;
+          const likeData = likesMap?.[post.id] || { count: 0, liked: false };
 
           return (
             <div
@@ -190,16 +191,59 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: "0.75rem",
-                    background: "rgba(0,0,0,0.3)",
-                    padding: "4px 8px",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    fontSize: "0.8rem",
+                    background: "rgba(0,0,0,0.4)",
+                    padding: "6px 12px",
                     borderRadius: "8px",
                     color: "#fff",
+                    gap: "1rem",
+                    marginTop: "0.3rem",
                   }}
                 >
-                  <span>❤️ {post.likes || 0}</span>
-                  <span>💬 {comments.length}</span>
+                  <span
+                    onClick={() => handleLikeToggle?.(post.id)}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      background: likeData.liked
+                        ? "rgba(255, 60, 80, 0.15)"
+                        : "rgba(255,255,255,0.05)",
+                      border: likeData.liked
+                        ? "1px solid rgba(255, 60, 80, 0.4)"
+                        : "1px solid rgba(255,255,255,0.1)",
+                      transition: "all 0.2s ease",
+                      userSelect: "none",
+                    }}
+                  >
+                    <span style={{ fontSize: "1rem" }}>
+                      {likeData.liked ? "❤️" : "🤍"}
+                    </span>
+                    <span style={{ fontWeight: 600 }}>{likeData.count}</span>
+                  </span>
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      background: comments.length > 0
+                        ? "rgba(0, 240, 255, 0.1)"
+                        : "rgba(255,255,255,0.05)",
+                      border: comments.length > 0
+                        ? "1px solid rgba(0, 240, 255, 0.3)"
+                        : "1px solid rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    <span style={{ fontSize: "1rem" }}>💬</span>
+                    <span style={{ fontWeight: 600 }}>{comments.length}</span>
+                  </span>
                 </div>
 
                 {/* Auto-Scrolling Comments */}
