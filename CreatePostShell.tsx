@@ -19,6 +19,18 @@ const WALL_LABELS = {
   relationships: "❤️ Relationships",
 };
 
+const CATEGORY_OPTIONS = [
+  { id: "hobbies", label: "🎨 Hobbies" },
+  { id: "music", label: "🎸 Music" },
+  { id: "money", label: "💰 Money" },
+  { id: "spirituality", label: "🙏 Spirituality" },
+  { id: "tech", label: "💻 Tech" },
+  { id: "health", label: "🥕 Health" },
+  { id: "sports", label: "⚽ Sports" },
+  { id: "self-improvement", label: "📚 Self-improvement" },
+  { id: "relationships", label: "❤️ Relationships" },
+];
+
 
 export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview, onPostCreated }) {
   const [headline, setHeadline] = useState("");
@@ -28,6 +40,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [linkInput, setLinkInput] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(wallType === "main" ? "" : wallType);
 
   const [sessionId, setSessionId] = useState("");
   const [sigIcon, setSigIcon] = useState("");
@@ -103,6 +116,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
 
   const handlePost = async () => {
     if (!headline || !caption) return alert("Headline and caption required");
+    if (!selectedCategory) return alert("Please select a category for your post");
     const imageUrl = await uploadImage();
     const videoUrl = await uploadVideo();
     await fetch("/.netlify/functions/create-posts", {
@@ -118,7 +132,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
         session_id: sessionId,
         sigicon_url: sigIcon,
         display_name: displayName,
-        wall_type: wallType,
+        wall_type: selectedCategory,
         background: backgroundImage,
       }),
     });
@@ -133,6 +147,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
 
   const handleSubmitLink = async () => {
     if (!linkInput.trim()) return alert("Please enter a link");
+    if (!selectedCategory) return alert("Please select a category for your post");
     try {
       const domain = new URL(linkInput).hostname.replace("www.", "");
       const background = backgroundImage || getBackgroundFromSession(sessionId);
@@ -143,7 +158,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
           url: linkInput,
           session_id: sessionId,
           sigicon_url: sigIcon,
-          wall_type: wallType,
+          wall_type: selectedCategory,
           tags: ["link"],
           link_title: "Shared via SignalZ",
           link_image: null,
@@ -247,14 +262,30 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             />
           </div>
 
-          {/* 🔷 Type Banner / Wall Selector */}
+          {/* 🔷 Type Banner / Category Selector */}
           <div className="type-banner">
             <div className="type-cell">{modeLabel}</div>
             <div className="type-about-wrap">
               <div className="type-about-box">
-                <span className="type-about-text">
-                  {WALL_LABELS[wallType] || wallType.toUpperCase()} Wall
-                </span>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  style={{
+                    background: "rgba(0, 10, 20, 0.65)",
+                    border: "1px solid #00f0ff44",
+                    borderRadius: "8px",
+                    color: "#e0fefe",
+                    padding: "6px 12px",
+                    fontSize: "13px",
+                    width: "100%",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="" disabled>Select Category...</option>
+                  {CATEGORY_OPTIONS.map(({ id, label }) => (
+                    <option key={id} value={id}>{label}</option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="type-cell">✨</div>
@@ -291,7 +322,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
           <div className="submit-row">
             <button onClick={handleSubmitLink}>🔗 Submit Link</button>
             <button onClick={handlePost}>
-              🚀 Post to {WALL_LABELS[wallType] || wallType.toUpperCase()} Wall
+              🚀 Post to {WALL_LABELS[selectedCategory] || "Select Category"} Wall
             </button>
           </div>
 
