@@ -254,7 +254,7 @@ export default function WorldFeed({ wallType }) {
 
     {/* ✅ Create Overlay */}
     {showCreateOverlay && (
-      <CreatePostShell mode={createMode} onClose={handleCloseOverlay} onPostCreated={handlePostCreated} />
+      <CreatePostShell mode={createMode} onClose={handleCloseOverlay} wallType={wallType} onPostCreated={handlePostCreated} />
     )}
 
     {/* 🔸 Active Panel */}

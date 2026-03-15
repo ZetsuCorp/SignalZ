@@ -16,19 +16,29 @@ const handler: Handler = async (event) => {
     };
   }
 
-  // 🔎 Get normal posts with sigicon_url included
-  const { data: posts, error: postError } = await supabase
+  // 🔎 Get normal posts — Main/Zetsu returns ALL, others filter by wall_type
+  let postsQuery = supabase
     .from("posts")
     .select("*, session_id, background, sigicon_url, display_name")
-    .eq("wall_type", wall_type)
     .order("created_at", { ascending: false });
 
-  // 🔗 Get social link posts
-  const { data: links, error: linkError } = await supabase
+  if (wall_type !== "main") {
+    postsQuery = postsQuery.eq("wall_type", wall_type);
+  }
+
+  const { data: posts, error: postError } = await postsQuery;
+
+  // 🔗 Get social link posts — same logic
+  let linksQuery = supabase
     .from("linked_posts")
     .select("*, sigicon_url")
-    .eq("wall_type", wall_type)
     .order("created_at", { ascending: false });
+
+  if (wall_type !== "main") {
+    linksQuery = linksQuery.eq("wall_type", wall_type);
+  }
+
+  const { data: links, error: linkError } = await linksQuery;
 
   if (postError || linkError) {
     return {
