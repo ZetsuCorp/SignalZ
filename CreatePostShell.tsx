@@ -6,6 +6,19 @@ import { supabase } from "./supabase/client";
 import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
 import "./CreatePostShell.css";
 
+const WALL_LABELS = {
+  main: "⚡ Zetsu",
+  hobbies: "🎨 Hobbies",
+  music: "🎸 Music",
+  money: "💰 Money",
+  spirituality: "🙏 Spirituality",
+  tech: "💻 Tech",
+  health: "🥕 Health",
+  sports: "⚽ Sports",
+  "self-improvement": "📚 Self-improvement",
+  relationships: "❤️ Relationships",
+};
+
 
 export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview, onPostCreated }) {
   const [headline, setHeadline] = useState("");
@@ -240,7 +253,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             <div className="type-about-wrap">
               <div className="type-about-box">
                 <span className="type-about-text">
-                  {wallType.toUpperCase()} Wall
+                  {WALL_LABELS[wallType] || wallType.toUpperCase()} Wall
                 </span>
               </div>
             </div>
@@ -278,7 +291,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
           <div className="submit-row">
             <button onClick={handleSubmitLink}>🔗 Submit Link</button>
             <button onClick={handlePost}>
-              🚀 Post to {wallType.toUpperCase()} Wall
+              🚀 Post to {WALL_LABELS[wallType] || wallType.toUpperCase()} Wall
             </button>
           </div>
 

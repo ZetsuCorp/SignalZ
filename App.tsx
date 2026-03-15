@@ -3,6 +3,19 @@ import WorldFeed from "./WorldFeed";
 import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
 
+const WALL_TABS = [
+  { id: "main", label: "⚡ Zetsu" },
+  { id: "hobbies", label: "🎨 Hobbies" },
+  { id: "music", label: "🎸 Music" },
+  { id: "money", label: "💰 Money" },
+  { id: "spirituality", label: "🙏 Spirituality" },
+  { id: "tech", label: "💻 Tech" },
+  { id: "health", label: "🥕 Health" },
+  { id: "sports", label: "⚽ Sports" },
+  { id: "self-improvement", label: "📚 Self-improvement" },
+  { id: "relationships", label: "❤️ Relationships" },
+];
+
 export default function App() {
   const [wallType, setWallType] = useState("main");
   const [showSettings, setShowSettings] = useState(false);
@@ -112,14 +125,14 @@ export default function App() {
     )}
 
     {/* 🔹 Centered Wall Type Tabs */}
-    <div className="panel-tabs">
-      {["main", "alt", "zetsu"].map((id) => (
+    <div className="panel-tabs wall-tabs">
+      {WALL_TABS.map(({ id, label }) => (
         <button
           key={id}
           onClick={() => setWallType(id)}
           className={`panel-tab ${wallType === id ? "active" : ""}`}
         >
-          {id.toUpperCase()}
+          {label}
         </button>
       ))}
     </div>

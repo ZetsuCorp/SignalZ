@@ -127,6 +127,12 @@ body {
   z-index: 110;
 }
 
+/* Wall category tabs — centered, wrapping to match other tabs */
+.panel-tabs.wall-tabs {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 
 .panel-tab {
   background: #111;
@@ -137,6 +143,8 @@ body {
   font-size: 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .panel-tab:hover {
