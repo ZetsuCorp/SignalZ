@@ -125,14 +125,15 @@ export default function PostcardViewer() {
               margin: "0 auto 1rem",
               padding: "0.5rem 1rem",
               borderRadius: "8px",
-              background: "rgba(0, 0, 0, 0.7)",
+              background: "rgba(0, 5, 12, 0.85)",
               color: "#00f0ff",
               fontFamily: "monospace",
               fontSize: "0.85rem",
-              border: "1px solid #00f0ff44",
+              border: "2px solid rgba(0, 240, 255, 0.65)",
               textAlign: "center",
               maxWidth: "480px",
               textShadow: "0 0 6px #00f0ff55",
+              boxShadow: "0 0 8px rgba(0, 240, 255, 0.2), inset 0 0 6px rgba(0, 0, 0, 0.4)",
             }}
           >
             <strong>{displayName}</strong>

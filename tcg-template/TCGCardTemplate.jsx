@@ -85,10 +85,12 @@ export default function TCGCardTemplate({
                 fontWeight: "bold",
                 fontSize: "0.85rem",
                 color: "#00f0ff",
-                backgroundColor: "rgba(0, 0, 0, 0.6)",
-                padding: "4px 8px",
+                backgroundColor: "rgba(0, 5, 12, 0.85)",
+                padding: "4px 10px",
                 borderRadius: "6px",
+                border: "2px solid rgba(0, 240, 255, 0.65)",
                 textShadow: "0 0 6px #00f0ff",
+                boxShadow: "0 0 8px rgba(0, 240, 255, 0.2), inset 0 0 6px rgba(0, 0, 0, 0.4)",
                 display: "inline-block",
               }}
             >
