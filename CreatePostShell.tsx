@@ -192,9 +192,6 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             />
           </div>
 
-          {/* 🔸 Stat Row (Placeholder) */}
-          <div className="stat-row">N/A</div>
-
           {/* 🖼 Artwork Area — Clickable for media */}
           <div
             className="card-art card-art-clickable"
