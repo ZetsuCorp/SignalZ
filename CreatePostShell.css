@@ -121,7 +121,7 @@ transform: scale(0.8); /* 90% size for slight depth */
 .card-art video {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: inherit;
 }
 .card-art .placeholder {
