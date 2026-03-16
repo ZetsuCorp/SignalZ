@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
-import { getBackgroundFromSession } from "./src/utils/getBackgroundFromSession";
+
 import "./CreatePostShell.css";
 
 const WALL_LABELS = {
@@ -39,7 +39,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
   const [tags, setTags] = useState("");
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
-  const [linkInput, setLinkInput] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState(wallType === "main" ? "" : wallType);
 
   const [sessionId, setSessionId] = useState("");
@@ -146,42 +146,6 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
     }
   };
 
-  const handleSubmitLink = async () => {
-    if (!linkInput.trim()) return alert("Please enter a link");
-    if (!selectedCategory) return alert("Please select a category for your post");
-    try {
-      const domain = new URL(linkInput).hostname.replace("www.", "");
-      const background = backgroundImage || getBackgroundFromSession(sessionId);
-      const res = await fetch("/.netlify/functions/create-link-post", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          url: linkInput,
-          session_id: sessionId,
-          sigicon_url: sigIcon,
-          wall_type: "main",
-          category: selectedCategory,
-          tags: ["link"],
-          link_title: "Shared via SignalZ",
-          link_image: null,
-          image_url: null,
-          video_url: null,
-          cta_link_url: domain,
-          background,
-        }),
-      });
-      if (!res.ok) throw new Error("Link submission failed");
-      setLinkInput("");
-      if (onPostCreated) {
-        onPostCreated();
-      } else {
-        alert("Link submitted to SignalZ!");
-      }
-    } catch (err) {
-      console.error("Submit link error:", err);
-      alert("Invalid link or submission error");
-    }
-  };
 
   const modeLabel =
     mode === "image"
@@ -314,15 +278,14 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
               <input
                 type="text"
                 placeholder="Social Link"
-                value={linkInput}
-                onChange={(e) => setLinkInput(e.target.value)}
+                value={ctaUrl}
+                onChange={(e) => setCtaUrl(e.target.value)}
               />
             </div>
           </div>
 
           {/* 🔗 Submit Row */}
           <div className="submit-row">
-            <button onClick={handleSubmitLink}>🔗 Submit Link</button>
             <button onClick={handlePost}>
               🚀 Post to {WALL_LABELS[selectedCategory] || "Select Category"} Wall
             </button>
