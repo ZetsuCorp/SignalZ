@@ -63,17 +63,23 @@
       return data.data || [];
     }
 
+    function resolveField(field) {
+      if (!field) return '';
+      if (typeof field === 'string') return field;
+      return field.en || Object.values(field)[0] || '';
+    }
+
     function mapGameToPost(game) {
       const timestamp = new Date().toLocaleString();
-      const platform = game.category?.name || 'Games';
+      const platform = resolveField(game.category?.name) || 'Games';
       const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
       const outro = outros[Math.floor(Math.random() * outros.length)];
 
       return {
         platform,
         link: game.url,
-        snippet: game.description || game.name,
-        name: game.name,
+        snippet: resolveField(game.description) || resolveField(game.name),
+        name: resolveField(game.name),
         timestamp,
         intro,
         outro,
