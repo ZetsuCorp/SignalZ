@@ -47,6 +47,8 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
   const [displayName, setDisplayName] = useState("");
   const [backgroundImage, setBackgroundImage] = useState("");
 
+  const [showMediaOptions, setShowMediaOptions] = useState(false);
+
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
@@ -78,6 +80,8 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
+      setVideo(null);
+      setShowMediaOptions(false);
       const previewUrl = URL.createObjectURL(file);
       onMediaPreview?.("image", previewUrl);
     }
@@ -87,6 +91,8 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
     const file = e.target.files?.[0];
     if (file) {
       setVideo(file);
+      setImage(null);
+      setShowMediaOptions(false);
       const previewUrl = URL.createObjectURL(file);
       onMediaPreview?.("video", previewUrl);
     }
@@ -189,26 +195,32 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
           {/* 🔸 Stat Row (Placeholder) */}
           <div className="stat-row">N/A</div>
 
-          {/* 🖼 Artwork Area */}
-          <div className="card-art">
+          {/* 🖼 Artwork Area — Clickable for media */}
+          <div
+            className="card-art card-art-clickable"
+            onClick={() => setShowMediaOptions(!showMediaOptions)}
+          >
             {image ? (
               <img src={URL.createObjectURL(image)} alt="preview" />
             ) : video ? (
-              <video controls>
+              <video controls onClick={(e) => e.stopPropagation()}>
                 <source src={URL.createObjectURL(video)} />
               </video>
             ) : (
               <div className="placeholder">
-                🖼 No media added — Click below to add
+                🖼 Tap to add Image or Video
               </div>
             )}
-          </div>
-
-          {/* Upload Buttons inside art section */}
-          <div className="submit-row">
-            <button type="button" onClick={() => imageInputRef.current.click()}>
-              🖼 Add Image
-            </button>
+            {showMediaOptions && (
+              <div className="card-art-options" onClick={(e) => e.stopPropagation()}>
+                <button type="button" onClick={() => { imageInputRef.current.click(); setShowMediaOptions(false); }}>
+                  🖼 Image
+                </button>
+                <button type="button" onClick={() => { videoInputRef.current.click(); setShowMediaOptions(false); }}>
+                  🎬 Video
+                </button>
+              </div>
+            )}
             <input
               type="file"
               accept="image/*"
@@ -216,9 +228,6 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
               onChange={handleImageChange}
               style={{ display: "none" }}
             />
-            <button type="button" onClick={() => videoInputRef.current.click()}>
-              🎬 Add Video
-            </button>
             <input
               type="file"
               accept="video/*"

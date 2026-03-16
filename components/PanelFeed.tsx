@@ -89,13 +89,14 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                     <span
                       style={{
                         display: "inline-block",
-                        background: "rgba(0,0,0,0.65)",
-                        border: "1px solid #00f0ff55",
-                        padding: "3px 8px",
+                        background: "rgba(0, 5, 12, 0.85)",
+                        border: "2px solid rgba(0, 240, 255, 0.65)",
+                        padding: "3px 10px",
                         borderRadius: "6px",
                         fontSize: "0.8rem",
                         color: "#00f0ff",
                         textShadow: "0 0 6px #00f0ff",
+                        boxShadow: "0 0 8px rgba(0, 240, 255, 0.2), inset 0 0 6px rgba(0, 0, 0, 0.4)",
                       }}
                     >
                       {post.display_name}
