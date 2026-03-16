@@ -104,10 +104,10 @@ transform: scale(0.8); /* 90% size for slight depth */
 }
 
 /* Artwork area */
-/* Artwork area */
 .card-art {
   width: 96.5%;
   min-height: 200px;
+  aspect-ratio: 4 / 3;
   border: 1px solid #00f0ff33;
   border-radius: 10px;
   background: rgba(0, 20, 40, 0.5);
@@ -121,7 +121,7 @@ transform: scale(0.8); /* 90% size for slight depth */
 .card-art video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: inherit;
 }
 .card-art .placeholder {

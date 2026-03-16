@@ -1,6 +1,6 @@
 
-// ✅ Full Zetsu-Card Styled CreatePostShell
-import React, { useState, useEffect, useRef } from "react";
+// Full Zetsu-Card Styled CreatePostShell with inline pan/zoom crop
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./supabase/client";
 
@@ -49,6 +49,14 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
 
   const [showMediaOptions, setShowMediaOptions] = useState(false);
 
+  // Pan/zoom state for image positioning inside the art frame
+  const [imgZoom, setImgZoom] = useState(1);
+  const [imgOffset, setImgOffset] = useState({ x: 0, y: 0 });
+  const isDragging = useRef(false);
+  const dragStart = useRef({ x: 0, y: 0 });
+  const offsetStart = useRef({ x: 0, y: 0 });
+  const cardArtRef = useRef(null);
+
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
@@ -64,17 +72,95 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
     setBackgroundImage(sessionStorage.getItem("session_bg") || "");
   }, []);
 
-  const tcgInputStyle = {
-    background: "rgba(0, 10, 20, 0.65)",
-    border: "1px solid #00f0ff44",
-    borderRadius: "10px",
-    color: "#e0fefe",
-    boxShadow: "inset 0 0 10px rgba(0, 255, 255, 0.1)",
-    backdropFilter: "blur(6px)",
-    padding: "12px 16px",
-    lineHeight: "1.4",
-    textAlign: "center",
-  };
+  // --- Pan handlers (mouse + touch) ---
+  const handlePointerDown = useCallback((e) => {
+    if (!image) return;
+    e.preventDefault();
+    isDragging.current = true;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    dragStart.current = { x: clientX, y: clientY };
+    offsetStart.current = { ...imgOffset };
+  }, [image, imgOffset]);
+
+  const handlePointerMove = useCallback((e) => {
+    if (!isDragging.current) return;
+    e.preventDefault();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const dx = clientX - dragStart.current.x;
+    const dy = clientY - dragStart.current.y;
+    const rect = cardArtRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setImgOffset({
+      x: offsetStart.current.x + (dx / rect.width) * 100,
+      y: offsetStart.current.y + (dy / rect.height) * 100,
+    });
+  }, []);
+
+  const handlePointerUp = useCallback(() => {
+    isDragging.current = false;
+  }, []);
+
+  // Attach move/up listeners to window so dragging works outside the box
+  useEffect(() => {
+    window.addEventListener("mousemove", handlePointerMove);
+    window.addEventListener("mouseup", handlePointerUp);
+    window.addEventListener("touchmove", handlePointerMove, { passive: false });
+    window.addEventListener("touchend", handlePointerUp);
+    return () => {
+      window.removeEventListener("mousemove", handlePointerMove);
+      window.removeEventListener("mouseup", handlePointerUp);
+      window.removeEventListener("touchmove", handlePointerMove);
+      window.removeEventListener("touchend", handlePointerUp);
+    };
+  }, [handlePointerMove, handlePointerUp]);
+
+  // --- Zoom handler (scroll wheel + pinch) ---
+  const pinchDistRef = useRef(null);
+
+  const handleWheel = useCallback((e) => {
+    if (!image) return;
+    e.preventDefault();
+    setImgZoom((prev) => {
+      const delta = e.deltaY > 0 ? -0.05 : 0.05;
+      return Math.min(4, Math.max(1, prev + delta));
+    });
+  }, [image]);
+
+  const handleTouchStart = useCallback((e) => {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      pinchDistRef.current = Math.hypot(dx, dy);
+    }
+  }, []);
+
+  const handleTouchMove = useCallback((e) => {
+    if (e.touches.length === 2 && pinchDistRef.current !== null) {
+      e.preventDefault();
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      const scale = dist / pinchDistRef.current;
+      pinchDistRef.current = dist;
+      setImgZoom((prev) => Math.min(4, Math.max(1, prev * scale)));
+    }
+  }, []);
+
+  // Attach wheel + pinch listeners to card-art element
+  useEffect(() => {
+    const el = cardArtRef.current;
+    if (!el) return;
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    el.addEventListener("touchstart", handleTouchStart, { passive: true });
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", handleWheel);
+      el.removeEventListener("touchstart", handleTouchStart);
+      el.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [handleWheel, handleTouchStart, handleTouchMove]);
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
@@ -82,8 +168,9 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       setImage(file);
       setVideo(null);
       setShowMediaOptions(false);
-      const previewUrl = URL.createObjectURL(file);
-      onMediaPreview?.("image", previewUrl);
+      // Reset pan/zoom for new image
+      setImgZoom(1);
+      setImgOffset({ x: 0, y: 0 });
     }
   };
 
@@ -93,8 +180,8 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       setVideo(file);
       setImage(null);
       setShowMediaOptions(false);
-      const previewUrl = URL.createObjectURL(file);
-      onMediaPreview?.("video", previewUrl);
+      setImgZoom(1);
+      setImgOffset({ x: 0, y: 0 });
     }
   };
 
@@ -141,10 +228,14 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
         wall_type: "main",
         category: selectedCategory,
         background: backgroundImage,
+        image_offset_x: imgOffset.x,
+        image_offset_y: imgOffset.y,
+        image_zoom: imgZoom,
       }),
     });
     setHeadline(""); setCaption(""); setCtaUrl(""); setTags("");
     setImage(null); setVideo(null);
+    setImgZoom(1); setImgOffset({ x: 0, y: 0 });
     if (onPostCreated) {
       onPostCreated();
     } else {
@@ -162,6 +253,8 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       ? "🌐 Share Social Link"
       : "📝 Create New Post";
 
+  const imagePreviewUrl = image ? URL.createObjectURL(image) : null;
+
   return (
     <div className="fixed inset-0">
       <div className="frameType">
@@ -175,14 +268,14 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             backgroundPosition: "center",
           }}
         >
-          {/* 📝 Title + Nameplate */}
+          {/* Title + Nameplate */}
           <div className="card-title">📝 Create New Post</div>
           <div className="nameplate-row">
             <div className="label">Name Plate</div>
             <div className="value">{displayName || "SignalZ User"}</div>
           </div>
 
-          {/* 🔹 Header Bar (Headline Input) */}
+          {/* Header Bar (Headline Input) */}
           <div className="card-header">
             <input
               type="text"
@@ -192,13 +285,31 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             />
           </div>
 
-          {/* 🖼 Artwork Area — Clickable for media */}
+          {/* Artwork Area — inline pan/zoom crop tool */}
           <div
+            ref={cardArtRef}
             className="card-art card-art-clickable"
-            onClick={() => setShowMediaOptions(!showMediaOptions)}
+            style={{ cursor: image ? "grab" : "pointer", touchAction: "none" }}
+            onClick={() => { if (!image && !video) setShowMediaOptions(!showMediaOptions); }}
+            onMouseDown={handlePointerDown}
+            onTouchStart={(e) => { if (e.touches.length === 1) handlePointerDown(e); }}
           >
-            {image ? (
-              <img src={URL.createObjectURL(image)} alt="preview" />
+            {imagePreviewUrl ? (
+              <img
+                src={imagePreviewUrl}
+                alt="preview"
+                draggable={false}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  transform: `translate(${imgOffset.x}%, ${imgOffset.y}%) scale(${imgZoom})`,
+                  transformOrigin: "center center",
+                  pointerEvents: "none",
+                  userSelect: "none",
+                  transition: isDragging.current ? "none" : "transform 0.1s ease-out",
+                }}
+              />
             ) : video ? (
               <video controls onClick={(e) => e.stopPropagation()}>
                 <source src={URL.createObjectURL(video)} />
@@ -208,6 +319,49 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
                 🖼 Tap to add Image or Video
               </div>
             )}
+
+            {/* Zoom hint overlay when image is loaded */}
+            {image && (
+              <div style={{
+                position: "absolute",
+                bottom: "6px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "rgba(0,0,0,0.6)",
+                color: "#00f0ff",
+                fontSize: "0.65rem",
+                padding: "2px 10px",
+                borderRadius: "4px",
+                pointerEvents: "none",
+                whiteSpace: "nowrap",
+              }}>
+                Drag to reposition &bull; Scroll to zoom
+              </div>
+            )}
+
+            {/* Change media button when image/video already set */}
+            {(image || video) && (
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setShowMediaOptions(true); }}
+                style={{
+                  position: "absolute",
+                  top: "6px",
+                  right: "6px",
+                  background: "rgba(0,0,0,0.7)",
+                  color: "#00f0ff",
+                  border: "1px solid #00f0ff66",
+                  borderRadius: "6px",
+                  padding: "3px 8px",
+                  fontSize: "0.7rem",
+                  cursor: "pointer",
+                  zIndex: 3,
+                }}
+              >
+                Change
+              </button>
+            )}
+
             {showMediaOptions && (
               <div className="card-art-options" onClick={(e) => e.stopPropagation()}>
                 <button type="button" onClick={() => { imageInputRef.current.click(); setShowMediaOptions(false); }}>
@@ -234,7 +388,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             />
           </div>
 
-          {/* 🔷 Type Banner / Category Selector */}
+          {/* Type Banner / Category Selector */}
           <div className="type-banner">
             <div className="type-cell">{modeLabel}</div>
             <div className="type-about-wrap">
@@ -263,7 +417,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             <div className="type-cell">✨</div>
           </div>
 
-          {/* 🧠 Effect Box (Caption + Link merged) */}
+          {/* Effect Box (Caption + Link merged) */}
           <div className="effect-box">
             <textarea
               placeholder="Write something meaningful OR paste any video or social link..."
@@ -272,7 +426,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             />
           </div>
 
-          {/* 📘 Meta Section (Tags + Social Link) */}
+          {/* Meta Section (Tags + Social Link) */}
           <div className="meta-block">
             <div className="meta-row">
               <input
@@ -290,7 +444,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
             </div>
           </div>
 
-          {/* 🔗 Submit Row */}
+          {/* Submit Row */}
           <div className="submit-row">
             <button onClick={handlePost}>
               🚀 Post to {WALL_LABELS[selectedCategory] || "Select Category"} Wall
@@ -308,9 +462,7 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
         </div>
       </div>
 
-  
-
-{/* ✅ Close button pinned to bottom-right */}
+{/* Close button pinned to bottom-right */}
 <button
   onClick={onClose}
   className="absolute bottom-4 right-4 text-cyan-300 hover:text-white text-3xl font-bold z-[1000001]"
