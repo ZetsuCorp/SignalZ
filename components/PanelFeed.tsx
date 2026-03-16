@@ -167,12 +167,40 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                     border: "1px solid #00f0ff55",
                     borderRadius: "6px",
                     padding: "6px 10px",
-                    marginBottom: "0.4rem",
+                    marginBottom: post.cta_url ? "0.25rem" : "0.4rem",
                     background: "rgba(0,0,0,0.4)",
                   }}
                 >
                   {post.headline || "Untitled"}
                 </div>
+
+                {/* Visit Link */}
+                {post.cta_url && (
+                  <div style={{ textAlign: "center", marginBottom: "0.4rem" }}>
+                    <a
+                      href={post.cta_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "4px 14px",
+                        background: "rgba(0, 50, 80, 0.5)",
+                        border: "1px solid #00f0ff66",
+                        borderRadius: "8px",
+                        color: "#aafaff",
+                        fontSize: "0.75rem",
+                        fontWeight: "600",
+                        textDecoration: "none",
+                        cursor: "pointer",
+                        transition: "background 0.2s ease",
+                      }}
+                    >
+                      🔗 Visit Link
+                    </a>
+                  </div>
+                )}
 
                 {/* Caption */}
                 <div
