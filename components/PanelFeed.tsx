@@ -136,8 +136,11 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                       style={{
                         width: "100%",
                         height: "100%",
-                        objectFit: "cover",
+                        objectFit: "contain",
                         display: "block",
+                        transform: `translate(${post.image_offset_x || 0}%, ${post.image_offset_y || 0}%) scale(${post.image_zoom || 1})`,
+                        transformOrigin: "center center",
+                        pointerEvents: "none",
                       }}
                     />
                   ) : (

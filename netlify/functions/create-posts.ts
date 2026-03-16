@@ -19,9 +19,12 @@ const handler: Handler = async (event) => {
     tags,
     session_id,
     wall_type,
-    background, // ✅ added
-    sigicon_url, // ✅
+    background,
+    sigicon_url,
     display_name,
+    image_offset_x,
+    image_offset_y,
+    image_zoom,
   } = body;
 
   const { error } = await supabase.from("posts").insert([
@@ -34,9 +37,12 @@ const handler: Handler = async (event) => {
       tags,
       session_id,
       wall_type,
-      background, 
-      sigicon_url, // ✅
+      background,
+      sigicon_url,
       display_name,
+      image_offset_x: image_offset_x ?? 0,
+      image_offset_y: image_offset_y ?? 0,
+      image_zoom: image_zoom ?? 1,
     },
   ]);
 
