@@ -103,17 +103,6 @@ transform: scale(0.8); /* 90% size for slight depth */
   outline: none;
 }
 
-/* Stat row placeholder */
-.stat-row {
-  border: 1px dashed #00f0ff22;
-  border-radius: 8px;
-  padding: 6px;
-  text-align: center;
-  color: #0088aa;
-  font-size: 0.75rem;
-  margin-bottom: 8px;
-}
-
 /* Artwork area */
 /* Artwork area */
 .card-art {
