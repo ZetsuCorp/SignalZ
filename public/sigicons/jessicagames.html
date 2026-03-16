@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jessica Games Feed</title>
+  <link rel="stylesheet" href="jessica.css" />
+</head>
+<body>
+  <h1>🎮 Jessica's Game Feed</h1>
+
+  <div class="button-row" style="text-align:center; margin-bottom: 2rem;">
+    <button id="searchBtn">🔍 Fetch Games</button>
+    <button id="pushBtn">📤 Push to Supabase</button>
+  </div>
+
+  <section>
+    <h2>📡 Session 1</h2>
+    <div class="jessica-feed" id="session1"></div>
+  </section>
+  <section>
+    <h2>🛰️ Session 2</h2>
+    <div class="jessica-feed" id="session2"></div>
+  </section>
+  <section>
+    <h2>🧠 Session 3</h2>
+    <div class="jessica-feed" id="session3"></div>
+  </section>
+
+  <div style="margin: 2rem; padding: 1rem; background: #081e24; border: 1px solid #00f0ff55; border-radius: 8px;">
+    <h3 style="color:#00f0ff; margin-bottom: 0.5rem;">✅ Posted to World Feed</h3>
+    <ul id="postedList" style="color:#aafafc; font-size: 0.85rem; list-style-type: disc; padding-left: 1rem;"></ul>
+  </div>
+
+  <script>
+    const BEARER_TOKEN = '9f45e8c3-0180-458c-a77c-d345316c19dd';
+
+    const intros = [
+      "— Ever wondered what's buzzing in",
+      "— Hot off the wire from",
+      "— The latest drop from",
+      "— Here's what's lighting up",
+      "— Jessica on scene at"
+    ];
+
+    const outros = [
+      "— Find out here",
+      "— Tap in for the full game",
+      "— Get the details",
+      "— Full report below",
+      "— Play now"
+    ];
+
+    const sessions = ["session1", "session2", "session3"];
+    const allPosts = [];
+
+    async function fetchGames() {
+      const res = await fetch('https://api.gamezop.com/v3/games', {
+        headers: {
+          'Authorization': `Bearer ${BEARER_TOKEN}`
+        }
+      });
+      const data = await res.json();
+      return data.data || [];
+    }
+
+    function mapGameToPost(game) {
+      const timestamp = new Date().toLocaleString();
+      const platform = game.category?.name || 'Games';
+      const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
+      const outro = outros[Math.floor(Math.random() * outros.length)];
+
+      return {
+        platform,
+        link: game.url,
+        snippet: game.description || game.name,
+        name: game.name,
+        timestamp,
+        intro,
+        outro,
+        image_url: game.images?.cover || game.images?.wall || game.images?.thumb || '',
+        code: game.code,
+        orientation: game.screen_orientation
+      };
+    }
+
+    function renderPosts(containerId, posts) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+
+      posts.forEach((post, i) => {
+        const card = document.createElement('div');
+        card.className = 'jessica-post';
+        card.style.backgroundImage = `url('${post.image_url}')`;
+        card.style.setProperty('--anim-delay', `${i * 0.1}s`);
+        card.setAttribute('data-link', post.link);
+        card.innerHTML = `
+          <div class="jessica-post-content">
+            <div class="jessica-display-name"><span>Jessica AI</span></div>
+            <div class="jessica-header-line">
+              <div class="jessica-sigicon-stack">
+                <span class="emoji-icon">🎮</span>
+                <img src="/sigicons/ripple.gif" alt="Ripple" class="ripple-overlay" />
+              </div>
+              <span class="jessica-id">Jessica reporting from — ${post.platform}</span>
+            </div>
+            <div class="jessica-card-title">📛 ${post.intro}</div>
+            <div class="jessica-card-type">📂 Type — ${post.orientation?.toUpperCase() || 'GAME'}</div>
+
+            <div class="jessica-description-box">
+              <p class="jessica-caption">"${post.snippet}"</p>
+              <span class="jessica-date" style="display:block; margin-top: 0.5rem; font-size: 0.75rem; color: #88ffff;">${post.timestamp}</span>
+              <p class="jessica-outro" style="margin-top: 0.25rem;">${post.outro}</p>
+            </div>
+
+            <a href="${post.link}" target="_blank" class="jessica-link">🔗 Play Game</a>
+          </div>
+        `;
+        container.appendChild(card);
+        allPosts.push(post);
+      });
+    }
+
+    function splitIntoSessions(games, sessionCount = 3) {
+      const shuffled = [...games].sort(() => Math.random() - 0.5);
+      const size = Math.ceil(shuffled.length / sessionCount);
+      return Array.from({ length: sessionCount }, (_, i) =>
+        shuffled.slice(i * size, i * size + size).slice(0, 4)
+      );
+    }
+
+    async function runAllSessions() {
+      try {
+        const games = await fetchGames();
+        const posts = games.map(mapGameToPost);
+        const [s1, s2, s3] = splitIntoSessions(posts, 3);
+        renderPosts('session1', s1);
+        renderPosts('session2', s2);
+        renderPosts('session3', s3);
+      } catch (err) {
+        console.error('Jessica Games failed:', err);
+      }
+    }
+
+    async function postToSupabase(post) {
+      const payload = {
+        headline: post.intro,
+        caption: post.snippet,
+        cta_url: post.link,
+        image_url: post.image_url,
+        tags: [post.platform, 'game', post.orientation],
+        session_id: 'jessica-games',
+        wall_type: 'main',
+        sigicon_url: post.image_url,
+        display_name: 'Jessica AI',
+        likes: 0,
+        comments: 0,
+        reposts: 0
+      };
+
+      try {
+        const res = await fetch('/.netlify/functions/jessicacreatepost', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (res.status === 200) {
+          console.log('✅ Posted:', post.name, post.link);
+          markAsPosted(post.link);
+        } else {
+          console.warn('❌ Supabase error:', result.error);
+        }
+      } catch (err) {
+        console.error('🚫 Network error:', err);
+      }
+    }
+
+    function markAsPosted(link) {
+      const list = document.getElementById('postedList');
+      if (list && ![...list.children].some(li => li.textContent === link)) {
+        const li = document.createElement('li');
+        li.textContent = link;
+        list.appendChild(li);
+      }
+    }
+
+    // Render placeholder slots on load
+    window.addEventListener('DOMContentLoaded', () => {
+      sessions.forEach(id => {
+        const section = document.getElementById(id);
+        for (let i = 0; i < 10; i++) {
+          const div = document.createElement('div');
+          div.className = 'jessica-post';
+          div.style.setProperty('--anim-delay', `${i * 0.05}s`);
+          div.innerHTML = `
+            <div class="jessica-post-content">
+              <div class="jessica-display-name"><span>Jessica AI</span></div>
+              <div class="jessica-header-line">
+                <div class="jessica-sigicon-stack">
+                  <span class="emoji-icon">🎮</span>
+                  <img src="/sigicons/ripple.gif" alt="Ripple" class="ripple-overlay" />
+                </div>
+                <span class="jessica-id">Awaiting Input</span>
+              </div>
+              <div class="jessica-card-title">🔮 Empty Slot</div>
+              <div class="jessica-card-type">📂 Type — Template</div>
+              <a href="#" class="jessica-link">🔗 No link</a>
+            </div>
+          `;
+          section.appendChild(div);
+        }
+      });
+    });
+
+    document.getElementById('searchBtn').addEventListener('click', runAllSessions);
+
+    document.getElementById('pushBtn').addEventListener('click', () => {
+      allPosts
+        .filter(post => post.image_url && post.image_url.trim() !== '')
+        .forEach(post => postToSupabase(post));
+    });
+  </script>
+</body>
+</html>
