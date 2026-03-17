@@ -1,13 +1,10 @@
-const GAMEZOP_API = "https://api.gamezop.com/v3/games";
-const BEARER_TOKEN =
-  process.env.GAMEZOP_BEARER_TOKEN || "9f45e8c3-0180-458c-a77c-d345316c19dd";
+const GAMEZOP_PROPERTY_CODE = process.env.GAMEZOP_PROPERTY_CODE || "UGNYn1MFQ";
+const GAMEZOP_API = `https://pub.gamezop.com/v3/games?id=${GAMEZOP_PROPERTY_CODE}`;
 
 exports.handler = async () => {
 
   try {
-    const res = await fetch(GAMEZOP_API, {
-      headers: { Authorization: `Bearer ${BEARER_TOKEN}` },
-    });
+    const res = await fetch(GAMEZOP_API);
 
     if (!res.ok) {
       return {

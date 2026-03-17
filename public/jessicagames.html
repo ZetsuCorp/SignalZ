@@ -54,18 +54,20 @@
     async function fetchGames() {
       const res = await fetch('/.netlify/functions/gamezop-games');
       const data = await res.json();
-      return data.data || [];
+      return data.games || [];
     }
 
     function resolveField(field) {
       if (!field) return '';
       if (typeof field === 'string') return field;
-      return field.en || Object.values(field)[0] || '';
+      if (Array.isArray(field)) return field[0] || '';
+      const val = field.en || Object.values(field)[0] || '';
+      return Array.isArray(val) ? val[0] || '' : val;
     }
 
     function mapGameToPost(game) {
       const timestamp = new Date().toLocaleString();
-      const platform = resolveField(game.category?.name) || 'Games';
+      const platform = resolveField(game.categories) || 'Games';
       const intro = `${intros[Math.floor(Math.random() * intros.length)]} ${platform}`;
       const outro = outros[Math.floor(Math.random() * outros.length)];
 
@@ -77,9 +79,9 @@
         timestamp,
         intro,
         outro,
-        image_url: game.images?.cover || game.images?.wall || game.images?.thumb || '',
+        image_url: game.assets?.cover || game.assets?.wall || game.assets?.thumb || '',
         code: game.code,
-        orientation: game.screen_orientation
+        orientation: game.isPortrait ? 'portrait' : 'landscape'
       };
     }
 
