@@ -32,8 +32,6 @@
   </div>
 
   <script>
-    const BEARER_TOKEN = '9f45e8c3-0180-458c-a77c-d345316c19dd';
-
     const intros = [
       "— Ever wondered what's buzzing in",
       "— Hot off the wire from",
@@ -54,11 +52,7 @@
     const allPosts = [];
 
     async function fetchGames() {
-      const res = await fetch('https://api.gamezop.com/v3/games', {
-        headers: {
-          'Authorization': `Bearer ${BEARER_TOKEN}`
-        }
-      });
+      const res = await fetch('/.netlify/functions/gamezop-games');
       const data = await res.json();
       return data.data || [];
     }
