@@ -63,6 +63,7 @@ export default function WorldFeed({ wallType }) {
   const [likesMap, setLikesMap] = useState({});
   const [showCreateOverlay, setShowCreateOverlay] = useState(false);
   const [createMode, setCreateMode] = useState("");
+  const [incomingPost, setIncomingPost] = useState(null);
   const [activePanel, setActivePanel] = useState("middle");
   const postIdsRef = useRef("");
 
@@ -204,18 +205,27 @@ export default function WorldFeed({ wallType }) {
 
   const handleCreateClick = () => {
     setCreateMode("post");
+    setIncomingPost(null);
     setShowCreateOverlay(true);
   };
 
   const handleCloseOverlay = () => {
     setShowCreateOverlay(false);
     setCreateMode("");
+    setIncomingPost(null);
   };
 
   const handlePostCreated = () => {
     setShowCreateOverlay(false);
     setCreateMode("");
+    setIncomingPost(null);
     fetchPosts();
+  };
+
+  const handlePushToWall = (post) => {
+    setIncomingPost(post);
+    setCreateMode("post");
+    setShowCreateOverlay(true);
   };
 
   // ✅ UI
@@ -254,12 +264,12 @@ export default function WorldFeed({ wallType }) {
 
     {/* ✅ Create Overlay */}
     {showCreateOverlay && (
-      <CreatePostShell mode={createMode} onClose={handleCloseOverlay} wallType={wallType} onPostCreated={handlePostCreated} />
+      <CreatePostShell mode={createMode} onClose={handleCloseOverlay} wallType={wallType} onPostCreated={handlePostCreated} initialData={incomingPost} />
     )}
 
     {/* 🔸 Active Panel */}
     <div className="panel-view" style={{ background: "#0c0c0c" }}>
-      {activePanel === "left" && <PanelPostView />}
+      {activePanel === "left" && <PanelPostView onPushToWall={handlePushToWall} />}
       {activePanel === "middle" && (
         <PanelFeed
           posts={posts}
