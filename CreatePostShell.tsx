@@ -1,4 +1,3 @@
-
 // Zetsu-Card Styled CreatePostShell
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -32,13 +31,15 @@ const CATEGORY_OPTIONS = [
 ];
 
 
-export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview, onPostCreated }) {
+export default function CreatePostShell({ mode, onClose, wallType = "main", onMediaPreview, onPostCreated, initialData = null }) {
   const [headline, setHeadline] = useState("");
   const [caption, setCaption] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
   const [tags, setTags] = useState("");
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
+  const [prefillImageUrl, setPrefillImageUrl] = useState("");
+  const [prefillVideoUrl, setPrefillVideoUrl] = useState("");
 
   const [selectedCategory, setSelectedCategory] = useState(wallType === "main" ? "" : wallType);
 
@@ -63,6 +64,17 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
     setDisplayName(sessionStorage.getItem("session_display_name") || "");
     setBackgroundImage(sessionStorage.getItem("session_bg") || "");
   }, []);
+
+  // Prefill from Backpack incoming post
+  useEffect(() => {
+    if (!initialData) return;
+    if (initialData.headline)  setHeadline(initialData.headline);
+    if (initialData.caption)   setCaption(initialData.caption);
+    if (initialData.cta_url)   setCtaUrl(initialData.cta_url);
+    if (initialData.image_url) setPrefillImageUrl(initialData.image_url);
+    if (initialData.video_url) setPrefillVideoUrl(initialData.video_url);
+    if (initialData.wall_type && initialData.wall_type !== "main") setSelectedCategory(initialData.wall_type);
+  }, [initialData]);
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
@@ -107,8 +119,11 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
   const handlePost = async () => {
     if (!headline || !caption) return alert("Headline and caption required");
     if (!selectedCategory) return alert("Please select a category for your post");
-    const imageUrl = await uploadImage();
-    const videoUrl = await uploadVideo();
+    const uploadedImageUrl = await uploadImage();
+    const uploadedVideoUrl = await uploadVideo();
+    // Fall back to prefill URLs if no new file was selected
+    const imageUrl = uploadedImageUrl || prefillImageUrl;
+    const videoUrl = uploadedVideoUrl || prefillVideoUrl;
     try {
       const res = await fetch("/.netlify/functions/create-posts", {
         method: "POST",
@@ -155,7 +170,8 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
       ? "🌐 Share Social Link"
       : "📝 Create New Post";
 
-  const imagePreviewUrl = image ? URL.createObjectURL(image) : null;
+  const imagePreviewUrl = image ? URL.createObjectURL(image) : prefillImageUrl || null;
+  const videoPreviewUrl = video ? URL.createObjectURL(video) : prefillVideoUrl || null;
 
   return (
     <div className="fixed inset-0">
@@ -197,9 +213,9 @@ export default function CreatePostShell({ mode, onClose, wallType = "main", onMe
                 src={imagePreviewUrl}
                 alt="preview"
               />
-            ) : video ? (
+            ) : videoPreviewUrl ? (
               <video controls onClick={(e) => e.stopPropagation()}>
-                <source src={URL.createObjectURL(video)} />
+                <source src={videoPreviewUrl} />
               </video>
             ) : (
               <div className="placeholder">
