@@ -1,6 +1,3 @@
-Postcardviewer · JSX
-Copy
-
 import React, { useEffect, useState } from "react";
 import TCGCardTemplate from "./TCGCardTemplate";
  
@@ -130,4 +127,3 @@ export default function PostcardViewer({ onPushToWall }) {
     </div>
   );
 }
- 
