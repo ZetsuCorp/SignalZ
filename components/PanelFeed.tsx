@@ -36,6 +36,23 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
     setPausedCaptions((prev) => ({ ...prev, [postId]: !prev[postId] }));
   };
 
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const rotateY = ((x / rect.width) - 0.5) * 20;
+    const rotateX = ((y / rect.height) - 0.5) * -20;
+    el.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    el.style.boxShadow = "0 20px 40px rgba(0, 240, 255, 0.35)";
+  };
+
+  const handleCardMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    el.style.transform = "perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)";
+    el.style.boxShadow = "0 0 20px rgba(0,0,0,0.7)";
+  };
+
   const CAPTION_SCROLL_THRESHOLD = 140;
 
   return (
@@ -74,9 +91,17 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
             <div
               key={post.id}
               className="frameType"
+              onMouseMove={handleCardMouseMove}
+              onMouseLeave={handleCardMouseLeave}
+              onPointerLeave={handleCardMouseLeave}
               style={{
                 width: "clamp(360px, 92vw, 420px)",
                 aspectRatio: "5 / 7.8",
+                transform: "perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                transformStyle: "preserve-3d",
+                willChange: "transform",
+                boxShadow: "0 0 20px rgba(0,0,0,0.7)",
               }}
             >
               <div

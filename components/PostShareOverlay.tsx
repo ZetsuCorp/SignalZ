@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 
 const CAPTION_SCROLL_THRESHOLD = 140;
 
@@ -52,6 +52,26 @@ export default function PostShareOverlay({ postId, initialPost, onClose }) {
   const [comments, setComments] = useState([]);
   const [likeData, setLikeData] = useState({ count: 0, liked: false });
   const [commentInput, setCommentInput] = useState("");
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const rotateY = ((x / rect.width) - 0.5) * 20;
+    const rotateX = ((y / rect.height) - 0.5) * -20;
+    el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    el.style.boxShadow = "0 20px 40px rgba(0, 240, 255, 0.35)";
+  };
+
+  const handleCardMouseLeave = () => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+    el.style.boxShadow = "0 0 20px rgba(0,0,0,0.7)";
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -266,14 +286,24 @@ export default function PostShareOverlay({ postId, initialPost, onClose }) {
               alignItems: "center",
               justifyContent: "center",
               borderRight: "1px solid rgba(0, 240, 255, 0.15)",
+              perspective: "1200px",
             }}
           >
             <div
+              ref={cardRef}
               className="frameType"
+              onMouseMove={handleCardMouseMove}
+              onMouseLeave={handleCardMouseLeave}
+              onPointerLeave={handleCardMouseLeave}
               style={{
                 width: "100%",
                 aspectRatio: "5 / 7.8",
                 maxHeight: "calc(92vh - 2rem)",
+                transform: "rotateX(0deg) rotateY(0deg) scale(1)",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                transformStyle: "preserve-3d",
+                willChange: "transform",
+                boxShadow: "0 0 20px rgba(0,0,0,0.7)",
               }}
             >
               <div
