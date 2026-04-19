@@ -41,16 +41,24 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
     const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const rotateY = ((x / rect.width) - 0.5) * 20;
-    const rotateX = ((y / rect.height) - 0.5) * -20;
-    el.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    const rotateY = ((x / rect.width) - 0.5) * 12;
+    const rotateX = ((y / rect.height) - 0.5) * -12;
+    el.style.willChange = "transform";
+    el.style.transition = "box-shadow 0.2s ease";
+    el.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(0.84)`;
     el.style.boxShadow = "0 20px 40px rgba(0, 240, 255, 0.35)";
   };
 
   const handleCardMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
-    el.style.transform = "perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)";
+    el.style.transition = "transform 0.15s ease-out, box-shadow 0.15s ease-out";
+    el.style.transform = "perspective(1200px) rotateX(0deg) rotateY(0deg) scale(0.8)";
     el.style.boxShadow = "0 0 20px rgba(0,0,0,0.7)";
+    const release = () => {
+      el.style.willChange = "auto";
+      el.removeEventListener("transitionend", release);
+    };
+    el.addEventListener("transitionend", release);
   };
 
   const CAPTION_SCROLL_THRESHOLD = 140;
@@ -97,10 +105,8 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
               style={{
                 width: "clamp(360px, 92vw, 420px)",
                 aspectRatio: "5 / 7.8",
-                transform: "perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                transformStyle: "preserve-3d",
-                willChange: "transform",
+                transform: "perspective(1200px) rotateX(0deg) rotateY(0deg) scale(0.8)",
+                transition: "transform 0.15s ease-out, box-shadow 0.15s ease-out",
                 boxShadow: "0 0 20px rgba(0,0,0,0.7)",
               }}
             >
