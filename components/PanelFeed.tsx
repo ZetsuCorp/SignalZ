@@ -351,6 +351,27 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                     <span style={{ fontSize: "1rem" }}>💬</span>
                     <span style={{ fontWeight: 600 }}>{comments.length}</span>
                   </span>
+                  <span
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.location.hash = `post/${post.id}`;
+                    }}
+                    title="View this post"
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      background: "rgba(0, 240, 255, 0.08)",
+                      border: "1px solid rgba(0, 240, 255, 0.25)",
+                      userSelect: "none",
+                    }}
+                  >
+                    <span style={{ fontSize: "1rem" }}>👁️</span>
+                    <span style={{ fontWeight: 600, fontSize: "0.75rem" }}>View</span>
+                  </span>
                 </div>
 
                 {/* Cascading Scrolling Comment Bars */}
