@@ -26,15 +26,26 @@ function getEmbedUrl(url) {
 
 export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, handleCommentSubmit, likesMap, handleLikeToggle }) {
   const [pausedPosts, setPausedPosts] = useState<Record<string, boolean>>({});
+  const [pausedCaptions, setPausedCaptions] = useState<Record<string, boolean>>({});
 
   const togglePause = (postId: string) => {
     setPausedPosts((prev) => ({ ...prev, [postId]: !prev[postId] }));
   };
 
+  const togglePauseCaption = (postId: string) => {
+    setPausedCaptions((prev) => ({ ...prev, [postId]: !prev[postId] }));
+  };
+
+  const CAPTION_SCROLL_THRESHOLD = 140;
+
   return (
     <>
       <style>{`
         @keyframes scrollComments {
+          0% { transform: translateY(0%); }
+          100% { transform: translateY(-50%); }
+        }
+        @keyframes scrollCaption {
           0% { transform: translateY(0%); }
           100% { transform: translateY(-50%); }
         }
@@ -65,7 +76,7 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
               className="frameType"
               style={{
                 width: "clamp(360px, 92vw, 420px)",
-                aspectRatio: "5 / 7.2",
+                aspectRatio: "5 / 7.8",
               }}
             >
               <div
@@ -204,23 +215,84 @@ export default function PanelFeed({ posts, commentsMap, inputMap, setInputMap, h
                 )}
 
                 {/* Caption */}
-                <div
-                  style={{
-                    background: "rgba(0,10,20,0.65)",
-                    border: "1px solid #00f0ff33",
-                    borderRadius: "8px",
-                    color: "#cfffff",
-                    fontSize: "0.8rem",
-                    padding: "8px 10px",
-                    height: "3.6rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    lineHeight: "1.3",
-                    marginBottom: "0.4rem",
-                  }}
-                >
-                  {post.caption}
-                </div>
+                {(() => {
+                  const captionText = post.caption || "";
+                  const captionLong = captionText.length > CAPTION_SCROLL_THRESHOLD;
+                  const captionPaused = pausedCaptions[post.id];
+                  const captionDuration = Math.max(12, Math.ceil(captionText.length / 12));
+                  return (
+                    <div
+                      className="caption-scroll-wrapper"
+                      onClick={() => captionLong && togglePauseCaption(post.id)}
+                      style={{
+                        background: "rgba(0,10,20,0.65)",
+                        border: "1px solid #00f0ff33",
+                        borderRadius: "8px",
+                        color: "#cfffff",
+                        fontSize: "0.8rem",
+                        height: "6.2rem",
+                        overflow: "hidden",
+                        position: "relative",
+                        lineHeight: "1.3",
+                        marginBottom: "0.4rem",
+                        cursor: captionLong ? "pointer" : "default",
+                        ...(captionLong
+                          ? {
+                              maskImage:
+                                "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
+                              WebkitMaskImage:
+                                "linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)",
+                            }
+                          : {}),
+                      }}
+                    >
+                      {captionLong && captionPaused && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            zIndex: 2,
+                            background: "rgba(0,0,0,0.6)",
+                            color: "#00f0ff",
+                            fontSize: "0.65rem",
+                            padding: "2px 8px",
+                            borderRadius: "4px",
+                            border: "1px solid #00f0ff44",
+                            pointerEvents: "none",
+                          }}
+                        >
+                          Tap to resume
+                        </div>
+                      )}
+                      <div
+                        className="caption-scroll-inner"
+                        style={{
+                          animation:
+                            captionLong && !captionPaused
+                              ? `scrollCaption ${captionDuration}s linear infinite`
+                              : "none",
+                        }}
+                      >
+                        <div style={{ padding: "8px 10px", whiteSpace: "pre-wrap" }}>
+                          {captionText}
+                        </div>
+                        {captionLong && (
+                          <div
+                            style={{
+                              padding: "8px 10px",
+                              whiteSpace: "pre-wrap",
+                              marginTop: "0.4rem",
+                            }}
+                          >
+                            {captionText}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Stats */}
                 <div
