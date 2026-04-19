@@ -60,17 +60,25 @@ export default function PostShareOverlay({ postId, initialPost, onClose }) {
     const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const rotateY = ((x / rect.width) - 0.5) * 20;
-    const rotateX = ((y / rect.height) - 0.5) * -20;
-    el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    const rotateY = ((x / rect.width) - 0.5) * 12;
+    const rotateX = ((y / rect.height) - 0.5) * -12;
+    el.style.willChange = "transform";
+    el.style.transition = "box-shadow 0.2s ease";
+    el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(0.84)`;
     el.style.boxShadow = "0 20px 40px rgba(0, 240, 255, 0.35)";
   };
 
   const handleCardMouseLeave = () => {
     const el = cardRef.current;
     if (!el) return;
-    el.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+    el.style.transition = "transform 0.15s ease-out, box-shadow 0.15s ease-out";
+    el.style.transform = "rotateX(0deg) rotateY(0deg) scale(0.8)";
     el.style.boxShadow = "0 0 20px rgba(0,0,0,0.7)";
+    const release = () => {
+      el.style.willChange = "auto";
+      el.removeEventListener("transitionend", release);
+    };
+    el.addEventListener("transitionend", release);
   };
 
   useEffect(() => {
@@ -299,10 +307,8 @@ export default function PostShareOverlay({ postId, initialPost, onClose }) {
                 width: "100%",
                 aspectRatio: "5 / 7.8",
                 maxHeight: "calc(92vh - 2rem)",
-                transform: "rotateX(0deg) rotateY(0deg) scale(1)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                transformStyle: "preserve-3d",
-                willChange: "transform",
+                transform: "rotateX(0deg) rotateY(0deg) scale(0.8)",
+                transition: "transform 0.15s ease-out, box-shadow 0.15s ease-out",
                 boxShadow: "0 0 20px rgba(0,0,0,0.7)",
               }}
             >
