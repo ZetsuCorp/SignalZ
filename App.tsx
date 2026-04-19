@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import WorldFeed from "./WorldFeed";
 import MediaEditor from "./MediaEditor";
 import SessionContainer from "./src/SessionIdDisplay/SessionContainer";
+import PostShareOverlay from "./components/PostShareOverlay";
 
 const WALL_TABS = [
   { id: "main", label: "⚡ Zetsu" },
@@ -26,6 +27,7 @@ export default function App() {
   const [editorType, setEditorType] = useState(null);
   const [editorSrc, setEditorSrc] = useState(null);
   const [showMobileTabs, setShowMobileTabs] = useState(true);
+  const [sharedPostId, setSharedPostId] = useState(null);
 
 
   useEffect(() => {
@@ -35,6 +37,28 @@ export default function App() {
   useEffect(() => {
     document.body.classList.toggle("modal-open", editorVisible);
   }, [editorVisible]);
+
+  useEffect(() => {
+    const parseHash = () => {
+      const hash = window.location.hash || "";
+      const match = hash.match(/^#\/?post\/([^/?#]+)/);
+      setSharedPostId(match ? decodeURIComponent(match[1]) : null);
+    };
+    parseHash();
+    window.addEventListener("hashchange", parseHash);
+    return () => window.removeEventListener("hashchange", parseHash);
+  }, []);
+
+  const closeSharedPost = () => {
+    if (window.location.hash) {
+      history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
+    }
+    setSharedPostId(null);
+  };
 
   const handleMediaPreview = (type, src) => {
     setEditorType(type);
@@ -173,6 +197,11 @@ export default function App() {
           onClose={() => setEditorVisible(false)}
           onConfirm={handleMediaConfirm}
         />
+      )}
+
+      {/* 🔗 Shareable Post Overlay */}
+      {sharedPostId && (
+        <PostShareOverlay postId={sharedPostId} onClose={closeSharedPost} />
       )}
     </div>
   );
