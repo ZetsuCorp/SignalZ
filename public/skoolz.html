@@ -164,7 +164,6 @@ let bossAlertShown=false;
 let revenueAlertCooldown=0;
 let lastMass=0;
 
-// ── OBJECTION TEXT ──
 const OBJECTIONS_FLEE=[
   "I can't afford it!","Not right now!","I need to think about it!",
   "Let me talk to my spouse!","Send me more info!","We don't have budget!",
@@ -278,10 +277,8 @@ let mouse={x:0,y:0};
 let cam={x:MAP/2,y:MAP/2,z:1};
 let running=false,raf=null;
 
-// ── HIRE COUNTS (change 1) ──
 let hireCounts={intern:0,closer:0,ads:0,commMgr:0};
 
-// ── HIRE DURATIONS (change 2) ──
 const HIRE_LIFESPANS={intern:1800,closer:3600,commMgr:2700};
 
 // ── BOSS ──
@@ -842,7 +839,6 @@ function drawBombs(){
   });
 }
 
-// ── DRAW AD SIGNS (change 3) — white ring + player image/name + "AD" label ──
 function drawAdSigns(){
   adsigns.forEach(s=>{
     const[sx,sy]=w2s(s.x,s.y);
@@ -850,24 +846,16 @@ function drawAdSigns(){
     const sr=s.r*cam.z*pulse;
     if(sx+sr+40<0||sx-sr-40>W||sy+sr+40<0||sy-sr-40>H)return;
     cx.save();
-
-    // outer white ring glow
     cx.beginPath();cx.arc(sx,sy,sr*1.18,0,TAU);
     cx.fillStyle='rgba(255,255,255,0.04)';cx.fill();
     cx.strokeStyle='rgba(255,255,255,0.18)';cx.lineWidth=1;cx.stroke();
-
-    // main ring
     cx.beginPath();cx.arc(sx,sy,sr,0,TAU);
     cx.fillStyle='rgba(0,0,0,0.65)';cx.fill();
     cx.strokeStyle='rgba(255,255,255,0.85)';cx.lineWidth=2.5;cx.stroke();
-
-    // inner dashed ring
     cx.setLineDash([4,4]);
     cx.beginPath();cx.arc(sx,sy,sr*0.78,0,TAU);
     cx.strokeStyle='rgba(255,255,255,0.35)';cx.lineWidth=1;cx.stroke();
     cx.setLineDash([]);
-
-    // clip and draw player image or name fill
     cx.save();
     cx.beginPath();cx.arc(sx,sy,sr*0.72,0,TAU);cx.clip();
     if(canvasImg){
@@ -882,8 +870,6 @@ function drawAdSigns(){
       }
     }
     cx.restore();
-
-    // "AD" label below
     const labelY=sy+sr+14;
     cx.font=`900 ${clamp(sr*0.38,9,16)}px 'Share Tech Mono',monospace`;
     cx.textAlign='center';cx.textBaseline='middle';
@@ -891,24 +877,42 @@ function drawAdSigns(){
     cx.fillStyle='rgba(0,0,0,0.8)';cx.fillRect(sx-tw/2,labelY-8,tw,16);
     cx.strokeStyle='rgba(255,255,255,0.6)';cx.lineWidth=1;cx.strokeRect(sx-tw/2,labelY-8,tw,16);
     cx.fillStyle='#ffffff';cx.fillText('AD',sx,labelY);
-
-    // 📢 emoji small
     cx.font=`${Math.max(8,sr*0.35)}px serif`;
     cx.fillText('📢',sx+sr*0.55,sy-sr*0.55);
-
-    // timer bar
     const barW=sr*2,by2=sy+sr+26;
     cx.fillStyle='rgba(0,0,0,0.4)';cx.fillRect(sx-barW/2,by2,barW,3);
     cx.fillStyle='#ffffff';cx.fillRect(sx-barW/2,by2,barW*(s.timer/480),3);
-
     cx.restore();
   });
 }
 
+// ── MINIMAP food batching: persistent colour buckets, rebuilt every 6 frames ──
+const _mmFoodByCol={};
+let _mmLastFrame=-1;
+
 function drawMinimap(){
   mc.clearRect(0,0,130,130);mc.fillStyle='rgba(5,5,8,0.92)';mc.fillRect(0,0,130,130);
   const s=130/MAP;
-  foods.forEach(f=>{mc.beginPath();mc.arc(f.x*s,f.y*s,1.2,0,TAU);mc.fillStyle=f.col;mc.fill();});
+
+  // Rebuild colour buckets only every 6 frames (~10 fps for food dots).
+  // Buckets store flat [x0,y0, x1,y1, …] pairs to avoid inner-object allocation.
+  const frameNow=Math.floor(Date.now()/16);
+  if(frameNow-_mmLastFrame>=6){
+    _mmLastFrame=frameNow;
+    for(const k in _mmFoodByCol)_mmFoodByCol[k].length=0;
+    foods.forEach(f=>{
+      if(!_mmFoodByCol[f.col])_mmFoodByCol[f.col]=[];
+      _mmFoodByCol[f.col].push(f.x*s,f.y*s);
+    });
+  }
+  // One beginPath + N arcs + one fill per colour = 10 draw calls instead of 2000.
+  for(const col in _mmFoodByCol){
+    const pts=_mmFoodByCol[col];if(!pts.length)continue;
+    mc.beginPath();
+    for(let i=0;i<pts.length;i+=2)mc.arc(pts[i],pts[i+1],1.2,0,TAU);
+    mc.fillStyle=col;mc.fill();
+  }
+
   bombs.forEach(b=>{mc.beginPath();mc.arc(b.x*s,b.y*s,2.5,0,TAU);mc.fillStyle='#ff3c3c';mc.fill();});
   nullBlobs.forEach(nb=>{if(!nb.alive)return;mc.beginPath();mc.arc(nb.x*s,nb.y*s,Math.max(1.5,nb.r*s*1.5),0,TAU);mc.fillStyle=nb.col;mc.fill();});
   bossBlobs.forEach(b=>{
@@ -1129,12 +1133,11 @@ function mkHireBlob(type,x,y,mass){
     mergeT:0,spd:baseSpd,
     roamX:x,roamY:y,roamTimer:0,
     legalTimer:type==='legal'?600:0,
-    lifeTimer:lifespan,          // change 2: duration timer
-    overlapTimer:0,              // change 4: prolonged contact timer
+    lifeTimer:lifespan,
+    overlapTimer:0,
     internMissed:type==='intern'&&Math.random()<0.35,
     internNote:false,internNoteTimer:0,
     internWild:false,internWildTimer:0,
-    // change 5: closer wander AI fields
     heading:rnd(0,TAU),
     headingTimer:rnd(60,180),
     draggingNull:null,
@@ -1146,7 +1149,6 @@ function spawnHire(type){
   const cost=HIRE_COSTS[type];
   if(tm<cost)return;
 
-  // change 1: enforce 4-per-type limit
   if(['intern','closer','ads','commMgr'].includes(type)&&hireCounts[type]>=4)return;
 
   let remaining=cost;
@@ -1200,13 +1202,12 @@ function deployLegalTeam(){
   angles.forEach(a=>{
     const h=mkHireBlob('legal',px+Math.cos(a)*180,py+Math.sin(a)*180,1000);
     h.legalAngle=a;
-    h.legalTimer=bossTimer; // sync to current boss countdown
+    h.legalTimer=bossTimer;
     hires.push(h);
   });
   legalOnRetainer=false;
 }
 
-// ── UPDATE HIRES ──
 function updateHires(){
   if(legalOnRetainer&&bossBlobs.length&&!hires.some(h=>h.type==='legal'&&h.alive)){
     deployLegalTeam();
@@ -1216,7 +1217,6 @@ function updateHires(){
     if(!h.alive)return;
     const hr=blobR(h);
 
-    // change 2: lifespan timer (skip legal — it has its own)
     if(h.type!=='legal'&&h.lifeTimer!==Infinity){
       h.lifeTimer--;
       if(h.lifeTimer<=0){
@@ -1227,7 +1227,6 @@ function updateHires(){
       }
     }
 
-    // change 4: player absorbs hire on prolonged overlap
     if(h.type!=='legal'){
       let overlapping=false;
       blobs.forEach(pb=>{
@@ -1237,7 +1236,6 @@ function updateHires(){
       if(overlapping){
         h.overlapTimer++;
         if(h.overlapTimer>=90){
-          // absorb — give mass to closest player blob
           let closest=null,cd=Infinity;
           blobs.forEach(pb=>{const d=Math.hypot(pb.x-h.x,pb.y-h.y);if(d<cd){cd=d;closest=pb;}});
           if(closest)closest.m+=h.m;
@@ -1250,9 +1248,8 @@ function updateHires(){
       }
     }
 
-    // legal timer — synced to boss, dissolve when boss gone
     if(h.type==='legal'){
-      h.legalTimer=bossTimer; // track live
+      h.legalTimer=bossTimer;
       if(!bossBlobs.length||bossTimer<=0){h.alive=false;return;}
       if(blobs.length){
         const pb=blobs[0];
@@ -1274,13 +1271,11 @@ function updateHires(){
       h.m=Math.min(h.m+0.5,800);
     }
 
-    // go rogue
     if(h.type!=='legal'&&!h.rogue&&h.m>ROGUE_THRESHOLD){
       h.rogue=true;
       closingTexts.push({x:h.x,y:h.y-60,text:'I QUIT. Starting my own thing.',alpha:1,vy:-0.7,green:false});
     }
 
-    // intern special behavior
     if(h.type==='intern'){
       h.internWildTimer=Math.max(0,(h.internWildTimer||0)-1);
       if(Math.random()<0.0008&&!h.rogue){
@@ -1302,12 +1297,10 @@ function updateHires(){
       }
     }
 
-    // ── CLOSER AI (change 5) — wanders like null, drags nulls back to player ──
     if(h.type==='closer'&&!h.rogue){
       h.headingTimer--;
       if(h.headingTimer<=0){h.heading+=rnd(-0.8,0.8);h.headingTimer=rnd(80,200);}
 
-      // find nearest null
       let nearestNull=null,nearestNullDist=Infinity;
       nullBlobs.forEach(nb=>{
         if(!nb.alive)return;
@@ -1315,7 +1308,6 @@ function updateHires(){
         if(d<nearestNullDist){nearestNullDist=d;nearestNull=nb;}
       });
 
-      // stay within range of player
       let distToPlayer=Infinity;
       let playerBlob=null;
       if(blobs.length){
@@ -1323,40 +1315,31 @@ function updateHires(){
       }
 
       if(nearestNull&&nearestNullDist<280){
-        // 50/50 coin flip — existing behavior
         if(Math.random()<0.5){
           const dx=h.x-nearestNull.x,dy=h.y-nearestNull.y,dn=Math.hypot(dx,dy)||1;
           nearestNull.vx+=dx/dn*0.8;nearestNull.vy+=dy/dn*0.8;
-
-          // change 5 addition: closer also moves toward player while hauling
           if(playerBlob){
             const dx2=playerBlob.x-h.x,dy2=playerBlob.y-h.y,d2=Math.hypot(dx2,dy2)||1;
             h.vx+=(dx2/d2*h.spd-h.vx)*0.08;h.vy+=(dy2/d2*h.spd-h.vy)*0.08;
           }
-          // mark this null as being dragged for the draw pass
           nearestNull._draggedByCloser=h;
         } else {
-          // missed flip — wander toward nearest null
           const dx=nearestNull.x-h.x,dy=nearestNull.y-h.y,d=Math.hypot(dx,dy)||1;
           h.vx+=(dx/d*h.spd-h.vx)*0.06;h.vy+=(dy/d*h.spd-h.vy)*0.06;
         }
-        // closer eats nulls it touches
         if(nearestNullDist<hr+nearestNull.r*0.5&&hr>nearestNull.r*0.85){
           h.m+=nearestNull.m*0.3;nearestNull.alive=false;
           if(blobs.length)blobs[0].m+=nearestNull.m*0.25;
         }
       } else if(distToPlayer>300&&playerBlob){
-        // wander back toward player if no null nearby
         const dx=playerBlob.x-h.x,dy=playerBlob.y-h.y,d=Math.hypot(dx,dy)||1;
         h.vx+=(dx/d*h.spd-h.vx)*0.06;h.vy+=(dy/d*h.spd-h.vy)*0.06;
       } else {
-        // free roam hunting
         const targetVx=Math.cos(h.heading)*h.spd,targetVy=Math.sin(h.heading)*h.spd;
         h.vx+=(targetVx-h.vx)*0.06;h.vy+=(targetVy-h.vy)*0.06;
       }
     }
 
-    // non-closer non-legal movement AI
     if(h.type==='intern'&&!h.rogue){
       let tx=h.roamX,ty=h.roamY;
       if(blobs.length){
@@ -1395,7 +1378,6 @@ function updateHires(){
       foodGridDirty=true;
     }
 
-    // commMgr hotspot
     if(h.type==='commMgr'&&!h.rogue){
       nullBlobs.forEach(nb=>{
         if(!nb.alive)return;
@@ -1433,11 +1415,9 @@ function updateHires(){
     h.sqX+=(1-h.sqX)*0.12;h.sqY+=(1-h.sqY)*0.12;
   });
 
-  // ad signs — flee from player, pull food
   const AD_FLEE_R=400,AD_FLEE_F=0.28;
   adsigns.forEach(s=>{
     s.timer--;s.pulseT+=0.08;
-    // flee AI (same pattern as null blobs)
     s.headingTimer--;
     if(s.headingTimer<=0){s.heading+=rnd(-0.8,0.8);s.headingTimer=rnd(80,200);}
     let nearestDist=Infinity;
@@ -1466,14 +1446,12 @@ function updateHires(){
     s.x=clamp(s.x,s.r,MAP-s.r);s.y=clamp(s.y,s.r,MAP-s.r);
     if(s.x<=s.r||s.x>=MAP-s.r)s.vx*=-0.6;
     if(s.y<=s.r||s.y>=MAP-s.r)s.vy*=-0.6;
-    // food magnet pull (unchanged)
     foods.forEach(f=>{
       const dx=s.x-f.x,dy=s.y-f.y,d=Math.hypot(dx,dy)||1;
       if(d<s.r*6){f.x+=dx/d*1.2;f.y+=dy/d*1.2;foodGridDirty=true;}
     });
   });
 
-  // change 1: decrement ad count when ad sign expires
   const prevAdCount=adsigns.length;
   adsigns=adsigns.filter(s=>s.timer>0);
   const expiredAds=prevAdCount-adsigns.length;
@@ -1481,8 +1459,6 @@ function updateHires(){
 
   if(accountantTimer>0)accountantTimer--;
 
-  // change 1: decrement counts when hires die, then filter
-  const before=hires.length;
   const typeCounts={intern:0,closer:0,commMgr:0};
   hires.forEach(h=>{if(h.alive&&h.type!=='legal')typeCounts[h.type]=(typeCounts[h.type]||0)+1;});
   hires=hires.filter(h=>h.alive);
@@ -1491,9 +1467,7 @@ function updateHires(){
   hireCounts.commMgr=typeCounts.commMgr||0;
 }
 
-// ── DRAW HIRES + CLOSER DRAG LINES (change 5) ──
 function drawHires(){
-  // draw drag lines first (behind blobs)
   hires.forEach(h=>{
     if(!h.alive||h.type!=='closer'||h.rogue)return;
     nullBlobs.forEach(nb=>{
@@ -1507,7 +1481,6 @@ function drawHires(){
       cx.setLineDash([]);cx.restore();
     });
   });
-  // commMgr community radius rings (drawn behind everything)
   hires.forEach(h=>{
     if(!h.alive||h.type!=='commMgr'||h.rogue)return;
     const[sx,sy]=w2s(h.x,h.y);
@@ -1515,12 +1488,10 @@ function drawHires(){
     cx.save();
     cx.beginPath();cx.arc(sx,sy,ringR,0,TAU);
     cx.strokeStyle='rgba(255,255,255,0.22)';cx.lineWidth=1.5;cx.stroke();
-    // second inner ring subtle
     cx.beginPath();cx.arc(sx,sy,ringR*0.85,0,TAU);
     cx.strokeStyle='rgba(255,255,255,0.08)';cx.lineWidth=1;cx.stroke();
     cx.restore();
   });
-  // reset drag markers
   nullBlobs.forEach(nb=>{nb._draggedByCloser=null;});
 
   hires.forEach(h=>{
@@ -1537,7 +1508,6 @@ function drawHires(){
     blobPath(h.pts,sx,sy,sr,h.sqX,h.sqY);cx.fillStyle=g;cx.fill();
     if(sr>8){
       if(h.type==='commMgr'&&!h.rogue){
-        // player image clipped inside
         cx.save();
         cx.beginPath();cx.arc(sx,sy,sr*0.72,0,TAU);cx.clip();
         if(canvasImg){
@@ -1546,7 +1516,6 @@ function drawHires(){
           cx.fillStyle=pColor;cx.fillRect(sx-sr*0.72,sy-sr*0.72,sr*1.44,sr*1.44);
         }
         cx.restore();
-        // COMMUNITY label
         if(sr>14){
           cx.font=`900 ${clamp(sr*0.2,7,13)}px 'Share Tech Mono',monospace`;
           cx.textAlign='center';cx.textBaseline='middle';
@@ -1563,14 +1532,12 @@ function drawHires(){
         }
       }
     }
-    // legal timer bar
     if(h.type==='legal'&&sr>8){
       const barW=sr*2,barH=3;
       const bx2=sx-barW/2,by2=sy-sr-8;
       cx.fillStyle='rgba(0,0,0,0.5)';cx.fillRect(bx2,by2,barW,barH);
       cx.fillStyle='#a29bfe';cx.fillRect(bx2,by2,barW*(h.legalTimer/BOSS_DURATION),barH);
     }
-    // life timer bar for non-legal timed hires
     if(h.type!=='legal'&&HIRE_LIFESPANS[h.type]&&sr>8){
       const lifespan=HIRE_LIFESPANS[h.type];
       const barW=sr*2,barH=2;
@@ -1580,7 +1547,6 @@ function drawHires(){
       cx.fillStyle=frac>0.3?'rgba(0,255,180,0.7)':'rgba(255,80,80,0.8)';
       cx.fillRect(bx2,by2,barW*frac,barH);
     }
-    // overlap absorption progress ring
     if(h.overlapTimer>0&&sr>8){
       const frac=h.overlapTimer/90;
       cx.beginPath();
@@ -1612,7 +1578,6 @@ function drawHires(){
 
 function accountantMultiplier(){return accountantTimer>0?2.2:1;}
 
-// ── UPDATE PANEL BUTTONS (change 1) ──
 function updatePanelButtons(){
   const tm=totalMass();
   const bossActive=bossBlobs.length>0;
@@ -1640,7 +1605,6 @@ function updatePanelButtons(){
   legalBtn.textContent=legalOnRetainer?'ON RETAINER':'RETAINER';
 }
 
-// ── REVENUE BANNER (change 6) ──
 function checkRevenueBanner(currentMass){
   if(revenueAlertCooldown>0){revenueAlertCooldown--;return;}
   const gain=currentMass-lastMass;
@@ -1649,7 +1613,7 @@ function checkRevenueBanner(currentMass){
     const phrases=['CLOSING DEALS','MONEY IN','HUSTLING','KILLING IT','CASH MONEY'];
     raSub.textContent=phrases[Math.floor(Math.random()*phrases.length)];
     revenueAlert.style.display='block';
-    revenueAlertCooldown=180; // 3s cooldown
+    revenueAlertCooldown=180;
     setTimeout(()=>{revenueAlert.style.display='none';},2500);
   }
   lastMass=currentMass;
@@ -1690,7 +1654,6 @@ function loop(){
   spdN.textContent='SPD '+(blobs.length?blobs.reduce((s,b)=>s+b.spd,0)/blobs.length:0).toFixed(1);
   if(officePanelOpen)updatePanelButtons();
 
-  // change 6: check revenue banner
   checkRevenueBanner(tm);
 
   drawMinimap();
